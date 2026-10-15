@@ -188,3 +188,110 @@ export interface ProtectionReceipt {
   memo: string;
   note?: string;
 }
+
+// ─── Trade plans (paper trading) ───
+
+export type TradeSide = "buy" | "sell";
+
+/** One U-Guard check on a trade plan. warn = worth a second look; block = cannot be placed as asked. */
+export interface TradeCheck {
+  id: "unlock" | "size" | "concentration" | "chase" | "balance" | "stablecoin";
+  status: "ok" | "warn" | "block";
+  label: string;
+  detail: string;
+}
+
+/** What-if rows. Each is arithmetic on the plan, or a dated historical average, never a price forecast. */
+export interface TradeScenario {
+  label: string;
+  pct: number;
+  priceUsd: number;
+  pnlThb: number;
+  basis: string;
+}
+
+export interface TradePlan {
+  id: string;
+  symbol: string;
+  name: string;
+  side: TradeSide;
+  orderType: "market" | "limit";
+  amountThb: number;
+  priceUsd: number; // fill price for the plan: the quote, or the limit price
+  quotePriceUsd: number;
+  usdThb: number;
+  qty: number;
+  feeThb: number;
+  stopLossPct: number;
+  stopPriceUsd: number;
+  maxLossThb: number;
+  riskBudgetPct: number;
+  maxSizeThb: number; // largest buy whose stop-loss stays inside the risk budget
+  portfolioThb: number;
+  positionPctAfter: number;
+  checks: TradeCheck[];
+  scenarios: TradeScenario[];
+  verdict: "ready" | "caution" | "blocked";
+  summary: string[]; // 3 short Thai lines
+  card: RiskCard | null;
+  agent: { reply: string; engine: string; trace: TraceStep[] } | null;
+  priceSource: DataSource;
+  createdAt: string;
+  status: "pending" | "approved" | "declined";
+}
+
+export interface PaperOrder {
+  id: string;
+  planId: string;
+  symbol: string;
+  side: TradeSide;
+  qty: number;
+  priceUsd: number;
+  amountThb: number;
+  feeThb: number;
+  stopPriceUsd: number;
+  at: string;
+  receipt: ProtectionReceipt;
+}
+
+// ─── Invest plans (model portfolios the user adjusts and approves) ───
+
+export type InvestProfile = "conservative" | "moderate" | "growth" | "aggressive";
+
+export interface InvestSlice {
+  id: string;
+  th: string;
+  example: string;
+  risk: number; // Thai SEC 1-8 scale; 9 = crypto (8+)
+  pct: number;
+  lumpThb: number;
+  monthlyThb: number;
+  color: string;
+}
+
+export interface InvestCheck {
+  status: "ok" | "warn";
+  label: string;
+  detail: string;
+}
+
+export interface InvestPlan {
+  id: string;
+  profile: InvestProfile;
+  profileTh: string;
+  score: number; // 5..20 from the five answers
+  lumpSumThb: number;
+  monthlyThb: number;
+  dcaDay: number;
+  slices: InvestSlice[];
+  crypto: { symbol: string; pctOfCrypto: number; level: RiskLevel; score: number | null; note: string }[];
+  checks: InvestCheck[];
+  dca: { date: string; amountThb: number; notes: string[] }[];
+  weightedRisk: number;
+  feePctYear: number;
+  summary: string[];
+  source: DataSource;
+  createdAt: string;
+  status: "pending" | "approved" | "declined";
+  receipt?: ProtectionReceipt;
+}

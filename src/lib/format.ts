@@ -111,6 +111,12 @@ export function sourceLabelTh(mode: string): string {
   return mode === "live" ? "ข้อมูลสด" : mode === "snapshot" ? "ข้อมูลจริง (snapshot)" : "ข้อมูลตัวอย่าง";
 }
 
+/** Label plus date for one data section: "ข้อมูลจริง (snapshot) · 15 ต.ค.", "ข้อมูลสด", "ข้อมูลตัวอย่าง". */
+export function sourceTagTh(src: { mode: string; asOf?: string } | null | undefined): string {
+  if (!src) return "";
+  return src.mode === "snapshot" && src.asOf ? `${sourceLabelTh(src.mode)} · ${thaiDate(src.asOf)}` : sourceLabelTh(src.mode);
+}
+
 /** Which engine answered: Claude, another LLM (by model name) or the offline rules engine. */
 export function engineLabel(r: { provider?: string; model?: string | null } | null | undefined): string {
   if (!r) return "";

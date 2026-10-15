@@ -20,15 +20,15 @@ const ROTATING = ["เงินจะขยับ", "เหรียญจะป
 const PARTNERS = ["Tokenomist", "ElevenLabs", "Avalanche", "U-topia · U-Bot", "Visa Intelligent Commerce", "Claude"];
 
 const FEATURES = [
-  { n: "01", title: "เช็กก่อนซื้อ", desc: "พิมพ์ \"ซื้อ ARB 5,000 บาท\" แล้ว agent ดึงตาราง unlock, ผู้รับ และรอบระดมทุน มาคำนวณความเสี่ยงด้วยโค้ดก่อนเงินขยับ", href: "/app" },
+  { n: "01", title: "เช็กก่อนซื้อ", desc: "พิมพ์ \"ซื้อ ARB 5,000 บาท\" แล้ว agent ดึงตาราง unlock, ผู้รับ และรอบระดมทุน มาคำนวณความเสี่ยงด้วยโค้ดก่อนเงินขยับ", href: "/terminal/agent" },
   { n: "02", title: "ภาษาไทย 3 บรรทัด + เสียง", desc: "สรุปสั้นที่มือใหม่อ่านเข้าใจ พูดถามด้วยเสียง และฟังคำตอบด้วย ElevenLabs พร้อมสรุปเป็น PDF", href: "/terminal/agent" },
-  { n: "03", title: "คุณเป็นคนอนุมัติ", desc: "U-Guard เสนอการป้องกันเท่านั้น เมื่อคุณกดอนุมัติ กฎจะถูกบันทึกบน Avalanche ให้ตรวจสอบได้", href: "/app" },
+  { n: "03", title: "คุณเป็นคนอนุมัติ", desc: "U-Guard เสนอการป้องกันเท่านั้น เมื่อคุณกดอนุมัติ กฎจะถูกบันทึกบน Avalanche ให้ตรวจสอบได้", href: "/terminal/trade" },
   { n: "04", title: "Terminal + Forecast", desc: "screener, ปฏิทินปลดล็อก, supply ล่วงหน้า 6 เดือน, พอร์ต และการแจ้งเตือน ในที่เดียว", href: "/terminal" },
 ];
 
 const DEMOS = [
   { tag: "Terminal", badge: "ใหม่", title: "U-Guard Terminal", desc: "ภาพรวม, ถาม AI, screener 25 เหรียญ และปฏิทินปลดล็อก", tags: ["Screener", "Unlocks", "⌘K"], href: "/terminal" },
-  { tag: "Mobile", badge: "U-Bot", title: "แอป U-topia + U-Bot", desc: "กระเป๋าและแชต U-Bot ที่เช็กความเสี่ยงก่อนซื้อ พร้อม Agent Trace", tags: ["Chat", "Approval", "Voice"], href: "/app" },
+  { tag: "Trade", badge: "U-Bot", title: "เทรดพร้อม AI ร่างแผน", desc: "เลือกเหรียญและงบเอง U-Bot ร่างแผน ตรวจความเสี่ยง แล้วคุณเป็นคนอนุมัติ", tags: ["Plan", "Approval", "Paper trade"], href: "/terminal/trade" },
   { tag: "Token", badge: "Forecast", title: "Supply Mode: ARB", desc: "92.65M ARB ปลดล็อกทุกเดือนจนถึง มี.ค. 2027 พร้อมกราฟแยกผู้รับ", tags: ["Allocation", "Fundraising"], href: "/terminal/tokens/ARB" },
   { tag: "Portfolio", badge: "Dilution", title: "พอร์ตของฉัน", desc: "มูลค่าที่เสี่ยง, การกระจุกตัว และสัดส่วนที่จะลดลงใน 6 เดือน", tags: ["Risk", "PDF"], href: "/terminal/portfolio" },
   { tag: "Alerts", badge: "U-Bot", title: "การแจ้งเตือนอัจฉริยะ", desc: "ตั้งกฎว่าอยากให้เตือนเมื่อไร และดูประวัติการอนุมัติ", tags: ["Rules", "Decisions"], href: "/terminal/alerts" },
@@ -163,8 +163,8 @@ export function Landing() {
             <Link href="/terminal" className="lp-btn lp-btn-primary">
               เข้าสู่ Terminal →
             </Link>
-            <Link href="/app" className="lp-btn">
-              ลองบนแอปมือถือ
+            <Link href="/terminal/agent" className="lp-btn">
+              คุยกับ U-Bot
             </Link>
           </div>
           <div className="lp-tags">
@@ -347,8 +347,8 @@ export function Landing() {
             <Link href="/terminal" className="lp-btn lp-btn-primary">
               เข้าสู่ Terminal →
             </Link>
-            <Link href="/app" className="lp-btn">
-              ลองบนแอปมือถือ
+            <Link href="/terminal/agent" className="lp-btn">
+              คุยกับ U-Bot
             </Link>
           </div>
         </Reveal>

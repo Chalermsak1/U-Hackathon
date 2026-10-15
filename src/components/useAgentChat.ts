@@ -90,6 +90,7 @@ export function useAgentChat() {
       const result = body as AgentResult & { pushed: boolean };
       absorb(result, Math.round(performance.now() - t0));
       setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "bot", text: result.reply, result, push: result.pushed }]);
+      if (result.pushed) window.dispatchEvent(new Event("ubot:inbox")); // refresh the header bell
     } catch (err) {
       setError((err as Error).message);
     } finally {

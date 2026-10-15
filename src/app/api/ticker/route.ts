@@ -27,6 +27,7 @@ export async function GET() {
       level: c.level,
       topRecipient: c.breakdown[0]?.recipient ?? null,
       source: c.source.mode,
+      asOf: c.source.asOf,
     }));
   cache = { at: Date.now(), clock: Math.floor(t / 60_000), body: { items, now: new Date(t).toISOString() } };
   return Response.json(cache.body);

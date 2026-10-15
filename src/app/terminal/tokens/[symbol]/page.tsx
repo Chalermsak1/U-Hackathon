@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RiskCardView } from "@/components/Cards";
+import { TradePanel } from "@/components/TradePanel";
 import { RECIPIENT_COLOR, RECIPIENT_LABEL, Spotlight, StackedBars } from "@/components/fx";
-import { compact, usd } from "@/lib/format";
+import { compact, sourceTagTh, usd } from "@/lib/format";
 import type { RecipientClass, RiskCard } from "@/lib/types";
 import { classifyRecipient } from "@/lib/recipient";
 
@@ -19,6 +20,7 @@ interface TokenData {
   fundraising?: { fundingRound: string; fundingDate: string; amountRaised: number | null; valuation: number | null }[];
   totalRaised?: number | null;
   source?: string;
+  sources?: Record<"unlocks" | "allocations" | "fundraising", { mode: string; asOf: string } | null>;
 }
 
 interface ScreenerRow {
@@ -105,7 +107,7 @@ export default function TokenPage() {
         <h1>
           {t.symbol} <span className="note" style={{ fontSize: 16 }}>{t.name}</span>
         </h1>
-        <p>ราคา ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · ข้อมูล {data.source === "live" ? "สดจาก Tokenomist" : data.source === "snapshot" ? "จริงจาก Tokenomist (snapshot)" : "ตัวอย่าง / Tokenomist 15 ต.ค."}</p>
+        <p>ราคา ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · ตาราง unlock: {sourceTagTh(data.sources?.unlocks ?? { mode: data.source ?? "sample" })}</p>
         <button className="btn btn-sm" style={{ marginLeft: "auto" }} onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`ซื้อ ${t.symbol} 5,000 บาท`)}`)}>
           ถาม U-Guard ก่อนซื้อ
         </button>
@@ -127,6 +129,11 @@ export default function TokenPage() {
         </div>
       </div>
 
+      <div className="tgm">
+      <aside className="tgm-side">
+        <TradePanel symbol={t.symbol} />
+      </aside>
+      <div className="tgm-main">
       <div className="grid-2">
         <div>{data.card && <RiskCardView card={data.card} />}</div>
         <Spotlight className="panel">
@@ -156,7 +163,10 @@ export default function TokenPage() {
 
       <div className="grid-2" style={{ marginTop: 16 }}>
         <Spotlight className="panel">
-          <div className="panel-head"><h2>ใครถือ supply (allocation)</h2></div>
+          <div className="panel-head">
+            <h2>ใครถือ supply (allocation)</h2>
+            <span className="total">{sourceTagTh(data.sources?.allocations)}</span>
+          </div>
           <div className="split" style={{ height: 10 }} aria-hidden="true">
             {allocations.map((a) => (
               <i key={a.allocationName} style={{ width: `${(a.allocationAmount / totalAlloc) * 100}%`, background: RECIPIENT_COLOR[classifyRecipient(a.allocationName, a.standardAllocationName)] }} />
@@ -205,9 +215,12 @@ export default function TokenPage() {
             </table>
           </div>
           <p className="note" style={{ marginTop: 8 }}>
+            {data.sources?.fundraising && <>{sourceTagTh(data.sources.fundraising)} · </>}
             <Link href="/terminal/tokens">← กลับไป screener</Link>
           </p>
         </Spotlight>
+      </div>
+      </div>
       </div>
     </>
   );

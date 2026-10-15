@@ -30,8 +30,8 @@ export default function ReportPage() {
   if (data === null) {
     return (
       <main className="report-page">
-        <p>ยังไม่มีผลให้สรุป เปิดหน้าแอป ถาม U-Guard แล้วกด &ldquo;สรุปเป็น PDF&rdquo; อีกครั้ง</p>
-        <Link href="/app">กลับไปหน้าแอป</Link>
+        <p>ยังไม่มีผลให้สรุป เปิด Terminal ถาม U-Guard แล้วกด &ldquo;สรุปเป็น PDF&rdquo; อีกครั้ง</p>
+        <Link href="/terminal">กลับไป Terminal</Link>
       </main>
     );
   }
@@ -45,8 +45,8 @@ export default function ReportPage() {
         <button className="btn btn-primary" onClick={() => window.print()}>
           บันทึกเป็น PDF
         </button>
-        <Link href="/app" className="btn">
-          กลับไปหน้าแอป
+        <Link href="/terminal" className="btn">
+          กลับไป Terminal
         </Link>
       </div>
 

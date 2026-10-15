@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "./Icon";
+import { thaiDate } from "@/lib/format";
+import { Icon, type IconName } from "./Icon";
+import { UBotInbox } from "./UBotInbox";
 
-const NAV = [
+const NAV: { label: string; items: { href: string; icon: IconName; th: string }[] }[] = [
   {
     label: "สำรวจ",
     items: [
@@ -18,16 +20,15 @@ const NAV = [
   {
     label: "ของฉัน",
     items: [
+      { href: "/terminal/trade", icon: "swap", th: "เทรด" },
+      { href: "/terminal/invest", icon: "target", th: "ลงทุน" },
       { href: "/terminal/portfolio", icon: "wallet", th: "พอร์ต" },
       { href: "/terminal/alerts", icon: "bell", th: "การแจ้งเตือน" },
     ],
   },
   {
     label: "อื่นๆ",
-    items: [
-      { href: "/app", icon: "phone", th: "แอป U-topia (มือถือ)" },
-      { href: "/#method", icon: "book", th: "วิธีคิดคะแนน" },
-    ],
+    items: [{ href: "/#method", icon: "book", th: "วิธีคิดคะแนน" }],
   },
   {
     label: "English",
@@ -38,6 +39,32 @@ const NAV = [
     ],
   },
 ];
+
+// Where the unlock data on these pages comes from, per token (from /api/ticker), so the header
+// never says "sample" for real data or the other way round.
+function useDataLabel(): { text: string; sample: boolean } {
+  const [label, setLabel] = useState({ text: "ข้อมูล Tokenomist", sample: false });
+  useEffect(() => {
+    fetch("/api/ticker")
+      .then((r) => r.json())
+      .then((b: { items?: { symbol: string; source: string; asOf?: string }[] }) => {
+        const items = b.items ?? [];
+        const by = (mode: string) => [...new Set(items.filter((i) => i.source === mode).map((i) => i.symbol))];
+        const live = by("live");
+        const snap = by("snapshot");
+        const sample = by("sample");
+        const asOf = items.find((i) => i.source === "snapshot")?.asOf;
+        const parts = [
+          live.length ? `${live.join(", ")} ข้อมูลสด` : "",
+          snap.length ? `${snap.join(", ")} ข้อมูลจริง${asOf ? ` ${thaiDate(asOf)}` : ""}` : "",
+          sample.length ? `${sample.join(", ")} ตัวอย่าง` : "",
+        ].filter(Boolean);
+        if (parts.length) setLabel({ text: parts.join(" · "), sample: sample.length > 0 });
+      })
+      .catch(() => undefined);
+  }, []);
+  return label;
+}
 
 const KNOWN = ["ARB", "WLD", "AVAX", "SOL", "SUI", "ENA", "ONDO", "LINK", "UNI", "NEAR", "TAO", "WLFI", "PUMP", "LIT", "DOT", "AAVE", "ADA", "OKB", "BGB", "MNT"];
 
@@ -50,6 +77,7 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const dataLabel = useDataLabel();
 
   // On phones the nav is one swipeable row; keep the current page's link in view.
   useEffect(() => {
@@ -152,11 +180,15 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
             />
             <kbd>⌘K</kbd>
           </form>
-          <span className="pill lv-medium" title="จะเป็นข้อมูลสดเมื่อตั้ง TOKENOMIST_API_KEY">
-            ข้อมูลตัวอย่าง + Tokenomist 15 ต.ค.
+          <span
+            className={`pill ${dataLabel.sample ? "lv-medium" : "lv-low"}`}
+            title="ข้อมูลจริง = คัดลอกจาก tokenomist.ai ตามวันที่ที่แสดง · ตัวอย่าง = ข้อมูลสาธิต · เป็นข้อมูลสดเมื่อตั้ง TOKENOMIST_API_KEY"
+          >
+            {dataLabel.text}
           </span>
-          <Link href="/app" className="btn btn-sm">
-            เปิดแอปมือถือ
+          <UBotInbox />
+          <Link href="/terminal/agent" className="btn btn-sm">
+            ถาม U-Bot
           </Link>
         </header>
         <main className="term-content">{children}</main>

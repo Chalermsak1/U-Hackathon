@@ -2,7 +2,7 @@
 // rules, feedback). Kept on globalThis so every route bundle and hot reload sees the same
 // instance. Swap for Postgres/Supabase before this outlives the hackathon.
 
-import type { AgentResult, Proposal, ProtectionReceipt } from "./types";
+import type { AgentResult, InvestPlan, PaperOrder, Proposal, ProtectionReceipt, TradePlan } from "./types";
 
 export interface InboxItem {
   id: string;
@@ -40,11 +40,32 @@ interface Store {
   proposals: Map<string, ProposalRecord>;
   inbox: Map<string, InboxItem[]>;
   alerts: AlertRule[];
+  /** userId:ruleId:unlockDate → when that alert last fired (cooldown). */
+  alertsFired: Map<string, number>;
   feedback: FeedbackRecord[];
+  /** Trade plans drafted for a user, awaiting their decision. */
+  tradePlans: Map<string, { plan: TradePlan; ownerId: string }>;
+  /** Paper orders per user, newest last. */
+  orders: Map<string, PaperOrder[]>;
+  /** Invest plans drafted for a user (pending or decided). */
+  investPlans: Map<string, { plan: InvestPlan; ownerId: string }>;
 }
 
 const g = globalThis as typeof globalThis & { __uguard?: Store };
-export const store: Store = (g.__uguard ??= { proposals: new Map(), inbox: new Map(), alerts: [], feedback: [] });
-// A store created by an older build during hot reload may lack the newer arrays.
+export const store: Store = (g.__uguard ??= {
+  proposals: new Map(),
+  inbox: new Map(),
+  alerts: [],
+  alertsFired: new Map(),
+  feedback: [],
+  tradePlans: new Map(),
+  orders: new Map(),
+  investPlans: new Map(),
+});
+// A store created by an older build during hot reload may lack the newer fields.
 store.alerts ??= [];
+store.alertsFired ??= new Map();
 store.feedback ??= [];
+store.tradePlans ??= new Map();
+store.orders ??= new Map();
+store.investPlans ??= new Map();

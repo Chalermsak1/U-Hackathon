@@ -1,0 +1,27 @@
+import { runAlerts } from "@/lib/alerts";
+import { getSession } from "@/lib/auth/session";
+import { now } from "@/lib/config";
+import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
+import { checkPost, handleError, jsonError, tooMany } from "@/lib/http";
+import { writeLog } from "@/lib/log";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+// "Check now": evaluate the signed-in user's alert rules and push the ones that fire into their
+// U-Bot inbox. The same function can run from a cron later.
+export async function POST(req: Request) {
+  const blocked = checkPost(req, { allowEmptyBody: true });
+  if (blocked) return blocked;
+  try {
+    const session = await getSession();
+    if (!session) return jsonError(401, "Sign in to check your alerts.");
+    const limit = rateLimit(`alerts-run:${session.sub}`, LIMITS.scan.max, LIMITS.scan.windowMs);
+    if (!limit.ok) return tooMany(limit);
+    const outcomes = await runAlerts(session.sub, now());
+    return Response.json({ checked: outcomes.length, fired: outcomes.filter((o) => o.fired).length, outcomes });
+  } catch (err) {
+    await writeLog({ type: "error", route: "/api/alerts/run", message: (err as Error).message });
+    return handleError(err);
+  }
+}

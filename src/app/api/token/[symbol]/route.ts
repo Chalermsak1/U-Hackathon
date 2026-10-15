@@ -39,5 +39,11 @@ export async function GET(req: Request, ctx: { params: Promise<{ symbol: string 
     fundraising: fundraising.data?.fundingRounds ?? [],
     totalRaised: fundraising.data?.totalAmountRaised ?? null,
     source: allocations.source,
+    // Each section says where its own numbers come from, so one page never mixes labels.
+    sources: {
+      unlocks: risk.ok ? { mode: risk.card.source.mode, asOf: risk.card.source.asOf } : null,
+      allocations: { mode: allocations.source, asOf: allocations.asOf },
+      fundraising: { mode: fundraising.source, asOf: fundraising.asOf },
+    },
   });
 }

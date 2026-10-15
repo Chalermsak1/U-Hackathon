@@ -35,6 +35,8 @@ export type LogEntry =
       note?: string;
     }
   | { type: "protect"; proposalId: string; symbol: string; decision: string; mode: string; txHash: string | null }
+  | { type: "trade_plan"; planId: string; symbol: string; side: string; amountThb: number; verdict: string }
+  | { type: "trade"; planId: string; symbol: string; decision: string; mode: string; txHash: string | null }
   | { type: "error"; route: string; message: string };
 
 export async function writeLog(entry: LogEntry): Promise<void> {
