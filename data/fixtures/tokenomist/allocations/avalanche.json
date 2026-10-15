@@ -1,7 +1,56 @@
-{ "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." }, "status": true, "data": { "name": "Avalanche", "symbol": "AVAX", "listedMethod": "INTERNAL", "maxSupply": 720000000, "lastUpdatedDate": "2026-10-14T00:00:00Z", "totalUnlockedAmount": 551000000, "totalLockedAmount": 169000000, "totalUntrackedAmount": 0, "totalTBDLockedAmount": 0,
-  "allocations": [
-    { "allocationName": "Staking Rewards", "allocationType": "Emission", "standardAllocationName": "Community", "allocationUnlockedAmount": 210000000, "allocationLockedAmount": 150000000, "allocationAmount": 360000000, "trackedAllocationPercentage": 50.0 },
-    { "allocationName": "Ecosystem Development Fund", "allocationType": "Scheduled", "standardAllocationName": "Reserve", "allocationUnlockedAmount": 170000000, "allocationLockedAmount": 19000000, "allocationAmount": 189000000, "trackedAllocationPercentage": 26.25 },
-    { "allocationName": "Team", "allocationType": "Scheduled", "standardAllocationName": "Founder / Team", "allocationUnlockedAmount": 72000000, "allocationLockedAmount": 0, "allocationAmount": 72000000, "trackedAllocationPercentage": 10.0 },
-    { "allocationName": "Private & Public Sales", "allocationType": "Scheduled", "standardAllocationName": "Private Investors", "allocationUnlockedAmount": 99000000, "allocationLockedAmount": 0, "allocationAmount": 99000000, "trackedAllocationPercentage": 13.75 }
-  ] } }
+{
+  "metadata": {
+    "queryDate": "2026-10-15T00:00:00Z",
+    "_sample": "ARB: copied from tokenomist.ai/arbitrum on 2026-10-15 (92.65M monthly cliff, team 56.13M + investors 36.52M; per-allocation locked amounts approximate). WLD/AVAX: illustrative sample. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+  },
+  "status": true,
+  "data": {
+    "name": "Avalanche",
+    "symbol": "AVAX",
+    "listedMethod": "INTERNAL",
+    "maxSupply": 720000000,
+    "lastUpdatedDate": "2026-10-14T00:00:00Z",
+    "totalUnlockedAmount": 551000000,
+    "totalLockedAmount": 169000000,
+    "totalUntrackedAmount": 0,
+    "totalTBDLockedAmount": 0,
+    "allocations": [
+      {
+        "allocationName": "Staking Rewards",
+        "allocationType": "Emission",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 210000000,
+        "allocationLockedAmount": 150000000,
+        "allocationAmount": 360000000,
+        "trackedAllocationPercentage": 50.0
+      },
+      {
+        "allocationName": "Ecosystem Development Fund",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 170000000,
+        "allocationLockedAmount": 19000000,
+        "allocationAmount": 189000000,
+        "trackedAllocationPercentage": 26.25
+      },
+      {
+        "allocationName": "Team",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Founder / Team",
+        "allocationUnlockedAmount": 72000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 72000000,
+        "trackedAllocationPercentage": 10.0
+      },
+      {
+        "allocationName": "Private & Public Sales",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Private Investors",
+        "allocationUnlockedAmount": 99000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 99000000,
+        "trackedAllocationPercentage": 13.75
+      }
+    ]
+  }
+}

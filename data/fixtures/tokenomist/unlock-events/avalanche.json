@@ -1,12 +1,34 @@
 {
-  "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." },
+  "metadata": {
+    "queryDate": "2026-10-15T00:00:00Z",
+    "_sample": "ARB: copied from tokenomist.ai/arbitrum on 2026-10-15 (92.65M monthly cliff, team 56.13M + investors 36.52M; per-allocation locked amounts approximate). WLD/AVAX: illustrative sample. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+  },
   "status": true,
   "data": [
-    { "unlockDate": "2026-10-28T00:00:00Z", "tokenName": "Avalanche", "tokenSymbol": "AVAX", "listedMethod": "INTERNAL", "dataSource": "Whitepaper",
-      "cliffUnlocks": { "cliffAmount": 1670000, "cliffValue": 16182300, "valueToMarketCap": 0.303,
+    {
+      "unlockDate": "2026-10-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "dataSource": "Whitepaper",
+      "cliffUnlocks": {
+        "cliffAmount": 1670000,
+        "cliffValue": 16182300,
+        "valueToMarketCap": 0.303,
         "allocationBreakdown": [
-          { "unlockDate": "2026-10-28T00:00:00Z", "allocationName": "Ecosystem Development Fund", "standardAllocationName": "Reserve", "cliffAmount": 1670000, "cliffValue": 16182300, "referencePrice": 9.69, "referencePriceUpdatedTime": "2026-10-14T00:00:00Z", "unlockPrecision": "day" }
-        ] },
-      "latestUpdateDate": "2026-10-14T00:00:00Z" }
+          {
+            "unlockDate": "2026-10-28T00:00:00Z",
+            "allocationName": "Ecosystem Development Fund",
+            "standardAllocationName": "Reserve",
+            "cliffAmount": 1670000,
+            "cliffValue": 16182300,
+            "referencePrice": 9.69,
+            "referencePriceUpdatedTime": "2026-10-14T00:00:00Z",
+            "unlockPrecision": "day"
+          }
+        ]
+      },
+      "latestUpdateDate": "2026-10-14T00:00:00Z"
+    }
   ]
 }

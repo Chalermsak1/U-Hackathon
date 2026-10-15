@@ -4,7 +4,7 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import { compact, thaiDate, usd } from "../format";
+import { compact, thaiDate, untilText, usd } from "../format";
 import { getQuote } from "../market";
 import { getHoldings } from "../portfolio";
 import { assessUnlockRisk } from "../risk";
@@ -237,7 +237,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
         summary:
           c.level === "none"
             ? `${c.symbol}: no unlock in 30d`
-            : `${c.symbol}: ${c.level.toUpperCase()} ${c.score}/100 · ${compact(c.amount)} in ${c.daysUntil}d`,
+            : `${c.symbol}: ${c.level.toUpperCase()} ${c.score}/100 · ${compact(c.amount)} ${untilText(c.unlockDate!)}`,
       };
     }
     case "propose_protection": {

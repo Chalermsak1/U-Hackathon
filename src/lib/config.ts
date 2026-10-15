@@ -13,6 +13,14 @@ export const config = {
     effort: env("AGENT_EFFORT", "low") as "low" | "medium" | "high",
     maxTurns: 8,
   },
+  // Optional: route Claude through Vercel AI Gateway (Anthropic Messages API compatible).
+  gateway: {
+    provider: env("AI_GATEWAY", "none") as "none" | "vercel",
+    apiKey: env("AI_GATEWAY_API_KEY"),
+    baseUrl: "https://ai-gateway.vercel.sh",
+    // Gateway model ids look like "anthropic/<model>"; check the exact id in the gateway's model list.
+    model: env("AI_GATEWAY_MODEL", "anthropic/claude-opus-5.5"),
+  },
   tokenomist: {
     apiKey: env("TOKENOMIST_API_KEY"),
     baseUrl: env("TOKENOMIST_BASE_URL", "https://api.tokenomist.ai"),
@@ -24,6 +32,7 @@ export const config = {
     apiKey: env("ELEVENLABS_API_KEY"),
     voiceId: env("ELEVENLABS_VOICE_ID"),
     modelId: env("ELEVENLABS_MODEL_ID", "eleven_v3"),
+    sttModelId: env("ELEVENLABS_STT_MODEL_ID", "scribe_v1"),
   },
   avalanche: {
     rpcUrl: env("AVALANCHE_RPC_URL", "https://api.avax-test.network/ext/bc/C/rpc"),

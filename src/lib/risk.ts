@@ -8,10 +8,10 @@
 //     hedged/OTC (moderate), ecosystem-development unlocks average +1.18%
 
 import { config } from "./config";
-import { compact, daysBetween, pct, thaiDate, usd } from "./format";
+import { compact, daysBetween, pct, thaiDate, untilText, usd } from "./format";
 import { getQuote } from "./market";
 import { findToken, getFundraising, getUnlockEvents, type AllocationUnlock, type FundraisingData } from "./tokenomist";
-import type { RecipientClass, RecipientSlice, RiskCard, RiskLevel } from "./types";
+import type { DataSource, RecipientClass, RecipientSlice, RiskCard, RiskLevel } from "./types";
 
 const RECIPIENT_WEIGHT: Record<RecipientClass, number> = {
   team: 1.0,
@@ -116,7 +116,7 @@ export async function assessUnlockRisk(symbol: string, tradeAmountThb: number | 
   ]);
 
   const priceUsd = quote?.priceUsd ?? (token.circulatingSupply > 0 ? token.marketCap / token.circulatingSupply : 0);
-  const sourceMode = events.source === "live" ? "live" : "sample";
+  const sourceMode: DataSource = events.source;
   const base = {
     symbol: token.symbol,
     name: token.name,
@@ -185,7 +185,7 @@ export async function assessUnlockRisk(symbol: string, tradeAmountThb: number | 
 
   // ─── Plain-Thai reasons (deterministic, so numbers are never hallucinated) ───
   const reasons: string[] = [
-    `อีก ${daysUntil} วัน (${thaiDate(next.unlockDate)}) จะปลดล็อก ${compact(amount)} ${token.symbol} (~${usd(valueUsd)}) = ${pct(pctCirc)} ของเหรียญที่หมุนเวียน`,
+    `${untilText(next.unlockDate, now)} (${thaiDate(next.unlockDate)}) จะปลดล็อก ${compact(amount)} ${token.symbol} (~${usd(valueUsd)}) = ${pct(pctCirc)} ของเหรียญที่หมุนเวียน`,
   ];
   if (daysOfVolume !== null) {
     const feel = daysOfVolume >= 0.5 ? "ตลาดอาจรับแรงขายได้ยาก" : daysOfVolume < 0.1 ? "ตลาดรับได้สบาย" : "ตลาดพอรับได้";

@@ -1,4 +1,29 @@
-{ "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." }, "status": true, "data": { "tokenId": "worldcoin", "tokenName": "Worldcoin", "tokenSymbol": "WLD", "listedMethod": "INTERNAL", "totalAmountRaised": 240000000, "unlockedInvestor": 0, "investorReleasedPercentage": 63,
-  "fundingRounds": [
-    { "fundingRound": "Private Round", "fundingDate": "2022-03-01T00:00:00Z", "raiseType": "Token", "amountRaised": 125000000, "valuation": 1000000000, "pricePerToken": 0.1, "sourceURLList": [], "investors": [], "numberOfInvestors": 12 }
-  ] } }
+{
+  "metadata": {
+    "queryDate": "2026-10-15T00:00:00Z",
+    "_sample": "ARB: copied from tokenomist.ai/arbitrum on 2026-10-15 (92.65M monthly cliff, team 56.13M + investors 36.52M; per-allocation locked amounts approximate). WLD/AVAX: illustrative sample. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+  },
+  "status": true,
+  "data": {
+    "tokenId": "worldcoin",
+    "tokenName": "Worldcoin",
+    "tokenSymbol": "WLD",
+    "listedMethod": "INTERNAL",
+    "totalAmountRaised": 240000000,
+    "unlockedInvestor": 0,
+    "investorReleasedPercentage": 63,
+    "fundingRounds": [
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2022-03-01T00:00:00Z",
+        "raiseType": "Token",
+        "amountRaised": 125000000,
+        "valuation": 1000000000,
+        "pricePerToken": 0.1,
+        "sourceURLList": [],
+        "investors": [],
+        "numberOfInvestors": 12
+      }
+    ]
+  }
+}

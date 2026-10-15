@@ -7,7 +7,7 @@ import type { DataSource } from "./types";
 
 // Ticker → CoinGecko id. Add a row for every token you demo with MARKET_SOURCE=live.
 const COINGECKO_IDS: Record<string, string> = {
-  SUI: "sui",
+  ARB: "arbitrum",
   WLD: "worldcoin-wld",
   AVAX: "avalanche-2",
   USDC: "usd-coin",

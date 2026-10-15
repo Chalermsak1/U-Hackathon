@@ -7,9 +7,13 @@ import type { AgentResult, ChatTurn } from "../types";
 import { SYSTEM_PROMPT } from "./prompt";
 import { TOOL_DEFINITIONS, executeTool, newContext } from "./tools";
 
+const viaGateway = config.gateway.provider === "vercel";
+
 let client: Anthropic | null = null;
 function getClient(): Anthropic {
-  client ??= new Anthropic({ timeout: 60_000, maxRetries: 1 });
+  client ??= viaGateway
+    ? new Anthropic({ apiKey: config.gateway.apiKey, baseURL: config.gateway.baseUrl, timeout: 60_000, maxRetries: 1 })
+    : new Anthropic({ timeout: 60_000, maxRetries: 1 });
   return client;
 }
 
@@ -23,15 +27,15 @@ export async function runClaudeAgent(message: string, history: ChatTurn[]): Prom
   let reply = "";
   for (let turn = 0; turn < config.agent.maxTurns; turn++) {
     const response = await getClient().beta.messages.create({
-      model: config.agent.model,
+      model: viaGateway ? config.gateway.model : config.agent.model,
       max_tokens: 16000,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
       tools: TOOL_DEFINITIONS,
       messages,
       output_config: { effort: config.agent.effort },
       // On a safety decline, the API retries on Anthropic's recommended fallback model.
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
+      // Sent only to the Anthropic API directly; the gateway has its own model fallbacks.
+      ...(viaGateway ? {} : { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const }),
     });
 
     if (response.stop_reason === "refusal") {

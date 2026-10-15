@@ -417,8 +417,8 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
 
 **ทำแล้ว**
 - โครง Next.js + deps (next 15.5, react 19, @anthropic-ai/sdk 0.134, zod 4, viem 2, typescript 5.9)
-- `src/lib/*` + `src/lib/agent/{tools,prompt,claude}.ts` ⚠️ **ยังไม่เคยรัน typecheck หรือ build**
-- fixtures (ชุดเดิม SUI/WLD/AVAX ยังต้องเปลี่ยน) · snapshot script · brand assets · เอกสาร 3 ไฟล์
+- `src/lib/*` + `src/lib/agent/{tools,prompt,claude,offline,index}.ts` · API routes ทั้งหมด · `/app`, `/logs`, `/report` · STT/TTS · run logs ✅ typecheck และ build ผ่าน (branch `feat/app-ui`, รายละเอียดใน LOGS.md)
+- fixtures ARB (ข้อมูลจริง 15 ต.ค.) / WLD / AVAX / USDC · snapshot script · brand assets · เอกสาร 6 ไฟล์
 
 **ขั้นต่อไป (เรียงตามลำดับ ประมาณเวลา)**
 1. `npm run typecheck` แล้วแก้ error (15 นาที)

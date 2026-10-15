@@ -15,17 +15,21 @@ U-Hackathon 2026 · AI Track · Flow Summit Bangkok
 | [SPEC.md](SPEC.md) | **เริ่มอ่านที่นี่** ระบบทั้งหมด: features, architecture, workflows, agents, data model, API, สถานะ |
 | [PLAN.md](PLAN.md) | ปัญหาและหลักฐาน, U-topia, timeline, demo script, เกณฑ์ตัดสิน, forecast |
 | [UI-PLAN.md](UI-PLAN.md) | หน้าเว็บ, navigation, AI Gateway, auth + DB, หน้า loading, resource UI |
+| [ANALYSIS.md](ANALYSIS.md) | โมเดล AI / VLM, เทียบกับ Nansen, กลุ่มผู้ใช้, กฎหมาย, ช่องว่างของ U-topia, roadmap |
+| [UI-REVIEW.md](UI-REVIEW.md) | ผลตรวจ UI 3 ขนาดจอ, สิ่งที่แก้แล้ว, สิ่งที่ยังเหลือ |
+| [LOGS.md](LOGS.md) | บันทึกการพัฒนา (runtime log ของ agent ดูที่ `/logs`) |
 
 ## สถานะ
 
-กำลังสร้าง: backend core (Tokenomist client, risk scorer, agent tools, Claude loop, Avalanche) เขียนแล้วแต่ยังไม่ได้ build · UI, API routes และ auth ยังไม่ได้ทำ (ดู SPEC.md §14)
+ใช้งานได้แล้ว: `/app` (แชต U-Bot, การ์ดความเสี่ยง, อนุมัติ → บันทึก Avalanche, Agent Trace, Live Unlock Ticker, เสียงเข้า/ออก, สรุปเป็น PDF) · `/logs` · `/report`
+ยังไม่ได้ทดสอบกับ key จริง (Claude, ElevenLabs, Fuji, Tokenomist) · ยังไม่มี `/dashboard`, landing เต็ม และ auth (ดู [LOGS.md](LOGS.md))
 
 ## เริ่มใช้งาน
 
 ```bash
 npm install
 cp .env.example .env   # ทุก key ไม่บังคับ ถ้าไม่ใส่จะใช้ข้อมูลตัวอย่าง/โหมดสำรอง
-npm run typecheck
+npm run dev            # http://localhost:3000/app
 npm run snapshot -- ARB WLD AVAX   # ดึงข้อมูลจริงจาก Tokenomist (ต้องมี TOKENOMIST_API_KEY)
 ```
 

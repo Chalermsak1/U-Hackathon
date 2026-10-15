@@ -25,6 +25,13 @@ export function thaiDate(iso: string): string {
   return new Date(iso).toLocaleDateString("th-TH", { day: "numeric", month: "short", timeZone: "UTC" });
 }
 
+/** "อีก ~31 ชั่วโมง" inside two days (the demo runs hours before ARB's unlock), else "อีก 9 วัน". */
+export function untilText(iso: string, nowMs = Date.now()): string {
+  const hours = (new Date(iso).getTime() - nowMs) / 3_600_000;
+  if (hours < 48) return `อีก ~${Math.max(1, Math.round(hours))} ชั่วโมง`;
+  return `อีก ${Math.round(hours / 24)} วัน`;
+}
+
 export function daysBetween(fromMs: number, iso: string): number {
   return Math.ceil((new Date(iso).getTime() - fromMs) / 86_400_000);
 }
