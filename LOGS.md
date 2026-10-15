@@ -180,7 +180,7 @@ Built in a separate session without seeing `feat/app-ui`.
   - The ARB allocation and funding fixtures are real tokenomist.ai copies, now marked snapshot.
   - The header and token page label each section from its own source.
 - **"Data and technology" strip:** logos only.
-  - The U-topia mark was redrawn as SVG from the logo the user sent, without the background.
+  - U-topia uses the team's own logo file unchanged; only the white area outside the circle is transparent (`public/brand/utopia-logo.png`).
   - Tokenomist stays a wordmark until we have its logo file.
 - **Checked:** typecheck ✅ · build ✅ · eval 28/28 ✅ · responsive 80/80 ✅ · trade/invest/alert/watcher flows in the browser and API.
 

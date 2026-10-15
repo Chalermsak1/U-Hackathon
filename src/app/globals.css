@@ -769,3 +769,4 @@ body:has(.report-page) { background: #fff; color: #10151f; color-scheme: light; 
 .lp-logo-tile:hover .brand-logo { color: var(--text); opacity: 1; }
 .logo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; margin-top: 8px; color: var(--text-2); }
 .logo-row .brand-logo { color: inherit; }
+.brand-img { display: block; flex: none; }
