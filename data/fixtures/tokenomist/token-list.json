@@ -1,0 +1,9 @@
+{
+  "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." },
+  "status": true,
+  "data": [
+    { "id": "sui", "name": "Sui", "symbol": "SUI", "listedMethod": "INTERNAL", "circulatingSupply": 4120000000, "marketCap": 4140000000, "maxSupply": 10000000000, "totalLockedAmount": 5880000000, "tbdLockedAmount": 0, "unlockedAmount": 4120000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Series B", "hasBurn": false, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/sui", "lastUpdatedDate": "2026-10-14T00:00:00Z" },
+    { "id": "worldcoin", "name": "Worldcoin", "symbol": "WLD", "listedMethod": "INTERNAL", "circulatingSupply": 5790000000, "marketCap": 2810000000, "maxSupply": 10000000000, "totalLockedAmount": 4210000000, "tbdLockedAmount": 0, "unlockedAmount": 5790000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Private Round", "hasBurn": false, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/worldcoin", "lastUpdatedDate": "2026-10-14T00:00:00Z" },
+    { "id": "avalanche", "name": "Avalanche", "symbol": "AVAX", "listedMethod": "INTERNAL", "circulatingSupply": 551000000, "marketCap": 5340000000, "maxSupply": 720000000, "totalLockedAmount": 169000000, "tbdLockedAmount": 0, "unlockedAmount": 551000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Strategic Round", "hasBurn": true, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/avalanche", "lastUpdatedDate": "2026-10-14T00:00:00Z" }
+  ]
+}

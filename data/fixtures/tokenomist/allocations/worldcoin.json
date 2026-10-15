@@ -1,0 +1,6 @@
+{ "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." }, "status": true, "data": { "name": "Worldcoin", "symbol": "WLD", "listedMethod": "INTERNAL", "maxSupply": 10000000000, "lastUpdatedDate": "2026-10-14T00:00:00Z", "totalUnlockedAmount": 5790000000, "totalLockedAmount": 4210000000, "totalUntrackedAmount": 0, "totalTBDLockedAmount": 0,
+  "allocations": [
+    { "allocationName": "Community", "allocationType": "Scheduled", "standardAllocationName": "Community", "allocationUnlockedAmount": 4300000000, "allocationLockedAmount": 3200000000, "allocationAmount": 7500000000, "trackedAllocationPercentage": 75.0 },
+    { "allocationName": "Team", "allocationType": "Scheduled", "standardAllocationName": "Founder / Team", "allocationUnlockedAmount": 760000000, "allocationLockedAmount": 590000000, "allocationAmount": 1350000000, "trackedAllocationPercentage": 13.5 },
+    { "allocationName": "Investors", "allocationType": "Scheduled", "standardAllocationName": "Private Investors", "allocationUnlockedAmount": 730000000, "allocationLockedAmount": 420000000, "allocationAmount": 1150000000, "trackedAllocationPercentage": 11.5 }
+  ] } }

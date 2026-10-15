@@ -1,0 +1,11 @@
+{
+  "_sample": "Illustrative prices and 24h volumes. Set MARKET_SOURCE=live to read CoinGecko instead.",
+  "asOf": "2026-10-15T00:00:00Z",
+  "usdThb": 32.5,
+  "tokens": {
+    "SUI": { "priceUsd": 1.005, "volume24hUsd": 620000000 },
+    "WLD": { "priceUsd": 0.485, "volume24hUsd": 140000000 },
+    "AVAX": { "priceUsd": 9.69, "volume24hUsd": 310000000 },
+    "USDC": { "priceUsd": 1.0, "volume24hUsd": 9000000000 }
+  }
+}

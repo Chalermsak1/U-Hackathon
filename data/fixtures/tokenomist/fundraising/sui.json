@@ -1,0 +1,5 @@
+{ "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." }, "status": true, "data": { "tokenId": "sui", "tokenName": "Sui", "tokenSymbol": "SUI", "listedMethod": "INTERNAL", "totalAmountRaised": 336000000, "unlockedInvestor": 0, "investorReleasedPercentage": 71,
+  "fundingRounds": [
+    { "fundingRound": "Series B", "fundingDate": "2022-09-08T00:00:00Z", "raiseType": "Equity", "amountRaised": 300000000, "valuation": 2000000000, "pricePerToken": null, "sourceURLList": [], "investors": [], "numberOfInvestors": 20 },
+    { "fundingRound": "Series A", "fundingDate": "2021-12-06T00:00:00Z", "raiseType": "Equity", "amountRaised": 36000000, "valuation": null, "pricePerToken": null, "sourceURLList": [], "investors": [], "numberOfInvestors": 10 }
+  ] } }

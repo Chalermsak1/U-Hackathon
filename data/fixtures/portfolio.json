@@ -1,0 +1,10 @@
+{
+  "_sample": "Demo U-topia wallet. If WALLET_ADDRESS is set, the AVAX amount is replaced by the live Avalanche balance.",
+  "owner": "demo-user",
+  "holdings": [
+    { "symbol": "USDC", "amount": 3000 },
+    { "symbol": "SUI", "amount": 1800 },
+    { "symbol": "WLD", "amount": 4200 },
+    { "symbol": "AVAX", "amount": 35 }
+  ]
+}

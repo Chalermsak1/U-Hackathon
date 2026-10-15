@@ -1,0 +1,5 @@
+{ "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." }, "status": true, "data": { "tokenId": "avalanche", "tokenName": "Avalanche", "tokenSymbol": "AVAX", "listedMethod": "INTERNAL", "totalAmountRaised": 290000000, "unlockedInvestor": 0, "investorReleasedPercentage": 100,
+  "fundingRounds": [
+    { "fundingRound": "Strategic Round", "fundingDate": "2021-09-16T00:00:00Z", "raiseType": "Token", "amountRaised": 230000000, "valuation": null, "pricePerToken": null, "sourceURLList": [], "investors": [], "numberOfInvestors": 14 },
+    { "fundingRound": "Private Sale", "fundingDate": "2020-06-01T00:00:00Z", "raiseType": "Token", "amountRaised": 42000000, "valuation": 360000000, "pricePerToken": 0.5, "sourceURLList": [], "investors": [], "numberOfInvestors": 20 }
+  ] } }
