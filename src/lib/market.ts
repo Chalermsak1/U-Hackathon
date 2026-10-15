@@ -6,7 +6,7 @@ import { readFixture } from "./fixtures";
 import type { DataSource } from "./types";
 
 // Ticker → CoinGecko id. Add a row for every token you demo with MARKET_SOURCE=live.
-const COINGECKO_IDS: Record<string, string> = {
+export const COINGECKO_IDS: Record<string, string> = {
   ARB: "arbitrum",
   WLD: "worldcoin-wld",
   AVAX: "avalanche-2",
@@ -20,13 +20,14 @@ export interface MarketQuote {
   symbol: string;
   priceUsd: number;
   volume24hUsd: number;
+  change24hPct: number | null;
   source: DataSource;
 }
 
 interface MarketFixture {
   asOf: string;
   usdThb: number;
-  tokens: Record<string, { priceUsd: number; volume24hUsd: number }>;
+  tokens: Record<string, { priceUsd: number; volume24hUsd: number; change24hPct?: number | null }>;
 }
 
 let fixtureCache: MarketFixture | null = null;
@@ -49,13 +50,19 @@ export async function getQuote(symbol: string): Promise<MarketQuote | null> {
     try {
       const id = COINGECKO_IDS[sym];
       const res = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd&include_24hr_vol=true`,
-        { cache: "no-store" },
+        `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true`,
+        { cache: "no-store", signal: AbortSignal.timeout(5000) },
       );
       if (res.ok) {
-        const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number }>;
+        const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number; usd_24h_change?: number }>;
         if (body[id]) {
-          const quote = { symbol: sym, priceUsd: body[id].usd, volume24hUsd: body[id].usd_24h_vol, source: "live" as const };
+          const quote: MarketQuote = {
+            symbol: sym,
+            priceUsd: body[id].usd,
+            volume24hUsd: body[id].usd_24h_vol,
+            change24hPct: body[id].usd_24h_change ?? null,
+            source: "live",
+          };
           liveCache.set(sym, { at: Date.now(), quote });
           return quote;
         }
@@ -65,5 +72,7 @@ export async function getQuote(symbol: string): Promise<MarketQuote | null> {
     }
   }
   const row = (await fixture()).tokens[sym];
-  return row ? { symbol: sym, ...row, source: "sample" } : null;
+  return row
+    ? { symbol: sym, priceUsd: row.priceUsd, volume24hUsd: row.volume24hUsd, change24hPct: row.change24hPct ?? null, source: "sample" }
+    : null;
 }

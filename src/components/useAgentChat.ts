@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { ensureSession } from "@/components/EnsureSession";
+import { engineLabel } from "@/lib/format";
 import type { AgentResult, ChatTurn, RiskLevel, TraceStep } from "@/lib/types";
 
 export interface ChatMessage {
@@ -13,7 +15,7 @@ export interface ChatMessage {
 
 export interface LastRun {
   trace: TraceStep[];
-  mode: string;
+  engine: string; // "Claude", the LLM's model name, or "Offline agent"
   ms: number;
   note?: string;
   result: AgentResult;
@@ -34,7 +36,7 @@ export function useAgentChat() {
   const [last, setLast] = useState<LastRun | null>(null);
 
   const absorb = useCallback((result: AgentResult, ms: number) => {
-    setLast({ trace: result.trace, mode: result.mode, ms, note: result.note, result });
+    setLast({ trace: result.trace, engine: engineLabel(result), ms, note: result.note, result });
     setLevels((prev) => ({ ...prev, ...Object.fromEntries(result.cards.map((c) => [c.symbol, c.level])) }));
   }, []);
 
@@ -51,6 +53,7 @@ export function useAgentChat() {
       setBusy(true);
       const t0 = performance.now();
       try {
+        await ensureSession(); // wallet questions and proposals need the (demo) account
         const res = await fetch("/api/agent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -76,7 +79,12 @@ export function useAgentChat() {
     setError(null);
     const t0 = performance.now();
     try {
-      const res = await fetch("/api/scan", { method: "POST" });
+      await ensureSession();
+      const res = await fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lang: "th" }),
+      });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? "สแกนไม่สำเร็จ ลองใหม่อีกครั้ง");
       const result = body as AgentResult & { pushed: boolean };

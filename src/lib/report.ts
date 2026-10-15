@@ -5,13 +5,16 @@ import type { AgentResult } from "./types";
 
 export const REPORT_KEY = "u-guard-report";
 
+/** What the report needs; a full agent result also fits (the portfolio page builds a partial one). */
+export type ReportResult = Pick<AgentResult, "reply" | "cards" | "proposals" | "trace"> & Partial<AgentResult>;
+
 export interface ReportData {
   question: string;
-  result: AgentResult;
+  result: ReportResult;
   at: string;
 }
 
-export function openReport(question: string, result: AgentResult) {
+export function openReport(question: string, result: ReportResult) {
   try {
     sessionStorage.setItem(REPORT_KEY, JSON.stringify({ question, result, at: new Date().toISOString() } satisfies ReportData));
   } catch {

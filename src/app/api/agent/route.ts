@@ -1,25 +1,33 @@
-import { z } from "zod";
 import { runAgent } from "@/lib/agent";
-import { writeLog } from "@/lib/log";
+import { getSession } from "@/lib/auth/session";
+import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
+import { anonId, checkPost, handleError, readJson, tooMany } from "@/lib/http";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const Body = z.object({
-  message: z.string().trim().min(1).max(500),
-  history: z
-    .array(z.object({ role: z.enum(["user", "assistant"]), text: z.string().max(2000) }))
-    .max(12)
-    .optional(),
-});
-
+// Signed-in users get the full agent; signed-out visitors (the U-Bot popup on public pages)
+// get the same agent without wallet tools, at a lower rate limit. The shared demo account is
+// limited per device, so several people trying the demo at once don't block each other.
 export async function POST(req: Request) {
-  const parsed = Body.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "message is required (max 500 chars)" }, { status: 400 });
+  const blocked = checkPost(req);
+  if (blocked) return blocked;
   try {
-    return Response.json(await runAgent(parsed.data.message, parsed.data.history ?? []));
+    const session = await getSession();
+    const key = session ? `agent:u:${session.sub}${session.method === "demo" ? `:${anonId(req)}` : ""}` : `agent:ip:${anonId(req)}`;
+    const limit = session ? rateLimit(key, LIMITS.agent.max, LIMITS.agent.windowMs) : rateLimit(key, 8, 60_000);
+    if (!limit.ok) return tooMany(limit);
+    const body = await readJson<{ message?: unknown; history?: unknown; mode?: unknown }>(req);
+    const result = await runAgent({
+      message: body.message,
+      history: body.history,
+      mode: body.mode,
+      userId: session?.sub ?? `anon:${anonId(req)}`,
+      scope: session ? "user" : "public",
+      route: "/api/agent",
+    });
+    return Response.json(result);
   } catch (err) {
-    await writeLog({ type: "error", route: "/api/agent", message: (err as Error).message });
-    return Response.json({ error: "U-Guard is unavailable right now. Try again." }, { status: 500 });
+    return handleError(err);
   }
 }

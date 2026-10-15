@@ -29,6 +29,14 @@ const NAV = [
       { href: "/#method", icon: "book", th: "วิธีคิดคะแนน" },
     ],
   },
+  {
+    label: "English",
+    items: [
+      { href: "/assistant", icon: "chat", th: "U-Bot Assistant" },
+      { href: "/dashboard", icon: "chart", th: "Dashboard" },
+      { href: "/method", icon: "book", th: "Method & data" },
+    ],
+  },
 ];
 
 const KNOWN = ["ARB", "WLD", "AVAX", "SOL", "SUI", "ENA", "ONDO", "LINK", "UNI", "NEAR", "TAO", "WLFI", "PUMP", "LIT", "DOT", "AAVE", "ADA", "OKB", "BGB", "MNT"];

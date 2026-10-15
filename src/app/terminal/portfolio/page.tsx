@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CountUp, Spotlight } from "@/components/fx";
-import { LEVEL_TH, thb, untilText } from "@/lib/format";
-import { openReport } from "@/lib/report";
-import type { AgentResult, Holding, RiskCard } from "@/lib/types";
+import { LEVEL_TH, thb, unlockWhenTh } from "@/lib/format";
+import { openReport, type ReportResult } from "@/lib/report";
+import type { Holding, RiskCard } from "@/lib/types";
 
 interface Row extends Holding {
   weightPct: number;
@@ -24,12 +24,11 @@ export default function PortfolioPage() {
 
   const cards = data.rows.flatMap((r) => (r.card ? [r.card] : []));
   const report = () => {
-    const result: AgentResult = {
+    const result: ReportResult = {
       reply: `พอร์ตมูลค่า ${thb(data.totalThb)} · มูลค่าที่มี unlock เสี่ยงใน 30 วัน ${thb(data.atRiskThb)}`,
       cards,
       proposals: [],
       trace: [],
-      mode: "offline",
     };
     openReport("สรุปความเสี่ยงของพอร์ต", result);
   };
@@ -84,7 +83,7 @@ export default function PortfolioPage() {
                 <td className="num">{r.amount.toLocaleString("en-US")}</td>
                 <td className="num">{thb(r.valueThb)}</td>
                 <td className="num">{r.weightPct.toFixed(1)}%</td>
-                <td>{r.card?.unlockDate ? untilText(r.card.unlockDate) : "–"}</td>
+                <td>{r.card ? unlockWhenTh(r.card) || "–" : "–"}</td>
                 <td>
                   <span className={`pill lv-${r.card?.level ?? "none"}`}>
                     {r.card ? `${LEVEL_TH[r.card.level]}${r.card.level !== "none" ? ` ${r.card.score}` : ""}` : "ไม่มี unlock"}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spotlight } from "@/components/fx";
-import { compact, LEVEL_TH, thaiDate, untilText, usd } from "@/lib/format";
+import { compact, LEVEL_TH, thaiDate, unlockWhenTh, untilText, usd } from "@/lib/format";
 import type { RiskCard } from "@/lib/types";
 
 interface MarketEvent {
@@ -51,7 +51,7 @@ export default function UnlocksPage() {
           <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
             <span className="event-date">
               <b>{c.unlockDate ? thaiDate(c.unlockDate) : "–"}</b>
-              {c.unlockDate ? untilText(c.unlockDate) : ""}
+              {unlockWhenTh(c)}
             </span>
             <span>
               <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% ของ circulating ·{" "}

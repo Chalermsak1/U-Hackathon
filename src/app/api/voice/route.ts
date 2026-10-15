@@ -1,16 +1,28 @@
-import { z } from "zod";
-import { synthesize } from "@/lib/voice";
+import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
+import { anonId, checkPost, handleError, readJson, tooMany } from "@/lib/http";
+import { logEvent } from "@/lib/log";
+import { speakable, synthesize, voiceConfigured } from "@/lib/voice";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const Body = z.object({ text: z.string().trim().min(1).max(800) });
-
-// 200 audio/mpeg from ElevenLabs, or 204 so the browser speaks with its own th-TH voice.
+// 200 audio/mpeg from ElevenLabs, or 204 so the client falls back to the browser voice.
 export async function POST(req: Request) {
-  const parsed = Body.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) return Response.json({ error: "text is required" }, { status: 400 });
-  const audio = await synthesize(parsed.data.text);
-  if (!audio) return new Response(null, { status: 204 });
-  return new Response(audio, { headers: { "Content-Type": "audio/mpeg", "Cache-Control": "no-store" } });
+  const blocked = checkPost(req);
+  if (blocked) return blocked;
+  try {
+    const limit = rateLimit(`voice:${anonId(req)}`, LIMITS.voice.max, LIMITS.voice.windowMs);
+    if (!limit.ok) return tooMany(limit);
+    const body = await readJson<{ text?: unknown }>(req);
+    const text = typeof body.text === "string" ? speakable(body.text) : "";
+    if (!text || !voiceConfigured()) return new Response(null, { status: 204 });
+    try {
+      return await synthesize(text);
+    } catch (err) {
+      logEvent("voice.error", { error: (err as Error).message });
+      return new Response(null, { status: 204 });
+    }
+  } catch (err) {
+    return handleError(err);
+  }
 }

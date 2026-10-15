@@ -1,7 +1,8 @@
 {
+  "_note": "Illustrative sample. AVAX releases ~1.67M AVAX per quarter to the Avalanche Foundation (KuCoin, Feb 2026); the date below is a placeholder until live Tokenomist data is loaded.",
   "metadata": {
     "queryDate": "2026-10-15T00:00:00Z",
-    "_sample": "ARB: copied from tokenomist.ai/arbitrum on 2026-10-15 (92.65M monthly cliff, team 56.13M + investors 36.52M; per-allocation locked amounts approximate). WLD/AVAX: illustrative sample. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+    "mode": "sample"
   },
   "status": true,
   "data": [
@@ -9,8 +10,6 @@
       "unlockDate": "2026-10-28T00:00:00Z",
       "tokenName": "Avalanche",
       "tokenSymbol": "AVAX",
-      "listedMethod": "INTERNAL",
-      "dataSource": "Whitepaper",
       "cliffUnlocks": {
         "cliffAmount": 1670000,
         "cliffValue": 16182300,
@@ -18,17 +17,14 @@
         "allocationBreakdown": [
           {
             "unlockDate": "2026-10-28T00:00:00Z",
-            "allocationName": "Ecosystem Development Fund",
+            "allocationName": "Avalanche Foundation",
             "standardAllocationName": "Reserve",
             "cliffAmount": 1670000,
             "cliffValue": 16182300,
-            "referencePrice": 9.69,
-            "referencePriceUpdatedTime": "2026-10-14T00:00:00Z",
-            "unlockPrecision": "day"
+            "referencePrice": 9.69
           }
         ]
-      },
-      "latestUpdateDate": "2026-10-14T00:00:00Z"
+      }
     }
   ]
 }

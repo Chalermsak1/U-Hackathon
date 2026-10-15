@@ -4,7 +4,7 @@
 
 import { config } from "./config";
 import { readFixture } from "./fixtures";
-import type { Sourced } from "./types";
+import type { DataSource, Sourced } from "./types";
 
 // ─── Response shapes (subset of the v5 schema we use) ───────────────────────
 
@@ -31,8 +31,16 @@ export interface AllocationUnlock {
   referencePrice: number;
 }
 
+export interface LinearAllocationUnlock {
+  allocationName: string;
+  standardAllocationName: string;
+  linearAmount?: number;
+  amount?: number;
+}
+
 export interface UnlockEvent {
   unlockDate: string;
+  endDate?: string; // linear windows only
   tokenName: string;
   tokenSymbol: string;
   cliffUnlocks?: {
@@ -40,6 +48,13 @@ export interface UnlockEvent {
     cliffValue: number;
     valueToMarketCap: number;
     allocationBreakdown: AllocationUnlock[];
+  };
+  // Linear (continuous) releases. The fixtures use this shape; map the live v5 field names
+  // here once a snapshot shows them (see npm run snapshot).
+  linearUnlocks?: {
+    linearAmount?: number;
+    amount?: number;
+    allocationBreakdown?: LinearAllocationUnlock[];
   };
 }
 
@@ -75,7 +90,7 @@ export interface FundraisingData {
 }
 
 interface Envelope<T> {
-  metadata?: { queryDate?: string };
+  metadata?: { queryDate?: string; mode?: DataSource };
   status: boolean;
   data: T;
 }
@@ -122,10 +137,12 @@ async function load<T>(
     }
   }
 
+  // Fixture files say whether they hold a real snapshot (npm run snapshot, or public
+  // reporting) or illustrative sample data.
   const fixture = await readFixture<Envelope<T>>(...fixturePath);
   const value: Sourced<T> = {
     data: fixture?.data ?? empty,
-    source: "sample",
+    source: fixture?.metadata?.mode === "snapshot" ? "snapshot" : "sample",
     asOf: fixture?.metadata?.queryDate ?? new Date().toISOString(),
     warning,
   };
@@ -139,7 +156,7 @@ export function listTokens(): Promise<Sourced<TokenListItem[]>> {
   return load<TokenListItem[]>("list", "/v5/token/list", ["tokenomist", "token-list.json"], []);
 }
 
-/** Resolves a ticker or name ("sui", "WLD", "Avalanche") to a Tokenomist token. */
+/** Resolves a ticker or name ("arb", "WLD", "Avalanche") to a Tokenomist token. */
 export async function findToken(query: string): Promise<{ token: TokenListItem | null; meta: Sourced<unknown> }> {
   const list = await listTokens();
   const q = query.trim().toLowerCase();
@@ -159,8 +176,11 @@ export function getUnlockEvents(tokenId: string, start: string, end: string): Pr
     [],
   ).then((res) => ({
     ...res,
-    // Fixtures hold every event; apply the same window the live API applies.
-    data: res.data.filter((e) => e.unlockDate.slice(0, 10) >= start && e.unlockDate.slice(0, 10) <= end),
+    // Fixtures hold every event; apply the same window the live API applies. A linear
+    // window counts when it overlaps the requested range.
+    data: res.data.filter(
+      (e) => e.unlockDate.slice(0, 10) <= end && (e.endDate ?? e.unlockDate).slice(0, 10) >= start,
+    ),
   }));
 }
 

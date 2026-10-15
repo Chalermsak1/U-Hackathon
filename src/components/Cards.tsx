@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { compact, LEVEL_TH, pct, thaiDate, usd } from "@/lib/format";
+import { compact, LEVEL_TH, pct, sourceLabelTh, thaiDate, usd } from "@/lib/format";
 import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
@@ -68,7 +68,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
             <div className="stat">
               <b>{usd(card.valueUsd)}</b>
               <span>
-                {compact(card.amount)} {card.symbol} · {card.unlockDate ? thaiDate(card.unlockDate) : ""}
+                {compact(card.amount)} {card.symbol} · {card.timing === "continuous" ? "ทยอยปลดล็อก 30 วัน" : card.unlockDate ? thaiDate(card.unlockDate) : ""}
               </span>
             </div>
           </div>
@@ -98,7 +98,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
       )}
       <div className="card-foot">
         <span>
-          Tokenomist · {card.source.mode === "live" ? "ข้อมูลสด" : "ข้อมูลตัวอย่าง"} · ไม่ใช่คำแนะนำการลงทุน
+          Tokenomist · {sourceLabelTh(card.source.mode)} · ไม่ใช่คำแนะนำการลงทุน
         </span>
         <button
           className="btn btn-sm"

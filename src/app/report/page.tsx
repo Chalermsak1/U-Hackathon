@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { compact, LEVEL_TH, pct, thaiDate, usd } from "@/lib/format";
+import { compact, engineLabel, LEVEL_TH, pct, thaiDate, usd } from "@/lib/format";
 import { readReport, type ReportData } from "@/lib/report";
 import type { RecipientClass } from "@/lib/types";
 
@@ -57,7 +57,7 @@ export default function ReportPage() {
           <h1>สรุปการตรวจความเสี่ยงจากการปลดล็อกเหรียญ</h1>
           <p>
             U-Guard ใน U-Bot · {new Date(at).toLocaleString("th-TH", { dateStyle: "long", timeStyle: "short" })} ·{" "}
-            {result.mode === "claude" ? "Claude agent" : "Offline agent"}
+            {engineLabel(result)}
           </p>
         </div>
       </header>
@@ -127,8 +127,8 @@ export default function ReportPage() {
           <h2>ขั้นตอนที่ agent ทำ</h2>
           <ol className="report-trace">
             {result.trace.map((t, i) => (
-              <li key={`${t.tool}-${i}`}>
-                <code>{t.tool}</code> — {t.summary}
+              <li key={`${t.name}-${i}`}>
+                <code>{t.name}</code> — {t.summary}
               </li>
             ))}
           </ol>

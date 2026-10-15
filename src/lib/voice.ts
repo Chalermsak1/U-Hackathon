@@ -1,42 +1,49 @@
-// ElevenLabs voice: text-to-speech (U-Guard reads its answer) and speech-to-text (the
-// user asks by voice). Both return null when not configured or on any error; the browser
-// then falls back to its own th-TH voice / speech recognition.
+// ElevenLabs voice (sponsor integration): text-to-speech (U-Guard reads its answer; eleven_v3
+// speaks Thai and English) and speech-to-text (the user asks by voice, Scribe). Without a key
+// the client falls back to the browser's own voice and speech recognition.
 
 import { config } from "./config";
 
-export async function synthesize(text: string): Promise<ArrayBuffer | null> {
-  const { apiKey, voiceId, modelId } = config.elevenlabs;
-  if (!apiKey || !voiceId) return null;
-  try {
-    const res = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=mp3_44100_128`,
-      {
-        method: "POST",
-        headers: { "xi-api-key": apiKey, "Content-Type": "application/json", Accept: "audio/mpeg" },
-        body: JSON.stringify({ text: text.slice(0, 600), model_id: modelId }),
-      },
-    );
-    if (!res.ok) {
-      console.warn(`[u-guard] ElevenLabs ${res.status}`);
-      return null;
-    }
-    return await res.arrayBuffer();
-  } catch {
-    return null;
-  }
+export function voiceConfigured(): boolean {
+  return Boolean(config.elevenlabs.apiKey && config.elevenlabs.voiceId);
+}
+
+/** What should be spoken: no citation markers, labels or markdown. */
+export function speakable(text: string): string {
+  return text
+    .replace(/\[\d+\]/g, "")
+    .replace(/\((sample data|ข้อมูลตัวอย่าง)\)/gi, "")
+    .replace(/[*_`#>]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 900);
+}
+
+export async function synthesize(text: string): Promise<Response> {
+  const res = await fetch(
+    `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(config.elevenlabs.voiceId)}?output_format=mp3_44100_128`,
+    {
+      method: "POST",
+      headers: { "xi-api-key": config.elevenlabs.apiKey, "content-type": "application/json", accept: "audio/mpeg" },
+      body: JSON.stringify({ text, model_id: config.elevenlabs.modelId }),
+      signal: AbortSignal.timeout(20_000),
+    },
+  );
+  if (!res.ok || !res.body) throw new Error(`ElevenLabs ${res.status}`);
+  return new Response(res.body, { headers: { "content-type": "audio/mpeg", "cache-control": "no-store" } });
 }
 
 export function sttEnabled(): boolean {
   return Boolean(config.elevenlabs.apiKey);
 }
 
-/** Thai speech → text with ElevenLabs Scribe. */
-export async function transcribe(audio: Blob, filename: string): Promise<string | null> {
+/** Speech → text with ElevenLabs Scribe (Thai by default). Null when not configured or on error. */
+export async function transcribe(audio: Blob, filename: string, languageCode = "th"): Promise<string | null> {
   const { apiKey, sttModelId } = config.elevenlabs;
   if (!apiKey) return null;
   const form = new FormData();
   form.append("model_id", sttModelId);
-  form.append("language_code", "th");
+  form.append("language_code", languageCode);
   form.append("tag_audio_events", "false");
   form.append("file", audio, filename);
   try {
@@ -44,6 +51,7 @@ export async function transcribe(audio: Blob, filename: string): Promise<string 
       method: "POST",
       headers: { "xi-api-key": apiKey },
       body: form,
+      signal: AbortSignal.timeout(30_000),
     });
     if (!res.ok) {
       console.warn(`[u-guard] ElevenLabs STT ${res.status}`);

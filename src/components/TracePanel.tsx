@@ -6,15 +6,15 @@ export function TracePanel({ last }: { last: LastRun | null }) {
     <section className="panel" aria-label="Agent Trace">
       <div className="panel-head">
         <h2>Agent Trace</h2>
-        {last && <span className="pill">{last.mode === "claude" ? "Claude" : "Offline agent"}</span>}
+        {last && <span className="pill">{last.engine}</span>}
         {last && <span className="total">{last.ms} ms</span>}
       </div>
       {last && last.trace.length > 0 ? (
         <ol className="trace">
           {last.trace.map((t, i) => (
-            <li key={`${t.tool}-${i}`} className={t.ok ? undefined : "fail"}>
+            <li key={`${t.name}-${i}`} className={t.ok ? undefined : "fail"}>
               <span>
-                <span className="tool">{t.tool}</span>
+                <span className="tool">{t.name}</span>
                 <br />
                 <span className="sum">{t.summary}</span>
               </span>

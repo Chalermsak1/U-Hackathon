@@ -1,0 +1,32 @@
+{
+  "_note": "Snapshot of real market readings (sources linked). Options-implied volatility needs live data (MARKET_SOURCE=live reads Deribit DVOL).",
+  "asOf": "2026-10-12T00:00:00Z",
+  "mode": "snapshot",
+  "btc": {
+    "priceUsd": 81900,
+    "change24hPct": -2.2,
+    "date": "2026-10-12",
+    "source": { "name": "BGeometrics", "url": "https://bgeometrics.com/reports/daily/2026-10-12.html" }
+  },
+  "sentiment": {
+    "value": 64,
+    "label": "Greed",
+    "date": "2026-10-10",
+    "source": { "name": "CoinStats", "url": "https://coinstats.app/news/efba3523146d29f065f576cf4618de5b38553f8f4a1e4984f4015fccb13d27d9_Crypto-News-October-10-Latest-Bitcoin-Ethereum-Altcoin-Moves-Today/" }
+  },
+  "etfFlows": [
+    {
+      "asset": "BTC",
+      "label": "Week of Oct 5-9",
+      "netUsd": -678900000,
+      "source": { "name": "KuCoin News (The Defiant)", "url": "https://www.kucoin.com/news/flash/bitcoin-etfs-record-679m-in-weekly-outflows-amid-uptober-slump" }
+    },
+    {
+      "asset": "ETH",
+      "label": "Week of Oct 5-9",
+      "netUsd": -542000000,
+      "source": { "name": "KuCoin News", "url": "https://www.kucoin.com/news/flash/bitcoin-and-ethereum-etfs-record-1-2b-in-weekly-outflows" }
+    }
+  ],
+  "impliedMove": null
+}

@@ -1,0 +1,140 @@
+{
+  "_note": "Snapshot of real reporting collected on 15 Oct 2026 (summaries are ours; follow the link for the original). `date` is the report or event date; null when the source shows none. NEWS_SOURCE=live reads the GDELT DOC API instead.",
+  "asOf": "2026-10-15T00:00:00Z",
+  "mode": "snapshot",
+  "items": [
+    {
+      "id": "arb-unlock-oct16",
+      "summary": "Arbitrum unlocks 92.65M ARB on Oct 16: 56.13M to team and advisors, 36.52M to investors, about 1.56% of circulating supply.",
+      "source": "Coinotag",
+      "url": "https://en.coinotag.com/arbitrum-arb-unlocks-92-65-million-tokens-october-16",
+      "date": "2026-10-12",
+      "symbols": ["ARB"],
+      "topics": ["unlock", "supply", "vesting"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "arb-rally-supply",
+      "summary": "ARB is up more than 100% since August, while 92.6M ARB keeps unlocking every month until early 2027.",
+      "source": "24/7 Wall St",
+      "url": "https://247wallst.com/investing/cryptocurrency/2026/10/02/arbitrum-is-up-more-than-100-since-august-and-92-6-million-arb-unlocks-every-month-until-early-2027-can-the-rally-survive-the-supply/",
+      "date": "2026-10-02",
+      "symbols": ["ARB"],
+      "topics": ["unlock", "price", "rally"],
+      "sentiment": "neutral"
+    },
+    {
+      "id": "btc-etf-outflows-oct5-9",
+      "summary": "US spot Bitcoin ETFs saw about $679M of net outflows in the week of Oct 5-9; BlackRock's IBIT lost $207.7M on Oct 7 alone.",
+      "source": "KuCoin News (citing The Defiant)",
+      "url": "https://www.kucoin.com/news/flash/bitcoin-etfs-record-679m-in-weekly-outflows-amid-uptober-slump",
+      "date": "2026-10-10",
+      "symbols": ["BTC"],
+      "topics": ["etf", "flows", "institutional"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "btc-eth-etf-1-2b",
+      "summary": "Bitcoin and Ether ETFs recorded about $1.2B of combined net outflows in the week of Oct 5-9 (BTC about $679M, ETH about $542M).",
+      "source": "KuCoin News",
+      "url": "https://www.kucoin.com/news/flash/bitcoin-and-ethereum-etfs-record-1-2b-in-weekly-outflows",
+      "date": "2026-10-10",
+      "symbols": ["BTC", "ETH"],
+      "topics": ["etf", "flows", "institutional"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "eth-etf-oct12",
+      "summary": "US spot Ether ETFs lost $85.4M on Oct 12, extending their outflow streak to nine trading days.",
+      "source": "KuCoin News",
+      "url": "https://www.kucoin.com/news/flash/october-12-etf-outflows-hit-btc-eth-and-sol-funds",
+      "date": "2026-10-12",
+      "symbols": ["ETH"],
+      "topics": ["etf", "flows"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "btc-price-oct12",
+      "summary": "Bitcoin ended Oct 12 around $81,900, down about 2.2% on the day after sliding from about $85,600 on Oct 6.",
+      "source": "BGeometrics",
+      "url": "https://bgeometrics.com/reports/daily/2026-10-12.html",
+      "date": "2026-10-12",
+      "symbols": ["BTC"],
+      "topics": ["price"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "btc-liquidations-oct6",
+      "summary": "Bitcoin briefly dipped below $84,000 on Oct 6 as roughly $487M of long positions were liquidated.",
+      "source": "The Block",
+      "url": "https://www.theblock.co/directory/archive/2026/10",
+      "date": "2026-10-06",
+      "symbols": ["BTC"],
+      "topics": ["liquidations", "leverage", "price"],
+      "sentiment": "negative"
+    },
+    {
+      "id": "robinhood-btc-oct7",
+      "summary": "Robinhood added $25M of bitcoin to its balance sheet on Oct 7.",
+      "source": "The Block",
+      "url": "https://www.theblock.co/directory/archive/2026/10",
+      "date": "2026-10-07",
+      "symbols": ["BTC"],
+      "topics": ["corporate", "treasury", "institutional"],
+      "sentiment": "positive"
+    },
+    {
+      "id": "btc-etf-inflows-oct2",
+      "summary": "Spot Bitcoin ETFs drew about $241M in the week ending Oct 2, a third straight week of inflows (SoSoValue data).",
+      "source": "AlphaMaven",
+      "url": "https://www.alpha-maven.com/news/hedge-fund/spot-bitcoin-etfs-drew-241-million-for-a-third-straight-week-of-inflows",
+      "date": null,
+      "dateLabel": "Early Oct 2026",
+      "symbols": ["BTC"],
+      "topics": ["etf", "flows", "institutional"],
+      "sentiment": "positive"
+    },
+    {
+      "id": "fed-oct-odds",
+      "summary": "After September's 25 bp hike to 3.75-4.00%, Polymarket traders put a 37% chance on another Fed hike at the Oct 27-28 meeting and 61% on no change.",
+      "source": "Crypto Briefing",
+      "url": "https://cryptobriefing.com/polymarket-october-fed-rate-hike-odds/",
+      "date": "2026-09-30",
+      "symbols": ["BTC", "ETH"],
+      "topics": ["fed", "rates", "macro", "fomc", "odds"],
+      "sentiment": "neutral"
+    },
+    {
+      "id": "market-oct10",
+      "summary": "Total crypto market cap was about $2.88T on Oct 10, with the Fear & Greed Index at 64 (Greed).",
+      "source": "CoinStats",
+      "url": "https://coinstats.app/news/efba3523146d29f065f576cf4618de5b38553f8f4a1e4984f4015fccb13d27d9_Crypto-News-October-10-Latest-Bitcoin-Ethereum-Altcoin-Moves-Today/",
+      "date": "2026-10-10",
+      "symbols": ["BTC", "ETH"],
+      "topics": ["market", "sentiment"],
+      "sentiment": "neutral"
+    },
+    {
+      "id": "avax-q2-activity",
+      "summary": "Avalanche C-Chain processed a record 235.6M transactions in Q2 2026, its seventh straight quarter of growth.",
+      "source": "Nansen",
+      "url": "https://nansen.ai/post/avalanche-q2-2026-report",
+      "date": null,
+      "dateLabel": "Q2 2026 report",
+      "symbols": ["AVAX"],
+      "topics": ["onchain", "activity", "adoption"],
+      "sentiment": "positive"
+    },
+    {
+      "id": "th-sec-plan",
+      "summary": "Thailand's SEC 2026-2028 strategic plan puts digital assets at the center of capital-market development, including crypto ETFs and futures.",
+      "source": "Crowdfund Insider",
+      "url": "https://www.crowdfundinsider.com/2026/06/285124-thailands-crypto-regulation-shifts-toward-market-expansion-and-institutional-integration/",
+      "date": null,
+      "dateLabel": "Jun 2026",
+      "symbols": [],
+      "topics": ["regulation", "thailand", "etf"],
+      "sentiment": "neutral"
+    }
+  ]
+}

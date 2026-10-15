@@ -5,4 +5,7 @@ node_modules
 next-env.d.ts
 *.tsbuildinfo
 .claude/
-logs/
+/logs/
+data/runtime/
+screenshots/
+.replies.tmp.ts

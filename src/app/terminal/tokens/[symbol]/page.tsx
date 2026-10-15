@@ -105,7 +105,7 @@ export default function TokenPage() {
         <h1>
           {t.symbol} <span className="note" style={{ fontSize: 16 }}>{t.name}</span>
         </h1>
-        <p>ราคา ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · ข้อมูล {data.source === "live" ? "สดจาก Tokenomist" : "ตัวอย่าง / Tokenomist 15 ต.ค."}</p>
+        <p>ราคา ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · ข้อมูล {data.source === "live" ? "สดจาก Tokenomist" : data.source === "snapshot" ? "จริงจาก Tokenomist (snapshot)" : "ตัวอย่าง / Tokenomist 15 ต.ค."}</p>
         <button className="btn btn-sm" style={{ marginLeft: "auto" }} onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`ซื้อ ${t.symbol} 5,000 บาท`)}`)}>
           ถาม U-Guard ก่อนซื้อ
         </button>

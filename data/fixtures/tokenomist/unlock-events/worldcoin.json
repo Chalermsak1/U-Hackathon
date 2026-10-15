@@ -1,44 +1,31 @@
 {
+  "_note": "Illustrative sample. Real WLD team/investor unlocks are released daily (linear), so this file models the next 30 days as one linear window. Replace with live Tokenomist data (npm run snapshot).",
   "metadata": {
     "queryDate": "2026-10-15T00:00:00Z",
-    "_sample": "ARB: copied from tokenomist.ai/arbitrum on 2026-10-15 (92.65M monthly cliff, team 56.13M + investors 36.52M; per-allocation locked amounts approximate). WLD/AVAX: illustrative sample. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+    "mode": "sample"
   },
   "status": true,
   "data": [
     {
-      "unlockDate": "2026-10-24T00:00:00Z",
+      "unlockDate": "2026-10-15T00:00:00Z",
+      "endDate": "2026-11-14T00:00:00Z",
       "tokenName": "Worldcoin",
       "tokenSymbol": "WLD",
-      "listedMethod": "INTERNAL",
-      "dataSource": "Whitepaper",
-      "cliffUnlocks": {
-        "cliffAmount": 152000000,
-        "cliffValue": 73720000,
-        "valueToMarketCap": 2.623,
+      "linearUnlocks": {
+        "linearAmount": 152000000,
         "allocationBreakdown": [
           {
-            "unlockDate": "2026-10-24T00:00:00Z",
             "allocationName": "Team",
             "standardAllocationName": "Founder / Team",
-            "cliffAmount": 98000000,
-            "cliffValue": 47530000,
-            "referencePrice": 0.485,
-            "referencePriceUpdatedTime": "2026-10-14T00:00:00Z",
-            "unlockPrecision": "day"
+            "linearAmount": 98000000
           },
           {
-            "unlockDate": "2026-10-24T00:00:00Z",
             "allocationName": "Investors",
             "standardAllocationName": "Private Investors",
-            "cliffAmount": 54000000,
-            "cliffValue": 26190000,
-            "referencePrice": 0.485,
-            "referencePriceUpdatedTime": "2026-10-14T00:00:00Z",
-            "unlockPrecision": "day"
+            "linearAmount": 54000000
           }
         ]
-      },
-      "latestUpdateDate": "2026-10-14T00:00:00Z"
+      }
     }
   ]
 }

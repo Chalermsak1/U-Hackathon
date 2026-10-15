@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { compact, LEVEL_TH, thaiDate, untilText } from "@/lib/format";
+import { compact, LEVEL_TH, thaiDate, unlockWhenTh } from "@/lib/format";
+import type { DataSource, UnlockTiming } from "@/lib/types";
 
 interface TickerItem {
   symbol: string;
@@ -9,7 +10,8 @@ interface TickerItem {
   amount: number;
   level: "high" | "medium" | "low" | "none";
   topRecipient: string | null;
-  source: "live" | "sample";
+  source: DataSource;
+  timing?: UnlockTiming;
 }
 
 const RECIPIENT_TH: Record<string, string> = {
@@ -49,7 +51,7 @@ export function Ticker({ onPick }: { onPick?: (symbol: string) => void }) {
           >
             <span className="dot" />
             <b>{it.symbol}</b>
-            {untilText(it.date)} · {thaiDate(it.date)} · {compact(it.amount)}
+            {unlockWhenTh({ timing: it.timing, unlockDate: it.date })}{it.timing === "continuous" ? "" : ` · ${thaiDate(it.date)}`} · {compact(it.amount)}
             {it.topRecipient ? ` · ${RECIPIENT_TH[it.topRecipient] ?? it.topRecipient}` : ""}
             <span className="pill">{LEVEL_TH[it.level]}</span>
           </button>

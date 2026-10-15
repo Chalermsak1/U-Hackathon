@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { CountUp, Spotlight, useTypewriter } from "@/components/fx";
-import { LEVEL_TH, thb, thaiDate, untilText, usd, compact } from "@/lib/format";
+import { LEVEL_TH, thb, thaiDate, unlockWhenTh, usd, compact } from "@/lib/format";
 import type { RiskCard } from "@/lib/types";
 
 const PROMPTS = [
@@ -122,7 +122,7 @@ export default function TerminalHome() {
             <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
               <span className="event-date">
                 <b>{c.unlockDate ? thaiDate(c.unlockDate) : "–"}</b>
-                {c.unlockDate ? untilText(c.unlockDate) : ""}
+                {unlockWhenTh(c)}
               </span>
               <span>
                 <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% ของ circulating

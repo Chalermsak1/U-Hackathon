@@ -132,6 +132,9 @@ export function Landing() {
             </a>
           ))}
         </nav>
+        <Link href="/en" className="lp-lang" lang="en" title="English version">
+          EN
+        </Link>
         <Link href="/terminal" className="lp-cta">
           เข้าสู่ Terminal →
         </Link>
@@ -350,7 +353,10 @@ export function Landing() {
           </div>
         </Reveal>
         <footer className="lp-footer">
-          U-Guard · U-Hackathon 2026 · ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน
+          U-Guard · U-Hackathon 2026 · ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน ·{" "}
+          <Link href="/en" lang="en" style={{ color: "var(--teal-2)" }}>
+            English version
+          </Link>
         </footer>
       </section>
 

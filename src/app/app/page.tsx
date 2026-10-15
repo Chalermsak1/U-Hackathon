@@ -9,7 +9,7 @@ import { Ticker } from "@/components/Ticker";
 import { TopBar } from "@/components/TopBar";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
-import { thb } from "@/lib/format";
+import { sourceLabelTh, thb } from "@/lib/format";
 import { openReport } from "@/lib/report";
 import type { Holding } from "@/lib/types";
 
@@ -36,18 +36,19 @@ export default function AppPage() {
     setInput("");
     ask(text);
   };
-  const dataMode = messages.some((m) => m.result?.cards.some((c) => c.source.mode === "live")) ? "live" : "sample";
+  const modes = messages.flatMap((m) => m.result?.cards.map((c) => c.source.mode) ?? []);
+  const dataMode = modes.includes("live") ? "live" : modes.includes("snapshot") ? "snapshot" : "sample";
 
   return (
     <>
       <TopBar current="app">
         {last && (
           <span className="pill" title="ใครตอบคำถามล่าสุด">
-            Agent: {last.mode === "claude" ? "Claude" : "Offline"}
+            Agent: {last.engine}
           </span>
         )}
-        <span className={`pill ${dataMode === "live" ? "lv-low" : "lv-medium"}`}>
-          {dataMode === "live" ? "ข้อมูลสด" : "ข้อมูลตัวอย่าง"}
+        <span className={`pill ${dataMode === "sample" ? "lv-medium" : "lv-low"}`}>
+          {sourceLabelTh(dataMode)}
         </span>
       </TopBar>
       <div className="ticker-wrap">
