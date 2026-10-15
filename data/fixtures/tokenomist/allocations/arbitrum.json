@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T00:00:00Z",
+    "mode": "snapshot",
+    "_note": "ARB: allocation shares copied from tokenomist.ai/arbitrum on 2026-10-15; per-allocation locked amounts are approximate. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+  },
+  "status": true,
+  "data": {
+    "name": "Arbitrum",
+    "symbol": "ARB",
+    "listedMethod": "INTERNAL",
+    "maxSupply": 10000000000,
+    "lastUpdatedDate": "2026-10-14T00:00:00Z",
+    "totalUnlockedAmount": 5952000000,
+    "totalLockedAmount": 4048000000,
+    "totalUntrackedAmount": 0,
+    "totalTBDLockedAmount": 0,
+    "allocations": [
+      {
+        "allocationName": "Arbitrum DAO Treasury",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 786000000,
+        "allocationLockedAmount": 3492000000,
+        "allocationAmount": 4278000000,
+        "trackedAllocationPercentage": 42.78
+      },
+      {
+        "allocationName": "Team, Future Team + Advisors",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Founder / Team",
+        "allocationUnlockedAmount": 2357000000,
+        "allocationLockedAmount": 337000000,
+        "allocationAmount": 2694000000,
+        "trackedAllocationPercentage": 26.94
+      },
+      {
+        "allocationName": "Investors",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Private Investors",
+        "allocationUnlockedAmount": 1534000000,
+        "allocationLockedAmount": 219000000,
+        "allocationAmount": 1753000000,
+        "trackedAllocationPercentage": 17.53
+      },
+      {
+        "allocationName": "Individual Wallets",
+        "allocationType": "Airdrop",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 1162000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 1162000000,
+        "trackedAllocationPercentage": 11.62
+      },
+      {
+        "allocationName": "DAOs in Arbitrum Ecosystem",
+        "allocationType": "Airdrop",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 113000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 113000000,
+        "trackedAllocationPercentage": 1.13
+      }
+    ]
+  }
+}

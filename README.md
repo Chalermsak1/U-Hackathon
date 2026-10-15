@@ -1,34 +1,99 @@
 # U-Guard
 
-**รู้ก่อน เงินจะขยับ** · *Know before your money moves.*
+**Know before your money moves.** (รู้ก่อน เงินจะขยับ)
 
-U-Guard คือ agent ใน U-Bot ที่เช็กความเสี่ยงจาก supply (token unlock / emission) ก่อนที่ผู้ใช้ U-topia จะซื้อหรือถือเหรียญ อธิบายเป็นภาษาไทย 3 บรรทัดพร้อมเสียง และผู้ใช้เป็นคนอนุมัติเองทุกครั้ง (บันทึกการอนุมัติบน Avalanche)
+U-Guard is an agent inside U-Bot that checks supply risk (token unlocks and emissions) before a U-topia user buys or holds a token. It also checks **news and events** and **what markets are pricing** (prediction markets, options). It explains the risk in three plain lines (Thai or English, with voice), and the user approves every protective action themselves. Approvals are recorded on Avalanche.
 
-U-Hackathon 2026 · AI Track · Flow Summit Bangkok
+U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 
-> ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน
+> Decision support only. Not investment advice. We don't predict price; we forecast supply.
 
-## เอกสาร
+## Documents
 
-| ไฟล์ | เนื้อหา |
+| File | What it covers |
 |---|---|
-| [SPEC.md](SPEC.md) | **เริ่มอ่านที่นี่** ระบบทั้งหมด: features, architecture, workflows, agents, data model, API, สถานะ |
-| [PLAN.md](PLAN.md) | ปัญหาและหลักฐาน, U-topia, timeline, demo script, เกณฑ์ตัดสิน, forecast |
-| [UI-PLAN.md](UI-PLAN.md) | หน้าเว็บ, navigation, AI Gateway, auth + DB, หน้า loading, resource UI |
+| [SPEC.md](SPEC.md) | **Start here.** The whole system: features, architecture, workflows, agents, data model, API, status, decisions (Thai) |
+| [TODO.md](TODO.md) | **What is left:** not done, missing, or still waiting on keys/people, with priorities and a plan for demo day (Thai) |
+| [STATUS.md](STATUS.md) | Latest status: every feature built, which flows work, what doesn't fit together yet, Trade/Invest direction, models, integrations, data pipeline (Thai) |
+| [AGENTIC-WORKFLOW.md](AGENTIC-WORKFLOW.md) | Agentic AI design v2: what is new, models per job, LangGraph or not, RAG types, live data, alerts, portfolio drift |
+| [PLAN.md](PLAN.md) | Problem and evidence, U-topia, timeline, demo script, judging criteria, forecast (Thai) |
+| [UI-PLAN.md](UI-PLAN.md) | Pages, navigation, AI gateway, auth and DB, loading page, UI resources (Thai) |
+| [ANALYSIS.md](ANALYSIS.md) | Models and VLMs, Nansen comparison, user segments, regulation, U-topia gaps, roadmap (Thai) |
+| [UI-REVIEW.md](UI-REVIEW.md) | UI test results, fixes, what to show to whom, logo slots |
+| [LOGS.md](LOGS.md) | Development log. The agent's runtime log is written to `logs/YYYY-MM-DD.jsonl` (not served as a page) |
 
-## สถานะ
+## Pages
 
-กำลังสร้าง: backend core (Tokenomist client, risk scorer, agent tools, Claude loop, Avalanche) เขียนแล้วแต่ยังไม่ได้ build · UI, API routes และ auth ยังไม่ได้ทำ (ดู SPEC.md §14)
+Two front-ends share one backend (agent, tools, data, auth).
 
-## เริ่มใช้งาน
+**Thai app** (the stage demo). It signs the browser into the demo account automatically.
+
+| Path | Purpose |
+|---|---|
+| `/` | Landing: loader, pill nav, GuardWatch hero, problem numbers, features, demo cards, how it works, FAQ |
+| `/terminal` | Nansen-style web app in our own style: overview, U-Bot AI agent, token screener (25 tokens), token page with a 6-month supply forecast and a trade ticket, unlock calendar, portfolio, alerts with a U-Bot inbox |
+| `/terminal/trade` | Trade: the user picks token, side and amount; U-Bot drafts the plan (size, stop-loss, what-if rows), U-Guard checks it, the user approves a paper order |
+| `/terminal/invest` | Invest: five-question risk profile → adjustable model portfolio (sample data) → U-Guard checks the crypto part and DCA dates → approve |
+| `/app` | Stage demo only (not in the menus): U-topia phone screen with U-Bot chat |
+| `/report` | An A4 report to save as PDF |
+
+**English app** (linked from the landing's `EN` button and the terminal sidebar).
+
+| Path | Purpose |
+|---|---|
+| `/en` | Platform: problem, three signals, how it works, U-Bot/MCP integration, unlock radar, trust |
+| `/login` | Demo account · email/password · wallet (Sign-In with Ethereum) |
+| `/assistant` | U-Bot chat with the U-Guard skill: risk cards, news with citations, odds, approvals, agent trace, voice (sign-in required) |
+| `/dashboard` | Holdings by unlock risk, supply forecast + dilution calculator, investor profit pressure, events, market intel (sign-in required) |
+| `/method` | Score formula, data sources, agent architecture, MCP usage, compliance |
+
+The floating **U-Bot** bubble on `/en`, `/method` and 404 pages answers visitors without signing in.
+
+Not yet tested with real keys: Claude, ElevenLabs (TTS and STT), Fuji, Tokenomist. Alert rules and proposals live in memory.
+
+## Run it
 
 ```bash
 npm install
-cp .env.example .env   # ทุก key ไม่บังคับ ถ้าไม่ใส่จะใช้ข้อมูลตัวอย่าง/โหมดสำรอง
-npm run typecheck
-npm run snapshot -- ARB WLD AVAX   # ดึงข้อมูลจริงจาก Tokenomist (ต้องมี TOKENOMIST_API_KEY)
+cp .env.example .env   # every key is optional; without keys the app uses sample data and fallbacks
+npm run dev            # http://localhost:3000 (Thai landing) · /app · /terminal · /en
+npm run snapshot -- ARB WLD AVAX   # pull real data from Tokenomist (needs TOKENOMIST_API_KEY)
 ```
 
-## Stack
+Stage / production mode (never run `next build` while `next dev` is running):
 
-Next.js 15 · TypeScript · Claude (Anthropic SDK) · Tokenomist API · ElevenLabs · Avalanche (viem) · Supabase (แผน)
+```bash
+npm run build
+AUTH_SECRET=$(openssl rand -base64 32) npm start
+```
+
+Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB unlock is at 13:00 UTC (20:00 Bangkok), so at 07:00 UTC the card reads "unlocks today"; from 13:00 UTC it reads "just unlocked".
+
+## How the agent works
+
+`src/lib/agent/index.ts` is the harness: **guard → plan + act → reflect → observe**.
+
+- **Model is pluggable**: Claude via the Anthropic SDK (the team's choice; optionally through the Vercel AI Gateway, `AI_GATEWAY=vercel`), any OpenAI-compatible model (`LLM_BASE_URL`), or the deterministic **rules engine** (the offline agent), which is also the automatic fallback. With `AGENT_PROVIDER=auto` the order is OpenAI-compatible (if `LLM_API_KEY` is set), then Claude, then rules; set `AGENT_PROVIDER=anthropic` to force Claude. `AGENT_MODE` (claude/offline/auto) still works as a legacy alias.
+- **Language**: replies follow the user's language. Thai input gets Thai replies, card reasons and proposal text; English input gets English.
+- **11 tools** (`src/lib/agent/tools.ts`), zod-validated, shared by every provider and by MCP.
+- **RAG** for fresh facts (unlocks, news ranked by relevance + recency with citations, odds, pulse); **CAG** for static knowledge (`data/knowledge/faq.json`, preloaded into the cached system prompt).
+- **Guardrails**: input guard (seed phrases/private keys blocked, PII redacted, injection flagged), rate limits, Origin checks, output compliance check (no buy/sell/hold advice or price predictions in EN/TH; every number must come from a tool result; one rewrite, then a checked template).
+- **U-Bot reaches U-Guard three ways**, all through the same `runAgent`: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`).
+- **Watcher**: alert rules are checked on a timer (`WATCH_INTERVAL_MIN`, default 10) in `npm start`; on serverless hosts a cron calls `POST /api/watch` with `Bearer $CRON_SECRET`. Hits go to the U-Bot inbox (bell in the terminal header), with a 12-hour cooldown.
+- **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key).
+- **Run log**: every agent run is appended to `logs/YYYY-MM-DD.jsonl` (redacted text, tool trace, timings); `LOG_SILENT=true` turns it off.
+
+## Checks
+
+```bash
+npm run typecheck
+npm run eval          # 28 golden cases (EN + TH), offline and deterministic
+npm run responsive    # 16 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
+npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)
+```
+
+## Data
+
+Offline data lives in `data/fixtures` and is labelled in the UI: **Snapshot** = real data captured on the date shown (ARB unlocks from tokenomist.ai on 15 Oct, news, odds, pulse), **Sample** = illustrative (WLD/AVAX supply, demo wallet). `npm run snapshot -- ARB WLD AVAX` replaces the Tokenomist fixtures with live data. The Tokenomist free trial has no forward unlocks; use the booth key.
+
+Stack: Next.js 15 · React 19 · TypeScript · plain CSS · zod · Claude (Anthropic SDK, default) or any OpenAI-compatible model · Tokenomist API · ElevenLabs · Avalanche (viem) · @modelcontextprotocol/sdk · Playwright (dev) · Supabase (post-hackathon).

@@ -1,0 +1,19 @@
+{
+  "_sample": "Illustrative asset classes for the Invest page. Fund names are generic placeholders, not real products; risk levels follow the Thai SEC 1-8 fund risk scale (crypto shown as 8+). No returns are shown on purpose. Replace with SEC Open Data (fund NAV, factsheets) before real use.",
+  "mode": "sample",
+  "asOf": "2026-10-15T00:00:00Z",
+  "classes": [
+    { "id": "cash", "th": "เงินสด / กองทุนตลาดเงิน", "example": "กองทุนตลาดเงิน (ตัวอย่าง)", "risk": 1, "feePct": 0.3, "color": "#94A3B8" },
+    { "id": "bond", "th": "ตราสารหนี้", "example": "กองทุนตราสารหนี้ระยะสั้น (ตัวอย่าง)", "risk": 4, "feePct": 0.5, "color": "#A78BFA" },
+    { "id": "thai_equity", "th": "หุ้นไทย", "example": "กองทุนดัชนี SET50 (ตัวอย่าง)", "risk": 6, "feePct": 0.6, "color": "#5EEAD4" },
+    { "id": "global_equity", "th": "หุ้นต่างประเทศ", "example": "กองทุนดัชนีหุ้นโลก (ตัวอย่าง)", "risk": 6, "feePct": 0.9, "color": "#2DD4BF" },
+    { "id": "gold", "th": "ทองคำ", "example": "กองทุนทองคำ (ตัวอย่าง)", "risk": 8, "feePct": 0.8, "color": "#FBBF24" },
+    { "id": "crypto", "th": "คริปโต", "example": "BTC / ETH และเหรียญที่คุณเลือก", "risk": 9, "feePct": 0.25, "color": "#FB7151" }
+  ],
+  "profiles": {
+    "conservative": { "th": "ระมัดระวัง", "weights": { "cash": 30, "bond": 45, "thai_equity": 10, "global_equity": 10, "gold": 5, "crypto": 0 }, "cryptoMax": 2 },
+    "moderate": { "th": "ปานกลาง", "weights": { "cash": 15, "bond": 35, "thai_equity": 15, "global_equity": 25, "gold": 7, "crypto": 3 }, "cryptoMax": 5 },
+    "growth": { "th": "เติบโต", "weights": { "cash": 10, "bond": 20, "thai_equity": 20, "global_equity": 35, "gold": 7, "crypto": 8 }, "cryptoMax": 10 },
+    "aggressive": { "th": "เติบโตสูง", "weights": { "cash": 5, "bond": 10, "thai_equity": 20, "global_equity": 45, "gold": 5, "crypto": 15 }, "cryptoMax": 20 }
+  }
+}

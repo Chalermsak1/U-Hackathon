@@ -37,6 +37,12 @@ export async function recordProtection(proposal: Proposal): Promise<ProtectionRe
     unlockDate: proposal.unlockDate,
     approvedAt: new Date().toISOString(),
   });
+  return recordMemo(proposal.id, memo);
+}
+
+/** Write any approved decision (protection rule or trade plan) as a Fuji self-transfer memo. */
+export async function recordMemo(id: string, memo: string): Promise<ProtectionReceipt> {
+  const proposal = { id };
 
   if (!config.avalanche.demoPrivateKey) {
     return {

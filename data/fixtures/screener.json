@@ -1,0 +1,281 @@
+{
+  "source": "Tokenomist fundraising screener (sorted by FDV), captured 2026-10-15. 'Lead investors' with a count are as shown on the page.",
+  "asOf": "2026-10-15T03:00:00Z",
+  "rows": [
+    {
+      "symbol": "SOL",
+      "leadInvestors": "3 Investors",
+      "totalInvestors": 24,
+      "latestRound": "Private Round",
+      "marketCap": 67070000000.0,
+      "fdv": 81240000000.0,
+      "totalRaised": 454710000.0,
+      "unlockedInvestorsUsd": 867150000.0,
+      "pctInvestorsUnlocked": 24
+    },
+    {
+      "symbol": "OKB",
+      "leadInvestors": "Intercontinental Exchange",
+      "totalInvestors": 1,
+      "latestRound": "Strategic Round",
+      "marketCap": 2460000000.0,
+      "fdv": 35130000000.0,
+      "totalRaised": null,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 90
+    },
+    {
+      "symbol": "WBT",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Public Token Sale",
+      "marketCap": 29870000000.0,
+      "fdv": 31860000000.0,
+      "totalRaised": 935600000.0,
+      "unlockedInvestorsUsd": 676480000.0,
+      "pctInvestorsUnlocked": 53
+    },
+    {
+      "symbol": "LINK",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Public Token Sale",
+      "marketCap": 7170000000.0,
+      "fdv": 12200000000.0,
+      "totalRaised": 324650000.0,
+      "unlockedInvestorsUsd": 108140000.0,
+      "pctInvestorsUnlocked": 9
+    },
+    {
+      "symbol": "CC",
+      "leadInvestors": "2 Investors",
+      "totalInvestors": 22,
+      "latestRound": "Strategic Round",
+      "marketCap": 5330000000.0,
+      "fdv": 11510000000.0,
+      "totalRaised": 488470000.0,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 74
+    },
+    {
+      "symbol": "ADA",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Public Token Sale",
+      "marketCap": 6970000000.0,
+      "fdv": 10080000000.0,
+      "totalRaised": 818600000.0,
+      "unlockedInvestorsUsd": 55540000.0,
+      "pctInvestorsUnlocked": 93
+    },
+    {
+      "symbol": "SUI",
+      "leadInvestors": "5 Investors",
+      "totalInvestors": 34,
+      "latestRound": "Seed Round",
+      "marketCap": 4140000000.0,
+      "fdv": 10050000000.0,
+      "totalRaised": 557380000.0,
+      "unlockedInvestorsUsd": 657540000.0,
+      "pctInvestorsUnlocked": 92
+    },
+    {
+      "symbol": "LEO",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Private Round",
+      "marketCap": 9030000000.0,
+      "fdv": 9030000000.0,
+      "totalRaised": 22400000.0,
+      "unlockedInvestorsUsd": 712260000.0,
+      "pctInvestorsUnlocked": 30
+    },
+    {
+      "symbol": "NEAR",
+      "leadInvestors": "9 Investors",
+      "totalInvestors": 33,
+      "latestRound": "Undisclosed",
+      "marketCap": 5970000000.0,
+      "fdv": 7390000000.0,
+      "totalRaised": 888230000.0,
+      "unlockedInvestorsUsd": 541190000.0,
+      "pctInvestorsUnlocked": 38
+    },
+    {
+      "symbol": "UNI",
+      "leadInvestors": "7 Investors",
+      "totalInvestors": 11,
+      "latestRound": "Strategic Round",
+      "marketCap": 6230000000.0,
+      "fdv": 7020000000.0,
+      "totalRaised": 455130000.0,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 22
+    },
+    {
+      "symbol": "AVAX",
+      "leadInvestors": "25 Investors",
+      "totalInvestors": 32,
+      "latestRound": "Strategic Round",
+      "marketCap": 5340000000.0,
+      "fdv": 6980000000.0,
+      "totalRaised": 354700000.0,
+      "unlockedInvestorsUsd": 114180000.0,
+      "pctInvestorsUnlocked": 35
+    },
+    {
+      "symbol": "WLFI",
+      "leadInvestors": "5 Investors",
+      "totalInvestors": 5,
+      "latestRound": "Undisclosed",
+      "marketCap": 1660000000.0,
+      "fdv": 5690000000.0,
+      "totalRaised": 567700000.0,
+      "unlockedInvestorsUsd": 400950000.0,
+      "pctInvestorsUnlocked": 34
+    },
+    {
+      "symbol": "TAO",
+      "leadInvestors": "3 Investors",
+      "totalInvestors": 3,
+      "latestRound": "Undisclosed",
+      "marketCap": 3180000000.0,
+      "fdv": 5570000000.0,
+      "totalRaised": null,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 9
+    },
+    {
+      "symbol": "ASTER",
+      "leadInvestors": "YZi Labs (Prev. Binance Labs)",
+      "totalInvestors": 1,
+      "latestRound": "Seed Round",
+      "marketCap": 2710000000.0,
+      "fdv": 5530000000.0,
+      "totalRaised": null,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 81
+    },
+    {
+      "symbol": "BIT",
+      "leadInvestors": "5 Investors",
+      "totalInvestors": 9,
+      "latestRound": "Private Round",
+      "marketCap": 5440000000.0,
+      "fdv": 5440000000.0,
+      "totalRaised": 960060000.0,
+      "unlockedInvestorsUsd": 579160000.0,
+      "pctInvestorsUnlocked": 92
+    },
+    {
+      "symbol": "WLD",
+      "leadInvestors": "5 Investors",
+      "totalInvestors": 25,
+      "latestRound": "Private Round",
+      "marketCap": 2810000000.0,
+      "fdv": 4850000000.0,
+      "totalRaised": 385220000.0,
+      "unlockedInvestorsUsd": 850730000.0,
+      "pctInvestorsUnlocked": 90
+    },
+    {
+      "symbol": "PUMP",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Public Token Sale",
+      "marketCap": 1590000000.0,
+      "fdv": 4390000000.0,
+      "totalRaised": 133420000.0,
+      "unlockedInvestorsUsd": 532150000.0,
+      "pctInvestorsUnlocked": 15
+    },
+    {
+      "symbol": "ONDO",
+      "leadInvestors": "2 Investors",
+      "totalInvestors": 23,
+      "latestRound": "Public Token Sale",
+      "marketCap": 2330000000.0,
+      "fdv": 4380000000.0,
+      "totalRaised": 627600000.0,
+      "unlockedInvestorsUsd": 700510000.0,
+      "pctInvestorsUnlocked": 4
+    },
+    {
+      "symbol": "BGB",
+      "leadInvestors": "Dragonfly Capital",
+      "totalInvestors": 1,
+      "latestRound": "Strategic Round",
+      "marketCap": 1690000000.0,
+      "fdv": 3840000000.0,
+      "totalRaised": 940500000.0,
+      "unlockedInvestorsUsd": 441700000.0,
+      "pctInvestorsUnlocked": 93
+    },
+    {
+      "symbol": "MNT",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Public Token Sale",
+      "marketCap": 1640000000.0,
+      "fdv": 3220000000.0,
+      "totalRaised": 668780000.0,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 10
+    },
+    {
+      "symbol": "VVV",
+      "leadInvestors": "Dragonfly Capital",
+      "totalInvestors": 7,
+      "latestRound": "Series A",
+      "marketCap": 1770000000.0,
+      "fdv": 3150000000.0,
+      "totalRaised": null,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 98
+    },
+    {
+      "symbol": "LIT",
+      "leadInvestors": "5 Investors",
+      "totalInvestors": 7,
+      "latestRound": "Series A",
+      "marketCap": 736020000.0,
+      "fdv": 3030000000.0,
+      "totalRaised": 189340000.0,
+      "unlockedInvestorsUsd": 667250000.0,
+      "pctInvestorsUnlocked": 97
+    },
+    {
+      "symbol": "DOT",
+      "leadInvestors": null,
+      "totalInvestors": null,
+      "latestRound": "Private Round",
+      "marketCap": 2000000000.0,
+      "fdv": 2930000000.0,
+      "totalRaised": 335690000.0,
+      "unlockedInvestorsUsd": 641170000.0,
+      "pctInvestorsUnlocked": 21
+    },
+    {
+      "symbol": "ENA",
+      "leadInvestors": "7 Investors",
+      "totalInvestors": 26,
+      "latestRound": "Strategic Round",
+      "marketCap": 2010000000.0,
+      "fdv": 2840000000.0,
+      "totalRaised": 666580000.0,
+      "unlockedInvestorsUsd": 438900000.0,
+      "pctInvestorsUnlocked": 12
+    },
+    {
+      "symbol": "AAVE",
+      "leadInvestors": "9 Investors",
+      "totalInvestors": 6,
+      "latestRound": "Undisclosed",
+      "marketCap": 2370000000.0,
+      "fdv": 2430000000.0,
+      "totalRaised": 470740000.0,
+      "unlockedInvestorsUsd": null,
+      "pctInvestorsUnlocked": 79
+    }
+  ]
+}

@@ -1,6 +1,10 @@
-// Shared types between the agent (server) and the U-topia UI (client).
+// Shared types between the agent (server) and the UI (client).
 
-export type DataSource = "live" | "sample";
+/** live = fetched now · snapshot = real data captured on `asOf` · sample = illustrative demo data */
+/** Language of the user's message. Replies, proposal copy and risk reasons follow it. */
+export type Locale = "en" | "th";
+
+export type DataSource = "live" | "snapshot" | "sample";
 
 export interface Sourced<T> {
   data: T;
@@ -9,9 +13,17 @@ export interface Sourced<T> {
   warning?: string;
 }
 
+export interface SourceRef {
+  name: string;
+  url: string;
+}
+
 export type RecipientClass = "team" | "investor" | "community" | "reserve" | "ecosystem" | "other";
 
 export type RiskLevel = "high" | "medium" | "low" | "none";
+
+/** upcoming = cliff ahead · recent = cliff just happened · continuous = linear release · none = nothing in window */
+export type UnlockTiming = "upcoming" | "recent" | "continuous" | "none";
 
 export interface RecipientSlice {
   name: string;
@@ -26,15 +38,20 @@ export interface RiskCard {
   name: string;
   level: RiskLevel;
   score: number; // 0..100, computed in code (never by the LLM)
-  unlockDate: string | null;
-  daysUntil: number | null;
+  timing: UnlockTiming;
+  unlockDate: string | null; // cliff date, or window start for continuous unlocks
+  daysUntil: number | null; // negative once the unlock has passed
+  windowDays: number | null; // continuous unlocks only
   amount: number;
   valueUsd: number;
   pctOfCirculating: number;
   daysOfVolume: number | null;
   breakdown: RecipientSlice[];
   investorMultiple: number | null;
-  reasons: string[]; // short Thai lines, generated deterministically
+  nextUnlock: { date: string; amount: number } | null; // the following cliff, for context
+  headline: string; // one-line summary
+  reasons: string[]; // short English lines, generated deterministically
+  plain: string; // beginner explanation
   factors: { time: number; size: number; liquidity: number; recipient: number; investorBonus: number };
   tradeAmountThb?: number;
   source: { provider: "Tokenomist"; mode: DataSource; asOf: string };
@@ -46,30 +63,105 @@ export interface Proposal {
   id: string;
   symbol: string;
   action: ProtectionAction;
-  title: string; // Thai
-  detail: string; // Thai
+  title: string;
+  detail: string;
   riskLevel: RiskLevel;
   unlockDate: string | null;
   status: "pending" | "approved" | "declined";
 }
 
+export type TraceKind = "guard" | "plan" | "tool" | "llm" | "reflect";
+
 export interface TraceStep {
-  tool: string;
-  input: unknown;
+  kind: TraceKind;
+  name: string; // tool name, provider name, or guard/check name
+  input?: unknown;
   summary: string;
   ms: number;
   ok: boolean;
 }
 
-export type AgentMode = "claude" | "offline";
+export type AgentProvider = "openai" | "anthropic" | "rules";
+
+export type AnswerMode = "beginner" | "pro";
+
+export interface NewsItem {
+  id: string;
+  summary: string;
+  source: string;
+  url: string;
+  date: string | null; // report or event date (YYYY-MM-DD)
+  dateLabel?: string;
+  symbols: string[];
+  topics: string[];
+  sentiment?: "positive" | "negative" | "neutral" | null;
+  relevance?: number;
+}
+
+export interface OddsMarket {
+  id: string;
+  question: string;
+  outcomes: { name: string; probability: number }[];
+  provider: string;
+  url: string;
+  reportedBy?: SourceRef;
+  endDate: string | null;
+  volumeUsd: number | null;
+}
+
+export interface MarketPulse {
+  btc: { priceUsd: number; change24hPct: number | null; date: string; source: SourceRef } | null;
+  sentiment: { value: number; label: string; date: string; source: SourceRef } | null;
+  etfFlows: { asset: string; label: string; netUsd: number; source: SourceRef }[];
+  impliedMove: {
+    asset: string;
+    days: number;
+    pct: number; // one standard deviation, in percent
+    low: number;
+    high: number;
+    source: SourceRef;
+  } | null;
+}
+
+export interface CalendarEvent {
+  date: string; // YYYY-MM-DD
+  title: string;
+  kind: "macro" | "unlock";
+  importance: "high" | "medium" | "low";
+  symbol?: string;
+  source: SourceRef;
+}
+
+export interface ComplianceReport {
+  status: "pass" | "fixed" | "rewritten" | "replaced";
+  issues: string[];
+}
+
+export interface Citation {
+  n: number;
+  title: string;
+  url: string;
+  source: string;
+}
 
 export interface AgentResult {
+  requestId: string;
   reply: string;
   cards: RiskCard[];
+  news: Sourced<NewsItem[]> | null;
+  odds: Sourced<OddsMarket[]> | null;
+  pulse: Sourced<MarketPulse> | null;
+  calendar: CalendarEvent[] | null;
   proposals: Proposal[];
   trace: TraceStep[];
-  mode: AgentMode;
-  note?: string; // e.g. why we fell back to offline
+  citations: Citation[];
+  provider: AgentProvider;
+  model: string | null;
+  compliance: ComplianceReport;
+  note?: string; // e.g. why we fell back to the rules engine
+  usage?: { inputTokens: number; outputTokens: number };
+  ms: number;
+  now: string; // the agent's clock (DEMO_NOW when set), ISO
 }
 
 export interface ChatTurn {
@@ -95,4 +187,111 @@ export interface ProtectionReceipt {
   explorerUrl: string | null;
   memo: string;
   note?: string;
+}
+
+// ─── Trade plans (paper trading) ───
+
+export type TradeSide = "buy" | "sell";
+
+/** One U-Guard check on a trade plan. warn = worth a second look; block = cannot be placed as asked. */
+export interface TradeCheck {
+  id: "unlock" | "size" | "concentration" | "chase" | "balance" | "stablecoin";
+  status: "ok" | "warn" | "block";
+  label: string;
+  detail: string;
+}
+
+/** What-if rows. Each is arithmetic on the plan, or a dated historical average, never a price forecast. */
+export interface TradeScenario {
+  label: string;
+  pct: number;
+  priceUsd: number;
+  pnlThb: number;
+  basis: string;
+}
+
+export interface TradePlan {
+  id: string;
+  symbol: string;
+  name: string;
+  side: TradeSide;
+  orderType: "market" | "limit";
+  amountThb: number;
+  priceUsd: number; // fill price for the plan: the quote, or the limit price
+  quotePriceUsd: number;
+  usdThb: number;
+  qty: number;
+  feeThb: number;
+  stopLossPct: number;
+  stopPriceUsd: number;
+  maxLossThb: number;
+  riskBudgetPct: number;
+  maxSizeThb: number; // largest buy whose stop-loss stays inside the risk budget
+  portfolioThb: number;
+  positionPctAfter: number;
+  checks: TradeCheck[];
+  scenarios: TradeScenario[];
+  verdict: "ready" | "caution" | "blocked";
+  summary: string[]; // 3 short Thai lines
+  card: RiskCard | null;
+  agent: { reply: string; engine: string; trace: TraceStep[] } | null;
+  priceSource: DataSource;
+  createdAt: string;
+  status: "pending" | "approved" | "declined";
+}
+
+export interface PaperOrder {
+  id: string;
+  planId: string;
+  symbol: string;
+  side: TradeSide;
+  qty: number;
+  priceUsd: number;
+  amountThb: number;
+  feeThb: number;
+  stopPriceUsd: number;
+  at: string;
+  receipt: ProtectionReceipt;
+}
+
+// ─── Invest plans (model portfolios the user adjusts and approves) ───
+
+export type InvestProfile = "conservative" | "moderate" | "growth" | "aggressive";
+
+export interface InvestSlice {
+  id: string;
+  th: string;
+  example: string;
+  risk: number; // Thai SEC 1-8 scale; 9 = crypto (8+)
+  pct: number;
+  lumpThb: number;
+  monthlyThb: number;
+  color: string;
+}
+
+export interface InvestCheck {
+  status: "ok" | "warn";
+  label: string;
+  detail: string;
+}
+
+export interface InvestPlan {
+  id: string;
+  profile: InvestProfile;
+  profileTh: string;
+  score: number; // 5..20 from the five answers
+  lumpSumThb: number;
+  monthlyThb: number;
+  dcaDay: number;
+  slices: InvestSlice[];
+  crypto: { symbol: string; pctOfCrypto: number; level: RiskLevel; score: number | null; note: string }[];
+  checks: InvestCheck[];
+  dca: { date: string; amountThb: number; notes: string[] }[];
+  weightedRisk: number;
+  feePctYear: number;
+  summary: string[];
+  source: DataSource;
+  createdAt: string;
+  status: "pending" | "approved" | "declined";
+  receipt?: ProtectionReceipt;
 }
