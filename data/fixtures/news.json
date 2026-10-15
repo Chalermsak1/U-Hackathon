@@ -1,0 +1,51 @@
+{
+  "_sample": "Offline news fallback for search_news. Every URL is a real page collected on 2026-10-15 (the same sources as unlock-calendar.json). Titles and Thai gists are our own summaries of those pages, not the publishers' headlines.",
+  "asOf": "2026-10-15T07:00:00Z",
+  "items": [
+    {
+      "title": "Arbitrum: 92.65M ARB unlocks on 16 Oct for team and investors",
+      "url": "https://tokenomist.ai/arbitrum",
+      "publishedAt": "2026-10-15T00:00:00Z",
+      "symbols": ["ARB"],
+      "eventType": "unlock",
+      "severity": "medium",
+      "gistTh": "ARB ปลดล็อก 92.65M ให้ทีมและนักลงทุนวันที่ 16 ต.ค. (~1.56% ของเหรียญหมุนเวียน) และจะมีทุกวันที่ 16 ถึง มี.ค. 2027"
+    },
+    {
+      "title": "Weekly unlock digest, 12–18 Oct 2026: deBridge releases ~10% of circulating supply",
+      "url": "https://tokenomist.ai/research/weekly-unlock-digest-oct-12-18-2026-debridge-releases-10-of-cir-supply",
+      "publishedAt": "2026-10-12T00:00:00Z",
+      "symbols": ["DBR"],
+      "eventType": "unlock",
+      "severity": "medium",
+      "gistTh": "deBridge มี cliff unlock ราว 10% ของเหรียญหมุนเวียน ใหญ่ที่สุดของสัปดาห์เมื่อเทียบกับ supply"
+    },
+    {
+      "title": "1.17B CRO unlocks on 17 Oct (2.33% of circulating supply)",
+      "url": "https://coinmarketcap.com/top-stories/6accdb226b2625336466bb1c/",
+      "publishedAt": null,
+      "symbols": ["CRO"],
+      "eventType": "unlock",
+      "severity": "medium",
+      "gistTh": "CRO ปลดล็อก 1.17B วันที่ 17 ต.ค. คิดเป็น 2.33% ของเหรียญหมุนเวียน"
+    },
+    {
+      "title": "Ethena unlocked all remaining investor tokens in one day (~1.4B ENA), earlier than scheduled",
+      "url": "https://tokenomist.ai/research",
+      "publishedAt": "2026-10-05T00:00:00Z",
+      "symbols": ["ENA"],
+      "eventType": "unlock_change",
+      "severity": "high",
+      "gistTh": "Ethena ปลดล็อกเหรียญนักลงทุนที่เหลือทั้งหมด ~1.4B ENA ในวันเดียว เร็วกว่าตารางเดิม"
+    },
+    {
+      "title": "Hyperliquid team unlock of 3.75M HYPE sold OTC to a single institution",
+      "url": "https://tokenomist.ai/research",
+      "publishedAt": "2026-10-06T00:00:00Z",
+      "symbols": ["HYPE"],
+      "eventType": "unlock",
+      "severity": "low",
+      "gistTh": "Team unlock 3.75M HYPE (~$336.75M) ขายแบบ OTC ให้สถาบันรายเดียว จึงไม่เข้าตลาดโดยตรง"
+    }
+  ]
+}

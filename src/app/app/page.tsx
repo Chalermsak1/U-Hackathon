@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, topLevel } from "@/components/Avatar";
 import { RiskCardView } from "@/components/Cards";
 import { ChatThread } from "@/components/ChatThread";
@@ -11,13 +11,14 @@ import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
 import { thb } from "@/lib/format";
 import { openReport } from "@/lib/report";
-import type { Holding } from "@/lib/types";
+import type { AgentResult, Holding } from "@/lib/types";
 
 const SUGGESTIONS = ["ซื้อ ARB 5,000 บาท", "AVAX น่ากังวลไหม", "WLD มี unlock ไหม", "สแกนพอร์ตของฉัน"];
 
 // The U-topia phone view: wallet + U-Bot chat, with Agent Trace and a large latest-result panel.
 export default function AppPage() {
-  const { messages, busy, error, setError, levels, last, ask, scan, questionFor } = useAgentChat();
+  const { messages, busy, error, setError, levels, last, ask, scan, receive, questionFor } = useAgentChat();
+  const seen = useRef<Set<string>>(new Set());
   const [input, setInput] = useState("");
   const [holdings, setHoldings] = useState<Holding[]>([]);
   const [totalThb, setTotalThb] = useState(0);
@@ -31,6 +32,26 @@ export default function AppPage() {
       })
       .catch(() => undefined);
   }, []);
+
+  // U-Bot inbox: alerts from the watcher (/api/watch/run) arrive here. Shows alerts from
+  // the last 15 minutes on open, then anything new every 8 seconds.
+  useEffect(() => {
+    const opened = Date.now() - 15 * 60_000;
+    const poll = () =>
+      fetch("/api/ubot/inbox")
+        .then((r) => r.json())
+        .then((b: { items?: { id: string; at: string; kind: string; result: AgentResult }[] }) => {
+          for (const item of b.items ?? []) {
+            if (seen.current.has(item.id)) continue;
+            seen.current.add(item.id);
+            if (item.result.mode === "watch" && new Date(item.at).getTime() >= opened) receive(item.result);
+          }
+        })
+        .catch(() => undefined);
+    poll();
+    const t = setInterval(poll, 8000);
+    return () => clearInterval(t);
+  }, [receive]);
 
   const send = (text: string) => {
     setInput("");

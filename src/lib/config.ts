@@ -21,6 +21,22 @@ export const config = {
     // Gateway model ids look like "anthropic/<model>"; check the exact id in the gateway's model list.
     model: env("AI_GATEWAY_MODEL", "anthropic/claude-opus-5.5"),
   },
+  // News search (search_news tool): a small Claude model with the web search server tool.
+  // auto = web search when a Claude key is set, else the labelled news fixture.
+  news: {
+    source: env("NEWS_SOURCE", "auto") as "auto" | "web" | "fixture",
+    model: env("NEWS_MODEL", "claude-haiku-5-5"),
+    gatewayModel: env("NEWS_GATEWAY_MODEL", "anthropic/claude-haiku-5.5"),
+    maxSearches: 3,
+  },
+  // Alert engine (/api/watch/run). Vercel Cron sends "Authorization: Bearer $CRON_SECRET".
+  watch: {
+    cronSecret: env("CRON_SECRET"),
+    userId: "demo-user",
+    quietStartHour: 22, // Bangkok time; only high-severity alerts go out between these hours
+    quietEndHour: 7,
+    maxPerDay: 5,
+  },
   tokenomist: {
     apiKey: env("TOKENOMIST_API_KEY"),
     baseUrl: env("TOKENOMIST_BASE_URL", "https://api.tokenomist.ai"),

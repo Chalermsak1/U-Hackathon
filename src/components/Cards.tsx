@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { compact, LEVEL_TH, pct, thaiDate, usd } from "@/lib/format";
-import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
+import { freshLabelTh, isStale, mergeFresh } from "@/lib/freshness";
+import type { DriftReport, Freshness, NewsItem, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
   team: { th: "ทีม", color: "#FB7151" },
@@ -33,6 +34,19 @@ async function speak(text: string) {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   }
+}
+
+/** "ข้อมูล Tokenomist ณ 15 ต.ค. 07:00 (ตัวอย่าง) · ราคา ณ ..." with a warning when anything is stale. */
+export function FreshLine({ fresh }: { fresh: Freshness[] | undefined }) {
+  const list = mergeFresh(fresh ?? []);
+  if (list.length === 0) return null;
+  const stale = list.filter((f) => isStale(f));
+  return (
+    <span className={`fresh ${stale.length ? "fresh-stale" : ""}`} title={stale.map((f) => f.note).filter(Boolean).join("\n") || undefined}>
+      {stale.length > 0 && <b>อาจไม่ล่าสุด · </b>}
+      ข้อมูล {list.map((f) => freshLabelTh(f)).join(" · ")}
+    </span>
+  );
 }
 
 export function RiskCardView({ card }: { card: RiskCard }) {
@@ -98,7 +112,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
       )}
       <div className="card-foot">
         <span>
-          Tokenomist · {card.source.mode === "live" ? "ข้อมูลสด" : "ข้อมูลตัวอย่าง"} · ไม่ใช่คำแนะนำการลงทุน
+          <FreshLine fresh={card.fresh} /> · ไม่ใช่คำแนะนำการลงทุน
         </span>
         <button
           className="btn btn-sm"
@@ -173,5 +187,90 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
         </div>
       )}
     </article>
+  );
+}
+
+const DRIFT_TH: Record<DriftReport["rows"][number]["status"], string> = {
+  over: "เกินเป้า",
+  under: "ต่ำกว่าเป้า",
+  ok: "ในกรอบ",
+  no_target: "ไม่ได้ตั้งเป้า",
+};
+
+/** Current weight vs the user's own target, per token (AGENTIC-WORKFLOW.md §8). */
+export function DriftCardView({ drift }: { drift: DriftReport }) {
+  const off = drift.rows.filter((r) => r.status === "over" || r.status === "under");
+  const scale = Math.max(50, ...drift.rows.map((r) => Math.max(r.weightPct, r.targetPct ?? 0))) * 1.08;
+  const level = !drift.hasTargets ? "lv-none" : off.length === 0 ? "lv-low" : drift.totalDriftPct > 10 ? "lv-high" : "lv-medium";
+  return (
+    <article className={`card drift ${level}`} aria-label="พอร์ตเทียบเป้าหมาย">
+      <div className="card-head">
+        <h3>พอร์ตเทียบเป้า</h3>
+        <span className="name">{drift.hasTargets ? `ห่างจากเป้ารวม ${drift.totalDriftPct}% · กรอบ ±${drift.bandPp} จุด` : "ยังไม่ได้ตั้งเป้าสัดส่วน"}</span>
+        <span className="score" title="คะแนนความเสี่ยง unlock ทั้งพอร์ต (ถ่วงตามสัดส่วน)">
+          เสี่ยง {drift.portfolioRiskScore}/100
+        </span>
+      </div>
+      <div className="drift-rows">
+        {drift.rows.map((r) => (
+          <div key={r.symbol} className={`drift-row drift-${r.status}`}>
+            <b>{r.symbol}</b>
+            <div className="drift-bar" aria-hidden="true">
+              <i style={{ width: `${(r.weightPct / scale) * 100}%` }} />
+              {r.targetPct !== null && <em style={{ left: `${(r.targetPct / scale) * 100}%` }} />}
+            </div>
+            <span className="drift-num">
+              {r.weightPct}%{r.targetPct !== null ? <small> / {r.targetPct}%</small> : null}
+            </span>
+            <span className="drift-pp" title={DRIFT_TH[r.status]}>
+              {r.driftPp === null ? "–" : `${r.driftPp > 0 ? "+" : ""}${r.driftPp}`}
+            </span>
+          </div>
+        ))}
+      </div>
+      <ul className="reasons">
+        {drift.lines.map((l) => (
+          <li key={l}>{l}</li>
+        ))}
+      </ul>
+      <div className="card-foot">
+        <span>
+          <FreshLine fresh={drift.fresh} /> · เทียบกับเป้าที่คุณตั้งเอง ไม่ใช่คำแนะนำการลงทุน
+        </span>
+      </div>
+    </article>
+  );
+}
+
+const SEVERITY_TH = { high: "สำคัญมาก", medium: "ควรรู้", low: "ทั่วไป" } as const;
+
+/** Sources for a news answer. Links only to URLs the web search actually returned. */
+export function NewsList({ items }: { items: NewsItem[] }) {
+  if (items.length === 0) return null;
+  return (
+    <section className="news" aria-label="แหล่งข่าว">
+      <h4>แหล่งข่าว</h4>
+      <ol>
+        {items.map((n) => (
+          <li key={`${n.url}|${n.title}`}>
+            <span className={`sev sev-${n.severity}`}>{SEVERITY_TH[n.severity]}</span>
+            <div>
+              {/^https?:\/\//i.test(n.url) ? (
+                <a href={n.url} target="_blank" rel="noreferrer noopener">
+                  {n.title}
+                </a>
+              ) : (
+                <span>{n.title}</span>
+              )}
+              <small>
+                {n.publisher}
+                {n.publishedAt ? ` · ${thaiDate(n.publishedAt)}` : ""} · {n.symbols.join(", ")}
+              </small>
+              <p>{n.gistTh}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }

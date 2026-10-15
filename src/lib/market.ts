@@ -3,6 +3,7 @@
 
 import { config } from "./config";
 import { readFixture } from "./fixtures";
+import { TTL, makeFresh, type Freshness } from "./freshness";
 import type { DataSource } from "./types";
 
 // Ticker → CoinGecko id. Add a row for every token you demo with MARKET_SOURCE=live.
@@ -21,6 +22,7 @@ export interface MarketQuote {
   priceUsd: number;
   volume24hUsd: number;
   source: DataSource;
+  fresh: Freshness;
 }
 
 interface MarketFixture {
@@ -43,27 +45,46 @@ const liveCache = new Map<string, { at: number; quote: MarketQuote }>();
 
 export async function getQuote(symbol: string): Promise<MarketQuote | null> {
   const sym = symbol.toUpperCase();
+  let failure: string | undefined;
   if (config.market.source === "live" && COINGECKO_IDS[sym]) {
     const hit = liveCache.get(sym);
-    if (hit && Date.now() - hit.at < 60_000) return hit.quote;
+    if (hit && Date.now() - hit.at < TTL.price * 1000) return hit.quote;
     try {
       const id = COINGECKO_IDS[sym];
       const res = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd&include_24hr_vol=true`,
+        `https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd&include_24hr_vol=true&include_last_updated_at=true`,
         { cache: "no-store" },
       );
-      if (res.ok) {
-        const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number }>;
-        if (body[id]) {
-          const quote = { symbol: sym, priceUsd: body[id].usd, volume24hUsd: body[id].usd_24h_vol, source: "live" as const };
-          liveCache.set(sym, { at: Date.now(), quote });
-          return quote;
-        }
-      }
-    } catch {
-      // fall through to the fixture
+      if (!res.ok) throw new Error(`CoinGecko ${res.status}`);
+      const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number; last_updated_at?: number }>;
+      const row = body[id];
+      if (!row) throw new Error(`CoinGecko has no ${id}`);
+      const asOf = row.last_updated_at ? new Date(row.last_updated_at * 1000).toISOString() : new Date().toISOString();
+      const quote: MarketQuote = {
+        symbol: sym,
+        priceUsd: row.usd,
+        volume24hUsd: row.usd_24h_vol,
+        source: "live",
+        fresh: makeFresh("ราคา CoinGecko", "live", asOf, TTL.price),
+      };
+      liveCache.set(sym, { at: Date.now(), quote });
+      return quote;
+    } catch (err) {
+      failure = (err as Error).message;
+      // Last good live quote beats the fixture, but say it is old.
+      if (hit) return { ...hit.quote, fresh: { ...hit.quote.fresh, stale: true, note: `${failure}; showing the last good price` } };
     }
   }
-  const row = (await fixture()).tokens[sym];
-  return row ? { symbol: sym, ...row, source: "sample" } : null;
+  const fx = await fixture();
+  const row = fx.tokens[sym];
+  if (!row) return null;
+  return {
+    symbol: sym,
+    ...row,
+    source: "sample",
+    fresh: makeFresh("ราคา", "sample", fx.asOf || new Date().toISOString(), TTL.price, {
+      stale: failure !== undefined,
+      note: failure ? `${failure}; using sample prices` : undefined,
+    }),
+  };
 }

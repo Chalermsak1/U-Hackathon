@@ -4,6 +4,7 @@
 import { getAvaxBalance } from "./avalanche";
 import { config } from "./config";
 import { readFixture } from "./fixtures";
+import { TTL, makeFresh } from "./freshness";
 import { getQuote, usdToThb } from "./market";
 import { listTokens } from "./tokenomist";
 import type { Holding } from "./types";
@@ -29,6 +30,9 @@ export async function getHoldings(): Promise<Holding[]> {
       const amount = isLiveAvax ? liveAvax : row.amount;
       const quote = await getQuote(row.symbol);
       const priceUsd = quote?.priceUsd ?? 0;
+      const wallet = isLiveAvax
+        ? makeFresh("Avalanche Fuji", "live", new Date().toISOString(), TTL.holdings)
+        : makeFresh("กระเป๋า U-topia", "sample", new Date().toISOString(), TTL.holdings);
       const name = tokens.data.find((t) => t.symbol === row.symbol)?.name ?? NAMES[row.symbol] ?? row.symbol;
       return {
         symbol: row.symbol,
@@ -38,6 +42,7 @@ export async function getHoldings(): Promise<Holding[]> {
         valueUsd: amount * priceUsd,
         valueThb: amount * priceUsd * fx,
         source: isLiveAvax ? "live" : "sample",
+        fresh: quote ? [wallet, quote.fresh] : [wallet],
       };
     }),
   );

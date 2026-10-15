@@ -89,11 +89,20 @@ export function useAgentChat() {
     }
   }, [busy, absorb]);
 
+  /** A message U-Bot pushed (an alert from the watcher), shown with the "U-BOT แจ้งเตือน" tag. */
+  const receive = useCallback(
+    (result: AgentResult) => {
+      absorb(result, 0);
+      setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "bot", text: result.reply, result, push: true }]);
+    },
+    [absorb],
+  );
+
   /** The user message that led to bot message i (for the PDF report title). */
   const questionFor = useCallback(
     (i: number) => (messages[i - 1]?.role === "user" ? messages[i - 1].text : "สแกนพอร์ต"),
     [messages],
   );
 
-  return { messages, busy, error, setError, levels, last, ask, scan, questionFor };
+  return { messages, busy, error, setError, levels, last, ask, scan, receive, questionFor };
 }

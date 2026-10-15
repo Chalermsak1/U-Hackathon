@@ -11,7 +11,7 @@ import { config } from "./config";
 import { compact, daysBetween, pct, thaiDate, untilText, usd } from "./format";
 import { getQuote } from "./market";
 import { classifyRecipient } from "./recipient";
-import { findToken, getFundraising, getUnlockEvents, type AllocationUnlock, type FundraisingData } from "./tokenomist";
+import { findToken, getFundraising, getUnlockEvents, tokenomistFresh, type AllocationUnlock, type FundraisingData } from "./tokenomist";
 import type { DataSource, RecipientClass, RecipientSlice, RiskCard, RiskLevel } from "./types";
 
 const RECIPIENT_WEIGHT: Record<RecipientClass, number> = {
@@ -112,6 +112,7 @@ export async function assessUnlockRisk(symbol: string, tradeAmountThb: number | 
     name: token.name,
     tradeAmountThb: tradeAmountThb ?? undefined,
     source: { provider: "Tokenomist" as const, mode: sourceMode, asOf: events.asOf },
+    fresh: quote ? [tokenomistFresh(events), quote.fresh] : [tokenomistFresh(events)],
   };
 
   const next = events.data

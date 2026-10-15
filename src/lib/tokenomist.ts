@@ -4,6 +4,7 @@
 
 import { config } from "./config";
 import { readFixture } from "./fixtures";
+import { TTL, makeFresh, type Freshness } from "./freshness";
 import type { Sourced } from "./types";
 
 // ─── Response shapes (subset of the v5 schema we use) ───────────────────────
@@ -82,8 +83,11 @@ interface Envelope<T> {
 
 // ─── Transport ──────────────────────────────────────────────────────────────
 
-const TTL_MS = 10 * 60 * 1000;
+// Fresh copies are reused for their TTL. The last good live copy is kept separately, so
+// when Tokenomist fails we can answer with it (marked stale) instead of dropping to the
+// sample fixture.
 const cache = new Map<string, { at: number; value: Sourced<unknown> }>();
+const lastGood = new Map<string, Sourced<unknown>>();
 
 async function fetchLive<T>(pathAndQuery: string): Promise<Envelope<T>> {
   const res = await fetch(`${config.tokenomist.baseUrl}${pathAndQuery}`, {
@@ -101,10 +105,12 @@ async function load<T>(
   livePath: string,
   fixturePath: string[],
   empty: T,
+  ttlSeconds: number,
 ): Promise<Sourced<T>> {
   const hit = cache.get(cacheKey);
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.value as Sourced<T>;
+  if (hit && Date.now() - hit.at < ttlSeconds * 1000) return hit.value as Sourced<T>;
 
+  const now = new Date().toISOString();
   let warning: string | undefined;
   if (config.tokenomist.apiKey) {
     try {
@@ -112,13 +118,22 @@ async function load<T>(
       const value: Sourced<T> = {
         data: body.data,
         source: "live",
-        asOf: body.metadata?.queryDate ?? new Date().toISOString(),
+        asOf: body.metadata?.queryDate ?? now,
+        fetchedAt: now,
+        ttlSeconds,
+        stale: false,
       };
       cache.set(cacheKey, { at: Date.now(), value });
+      lastGood.set(cacheKey, value);
       return value;
     } catch (err) {
       // e.g. 403 for datasets outside the plan (free trial has no forward unlocks or fundraising)
-      warning = `${(err as Error).message}; using sample data`;
+      warning = (err as Error).message;
+      const good = lastGood.get(cacheKey) as Sourced<T> | undefined;
+      if (good) {
+        // Not cached: the next question tries the live API again.
+        return { ...good, stale: true, warning: `${warning}; showing the last good copy` };
+      }
     }
   }
 
@@ -126,17 +141,30 @@ async function load<T>(
   const value: Sourced<T> = {
     data: fixture?.data ?? empty,
     source: "sample",
-    asOf: fixture?.metadata?.queryDate ?? new Date().toISOString(),
-    warning,
+    asOf: fixture?.metadata?.queryDate ?? now,
+    fetchedAt: now,
+    ttlSeconds,
+    // Sample data in a demo without a key is labelled, not stale. A failed live call is stale.
+    stale: warning !== undefined,
+    warning: warning ? `${warning}; using sample data` : undefined,
   };
   cache.set(cacheKey, { at: Date.now(), value });
   return value;
 }
 
+/** Freshness entry for any Tokenomist result. */
+export function tokenomistFresh(res: Sourced<unknown>): Freshness {
+  return makeFresh("Tokenomist", res.source, res.asOf, res.ttlSeconds, {
+    fetchedAt: res.fetchedAt,
+    stale: res.stale,
+    note: res.warning,
+  });
+}
+
 // ─── Public API ─────────────────────────────────────────────────────────────
 
 export function listTokens(): Promise<Sourced<TokenListItem[]>> {
-  return load<TokenListItem[]>("list", "/v5/token/list", ["tokenomist", "token-list.json"], []);
+  return load<TokenListItem[]>("list", "/v5/token/list", ["tokenomist", "token-list.json"], [], TTL.tokenList);
 }
 
 /** Resolves a ticker or name ("sui", "WLD", "Avalanche") to a Tokenomist token. */
@@ -157,6 +185,7 @@ export function getUnlockEvents(tokenId: string, start: string, end: string): Pr
     `/v5/unlock/events/${encodeURIComponent(tokenId)}?${qs}`,
     ["tokenomist", "unlock-events", `${tokenId}.json`],
     [],
+    TTL.unlockSchedule,
   ).then((res) => ({
     ...res,
     // Fixtures hold every event; apply the same window the live API applies.
@@ -170,6 +199,7 @@ export function getAllocations(tokenId: string): Promise<Sourced<AllocationsData
     `/v5/allocations/${encodeURIComponent(tokenId)}`,
     ["tokenomist", "allocations", `${tokenId}.json`],
     null,
+    TTL.allocations,
   );
 }
 
@@ -179,5 +209,6 @@ export function getFundraising(tokenId: string): Promise<Sourced<FundraisingData
     `/v5/fundraising/token/${encodeURIComponent(tokenId)}`,
     ["tokenomist", "fundraising", `${tokenId}.json`],
     null,
+    TTL.fundraising,
   );
 }

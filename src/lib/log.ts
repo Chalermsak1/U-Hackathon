@@ -21,6 +21,7 @@ export type LogEntry =
       note?: string;
     }
   | { type: "protect"; proposalId: string; symbol: string; decision: string; mode: string; txHash: string | null }
+  | { type: "watch"; trigger: "cron" | "manual"; ms: number; fired: string[]; skipped: { key: string; reason: string }[] }
   | { type: "error"; route: string; message: string };
 
 export async function writeLog(entry: LogEntry): Promise<void> {
@@ -30,7 +31,9 @@ export async function writeLog(entry: LogEntry): Promise<void> {
       ? `${entry.mode} ${entry.ms}ms ${entry.trace.map((t) => t.tool).join(">") || "-"}`
       : entry.type === "protect"
         ? `${entry.decision} ${entry.symbol} ${entry.mode}`
-        : entry.message;
+        : entry.type === "watch"
+          ? `${entry.trigger} ${entry.ms}ms fired=${entry.fired.length} skipped=${entry.skipped.length}`
+          : entry.message;
   console.info(`[u-guard] ${entry.type} ${brief}`);
   try {
     await mkdir(LOG_DIR, { recursive: true });

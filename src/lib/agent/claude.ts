@@ -1,21 +1,12 @@
 // Claude tool-use loop. Manual (not the beta tool runner) so every step lands in the
 // Agent Trace and approval stays outside the loop: the agent can only *propose*.
 
-import Anthropic from "@anthropic-ai/sdk";
+import type Anthropic from "@anthropic-ai/sdk";
+import { getAnthropic, viaGateway } from "../anthropic";
 import { config } from "../config";
 import type { AgentResult, ChatTurn } from "../types";
 import { SYSTEM_PROMPT } from "./prompt";
-import { TOOL_DEFINITIONS, executeTool, newContext } from "./tools";
-
-const viaGateway = config.gateway.provider === "vercel";
-
-let client: Anthropic | null = null;
-function getClient(): Anthropic {
-  client ??= viaGateway
-    ? new Anthropic({ apiKey: config.gateway.apiKey, baseURL: config.gateway.baseUrl, timeout: 60_000, maxRetries: 1 })
-    : new Anthropic({ timeout: 60_000, maxRetries: 1 });
-  return client;
-}
+import { TOOL_DEFINITIONS, executeTool, newContext, resultFromContext } from "./tools";
 
 export async function runClaudeAgent(message: string, history: ChatTurn[]): Promise<AgentResult> {
   const ctx = newContext();
@@ -26,7 +17,7 @@ export async function runClaudeAgent(message: string, history: ChatTurn[]): Prom
 
   let reply = "";
   for (let turn = 0; turn < config.agent.maxTurns; turn++) {
-    const response = await getClient().beta.messages.create({
+    const response = await getAnthropic().beta.messages.create({
       model: viaGateway ? config.gateway.model : config.agent.model,
       max_tokens: 16000,
       system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
@@ -72,11 +63,5 @@ export async function runClaudeAgent(message: string, history: ChatTurn[]): Prom
     if (text) reply = text;
   }
 
-  return {
-    reply: reply || "ตรวจสอบเรียบร้อย ดูรายละเอียดในการ์ดด้านล่างได้เลย",
-    cards: [...ctx.cards.values()],
-    proposals: ctx.proposals,
-    trace: ctx.trace,
-    mode: "claude",
-  };
+  return resultFromContext(ctx, reply || "ตรวจสอบเรียบร้อย ดูรายละเอียดในการ์ดด้านล่างได้เลย", "claude");
 }

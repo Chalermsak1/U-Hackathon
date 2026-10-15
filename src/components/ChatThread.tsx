@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Avatar, topLevel } from "@/components/Avatar";
-import { ProposalCardView, RiskCardView } from "@/components/Cards";
+import { DriftCardView, NewsList, ProposalCardView, RiskCardView } from "@/components/Cards";
 import { openReport } from "@/lib/report";
 import type { ChatMessage } from "./useAgentChat";
 
@@ -36,6 +36,8 @@ export function ChatThread({
             <div className="msg-stack">
               {m.push && <span className="push-tag">U-BOT แจ้งเตือน</span>}
               <div className="bubble">{m.text}</div>
+              {m.result?.news && m.result.news.length > 0 && <NewsList items={m.result.news} />}
+              {m.result?.drift && <DriftCardView drift={m.result.drift} />}
               {m.result?.cards.map((c) => <RiskCardView key={c.symbol} card={c} />)}
               {m.result?.proposals.map((p) => <ProposalCardView key={p.id} proposal={p} />)}
               {m.result && m.result.cards.length > 0 && (
@@ -50,7 +52,7 @@ export function ChatThread({
       {busy && (
         <div className="msg msg-bot">
           <Avatar size={26} thinking />
-          <div className="bubble note">กำลังดึงตาราง unlock และคำนวณความเสี่ยง…</div>
+          <div className="bubble note">กำลังดึงข้อมูลล่าสุดและคำนวณความเสี่ยง…</div>
         </div>
       )}
     </div>
