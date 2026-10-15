@@ -1,7 +1,7 @@
 # Development Log
 
 U-Guard development log. Times are Bangkok time (UTC+7); a "~" means approximate.
-The agent's **runtime log** (every question, tool call, approval and error) is written to `logs/YYYY-MM-DD.jsonl` and shown at `/logs`. Those files are not committed.
+The agent's **runtime log** (every question with PII redacted, tool call, approval and error) is written to `logs/YYYY-MM-DD.jsonl`. Those files are not committed, and there is no `/logs` page (it was never committed; see UI-REVIEW, "What to show to whom").
 
 ---
 
@@ -114,6 +114,52 @@ The agent's **runtime log** (every question, tool call, approval and error) is w
 3. Stop dev and run `npm run build` to confirm the production build.
 4. Supabase auth + DB (ask before creating the project).
 5. Rehearse the demo 3 times and record a backup video (test on the real projector).
+
+### 16:22 · English web app and model-agnostic agent (branch `feat/agentic-web-english`, commit `2339b8c`)
+Built in a separate session without seeing `feat/app-ui`.
+- **Pages:** `/` platform page, `/login`, `/app` chat, `/dashboard`, `/method`, a floating U-Bot bubble and a 404 page.
+- **Agent harness:** guard → plan + act → reflect → observe. The model is pluggable: any OpenAI-compatible model, Claude, or a deterministic rules engine that is also the automatic fallback.
+- **11 tools.** The new ones are `get_market_news` (GDELT, with [n] citations), `get_event_odds` (Polymarket), `get_market_pulse` (CoinGecko, Fear & Greed, Deribit DVOL) and `get_event_calendar`.
+- **RAG and CAG:** fresh facts come through tools; static knowledge (`data/knowledge/faq.json`) sits in the cached system prompt.
+- **Guardrails:** an input guard (blocks seed phrases and private keys, redacts PII, flags injection), rate limits, Origin checks, a compliance check in EN and TH, and security headers.
+- **Auth:** demo account, email and password (scrypt with lockout), and Sign-In with Ethereum. MCP server at `/api/mcp`.
+- **Checks:** `npm run eval` (26 cases) and `npm run responsive` (Playwright: iPhone SE, 15 Pro, 15 Pro Max, iPad, desktop).
+
+### 17:03 · CSS-only restyle (commit `78ecb6d`)
+- Inter font, cleaner surfaces and light glass on the English pages. No layout changes.
+
+### Oct 16, ~00:50 · Merged both branches (branch `feat/merge-app-ui-agentic`, commit `f1898d9`)
+- **Rule:** don't break either side.
+- **Two front-ends, one backend:**
+  - The owner's Thai app is unchanged at `/`, `/app`, `/terminal/**` and `/report`.
+  - The English app moved to `/en` and `/assistant`; `/dashboard`, `/login` and `/method` keep their paths.
+- **Cross-links:** an EN button on the landing page, an English group in the terminal sidebar, and a ไทย link on the English pages.
+- **Thai app sign-in:** `EnsureSession` signs the Thai app into the demo account, so approve and scan still work without a login wall.
+- **CSS isolation:** the English stylesheet is scoped under `.ug-web`, and the owner's rules on 37 shared class names are guarded, so neither side can restyle the other.
+- **Backend:** the owner's Vercel AI Gateway path, `AGENT_MODE` alias, `pause_turn` handling, JSONL run log, U-Bot webhook and inbox, alerts and ElevenLabs STT were ported into the harness.
+- **Replies follow the user's language.** Thai pages get Thai card reasons (`?lang=en` for English).
+- **Data:** follows the owner's tokenomist.ai copy (ARB unlock 16 Oct 13:00 UTC = 20:00 Bangkok), plus the ETH wallet row and the news/odds/pulse fixtures.
+- **Problem:** the merged Thai token page showed English reasons → passed the Thai locale in `/api/token`, `/api/calendar` and `/api/portfolio/risk`.
+- **Problem:** the 14px inputs zoomed on iOS → 16px on touch devices. The EN link pushed the CTA off a 320px screen → hidden at ≤380px, with a footer link instead.
+- **Checked:** typecheck ✅ · production build ✅ · eval 28/28 ✅ · responsive 60/60 ✅ · every page and API, end to end.
+- **Blocked:**
+  - Pushing to `main` was refused by the session's permission rules → open a PR and merge it.
+  - The Vercel connector is read-only, so the app is not hosted yet.
+  - The session's network blocks `api.tokenomist.ai`, so the Tokenomist key is not used yet.
+
+### Oct 16, ~01:00 · Analysis: Trade and Invest pages like Nansen, status review
+- The user wants Trade and Invest pages covering crypto, stocks and funds, with an AI that plans, measures risk and proposes trades, and a human approving each one.
+- Wrote [STATUS.md](STATUS.md) (Thai):
+  - every feature built so far, and which flows work
+  - 10 places where the product doesn't flow or contradicts itself
+  - the Nansen comparison and the proposed page structure
+  - models per job with prices, and integrations ranked by value
+  - the pre-processing pipeline for annual reports and world trends
+  - Tokenomist key status, and the decisions needed
+- **Open decisions:**
+  - Scope for today's demo: crypto real (simulated/testnet), stocks and funds as labelled sample data.
+  - How the AI phrases things: drafts plans and scenarios that the user approves, or direct buy/sell advice (a licensing risk with the Thai SEC).
+  - Whether the Thai terminal becomes the single app.
 
 ---
 
