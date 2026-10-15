@@ -143,6 +143,21 @@ async function main() {
       },
     },
     {
+      name: "Agent: drift question → check_portfolio_drift against the user's own targets",
+      run: async () => {
+        const r = await agent("Has my portfolio drifted from my targets?");
+        const ok = tools(r).includes("check_portfolio_drift") && r.drift?.hasTargets === true && /target/i.test(r.reply) && !tools(r).includes("propose_protection");
+        return ok ? true : JSON.stringify({ tools: tools(r), reply: r.reply.slice(0, 200) });
+      },
+    },
+    {
+      name: "Agent (TH): พอร์ตเบี้ยวจากเป้าไหม → Thai drift lines",
+      run: async () => {
+        const r = await agent("พอร์ตเบี้ยวจากเป้าไหม");
+        return tools(r).includes("check_portfolio_drift") && /เป้า/.test(r.reply) ? true : JSON.stringify({ tools: tools(r), reply: r.reply.slice(0, 200) });
+      },
+    },
+    {
       name: "Agent (signed out): scan asks to sign in, no wallet tools run",
       run: async () => {
         const r = await agent("Scan my portfolio", "public");
@@ -214,7 +229,7 @@ async function main() {
           await call({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "assess_unlock_risk", arguments: { symbol: "ARB", trade_amount_thb: null } } })
         ).json();
         const text = res?.result?.content?.[0]?.text ?? "";
-        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 11 && /"symbol":"ARB"/.test(text);
+        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 12 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
       },
     },

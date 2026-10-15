@@ -5,6 +5,8 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { compact, shortDate, thaiDate, usd } from "../format";
+import { asOfTh } from "../freshness";
+import { checkDrift } from "../drift";
 import { getEventCalendar } from "../intel/calendar";
 import { searchNews } from "../intel/news";
 import { getEventOdds } from "../intel/odds";
@@ -18,6 +20,7 @@ import type {
   CalendarEvent,
   Citation,
   DataSource,
+  DriftReport,
   Holding,
   Locale,
   MarketPulse,
@@ -133,6 +136,12 @@ export const TOOL_SPECS: ToolSpec[] = [
     input_schema: { ...noInput, required: [] },
   },
   {
+    name: "check_portfolio_drift",
+    description:
+      "Compare the user's wallet with the target mix they set themselves: each holding's weight vs target (percentage points), which are over or under the drift band, the value-weighted unlock risk of the whole portfolio, 6-month dilution and the largest holding. Measures against the user's own plan only; never suggests what to buy or sell. The app shows it as a drift card.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
     name: "get_event_calendar",
     description: "Scheduled events in the next N days that can move prices: Fed (FOMC) decisions and token unlocks.",
     input_schema: {
@@ -164,6 +173,7 @@ const INPUTS = {
   get_event_odds: z.object({ topic: z.string().trim().min(2).max(80) }),
   get_market_pulse: z.object({}),
   get_event_calendar: z.object({ days: Days.default(45) }),
+  check_portfolio_drift: z.object({}),
 } as const;
 
 export type ToolName = keyof typeof INPUTS;
@@ -185,6 +195,7 @@ export interface RunContext {
   pulse: Sourced<MarketPulse> | null;
   calendar: CalendarEvent[] | null;
   holdings: Holding[] | null;
+  drift: DriftReport | null;
   citations: Citation[];
   trace: TraceStep[];
   evidence: string[]; // serialized tool results: the only numbers a reply may use
@@ -203,6 +214,7 @@ export function newContext(init: { userId: string; scope: "user" | "public"; req
     pulse: null,
     calendar: null,
     holdings: null,
+    drift: null,
     citations: [],
     trace: [],
     evidence: [],
@@ -286,7 +298,7 @@ function addNews(ctx: RunContext, res: Sourced<NewsItem[]>): { n: number; item: 
   return out;
 }
 
-const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection"]);
+const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift"]);
 
 async function run(name: ToolName, input: Record<string, unknown>, ctx: RunContext): Promise<ToolOutput> {
   if (ctx.scope === "public" && WALLET_TOOLS.has(name)) {
@@ -298,7 +310,13 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
       ctx.holdings = holdings;
       holdings.forEach((h) => ctx.sources.add(h.source));
       return {
-        result: holdings.map((h) => ({ symbol: h.symbol, amount: h.amount, value_thb: Math.round(h.valueThb), data: h.source })),
+        result: holdings.map((h) => ({
+          symbol: h.symbol,
+          amount: h.amount,
+          value_thb: Math.round(h.valueThb),
+          data: h.source,
+          price_as_of_th: asOfTh(h.asOf, ctx.now),
+        })),
         summary: holdings.map((h) => h.symbol).join(", "),
       };
     }
@@ -410,6 +428,8 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           next_unlock: c.nextUnlock ? { date: c.nextUnlock.date.slice(0, 10), amount: c.nextUnlock.amount } : null,
           reasons: c.reasons,
           data: c.source.mode,
+          as_of_th: asOfTh(c.source.asOf, ctx.now),
+          stale: c.source.stale ?? false,
         },
         summary:
           c.level === "none"
@@ -520,6 +540,37 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           data: res.source,
         },
         summary: p.btc ? `BTC ${usd(p.btc.priceUsd)}${p.sentiment ? ` · F&G ${p.sentiment.value}` : ""}` : "no data",
+      };
+    }
+    case "check_portfolio_drift": {
+      const d = await checkDrift(ctx.userId, { now: ctx.now, locale: ctx.locale });
+      ctx.drift = d;
+      ctx.sources.add("sample"); // demo wallet and target mix are sample data
+      return {
+        result: {
+          has_targets: d.hasTargets,
+          band_pp: d.bandPp,
+          rows: d.rows.map((r) => ({
+            symbol: r.symbol,
+            weight_pct: r.weightPct,
+            target_pct: r.targetPct,
+            drift_pp: r.driftPp,
+            status: r.status,
+            unlock_risk: r.riskLevel,
+            unlock_score: r.riskScore,
+            dilution_6m_pct: r.dilutionPct,
+          })),
+          off_target_pct: d.totalDriftPct,
+          portfolio_unlock_score: d.portfolioRiskScore,
+          weighted_dilution_6m_pct: d.weightedDilutionPct,
+          largest: d.concentration,
+          lines: d.lines,
+          price_as_of_th: asOfTh(d.pricesAsOf, ctx.now),
+          data: "sample",
+        },
+        summary: d.hasTargets
+          ? `${d.rows.filter((r) => r.status === "over" || r.status === "under").length} off target · ${d.totalDriftPct}% drift · risk ${d.portfolioRiskScore}/100`
+          : `no targets · largest ${d.concentration?.symbol ?? "-"}`,
       };
     }
     case "get_event_calendar": {

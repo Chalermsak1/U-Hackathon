@@ -99,6 +99,9 @@ interface Envelope<T> {
 
 const TTL_MS = 10 * 60 * 1000;
 const cache = new Map<string, { at: number; value: Sourced<unknown> }>();
+// The last successful live response per key, kept past the TTL: if Tokenomist fails later,
+// answers use this copy marked stale rather than dropping to sample data.
+const lastGood = new Map<string, Sourced<unknown>>();
 
 async function fetchLive<T>(pathAndQuery: string): Promise<Envelope<T>> {
   const res = await fetch(`${config.tokenomist.baseUrl}${pathAndQuery}`, {
@@ -130,8 +133,15 @@ async function load<T>(
         asOf: body.metadata?.queryDate ?? new Date().toISOString(),
       };
       cache.set(cacheKey, { at: Date.now(), value });
+      lastGood.set(cacheKey, value);
       return value;
     } catch (err) {
+      const good = lastGood.get(cacheKey);
+      if (good) {
+        const value = { ...(good as Sourced<T>), stale: true, warning: `${(err as Error).message}; showing the last good copy` };
+        cache.set(cacheKey, { at: Date.now(), value });
+        return value;
+      }
       // e.g. 403 for datasets outside the plan (free trial has no forward unlocks or fundraising)
       warning = `${(err as Error).message}; using sample data`;
     }

@@ -220,6 +220,8 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
     card,
     agent,
     priceSource: quote.source,
+    priceAsOf: quote.asOf,
+    priceStale: quote.stale ?? false,
     createdAt: new Date(now).toISOString(),
     status: "pending",
   };

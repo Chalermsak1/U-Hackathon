@@ -770,3 +770,20 @@ body:has(.report-page) { background: #fff; color: #10151f; color-scheme: light; 
 .logo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; margin-top: 8px; color: var(--text-2); }
 .logo-row .brand-logo { color: inherit; }
 .brand-img { display: block; flex: none; }
+
+/* ─── Drift card (portfolio vs the user's own targets) ─── */
+.drift-rows { display: grid; gap: 6px; margin-top: 10px; }
+.drift-row { display: grid; grid-template-columns: 52px 1fr auto auto; gap: 8px; align-items: center; font-size: 12.5px; }
+.drift-bar { position: relative; height: 8px; border-radius: 999px; background: var(--surface); overflow: visible; }
+.drift-bar i { display: block; height: 100%; border-radius: 999px; background: var(--slate); }
+.drift-row.over .drift-bar i { background: var(--amber); }
+.drift-row.under .drift-bar i { background: var(--violet); }
+.drift-row.ok .drift-bar i { background: var(--teal); }
+.drift-bar em { position: absolute; top: -3px; width: 2px; height: 14px; background: var(--text); border-radius: 1px; }
+.drift-row .num { font-variant-numeric: tabular-nums; color: var(--text-2); }
+.drift-tag { font-size: 11.5px; color: var(--muted); min-width: 64px; text-align: right; }
+.drift-row.over .drift-tag { color: var(--amber); }
+.drift-row.under .drift-tag { color: var(--violet); }
+.drift-editor { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 10px; }
+.drift-editor label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+.drift-editor input { width: 100%; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 8px; color: var(--text); font: inherit; font-size: 16px; padding: 5px 8px; }

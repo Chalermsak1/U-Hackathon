@@ -22,6 +22,8 @@ export interface MarketQuote {
   volume24hUsd: number;
   change24hPct: number | null;
   source: DataSource;
+  asOf: string; // when the price was observed (ISO)
+  stale?: boolean; // live source failed; this is the last live quote
 }
 
 interface MarketFixture {
@@ -62,17 +64,20 @@ export async function getQuote(symbol: string): Promise<MarketQuote | null> {
             volume24hUsd: body[id].usd_24h_vol,
             change24hPct: body[id].usd_24h_change ?? null,
             source: "live",
+            asOf: new Date().toISOString(),
           };
           liveCache.set(sym, { at: Date.now(), quote });
           return quote;
         }
       }
     } catch {
-      // fall through to the fixture
+      // fall through: last live quote, then the fixture
     }
+    if (hit) return { ...hit.quote, stale: true };
   }
-  const row = (await fixture()).tokens[sym];
+  const fx = await fixture();
+  const row = fx.tokens[sym];
   return row
-    ? { symbol: sym, priceUsd: row.priceUsd, volume24hUsd: row.volume24hUsd, change24hPct: row.change24hPct ?? null, source: "sample" }
+    ? { symbol: sym, priceUsd: row.priceUsd, volume24hUsd: row.volume24hUsd, change24hPct: row.change24hPct ?? null, source: "sample", asOf: fx.asOf }
     : null;
 }

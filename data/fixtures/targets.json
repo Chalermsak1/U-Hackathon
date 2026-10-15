@@ -1,0 +1,11 @@
+{
+  "_sample": "Demo user's own target mix (percent of portfolio value) and the drift band in percentage points. Editable on /terminal/portfolio; changes live in memory per user.",
+  "bandPp": 5,
+  "targets": {
+    "USDC": 30,
+    "ETH": 10,
+    "ARB": 25,
+    "WLD": 20,
+    "AVAX": 15
+  }
+}

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { compact, LEVEL_TH, pct, sourceLabelTh, thaiDate, usd } from "@/lib/format";
-import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
+import { compact, LEVEL_TH, pct, sourceTagTh, thaiDate, usd } from "@/lib/format";
+import { asOfLabelTh } from "@/lib/freshness";
+import type { DriftReport, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
   team: { th: "ทีม", color: "#FB7151" },
@@ -98,7 +99,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
       )}
       <div className="card-foot">
         <span>
-          Tokenomist · {sourceLabelTh(card.source.mode)} · ไม่ใช่คำแนะนำการลงทุน
+          Tokenomist · {sourceTagTh(card.source)} · ไม่ใช่คำแนะนำการลงทุน
         </span>
         <button
           className="btn btn-sm"
@@ -172,6 +173,46 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
           {error && <span className="error">{error}</span>}
         </div>
       )}
+    </article>
+  );
+}
+
+const DRIFT_TH = { over: "เกินเป้า", under: "ต่ำกว่าเป้า", ok: "ในกรอบ", no_target: "ไม่มีเป้า" } as const;
+
+/** Portfolio vs the user's own target mix: up to 3 lines and one row per holding. */
+export function DriftCardView({ drift }: { drift: DriftReport }) {
+  const rows = drift.rows.filter((r) => r.weightPct > 0 || (r.targetPct ?? 0) > 0);
+  const off = drift.rows.some((r) => r.status === "over" || r.status === "under");
+  return (
+    <article className={`card drift-card ${off ? "lv-medium" : "lv-low"}`} aria-label="พอร์ตเทียบเป้าที่ตั้งไว้">
+      <div className="card-head">
+        <h3>พอร์ตเทียบเป้า</h3>
+        <span className="name">{drift.hasTargets ? `กรอบ ±${drift.bandPp} จุด` : "ยังไม่ได้ตั้งเป้า"}</span>
+        <span className="score">{drift.portfolioRiskScore}/100</span>
+      </div>
+      <ul className="reasons">
+        {drift.lines.map((l) => (
+          <li key={l}>{l}</li>
+        ))}
+      </ul>
+      <div className="drift-rows">
+        {rows.map((r) => (
+          <div key={r.symbol} className={`drift-row ${r.status}`}>
+            <b>{r.symbol}</b>
+            <span className="drift-bar" aria-hidden="true">
+              <i style={{ width: `${Math.min(100, r.weightPct)}%` }} />
+              {r.targetPct !== null && <em style={{ left: `${Math.min(100, r.targetPct)}%` }} />}
+            </span>
+            <span className="num">
+              {r.weightPct}%{r.targetPct !== null ? ` / ${r.targetPct}%` : ""}
+            </span>
+            <span className="drift-tag">{DRIFT_TH[r.status]}</span>
+          </div>
+        ))}
+      </div>
+      <div className="card-foot">
+        <span>เทียบกับเป้าที่คุณตั้งเอง · ไม่ใช่คำแนะนำการลงทุน{drift.pricesAsOf ? ` · ราคา ${asOfLabelTh(drift.pricesAsOf)}` : ""}</span>
+      </div>
     </article>
   );
 }

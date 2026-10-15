@@ -8,11 +8,14 @@ import { store } from "@/lib/store";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// type: unlock (scheduled supply) · drift (wallet off the user's target mix) · news.
+// symbol "*" means every non-stablecoin holding.
 const Rule = z.object({
-  symbol: z.string().trim().toUpperCase().regex(/^[A-Z0-9.\-]{1,20}$/),
-  minLevel: z.enum(["medium", "high"]),
-  daysBefore: z.number().int().min(1).max(30),
-  channel: z.enum(["ubot", "telegram", "line"]),
+  type: z.enum(["unlock", "drift", "news"]).default("unlock"),
+  symbol: z.string().trim().toUpperCase().regex(/^(\*|[A-Z0-9.\-]{1,20})$/).default("*"),
+  minLevel: z.enum(["medium", "high"]).default("medium"),
+  daysBefore: z.number().int().min(1).max(30).default(7),
+  channel: z.enum(["ubot", "telegram", "line"]).default("ubot"),
 });
 
 // Smart alert rules (demo: kept in memory) and the protection decisions made so far, for the
@@ -46,7 +49,11 @@ export async function POST(req: Request) {
   if (!limit.ok) return tooMany(limit);
   const parsed = Rule.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return jsonError(400, "symbol, minLevel, daysBefore (1-30) and channel are required");
-  const rule = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ownerId: session.sub, ...parsed.data };
+  const data = parsed.data.type === "drift" ? { ...parsed.data, symbol: "*" } : parsed.data;
+  // One drift rule per user is enough; adding it again just returns the existing one.
+  const dup = store.alerts.find((r) => r.ownerId === session.sub && (r.type ?? "unlock") === data.type && r.symbol === data.symbol && r.minLevel === data.minLevel && r.daysBefore === data.daysBefore);
+  if (dup) return Response.json(dup, { status: 200 });
+  const rule = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ownerId: session.sub, ...data };
   store.alerts.unshift(rule);
   store.alerts.splice(200);
   return Response.json(rule, { status: 201 });

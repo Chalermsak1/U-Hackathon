@@ -11,6 +11,8 @@ export interface Sourced<T> {
   source: DataSource;
   asOf: string;
   warning?: string;
+  /** true when a live source failed and this is the last good copy, not fresh data */
+  stale?: boolean;
 }
 
 export interface SourceRef {
@@ -54,7 +56,7 @@ export interface RiskCard {
   plain: string; // beginner explanation
   factors: { time: number; size: number; liquidity: number; recipient: number; investorBonus: number };
   tradeAmountThb?: number;
-  source: { provider: "Tokenomist"; mode: DataSource; asOf: string };
+  source: { provider: "Tokenomist"; mode: DataSource; asOf: string; stale?: boolean };
 }
 
 export type ProtectionAction = "price_alert" | "reduce_exposure" | "pause_buying";
@@ -152,6 +154,7 @@ export interface AgentResult {
   odds: Sourced<OddsMarket[]> | null;
   pulse: Sourced<MarketPulse> | null;
   calendar: CalendarEvent[] | null;
+  drift?: DriftReport | null;
   proposals: Proposal[];
   trace: TraceStep[];
   citations: Citation[];
@@ -177,6 +180,7 @@ export interface Holding {
   valueUsd: number;
   valueThb: number;
   source: DataSource;
+  asOf?: string; // when the price was observed
 }
 
 export interface ProtectionReceipt {
@@ -236,6 +240,8 @@ export interface TradePlan {
   card: RiskCard | null;
   agent: { reply: string; engine: string; trace: TraceStep[] } | null;
   priceSource: DataSource;
+  priceAsOf: string;
+  priceStale: boolean;
   createdAt: string;
   status: "pending" | "approved" | "declined";
 }
@@ -294,4 +300,32 @@ export interface InvestPlan {
   createdAt: string;
   status: "pending" | "approved" | "declined";
   receipt?: ProtectionReceipt;
+}
+
+// ─── Portfolio drift (against the user's own target mix) ───
+
+export interface DriftRow {
+  symbol: string;
+  valueThb: number;
+  weightPct: number;
+  targetPct: number | null;
+  driftPp: number | null; // weight minus target, percentage points
+  status: "ok" | "over" | "under" | "no_target";
+  riskLevel: RiskLevel | null;
+  riskScore: number;
+  unlockDate: string | null;
+  dilutionPct: number;
+}
+
+export interface DriftReport {
+  hasTargets: boolean;
+  bandPp: number;
+  rows: DriftRow[];
+  totalThb: number;
+  totalDriftPct: number; // half the sum of |drift|: how much of the portfolio sits off-target
+  portfolioRiskScore: number; // value-weighted unlock risk score
+  weightedDilutionPct: number;
+  concentration: { symbol: string; weightPct: number } | null;
+  lines: string[]; // up to 3 plain lines in the user's language
+  pricesAsOf: string | null;
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ensureSession } from "@/components/EnsureSession";
 import { thb } from "@/lib/format";
+import { asOfLabelTh } from "@/lib/freshness";
 import type { PaperOrder, TradePlan, TradeSide } from "@/lib/types";
 
 export const TRADE_EVENT = "trade:changed";
@@ -64,7 +65,7 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
 
       <dl className="tp-nums">
         <div><dt>จำนวน</dt><dd>{qtyT(plan.qty)} {plan.symbol}</dd></div>
-        <div><dt>ราคา{plan.orderType === "limit" ? " (limit)" : ""}</dt><dd>{usdP(plan.priceUsd)}</dd></div>
+        <div><dt>ราคา{plan.orderType === "limit" ? " (limit)" : ""} {asOfLabelTh(plan.priceAsOf, plan.priceStale)}</dt><dd>{usdP(plan.priceUsd)}</dd></div>
         <div><dt>ค่าธรรมเนียม (สมมติ 0.25%)</dt><dd>{thb(plan.feeThb)}</dd></div>
         {plan.side === "buy" && (
           <>

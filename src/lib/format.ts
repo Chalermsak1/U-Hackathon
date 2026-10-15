@@ -1,5 +1,7 @@
 // Formatting helpers shared by the server (agent replies) and the client (UI).
 
+import { asOfLabelTh } from "./freshness";
+
 export function compact(n: number, digits = 1): string {
   const abs = Math.abs(n);
   const fixed = (v: number) => {
@@ -112,9 +114,10 @@ export function sourceLabelTh(mode: string): string {
 }
 
 /** Label plus date for one data section: "ข้อมูลจริง (snapshot) · 15 ต.ค.", "ข้อมูลสด", "ข้อมูลตัวอย่าง". */
-export function sourceTagTh(src: { mode: string; asOf?: string } | null | undefined): string {
+export function sourceTagTh(src: { mode: string; asOf?: string; stale?: boolean } | null | undefined): string {
   if (!src) return "";
-  return src.mode === "snapshot" && src.asOf ? `${sourceLabelTh(src.mode)} · ${thaiDate(src.asOf)}` : sourceLabelTh(src.mode);
+  const when = src.mode !== "sample" ? asOfLabelTh(src.asOf, src.stale) : "";
+  return when ? `${sourceLabelTh(src.mode)} · ${when}` : sourceLabelTh(src.mode);
 }
 
 /** Which engine answered: Claude, another LLM (by model name) or the offline rules engine. */

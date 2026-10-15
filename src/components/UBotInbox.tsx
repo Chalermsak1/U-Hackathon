@@ -55,7 +55,16 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
               <span className="push-tag">{it.kind === "alert" ? "U-BOT แจ้งเตือน" : "U-BOT"}</span>
               <span className="note">{hhmm(it.at)}</span>
             </div>
-            {cards.length === 0 && <p className="inbox-text">{it.result.reply.split("\n")[0]}</p>}
+            {/* Alert messages list each alert on its own line; other replies show their first line. */}
+            {(cards.length === 0 || it.kind === "alert") &&
+              it.result.reply
+                .split("\n")
+                .slice(0, cards.length === 0 ? 5 : 1)
+                .map((l) => (
+                  <p key={l} className="inbox-text">
+                    {l}
+                  </p>
+                ))}
             {cards.map((c) => (
               <div key={c.symbol} className={`inbox-card lv-${c.level}`}>
                 <b>{c.symbol}</b>

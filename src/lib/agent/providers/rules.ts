@@ -10,7 +10,7 @@ import type { AnswerMode, ChatTurn, RiskCard } from "../../types";
 import { matchFaq, type FaqEntry } from "../../knowledge";
 import { executeTool, type RunContext } from "../tools";
 
-export type Intent = "buy" | "sell" | "scan" | "news" | "odds" | "calendar" | "risk" | "learn" | "help";
+export type Intent = "buy" | "sell" | "scan" | "drift" | "news" | "odds" | "calendar" | "risk" | "learn" | "help";
 
 export interface Plan {
   intents: Intent[];
@@ -66,6 +66,7 @@ const INTENTS: [Intent, RegExp][] = [
   ["learn", /\b(what is|what's an?|what are|explain|meaning of|define|how does)\b|คืออะไร|อธิบาย|หมายถึง/i],
   ["buy", /\b(buy|buying|purchase|invest(ing)? in|ape|accumulate|dca)\b|ซื้อ|ลงทุน|เข้าซื้อ/i],
   ["sell", /\b(sell|selling|take profit|cash out)\b|ขาย/i],
+  ["drift", /\b(drift(ed|ing)?|rebalanc\w*|off[- ]target|target (mix|allocation|weights?)|my targets?)\b|เบี้ยว|ปรับสมดุล|สัดส่วน|เป้าสัดส่วน|เป้าพอร์ต|ตามเป้า|จากเป้า/i],
   ["scan", /\b(scan|portfolio|my (holdings|wallet|bag|coins|assets)|what do i (own|hold))\b|พอร์ต|สแกน|ถืออะไร|ถืออยู่/i],
   ["news", /\b(news|headlines?|what'?s (moving|happening|going on)|why (is|did|are|has)|happening|events?)\b|ข่าว|เหตุการณ์|ทำไม/i],
   ["odds", /\b(odds|probabilit(y|ies)|chances?|likely|prediction market|polymarket|fed|fomc|rate (cut|hike)|interest rates?)\b|โอกาส|ความน่าจะเป็น|ดอกเบี้ย|เฟด/i],
@@ -117,6 +118,12 @@ export async function makePlan(message: string): Promise<Plan> {
 export async function runPlan(plan: Plan, message: string, ctx: RunContext): Promise<void> {
   const has = (i: Intent) => plan.intents.includes(i);
   if (plan.faq || plan.needsSymbol) return;
+
+  if (has("drift")) {
+    if (ctx.scope === "public") return;
+    await executeTool("check_portfolio_drift", {}, ctx);
+    return;
+  }
 
   if (has("scan")) {
     if (ctx.scope === "public") return;
@@ -179,8 +186,11 @@ function composeReplyTh(ctx: RunContext, plan: Plan, mode: AnswerMode): string {
   const has = (i: Intent) => plan.intents.includes(i);
 
   if (plan.faq) return plan.faq.a;
-  if (has("scan") && ctx.scope === "public") {
+  if ((has("scan") || has("drift")) && ctx.scope === "public") {
     return "เข้าสู่ระบบเพื่อสแกนกระเป๋าของคุณ ระหว่างนี้ถามเรื่องเหรียญไหนก็ได้ เช่น “ARB ตอนนี้เสี่ยงไหม”";
+  }
+  if (has("drift") && ctx.drift) {
+    return [...ctx.drift.lines, "เทียบกับเป้าที่คุณตั้งเองเท่านั้น จะปรับหรือไม่ คุณเป็นคนตัดสินใจ · ตั้งเป้าได้ที่หน้าพอร์ต"].join("\n");
   }
   if (plan.needsSymbol || (plan.intents.includes("help") && ctx.trace.every((s) => s.kind !== "tool"))) {
     return "บอกชื่อเหรียญที่อยากเช็กได้เลย เช่น “ซื้อ ARB 5,000 บาท” หรือ “สแกนพอร์ตของฉัน”";
@@ -249,8 +259,11 @@ export function composeReply(ctx: RunContext, plan: Plan, mode: AnswerMode): str
   const has = (i: Intent) => plan.intents.includes(i);
 
   if (plan.faq) return plan.faq.a;
-  if (has("scan") && ctx.scope === "public") {
+  if ((has("scan") || has("drift")) && ctx.scope === "public") {
     return "Sign in to scan your own wallet. Meanwhile, ask me about any token, for example “Is ARB risky right now?”";
+  }
+  if (has("drift") && ctx.drift) {
+    return [...ctx.drift.lines, "This compares against the targets you set yourself; whether to rebalance is your call. Set targets on the portfolio page."].join("\n");
   }
   if (plan.needsSymbol) {
     return "Which token do you mean? Name it, for example ARB, WLD or AVAX, and I'll check its unlock schedule and news before you decide.";

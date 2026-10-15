@@ -82,6 +82,14 @@ export const config = {
   mcp: {
     apiKey: env("MCP_API_KEY"),
   },
+  // Alert watcher: quiet hours (Bangkok time; only high-severity alerts go out) and a daily cap
+  // per user. Vercel Cron calls /api/watch with "Authorization: Bearer $CRON_SECRET".
+  watch: {
+    cronSecret: env("CRON_SECRET"),
+    quietStartHour: Number(env("WATCH_QUIET_START", "22")),
+    quietEndHour: Number(env("WATCH_QUIET_END", "7")),
+    maxPerDay: Number(env("WATCH_MAX_PER_DAY", "5")),
+  },
   // Unlocks further out than this are outside the watch window (Keyrock: price pressure
   // typically starts ~30 days before an unlock).
   watchWindowDays: 30,
