@@ -207,6 +207,16 @@ Built in a separate session without seeing `feat/app-ui`.
 - **Problem:** `next dev` failed to compile (`node:crypto` in the edge bundle via `instrumentation.ts → watch → alerts → agent`). The early-return guard doesn't stop webpack bundling; **fix:** Next's documented `if (NEXT_RUNTIME === "nodejs") { await import(...) }` block. Production builds were not affected.
 - **Checks:** typecheck ✅ · eval **30/30** ✅ (2 new MCP cases: no acting for a user without the key; delegated proposal is owned by and delivered to the user). In this sandbox `tsx` can't open its IPC pipe, so evals run with `node --import tsx evals/run.ts`.
 
+### Oct 16, ~03:00–03:30 · Whole website in English, Tokenomist live mode fixed
+- **Why the site was still Thai:** the "English" work before the merge built a separate English app (`/en`, `/assistant`, `/dashboard`, `/login`, `/method`). The merge kept the owner's Thai main app as it was. Now every page of the main app is English: landing, terminal (overview, agent, tokens, token page, unlocks, trade, invest, portfolio, alerts), `/app`, `/report`, plus the text the server writes (trade and invest plans, alert reasons, API errors, Fuji notes) and the fixtures (asset classes, model portfolios, unlock calendar). The agent still answers in Thai when asked in Thai; that copy stays.
+- **Renamed** fields that now hold English: `InvestSlice.th` → `name`, `InvestPlan.profileTh` → `profileName`, fixture `th` → `name`.
+- **U-Bot stand-in** defaults to English (`--lang en`).
+- **Problem:** with the key set, cards said "snapshot", not "live". Tokenomist answered 429 (retry-after 7 s). The live token list has **651 tokens**, and the ticker (polled on every page), calendar, event calendar and dashboard scored all of them at once; the failed calls then cached the fallback for 10 minutes. **Fix:** `trackedTokens()` (the tokens in the dated snapshot: ARB, WLD, AVAX) for every fan-out; at most 4 calls in flight; one retry after a 429; a fallback is cached for 1 minute only, and logged (`tokenomist.fallback`). Credits are fine: 26 of 50,000 used this month. Result: ARB / WLD / AVAX all score from live data in ~0.6 s.
+- **Problem:** with 651 live names, the agent's symbol finder matched names inside words ("RE" in "are", "UR" in "your"), and `THB` / `AI` counted as tickers because live tokens use them. **Fix:** names only for tracked tokens, as whole words; the not-a-ticker list always wins.
+- **Problem:** the portfolio page showed ฿0 for total value; `CountUp` waited for an IntersectionObserver callback that this webview never sends. **Fix:** a 1.2 s fallback in `CountUp` and `Reveal` (same pattern as the hero).
+- **Problem:** live allocations list "Arbitrum DAO Treasury" twice → duplicate React keys. **Fix:** index keys on the allocation table; the risk card merges recipients with the same name.
+- **Checks:** typecheck ✅ · eval 30/30 ✅ · stand-in over MCP: HIGH 67, "Tokenomist live", proposal in the inbox ✅ · every page checked for Thai text ✅ (only "฿").
+
 ---
 
 ## Adding the next entry

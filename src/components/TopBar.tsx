@@ -11,12 +11,12 @@ export function TopBar({ current, children }: { current: "home" | "app" | "termi
       <Link href="/" className="brand">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/brand/logo-mark.svg" width={28} height={28} alt="" />
-        U-Guard <small>ใน U-Bot</small>
+        U-Guard <small>in U-Bot</small>
       </Link>
       {children && <div className="badges">{children}</div>}
-      <nav className="navlinks" aria-label="หลัก">
-        {link("/", "home", "หน้าแรก")}
-        {link("/app", "app", "แอป")}
+      <nav className="navlinks" aria-label="Main">
+        {link("/", "home", "Home")}
+        {link("/app", "app", "App")}
         {link("/terminal", "terminal", "Terminal")}
       </nav>
     </header>

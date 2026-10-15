@@ -77,6 +77,23 @@ export function untilLabel(iso: string, nowMs = Date.now()): string {
   return `in ${Math.round(hours / 24)} days`;
 }
 
+/** When a card's unlock happens: a continuous (daily) release has no single date. */
+export function unlockWhen(card: { timing?: string; unlockDate: string | null }, nowMs = Date.now()): string {
+  if (card.timing === "continuous") return "releasing daily";
+  return card.unlockDate ? untilLabel(card.unlockDate, nowMs) : "";
+}
+
+/** Data-source label: live data, a dated snapshot of real data, or illustrative sample data. */
+export function sourceLabel(mode: string): string {
+  return mode === "live" ? "Live data" : mode === "snapshot" ? "Real data (snapshot)" : "Sample data";
+}
+
+/** Label plus date for one data section: "Real data (snapshot) · Oct 16", "Live data", "Sample data". */
+export function sourceTag(src: { mode: string; asOf?: string } | null | undefined): string {
+  if (!src) return "";
+  return src.mode === "snapshot" && src.asOf ? `${sourceLabel(src.mode)} · ${shortDate(src.asOf)}` : sourceLabel(src.mode);
+}
+
 // Thai copy for Thai replies (the agent answers in the user's language).
 
 /** "24 ต.ค.": day and month only, so the Buddhist-era year never confuses anyone. */

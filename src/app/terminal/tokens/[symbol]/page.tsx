@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { RiskCardView } from "@/components/Cards";
 import { TradePanel } from "@/components/TradePanel";
 import { RECIPIENT_COLOR, RECIPIENT_LABEL, Spotlight, StackedBars } from "@/components/fx";
-import { compact, sourceTagTh, usd } from "@/lib/format";
+import { compact, sourceTag, usd } from "@/lib/format";
 import type { RecipientClass, RiskCard } from "@/lib/types";
 import { classifyRecipient } from "@/lib/recipient";
 
@@ -63,14 +63,14 @@ export default function TokenPage() {
   if (failed) {
     return (
       <p className="empty">
-        โหลดข้อมูล {String(symbol).toUpperCase()} ไม่สำเร็จ{" "}
+        Couldn't load {String(symbol).toUpperCase()}{" "}
         <button className="btn btn-sm" onClick={() => setAttempt((n) => n + 1)}>
-          ลองใหม่
+          Try again
         </button>
       </p>
     );
   }
-  if (!data) return <p className="note">กำลังโหลด…</p>;
+  if (!data) return <p className="note">Loading…</p>;
   const sym = String(symbol).toUpperCase();
 
   if (!data.tracked) {
@@ -78,20 +78,20 @@ export default function TokenPage() {
       <>
         <div className="page-title">
           <h1>{sym}</h1>
-          <p>ยังไม่มีตาราง unlock เต็มใน demo นี้ (ต้องใช้ Tokenomist API key แล้วรัน snapshot)</p>
+          <p>No full unlock schedule for this token in the demo yet (needs a Tokenomist API key and a snapshot)</p>
         </div>
         {screen ? (
           <div className="kpis">
             <div className="kpi"><span>Market cap</span><b>{usd(screen.marketCap)}</b></div>
             <div className="kpi"><span>FDV</span><b>{usd(screen.fdv)}</b></div>
-            <div className="kpi"><span>Float</span><b>{screen.floatPct?.toFixed(0)}%</b><small>ส่วนที่เหลือยังรอเข้าตลาด</small></div>
-            <div className="kpi"><span>นักลงทุนปลดล็อกแล้ว</span><b>{screen.pctInvestorsUnlocked ?? "–"}%</b><small>{screen.latestRound ?? ""}</small></div>
+            <div className="kpi"><span>Float</span><b>{screen.floatPct?.toFixed(0)}%</b><small>the rest is still to come</small></div>
+            <div className="kpi"><span>Investors unlocked</span><b>{screen.pctInvestorsUnlocked ?? "–"}%</b><small>{screen.latestRound ?? ""}</small></div>
           </div>
         ) : (
-          <p className="empty">ไม่พบเหรียญนี้ใน screener</p>
+          <p className="empty">Not in the screener</p>
         )}
-        <button className="btn btn-primary" onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`${sym} มี unlock ไหม`)}`)}>
-          ถาม U-Guard เรื่อง {sym}
+        <button className="btn btn-primary" onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`Does ${sym} have an unlock coming?`)}`)}>
+          Ask U-Guard about {sym}
         </button>
       </>
     );
@@ -107,9 +107,9 @@ export default function TokenPage() {
         <h1>
           {t.symbol} <span className="note" style={{ fontSize: 16 }}>{t.name}</span>
         </h1>
-        <p>ราคา ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · ตาราง unlock: {sourceTagTh(data.sources?.unlocks ?? { mode: data.source ?? "sample" })}</p>
-        <button className="btn btn-sm" style={{ marginLeft: "auto" }} onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`ซื้อ ${t.symbol} 5,000 บาท`)}`)}>
-          ถาม U-Guard ก่อนซื้อ
+        <p>Price ~${t.priceUsd.toFixed(t.priceUsd < 1 ? 4 : 2)} · unlock schedule: {sourceTag(data.sources?.unlocks ?? { mode: data.source ?? "sample" })}</p>
+        <button className="btn btn-sm" style={{ marginLeft: "auto" }} onClick={() => router.push(`/terminal/agent?q=${encodeURIComponent(`Buy 5,000 THB of ${t.symbol}`)}`)}>
+          Ask U-Guard before buying
         </button>
       </div>
 
@@ -118,14 +118,14 @@ export default function TokenPage() {
         <div className="kpi"><span>FDV</span><b>{usd(t.priceUsd * t.maxSupply)}</b></div>
         <div className="kpi"><span>Float</span><b>{t.floatPct.toFixed(1)}%</b><small>{compact(t.circulating)} / {compact(t.maxSupply)}</small></div>
         <div className="kpi">
-          <span>เหรียญใหม่ 6 เดือน</span>
+          <span>New supply, 6 months</span>
           <b>{compact(data.forecast?.totalNew ?? 0)}</b>
-          <small>สัดส่วนผู้ถือลดลง {data.forecast?.dilutionPct.toFixed(1) ?? 0}%</small>
+          <small>holders diluted by {data.forecast?.dilutionPct.toFixed(1) ?? 0}%</small>
         </div>
         <div className="kpi">
-          <span>แรงกด supply ต่อเดือน</span>
+          <span>Supply pressure per month</span>
           <b>{data.forecast?.pctOfMcapPerMonth === null || data.forecast?.pctOfMcapPerMonth === undefined ? "–" : `${data.forecast.pctOfMcapPerMonth.toFixed(2)}%`}</b>
-          <small>ของ market cap</small>
+          <small>of market cap</small>
         </div>
       </div>
 
@@ -138,8 +138,8 @@ export default function TokenPage() {
         <div>{data.card && <RiskCardView card={data.card} />}</div>
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Supply ที่จะเข้าตลาด 6 เดือน</h2>
-            <span className="total">ตาม vesting schedule</span>
+            <h2>Supply entering the market, 6 months</h2>
+            <span className="total">From the vesting schedule</span>
           </div>
           {data.forecast && data.forecast.totalNew > 0 ? (
             <>
@@ -156,7 +156,7 @@ export default function TokenPage() {
               </div>
             </>
           ) : (
-            <p className="empty">ไม่มี unlock ที่ตั้งเวลาไว้ใน 6 เดือนข้างหน้าใน demo data</p>
+            <p className="empty">No scheduled unlocks in the next 6 months in the demo data</p>
           )}
         </Spotlight>
       </div>
@@ -164,22 +164,22 @@ export default function TokenPage() {
       <div className="grid-2" style={{ marginTop: 16 }}>
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>ใครถือ supply (allocation)</h2>
-            <span className="total">{sourceTagTh(data.sources?.allocations)}</span>
+            <h2>Who holds the supply (allocation)</h2>
+            <span className="total">{sourceTag(data.sources?.allocations)}</span>
           </div>
           <div className="split" style={{ height: 10 }} aria-hidden="true">
-            {allocations.map((a) => (
-              <i key={a.allocationName} style={{ width: `${(a.allocationAmount / totalAlloc) * 100}%`, background: RECIPIENT_COLOR[classifyRecipient(a.allocationName, a.standardAllocationName)] }} />
+            {allocations.map((a, i) => (
+              <i key={`${a.allocationName}-${i}`} style={{ width: `${(a.allocationAmount / totalAlloc) * 100}%`, background: RECIPIENT_COLOR[classifyRecipient(a.allocationName, a.standardAllocationName)] }} />
             ))}
           </div>
           <div className="table-scroll">
             <table className="t-table" style={{ minWidth: 0 }}>
               <thead>
-                <tr><th>กลุ่ม</th><th className="num">สัดส่วน</th><th className="num">ยังล็อก</th></tr>
+                <tr><th>Group</th><th className="num">Share</th><th className="num">Still locked</th></tr>
               </thead>
               <tbody>
-                {allocations.map((a) => (
-                  <tr key={a.allocationName}>
+                {allocations.map((a, i) => (
+                  <tr key={`${a.allocationName}-${i}`}>
                     <td>
                       <span className="dot" style={{ display: "inline-block", marginRight: 6, background: RECIPIENT_COLOR[classifyRecipient(a.allocationName, a.standardAllocationName)] }} />
                       {a.allocationName}
@@ -194,19 +194,19 @@ export default function TokenPage() {
         </Spotlight>
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>รอบระดมทุน</h2>
-            <span className="total">รวม {data.totalRaised ? usd(data.totalRaised) : "–"}</span>
+            <h2>Funding rounds</h2>
+            <span className="total">Total {data.totalRaised ? usd(data.totalRaised) : "–"}</span>
           </div>
           <div className="table-scroll">
             <table className="t-table" style={{ minWidth: 0 }}>
               <thead>
-                <tr><th>รอบ</th><th>วันที่</th><th className="num">ระดม</th><th className="num">Valuation</th></tr>
+                <tr><th>Round</th><th>Date</th><th className="num">Raised</th><th className="num">Valuation</th></tr>
               </thead>
               <tbody>
                 {(data.fundraising ?? []).map((f) => (
                   <tr key={f.fundingRound + f.fundingDate}>
                     <td>{f.fundingRound}</td>
-                    <td>{new Date(f.fundingDate).toLocaleDateString("th-TH", { year: "numeric", month: "short" })}</td>
+                    <td>{new Date(f.fundingDate).toLocaleDateString("en-US", { year: "numeric", month: "short" })}</td>
                     <td className="num">{f.amountRaised ? usd(f.amountRaised) : "–"}</td>
                     <td className="num">{f.valuation ? usd(f.valuation) : "–"}</td>
                   </tr>
@@ -215,8 +215,8 @@ export default function TokenPage() {
             </table>
           </div>
           <p className="note" style={{ marginTop: 8 }}>
-            {data.sources?.fundraising && <>{sourceTagTh(data.sources.fundraising)} · </>}
-            <Link href="/terminal/tokens">← กลับไป screener</Link>
+            {data.sources?.fundraising && <>{sourceTag(data.sources.fundraising)} · </>}
+            <Link href="/terminal/tokens">← Back to the screener</Link>
           </p>
         </Spotlight>
       </div>

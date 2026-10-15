@@ -7,7 +7,7 @@
 import { randomUUID } from "node:crypto";
 import { runAgent } from "./agent";
 import { recordMemo } from "./avalanche";
-import { engineLabel, LEVEL_TH, thb } from "./format";
+import { engineLabel, LEVEL_LABEL, thb } from "./format";
 import { getMarketPulse } from "./intel/pulse";
 import { getQuote, usdToThb } from "./market";
 import { getHoldings } from "./portfolio";
@@ -38,6 +38,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 const usdPrice = (p: number) => `$${p.toLocaleString("en-US", { maximumFractionDigits: p < 1 ? 4 : 2 })}`;
 const qtyText = (q: number) => q.toLocaleString("en-US", { maximumFractionDigits: q < 1 ? 6 : q < 100 ? 4 : 2 });
 const pct1 = (v: number) => `${v.toFixed(v < 1 ? 2 : 1)}%`;
+const warnText = (n: number) => `U-Guard flags ${n === 1 ? "one thing" : `${n} things`} to look at`;
 
 /** Wallet plus approved paper orders: cash (USDC) and each token's quantity. */
 export async function paperWallet(userId: string) {
@@ -60,11 +61,11 @@ export async function paperWallet(userId: string) {
 export async function draftTradePlan(input: PlanInput, userId: string, now: number): Promise<TradePlan | { error: string }> {
   const sym = input.symbol.trim().toUpperCase();
   const quote = await getQuote(sym);
-  if (!quote) return { error: `ยังไม่มีราคา ${sym} ใน demo นี้` };
+  if (!quote) return { error: `No ${sym} price in this demo yet` };
   const [{ token }, wallet, risk, pulse] = await Promise.all([
     findToken(sym),
     paperWallet(userId),
-    assessUnlockRisk(sym, input.amountThb, { now, locale: "th" }),
+    assessUnlockRisk(sym, input.amountThb, { now, locale: "en" }),
     getMarketPulse(),
   ]);
   const fx = wallet.fx;
@@ -91,26 +92,26 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
     checks.push({
       id: "unlock",
       status: side === "buy" ? "warn" : "ok",
-      label: `มี unlock ใกล้ · ${LEVEL_TH[card.level]} ${card.score}/100`,
+      label: `Unlock coming up · ${LEVEL_LABEL[card.level]} risk ${card.score}/100`,
       detail: card.reasons[0] ?? card.headline,
     });
   } else {
     checks.push({
       id: "unlock",
       status: "ok",
-      label: "ไม่มี unlock ก้อนใหญ่ใน 30 วัน",
+      label: "No large unlock in the next 30 days",
       detail: card ? card.reasons[0] ?? card.headline : risk.ok ? "" : risk.reason,
     });
   }
   if (STABLES.has(sym)) {
-    checks.push({ id: "stablecoin", status: "ok", label: "เป็น stablecoin", detail: "ราคาผูกกับดอลลาร์ จุดตัดขาดทุนแทบไม่มีผล" });
+    checks.push({ id: "stablecoin", status: "ok", label: "Stablecoin", detail: "Pegged to the dollar, so a stop-loss barely matters" });
   }
   if (side === "buy") {
     const cashThb = wallet.valueThb("USDC");
     checks.push(
       amountThb + feeThb > cashThb
-        ? { id: "balance", status: "block", label: "ยอด USDC ไม่พอ", detail: `มี USDC ประมาณ ${thb(cashThb)} แต่แผนนี้ใช้ ${thb(amountThb + feeThb)}` }
-        : { id: "balance", status: "ok", label: "ยอด USDC พอ", detail: `ใช้ ${thb(amountThb + feeThb)} จาก ${thb(cashThb)}` },
+        ? { id: "balance", status: "block", label: "Not enough USDC", detail: `You have about ${thb(cashThb)} in USDC, but this plan needs ${thb(amountThb + feeThb)}` }
+        : { id: "balance", status: "ok", label: "Enough USDC", detail: `Uses ${thb(amountThb + feeThb)} of ${thb(cashThb)}` },
     );
     const lossPct = portfolioThb > 0 ? (maxLossThb / portfolioThb) * 100 : 0;
     checks.push(
@@ -118,32 +119,32 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
         ? {
             id: "size",
             status: "warn",
-            label: "ขนาดไม้เกินงบความเสี่ยง",
-            detail: `ถ้าลงถึงจุดตัดขาดทุน −${stopLossPct}% จะเสีย ~${thb(maxLossThb)} = ${pct1(lossPct)} ของพอร์ต (งบ ${riskBudgetPct}%) · ขนาดที่อยู่ในงบคือไม่เกิน ${thb(maxSizeThb)}`,
+            label: "Size is over your risk budget",
+            detail: `If it falls to the −${stopLossPct}% stop-loss you lose ~${thb(maxLossThb)} = ${pct1(lossPct)} of the portfolio (budget ${riskBudgetPct}%) · a size within budget is up to ${thb(maxSizeThb)}`,
           }
         : {
             id: "size",
             status: "ok",
-            label: "ขนาดไม้อยู่ในงบความเสี่ยง",
-            detail: `ถ้าลงถึงจุดตัดขาดทุน −${stopLossPct}% เสียสูงสุด ~${thb(maxLossThb)} = ${pct1(lossPct)} ของพอร์ต (งบ ${riskBudgetPct}%)`,
+            label: "Size fits your risk budget",
+            detail: `If it falls to the −${stopLossPct}% stop-loss you lose at most ~${thb(maxLossThb)} = ${pct1(lossPct)} of the portfolio (budget ${riskBudgetPct}%)`,
           },
     );
     if (!STABLES.has(sym)) {
       checks.push(
         positionPctAfter > CONCENTRATION_PCT
-          ? { id: "concentration", status: "warn", label: `พอร์ตจะกระจุกที่ ${sym}`, detail: `หลังซื้อ ${sym} จะเป็น ${pct1(positionPctAfter)} ของพอร์ต (เกิน ${CONCENTRATION_PCT}%)` }
-          : { id: "concentration", status: "ok", label: "การกระจายพอร์ตยังโอเค", detail: `หลังซื้อ ${sym} จะเป็น ${pct1(positionPctAfter)} ของพอร์ต` },
+          ? { id: "concentration", status: "warn", label: `Portfolio would lean on ${sym}`, detail: `After this buy, ${sym} would be ${pct1(positionPctAfter)} of the portfolio (over ${CONCENTRATION_PCT}%)` }
+          : { id: "concentration", status: "ok", label: "Portfolio stays spread out", detail: `After this buy, ${sym} would be ${pct1(positionPctAfter)} of the portfolio` },
       );
     }
     if (quote.change24hPct !== null && quote.change24hPct > CHASE_PCT) {
-      checks.push({ id: "chase", status: "warn", label: "ราคาเพิ่งขึ้นแรง", detail: `ขึ้นมาแล้ว ${quote.change24hPct.toFixed(1)}% ใน 24 ชม. ระวังซื้อตามราคา (FOMO)` });
+      checks.push({ id: "chase", status: "warn", label: "Price just jumped", detail: `Up ${quote.change24hPct.toFixed(1)}% in 24 hours: careful not to chase it (FOMO)` });
     }
   } else {
     const held = wallet.qty.get(sym) ?? 0;
     checks.push(
       qty > held + 1e-9
-        ? { id: "balance", status: "block", label: `${sym} ในกระเป๋าไม่พอ`, detail: `ถืออยู่ ${qtyText(held)} ${sym} แต่แผนนี้ขาย ${qtyText(qty)}` }
-        : { id: "balance", status: "ok", label: `${sym} พอขาย`, detail: `ขาย ${qtyText(qty)} จาก ${qtyText(held)} ${sym}` },
+        ? { id: "balance", status: "block", label: `Not enough ${sym} in the wallet`, detail: `You hold ${qtyText(held)} ${sym}, but this plan sells ${qtyText(qty)}` }
+        : { id: "balance", status: "ok", label: `Enough ${sym} to sell`, detail: `Sells ${qtyText(qty)} of ${qtyText(held)} ${sym}` },
     );
   }
   const verdict = checks.some((c) => c.status === "block") ? "blocked" : checks.some((c) => c.status === "warn") ? "caution" : "ready";
@@ -156,39 +157,39 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
   const scenarios: TradeScenario[] =
     side === "buy"
       ? [
-          row("ถึงจุดตัดขาดทุน", -stopLossPct, "จุดที่คุณตั้งไว้"),
-          row("ถึงเป้า 1:2", stopLossPct * 2, "เป้าที่ได้ 2 เท่าของความเสี่ยงที่รับ · เป็นการคำนวณ ไม่ใช่การทายราคา"),
+          row("Stop-loss hit", -stopLossPct, "The level you set"),
+          row("1:2 target hit", stopLossPct * 2, "A target worth twice the risk you take · arithmetic, not a price forecast"),
         ]
       : [
-          row("ถ้าราคาลงหลังขาย", -stopLossPct, "มูลค่าที่เลี่ยงได้ถ้าราคาลงเท่าจุดตัดขาดทุน"),
-          row("ถ้าราคาขึ้นหลังขาย", stopLossPct * 2, "กำไรที่จะพลาดถ้าราคาขึ้น 2 เท่าของจุดตัดขาดทุน"),
+          row("Price falls after you sell", -stopLossPct, "What you avoid if the price falls by your stop-loss"),
+          row("Price rises after you sell", stopLossPct * 2, "What you miss if the price rises twice your stop-loss"),
         ];
   const teamShare = card?.breakdown.filter((b) => b.recipient === "team").reduce((s, b) => s + b.share, 0) ?? 0;
   if (card && teamShare >= 0.3 && (card.timing === "upcoming" || card.timing === "recent")) {
-    scenarios.push(row("ถ้าเป็นแบบ unlock ทีมในอดีต", TEAM_UNLOCK_AVG_PCT, "ค่าเฉลี่ยราคาช่วง unlock ของทีม (Keyrock, 16,000+ เหตุการณ์) · ถ้าตั้งจุดตัดขาดทุนไว้ จะขายก่อนถึงจุดนี้"));
+    scenarios.push(row("Like past team unlocks", TEAM_UNLOCK_AVG_PCT, "Average price move around team unlocks (Keyrock, 16,000+ events) · a stop-loss would sell before this point"));
   }
   const im = pulse.data.impliedMove;
   if (im) {
-    scenarios.push(row(`ตลาด options คาด (BTC ${im.days} วัน) ขาลง`, -im.pct, `ช่วง ±${im.pct.toFixed(1)}% ที่ตลาด options ให้โอกาสราว 68% · altcoin มักผันผวนกว่า BTC`));
+    scenarios.push(row(`Options-implied downside (BTC, ${im.days} days)`, -im.pct, `The ±${im.pct.toFixed(1)}% range options give about 68% odds · altcoins usually swing more than BTC`));
   }
 
   const summary = [
-    `${side === "buy" ? "ซื้อ" : "ขาย"} ${sym} ${thb(amountThb)} ≈ ${qtyText(qty)} ${sym} ที่ ${usdPrice(priceUsd)}${limit ? " (limit)" : ""}`,
+    `${side === "buy" ? "Buy" : "Sell"} ${thb(amountThb)} of ${sym} ≈ ${qtyText(qty)} ${sym} at ${usdPrice(priceUsd)}${limit ? " (limit)" : ""}`,
     side === "buy"
-      ? `จุดตัดขาดทุน −${stopLossPct}% ที่ ${usdPrice(stopPriceUsd)} → เสียสูงสุด ~${thb(maxLossThb)}`
-      : `ได้เงินประมาณ ${thb(amountThb - feeThb)} หลังค่าธรรมเนียม · เหลือ ${qtyText(Math.max(0, (wallet.qty.get(sym) ?? 0) - qty))} ${sym}`,
+      ? `Stop-loss −${stopLossPct}% at ${usdPrice(stopPriceUsd)} → max loss ~${thb(maxLossThb)}`
+      : `About ${thb(amountThb - feeThb)} after fees · ${qtyText(Math.max(0, (wallet.qty.get(sym) ?? 0) - qty))} ${sym} left`,
     verdict === "blocked"
-      ? `ทำตามแผนนี้ไม่ได้: ${checks.find((c) => c.status === "block")!.detail}`
+      ? `This plan can't go ahead: ${checks.find((c) => c.status === "block")!.detail}`
       : verdict === "caution"
-        ? `U-Guard ขอให้ดู ${checks.filter((c) => c.status === "warn").length} เรื่องก่อนอนุมัติ: ${checks.filter((c) => c.status === "warn").map((c) => c.label).join(" · ")}`
-        : "ผ่านการตรวจของ U-Guard ทุกข้อ · คุณเป็นคนตัดสินใจ",
+        ? `${warnText(checks.filter((c) => c.status === "warn").length)} before you approve: ${checks.filter((c) => c.status === "warn").map((c) => c.label).join(" · ")}`
+        : "Passes every U-Guard check · you decide",
   ];
 
   // The agent explains in its own words (Claude when configured; rules engine otherwise).
   let agent: TradePlan["agent"] = null;
   try {
-    const message = side === "buy" ? `ซื้อ ${sym} ${amountThb.toLocaleString("en-US")} บาท` : `เช็ก ${sym} ให้หน่อย`;
-    const res = await runAgent({ message, userId, scope: "user", now, route: "/api/trade/plan", locale: "th" });
+    const message = side === "buy" ? `Buy ${amountThb.toLocaleString("en-US")} THB of ${sym}` : `Check ${sym} for me`;
+    const res = await runAgent({ message, userId, scope: "user", now, route: "/api/trade/plan", locale: "en" });
     agent = { reply: res.reply, engine: engineLabel(res), trace: res.trace };
   } catch {
     agent = null;
@@ -234,18 +235,18 @@ export type DecideResult =
 
 export async function decideTradePlan(planId: string, decision: "approve" | "decline", userId: string): Promise<DecideResult> {
   const rec = store.tradePlans.get(planId);
-  if (!rec || rec.ownerId !== userId) return { ok: false, status: 404, error: "ไม่พบแผนนี้ ลองให้ AI ร่างใหม่" };
+  if (!rec || rec.ownerId !== userId) return { ok: false, status: 404, error: "Plan not found. Ask the AI to draft a new one." };
   const { plan } = rec;
   const orderFor = () => (store.orders.get(userId) ?? []).find((o) => o.planId === plan.id) ?? null;
   if (plan.status !== "pending") {
     const same = (plan.status === "approved") === (decision === "approve");
-    return same ? { ok: true, plan, order: orderFor() } : { ok: false, status: 409, error: `แผนนี้${plan.status === "approved" ? "อนุมัติ" : "ยกเลิก"}ไปแล้ว`, plan };
+    return same ? { ok: true, plan, order: orderFor() } : { ok: false, status: 409, error: `This plan was already ${plan.status === "approved" ? "approved" : "declined"}`, plan };
   }
   if (decision === "decline") {
     plan.status = "declined";
     return { ok: true, plan, order: null };
   }
-  if (plan.verdict === "blocked") return { ok: false, status: 409, error: "แผนนี้ทำไม่ได้ตามที่ U-Guard ตรวจ ปรับแผนก่อน", plan };
+  if (plan.verdict === "blocked") return { ok: false, status: 409, error: "U-Guard's checks block this plan. Adjust it first.", plan };
   const memo = JSON.stringify({
     app: "U-Guard",
     v: 1,

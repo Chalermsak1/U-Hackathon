@@ -23,7 +23,7 @@ export function TracePanel({ last }: { last: LastRun | null }) {
           ))}
         </ol>
       ) : (
-        <p className="empty">ถามอะไรสักอย่าง แล้วดูว่า agent วางแผนและเรียก tool อะไรบ้าง</p>
+        <p className="empty">Ask something, then see how the agent plans and which tools it calls</p>
       )}
       {last?.note && (
         <p className="note" style={{ marginTop: 10 }}>

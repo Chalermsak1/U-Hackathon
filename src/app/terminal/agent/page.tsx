@@ -8,7 +8,7 @@ import { MicButton } from "@/components/MicButton";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
 
-const SUGGESTIONS = ["ซื้อ ARB 5,000 บาท", "AVAX น่ากังวลไหม", "WLD มี unlock ไหม", "สแกนพอร์ตของฉัน", "อธิบาย FDV แบบง่ายๆ"];
+const SUGGESTIONS = ["Buy 5,000 THB of ARB", "Is AVAX worrying?", "Does WLD have an unlock?", "Scan my portfolio", "Explain FDV simply"];
 
 function AgentInner() {
   const params = useSearchParams();
@@ -27,18 +27,18 @@ function AgentInner() {
 
   const send = (t: string) => {
     setInput("");
-    if (/สแกน/.test(t)) scan();
+    if (/^scan\b|สแกน/i.test(t)) scan();
     else ask(t);
   };
 
   return (
     <div className="agent-layout">
-      <section className="agent-chat" aria-label="แชตกับ U-Guard">
+      <section className="agent-chat" aria-label="Chat with U-Guard">
         <div className="chat-head">
           <Avatar size={32} thinking={busy} level={topLevel(Object.values(levels))} />
           <div>
             <p>U-Guard AI Agent</p>
-            <span>{busy ? "กำลังเรียก tools…" : "ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน"}</span>
+            <span>{busy ? "Calling tools…" : "Decision support, not investment advice"}</span>
           </div>
         </div>
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
@@ -57,10 +57,10 @@ function AgentInner() {
             send(input);
           }}
         >
-          <label htmlFor="agent-ask" className="sr-only">ถาม U-Guard</label>
-          <input id="agent-ask" value={input} onChange={(e) => setInput(e.target.value)} placeholder="ถามเรื่องเหรียญ พอร์ต หรือ unlock…" autoComplete="off" maxLength={500} />
+          <label htmlFor="agent-ask" className="sr-only">Ask U-Guard</label>
+          <input id="agent-ask" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask about a token, your portfolio or unlocks…" autoComplete="off" maxLength={500} />
           <MicButton onText={send} onError={setError} disabled={busy} />
-          <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>ส่ง</button>
+          <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>Send</button>
         </form>
       </section>
       <aside style={{ display: "grid", gap: 16 }}>
@@ -72,7 +72,7 @@ function AgentInner() {
 
 export default function AgentPage() {
   return (
-    <Suspense fallback={<p className="note">กำลังโหลด…</p>}>
+    <Suspense fallback={<p className="note">Loading…</p>}>
       <AgentInner />
     </Suspense>
   );

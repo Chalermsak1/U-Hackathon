@@ -19,7 +19,7 @@ function browserRecognition(): RecognitionCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-/** Ask by voice: ElevenLabs Scribe when configured, otherwise the browser's th-TH recognition. */
+/** Ask by voice: ElevenLabs Scribe when configured, otherwise the browser's own recognition (Thai if the device is set to Thai, else English). */
 export function MicButton({
   onText,
   onError,
@@ -54,7 +54,7 @@ export function MicButton({
         form.append("audio", new Blob(chunks, { type: rec.mimeType || "audio/webm" }), "question.webm");
         const res = await fetch("/api/stt", { method: "POST", body: form });
         const body = await res.json().catch(() => ({}));
-        if (!res.ok || !body.text) throw new Error(body.error ?? "ฟังไม่ชัด ลองพูดอีกครั้ง");
+        if (!res.ok || !body.text) throw new Error(body.error ?? "Couldn't hear that clearly. Try again.");
         onText(body.text);
       } catch (err) {
         onError((err as Error).message);
@@ -71,10 +71,10 @@ export function MicButton({
     const Ctor = browserRecognition();
     if (!Ctor) return;
     const rec = new Ctor();
-    rec.lang = "th-TH";
+    rec.lang = navigator.language?.toLowerCase().startsWith("th") ? "th-TH" : "en-US";
     rec.interimResults = false;
     rec.onresult = (e) => onText(e.results[0][0].transcript);
-    rec.onerror = () => onError("ฟังไม่ชัด ลองพูดอีกครั้ง");
+    rec.onerror = () => onError("Couldn't hear that clearly. Try again.");
     rec.onend = () => setState("idle");
     recognition.current = rec;
     rec.start();
@@ -92,7 +92,7 @@ export function MicButton({
       if (engine === "elevenlabs") await startElevenLabs();
       else if (engine === "browser") startBrowser();
     } catch {
-      onError("เปิดไมค์ไม่ได้ ตรวจสอบสิทธิ์การใช้ไมโครโฟน");
+      onError("Couldn't open the mic. Check the microphone permission.");
       setState("idle");
     }
   }
@@ -107,13 +107,13 @@ export function MicButton({
       aria-pressed={state === "recording"}
       title={
         unavailable
-          ? "เบราว์เซอร์นี้ไม่รองรับการสั่งงานด้วยเสียง"
+          ? "This browser doesn't support voice input"
           : engine === "elevenlabs"
-            ? "พูดถาม (ElevenLabs Scribe)"
-            : "พูดถาม (ระบบรู้จำเสียงของเบราว์เซอร์)"
+            ? "Ask by voice (ElevenLabs Scribe)"
+            : "Ask by voice (browser speech recognition)"
       }
     >
-      {state === "recording" ? "หยุด" : state === "processing" ? "…" : "พูด"}
+      {state === "recording" ? "Stop" : state === "processing" ? "…" : "Speak"}
     </button>
   );
 }

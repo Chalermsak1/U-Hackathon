@@ -1,5 +1,5 @@
 import { readFixture } from "@/lib/fixtures";
-import { listTokens } from "@/lib/tokenomist";
+import { trackedTokens } from "@/lib/tokenomist";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ interface ScreenerFile {
 // Supply screener: Tokenomist fundraising screener rows plus float (MCAP ÷ FDV). Rows for
 // tokens U-Guard has full unlock data on are flagged `analysed` so the UI can link them.
 export async function GET() {
-  const [file, tracked] = await Promise.all([readFixture<ScreenerFile>("screener.json"), listTokens()]);
+  const [file, tracked] = await Promise.all([readFixture<ScreenerFile>("screener.json"), trackedTokens()]);
   const analysed = new Set(tracked.data.map((t) => t.symbol));
   const rows = (file?.rows ?? []).map((r) => ({
     ...r,

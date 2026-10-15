@@ -1,6 +1,6 @@
 "use client";
 
-// Small motion helpers ("ลูกเล่น"). Every one of them is skipped when the user prefers
+// Small motion helpers. Every one of them is skipped when the user prefers
 // reduced motion.
 
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +23,9 @@ export function CountUp({ value, format = (n) => Math.round(n).toLocaleString("e
     if (!el) return;
     let raf = 0;
     let settle: ReturnType<typeof setTimeout> | undefined;
+    let reported = false;
     const io = new IntersectionObserver(([entry]) => {
+      reported = true;
       if (!entry.isIntersecting) return;
       io.disconnect();
       const t0 = performance.now();
@@ -37,10 +39,13 @@ export function CountUp({ value, format = (n) => Math.round(n).toLocaleString("e
       settle = setTimeout(() => setShown(value), duration + 150);
     });
     io.observe(el);
+    // Some webviews and throttled panes never deliver observer callbacks; show the real number anyway.
+    const fallback = setTimeout(() => !reported && setShown(value), 1200);
     return () => {
       io.disconnect();
       cancelAnimationFrame(raf);
       clearTimeout(settle);
+      clearTimeout(fallback);
     };
   }, [value, duration]);
   return <span ref={ref}>{format(shown)}</span>;
@@ -112,8 +117,10 @@ export function Reveal({ children, delay = 0, as: Tag = "div", className = "" }:
     }
     const el = ref.current;
     if (!el) return;
+    let reported = false;
     const io = new IntersectionObserver(
       ([entry]) => {
+        reported = true;
         if (entry.isIntersecting) {
           setShown(true);
           io.disconnect();
@@ -122,7 +129,12 @@ export function Reveal({ children, delay = 0, as: Tag = "div", className = "" }:
       { threshold: 0.15 },
     );
     io.observe(el);
-    return () => io.disconnect();
+    // Never leave content hidden when the observer stays silent (some webviews, throttled panes).
+    const fallback = setTimeout(() => !reported && setShown(true), 1200);
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
   return (
     <Tag ref={ref} className={`reveal ${shown ? "reveal-in" : ""} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
@@ -140,12 +152,12 @@ export const RECIPIENT_COLOR: Record<RecipientClass, string> = {
   ecosystem: "#2DD4BF",
 };
 export const RECIPIENT_LABEL: Record<RecipientClass, string> = {
-  team: "ทีม",
-  investor: "นักลงทุน",
-  community: "ชุมชน",
-  other: "อื่นๆ",
-  reserve: "เงินสำรอง",
-  ecosystem: "กองทุน ecosystem",
+  team: "Team",
+  investor: "Investors",
+  community: "Community",
+  other: "Other",
+  reserve: "Reserve",
+  ecosystem: "Ecosystem fund",
 };
 
 /** Stacked monthly bars by recipient; bars grow in on mount. */
@@ -168,10 +180,10 @@ export function StackedBars({
   const plotH = height - pad.t - pad.b;
   const order: RecipientClass[] = ["team", "investor", "community", "reserve", "other", "ecosystem"];
   const fmt = (n: number) => (n >= 1e9 ? `${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `${(n / 1e6).toFixed(0)}M` : `${Math.round(n / 1e3)}K`);
-  const label = (m: string) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("th-TH", { month: "short", year: "2-digit", timeZone: "UTC" });
+  const label = (m: string) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-US", { month: "short", year: "2-digit", timeZone: "UTC" });
 
   return (
-    <svg className="bars" viewBox={`0 0 ${w} ${height}`} role="img" aria-label="เหรียญที่จะปลดล็อกรายเดือน แยกตามผู้รับ">
+    <svg className="bars" viewBox={`0 0 ${w} ${height}`} role="img" aria-label="Tokens unlocking per month, by recipient">
       {[0, 0.5, 1].map((f) => (
         <g key={f}>
           <line x1={pad.l} x2={w - pad.r} y1={pad.t + plotH * (1 - f)} y2={pad.t + plotH * (1 - f)} stroke="rgba(232,241,245,0.08)" />

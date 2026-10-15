@@ -5,19 +5,18 @@
 import { runAgent } from "./agent";
 import { assessUnlockRisk } from "./risk";
 import { store, type AlertRule } from "./store";
-import { thaiDate } from "./format";
+import { LEVEL_LABEL, shortDate } from "./format";
 import { getUBot } from "./ubot";
 import type { RiskCard, RiskLevel } from "./types";
 
 const COOLDOWN_MS = 12 * 3_600_000;
 const RANK: Record<RiskLevel, number> = { none: 0, low: 1, medium: 2, high: 3 };
-const LEVEL_TH: Record<RiskLevel, string> = { high: "สูง", medium: "ปานกลาง", low: "ต่ำ", none: "ไม่มี unlock ใกล้นี้" };
 
 export interface AlertOutcome {
   ruleId: string;
   symbol: string;
   fired: boolean;
-  /** Why it fired or not, in Thai, for the alerts page. */
+  /** Why it fired or not, for the alerts page. */
   reason: string;
   level?: RiskLevel;
   score?: number;
@@ -26,14 +25,14 @@ export interface AlertOutcome {
 
 /** Does this card meet the rule? Deterministic: level threshold plus the timing window. */
 export function matches(rule: AlertRule, card: RiskCard): { ok: boolean; reason: string } {
-  const level = `${LEVEL_TH[card.level]}${card.level === "none" ? "" : ` ${card.score}/100`}`;
-  if (RANK[card.level] < RANK[rule.minLevel]) return { ok: false, reason: `ยังไม่ถึงเกณฑ์ (ตอนนี้ ${level})` };
+  const level = card.level === "none" ? LEVEL_LABEL.none : `${LEVEL_LABEL[card.level]} risk ${card.score}/100`;
+  if (RANK[card.level] < RANK[rule.minLevel]) return { ok: false, reason: `Below your threshold (now ${level})` };
   if (card.timing === "upcoming" && card.daysUntil !== null && card.daysUntil > rule.daysBefore) {
-    return { ok: false, reason: `unlock อีก ${card.daysUntil} วัน เกินช่วง ${rule.daysBefore} วันที่ตั้งไว้` };
+    return { ok: false, reason: `Unlock in ${card.daysUntil} days, outside your ${rule.daysBefore}-day window` };
   }
   const when =
-    card.timing === "continuous" ? "กำลังทยอยปลดล็อก" : card.unlockDate ? `unlock ${thaiDate(card.unlockDate)}` : "มี unlock";
-  return { ok: true, reason: `เสี่ยง${level} · ${when}` };
+    card.timing === "continuous" ? "releasing daily" : card.unlockDate ? `unlock ${shortDate(card.unlockDate)}` : "unlock ahead";
+  return { ok: true, reason: `${level} · ${when}` };
 }
 
 /** Check every rule of one user; push the ones that fire into their U-Bot inbox. */
@@ -41,7 +40,7 @@ export async function runAlerts(userId: string, now: number): Promise<AlertOutco
   const rules = store.alerts.filter((r) => r.ownerId === userId);
   const outcomes: AlertOutcome[] = [];
   for (const rule of rules) {
-    const risk = await assessUnlockRisk(rule.symbol, null, { now, locale: "th" });
+    const risk = await assessUnlockRisk(rule.symbol, null, { now, locale: "en" });
     if (!risk.ok) {
       outcomes.push({ ruleId: rule.id, symbol: rule.symbol, fired: false, reason: risk.reason });
       continue;
@@ -57,11 +56,11 @@ export async function runAlerts(userId: string, now: number): Promise<AlertOutco
     const last = store.alertsFired.get(key);
     if (last && now - last < COOLDOWN_MS) {
       const mins = Math.round((now - last) / 60_000);
-      const ago = mins < 60 ? `~${Math.max(1, mins)} นาทีก่อน` : `~${Math.round(mins / 60)} ชม.ก่อน`;
-      outcomes.push({ ruleId: rule.id, symbol: rule.symbol, fired: false, reason: `เตือนไปแล้วเมื่อ${ago} (เว้น 12 ชม.)`, level: card.level, score: card.score });
+      const ago = mins < 60 ? `~${Math.max(1, mins)} min ago` : `~${Math.round(mins / 60)} h ago`;
+      outcomes.push({ ruleId: rule.id, symbol: rule.symbol, fired: false, reason: `Already alerted ${ago} (12 h cooldown)`, level: card.level, score: card.score });
       continue;
     }
-    const result = await runAgent({ message: `เช็ก ${card.symbol} ให้หน่อย`, userId, scope: "user", now, route: "/api/alerts/run", locale: "th" });
+    const result = await runAgent({ message: `Check ${card.symbol} for me`, userId, scope: "user", now, route: "/api/alerts/run", locale: "en" });
     await getUBot().send(userId, "alert", result);
     store.alertsFired.set(key, now);
     outcomes.push({
@@ -71,7 +70,7 @@ export async function runAlerts(userId: string, now: number): Promise<AlertOutco
       reason: m.reason,
       level: card.level,
       score: card.score,
-      channelNote: rule.channel === "ubot" ? undefined : "LINE / Telegram ยังเป็น roadmap จึงส่งเข้า U-Bot ในแอปแทน",
+      channelNote: rule.channel === "ubot" ? undefined : "LINE / Telegram is on the roadmap, so this went to the in-app U-Bot inbox",
     });
   }
   return outcomes;

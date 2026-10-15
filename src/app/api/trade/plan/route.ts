@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const limit = rateLimit(key, LIMITS.agent.max, LIMITS.agent.windowMs);
     if (!limit.ok) return tooMany(limit);
     const parsed = Input.safeParse(await req.json().catch(() => null));
-    if (!parsed.success) return jsonError(400, "ต้องมี symbol, side (buy/sell) และ amountThb อย่างน้อย 100 บาท");
+    if (!parsed.success) return jsonError(400, "Needs a symbol, a side (buy/sell) and an amount of at least 100 THB.");
     const plan = await draftTradePlan(parsed.data, session.sub, now());
     if ("error" in plan) return jsonError(404, plan.error);
     await writeLog({ type: "trade_plan", planId: plan.id, symbol: plan.symbol, side: plan.side, amountThb: plan.amountThb, verdict: plan.verdict });

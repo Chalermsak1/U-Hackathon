@@ -3,35 +3,35 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { thaiDate } from "@/lib/format";
+import { shortDate } from "@/lib/format";
 import { Icon, type IconName } from "./Icon";
 import { UBotInbox } from "./UBotInbox";
 
 const NAV: { label: string; items: { href: string; icon: IconName; th: string }[] }[] = [
   {
-    label: "สำรวจ",
+    label: "Explore",
     items: [
-      { href: "/terminal", icon: "home", th: "ภาพรวม" },
+      { href: "/terminal", icon: "home", th: "Overview" },
       { href: "/terminal/agent", icon: "spark", th: "AI Agent" },
-      { href: "/terminal/tokens", icon: "coins", th: "เหรียญ" },
-      { href: "/terminal/unlocks", icon: "calendar", th: "ปฏิทินปลดล็อก" },
+      { href: "/terminal/tokens", icon: "coins", th: "Tokens" },
+      { href: "/terminal/unlocks", icon: "calendar", th: "Unlock calendar" },
     ],
   },
   {
-    label: "ของฉัน",
+    label: "Mine",
     items: [
-      { href: "/terminal/trade", icon: "swap", th: "เทรด" },
-      { href: "/terminal/invest", icon: "target", th: "ลงทุน" },
-      { href: "/terminal/portfolio", icon: "wallet", th: "พอร์ต" },
-      { href: "/terminal/alerts", icon: "bell", th: "การแจ้งเตือน" },
+      { href: "/terminal/trade", icon: "swap", th: "Trade" },
+      { href: "/terminal/invest", icon: "target", th: "Invest" },
+      { href: "/terminal/portfolio", icon: "wallet", th: "Portfolio" },
+      { href: "/terminal/alerts", icon: "bell", th: "Alerts" },
     ],
   },
   {
-    label: "อื่นๆ",
-    items: [{ href: "/#method", icon: "book", th: "วิธีคิดคะแนน" }],
+    label: "More",
+    items: [{ href: "/#method", icon: "book", th: "How scores work" }],
   },
   {
-    label: "English",
+    label: "Assistant & data",
     items: [
       { href: "/assistant", icon: "chat", th: "U-Bot Assistant" },
       { href: "/dashboard", icon: "chart", th: "Dashboard" },
@@ -43,7 +43,7 @@ const NAV: { label: string; items: { href: string; icon: IconName; th: string }[
 // Where the unlock data on these pages comes from, per token (from /api/ticker), so the header
 // never says "sample" for real data or the other way round.
 function useDataLabel(): { text: string; sample: boolean } {
-  const [label, setLabel] = useState({ text: "ข้อมูล Tokenomist", sample: false });
+  const [label, setLabel] = useState({ text: "Tokenomist data", sample: false });
   useEffect(() => {
     fetch("/api/ticker")
       .then((r) => r.json())
@@ -55,9 +55,9 @@ function useDataLabel(): { text: string; sample: boolean } {
         const sample = by("sample");
         const asOf = items.find((i) => i.source === "snapshot")?.asOf;
         const parts = [
-          live.length ? `${live.join(", ")} ข้อมูลสด` : "",
-          snap.length ? `${snap.join(", ")} ข้อมูลจริง${asOf ? ` ${thaiDate(asOf)}` : ""}` : "",
-          sample.length ? `${sample.join(", ")} ตัวอย่าง` : "",
+          live.length ? `${live.join(", ")} live` : "",
+          snap.length ? `${snap.join(", ")} real data${asOf ? ` ${shortDate(asOf)}` : ""}` : "",
+          sample.length ? `${sample.join(", ")} sample` : "",
         ].filter(Boolean);
         if (parts.length) setLabel({ text: parts.join(" · "), sample: sample.length > 0 });
       })
@@ -130,7 +130,7 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className={`term ${collapsed ? "term-collapsed" : ""}`}>
-      <aside className="term-side" aria-label="เมนู">
+      <aside className="term-side" aria-label="Menu">
         <Link href="/" className="term-brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/logo-mark.svg" width={30} height={30} alt="" />
@@ -154,11 +154,11 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
         <button
           className="term-link term-collapse"
           onClick={() => setCollapsed((c) => !c)}
-          title="ย่อ/ขยายเมนู (⌘B)"
-          aria-label="ย่อหรือขยายเมนู"
+          title="Collapse/expand menu (⌘B)"
+          aria-label="Collapse or expand the menu"
         >
           <Icon name="collapse" />
-          <span>ย่อเมนู</span>
+          <span>Collapse</span>
           <kbd>⌘B</kbd>
         </button>
       </aside>
@@ -168,27 +168,27 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
           <form className="term-search" onSubmit={submit} role="search">
             <Icon name="search" size={16} />
             <label htmlFor="term-q" className="sr-only">
-              ค้นหาเหรียญหรือถาม U-Guard
+              Search a token or ask U-Guard
             </label>
             <input
               id="term-q"
               ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="ค้นหาเหรียญ (ARB) หรือถาม U-Guard…"
+              placeholder="Search a token (ARB) or ask U-Guard…"
               autoComplete="off"
             />
             <kbd>⌘K</kbd>
           </form>
           <span
             className={`pill ${dataLabel.sample ? "lv-medium" : "lv-low"}`}
-            title="ข้อมูลจริง = คัดลอกจาก tokenomist.ai ตามวันที่ที่แสดง · ตัวอย่าง = ข้อมูลสาธิต · เป็นข้อมูลสดเมื่อตั้ง TOKENOMIST_API_KEY"
+            title="Real data = Tokenomist snapshot on the date shown · sample = demo data · live when TOKENOMIST_API_KEY is set"
           >
             {dataLabel.text}
           </span>
           <UBotInbox />
           <Link href="/terminal/agent" className="btn btn-sm">
-            ถาม U-Bot
+            Ask U-Bot
           </Link>
         </header>
         <main className="term-content">{children}</main>

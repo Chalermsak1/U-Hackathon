@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { compact, LEVEL_TH, pct, sourceLabelTh, thaiDate, usd } from "@/lib/format";
+import { compact, LEVEL_LABEL, pct, shortDate, sourceLabel, usd } from "@/lib/format";
 import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
-  team: { th: "ทีม", color: "#FB7151" },
-  investor: { th: "นักลงทุน", color: "#FBBF24" },
-  community: { th: "ชุมชน", color: "#94A3B8" },
-  other: { th: "อื่นๆ", color: "#64748B" },
-  reserve: { th: "เงินสำรอง", color: "#A78BFA" },
-  ecosystem: { th: "กองทุน ecosystem", color: "#2DD4BF" },
+  team: { th: "Team", color: "#FB7151" },
+  investor: { th: "Investors", color: "#FBBF24" },
+  community: { th: "Community", color: "#94A3B8" },
+  other: { th: "Other", color: "#64748B" },
+  reserve: { th: "Reserve", color: "#A78BFA" },
+  ecosystem: { th: "Ecosystem fund", color: "#2DD4BF" },
 };
 
 async function speak(text: string) {
@@ -29,7 +29,7 @@ async function speak(text: string) {
   // Fallback: the browser's own Thai voice.
   if ("speechSynthesis" in window) {
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "th-TH";
+    u.lang = /[\u0E00-\u0E7F]/.test(text) ? "th-TH" : "en-US";
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
   }
@@ -38,16 +38,16 @@ async function speak(text: string) {
 export function RiskCardView({ card }: { card: RiskCard }) {
   const [speaking, setSpeaking] = useState(false);
   const hasUnlock = card.level !== "none";
-  const script = `${card.name} ${LEVEL_TH[card.level]} คะแนน ${card.score} จาก 100. ${card.reasons.join(" ")}`;
+  const script = `${card.name}: ${LEVEL_LABEL[card.level]} risk, ${card.score} out of 100. ${card.reasons.join(" ")}`;
 
   return (
-    <article className={`card lv-${card.level}`} aria-label={`การ์ดความเสี่ยง ${card.symbol}`}>
+    <article className={`card lv-${card.level}`} aria-label={`Risk card ${card.symbol}`}>
       <div className="card-head">
         <h3>{card.symbol}</h3>
         <span className="name">{card.name}</span>
         <span className="pill">
           <span className="dot" />
-          {LEVEL_TH[card.level]}
+          {LEVEL_LABEL[card.level]}
         </span>
         {hasUnlock && <span className="score">{card.score}/100</span>}
       </div>
@@ -59,16 +59,16 @@ export function RiskCardView({ card }: { card: RiskCard }) {
           <div className="stats">
             <div className="stat">
               <b>{pct(card.pctOfCirculating)}</b>
-              <span>ของเหรียญหมุนเวียน</span>
+              <span>of circulating supply</span>
             </div>
             <div className="stat">
-              <b>{card.daysOfVolume === null ? "–" : `${card.daysOfVolume.toFixed(2)} วัน`}</b>
-              <span>เทียบ volume ซื้อขาย</span>
+              <b>{card.daysOfVolume === null ? "–" : `${card.daysOfVolume.toFixed(2)} days`}</b>
+              <span>of trading volume</span>
             </div>
             <div className="stat">
               <b>{usd(card.valueUsd)}</b>
               <span>
-                {compact(card.amount)} {card.symbol} · {card.timing === "continuous" ? "ทยอยปลดล็อก 30 วัน" : card.unlockDate ? thaiDate(card.unlockDate) : ""}
+                {compact(card.amount)} {card.symbol} · {card.timing === "continuous" ? "released over 30 days" : card.unlockDate ? shortDate(card.unlockDate) : ""}
               </span>
             </div>
           </div>
@@ -98,7 +98,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
       )}
       <div className="card-foot">
         <span>
-          Tokenomist · {sourceLabelTh(card.source.mode)} · ไม่ใช่คำแนะนำการลงทุน
+          Tokenomist · {sourceLabel(card.source.mode)} · not investment advice
         </span>
         <button
           className="btn btn-sm"
@@ -109,7 +109,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
             setSpeaking(false);
           }}
         >
-          {speaking ? "กำลังอ่าน…" : "ฟังสรุป"}
+          {speaking ? "Reading…" : "Listen"}
         </button>
       </div>
     </article>
@@ -141,18 +141,18 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
   }
 
   return (
-    <article className="proposal" aria-label="ข้อเสนอการป้องกัน">
+    <article className="proposal" aria-label="Protection proposal">
       <h4>{proposal.title}</h4>
       <p>{proposal.detail}</p>
       {state === "approved" && receipt && (
         <p className="receipt">
-          อนุมัติแล้ว · บันทึกบน {receipt.chain}
+          Approved · recorded on {receipt.chain}
           {receipt.explorerUrl ? (
             <>
               {" "}
               ·{" "}
               <a href={receipt.explorerUrl} target="_blank" rel="noreferrer">
-                ดูธุรกรรม {receipt.txHash?.slice(0, 10)}…
+                View transaction {receipt.txHash?.slice(0, 10)}…
               </a>
             </>
           ) : (
@@ -160,14 +160,14 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
           )}
         </p>
       )}
-      {state === "declined" && <p className="receipt">ไม่ตั้งการป้องกัน U-Guard จะไม่ทำอะไรเพิ่ม</p>}
+      {state === "declined" && <p className="receipt">No protection set. U-Guard won't do anything more.</p>}
       {(state === "pending" || state === "busy") && (
         <div className="row">
           <button className="btn btn-primary" disabled={state === "busy"} onClick={() => decide("approve")}>
-            {state === "busy" ? "กำลังบันทึก…" : "อนุมัติ"}
+            {state === "busy" ? "Saving…" : "Approve"}
           </button>
           <button className="btn" disabled={state === "busy"} onClick={() => decide("decline")}>
-            ไม่ต้อง
+            Decline
           </button>
           {error && <span className="error">{error}</span>}
         </div>

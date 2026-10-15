@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { CountUp, Spotlight, useTypewriter } from "@/components/fx";
-import { LEVEL_TH, thb, thaiDate, unlockWhenTh, usd, compact } from "@/lib/format";
+import { LEVEL_LABEL, thb, shortDate, unlockWhen, usd, compact } from "@/lib/format";
 import type { RiskCard } from "@/lib/types";
 
 const PROMPTS = [
-  "ซื้อ ARB 5,000 บาท ตอนนี้เสี่ยงไหม",
-  "เหรียญไหนในพอร์ตฉันมี unlock ใน 30 วัน",
-  "AVAX จะปลดล็อกให้ใครบ้าง",
-  "อธิบาย FDV กับ float แบบง่ายๆ",
+  "Is buying 5,000 THB of ARB risky right now?",
+  "Which of my tokens unlock in the next 30 days?",
+  "Who receives AVAX's unlocks?",
+  "Explain FDV and float simply",
 ];
 
 interface ScreenerRow {
@@ -52,9 +52,9 @@ export default function TerminalHome() {
       <section className="hero-ask">
         <Avatar size={52} />
         <h1>
-          วันนี้อยากรู้อะไร <em>ก่อนเงินขยับ?</em>
+          What do you want to know <em>before your money moves?</em>
         </h1>
-        <p>ถาม U-Guard เรื่องเหรียญ พอร์ต หรือปฏิทินปลดล็อก · ตอบเป็นภาษาไทยพร้อมแหล่งข้อมูล</p>
+        <p>Ask U-Guard about a token, your portfolio or the unlock calendar · answers in your language, with sources</p>
         <form
           className="askbox"
           onSubmit={(e) => {
@@ -63,11 +63,11 @@ export default function TerminalHome() {
           }}
         >
           <label htmlFor="home-ask" className="sr-only">
-            ถาม U-Guard
+            Ask U-Guard
           </label>
           <input id="home-ask" value={q} onChange={(e) => setQ(e.target.value)} placeholder={placeholder} autoComplete="off" />
           <button className="btn btn-primary" type="submit" disabled={!q.trim()}>
-            ถาม
+            Ask
           </button>
         </form>
         <div className="ask-chips">
@@ -82,26 +82,26 @@ export default function TerminalHome() {
       {portfolio && (
         <div className="kpis">
           <div className="kpi">
-            <span>มูลค่าพอร์ต</span>
+            <span>Portfolio value</span>
             <b>
               <CountUp value={portfolio.totalThb} format={thb} />
             </b>
           </div>
           <div className="kpi">
-            <span>มูลค่าที่มี unlock เสี่ยงใน 30 วัน</span>
+            <span>Value facing a risky unlock (30 days)</span>
             <b style={{ color: portfolio.atRiskThb > 0 ? "var(--coral)" : undefined }}>
               <CountUp value={portfolio.atRiskThb} format={thb} />
             </b>
           </div>
           <div className="kpi">
-            <span>unlock ที่ U-Guard ติดตาม</span>
+            <span>Unlocks U-Guard tracks</span>
             <b>
               <CountUp value={calendar.length} />
             </b>
-            <small>เหรียญที่มีข้อมูลเต็ม</small>
+            <small>tokens with full data</small>
           </div>
           <div className="kpi">
-            <span>เหรียญใน screener</span>
+            <span>Tokens in the screener</span>
             <b>
               <CountUp value={25} />
             </b>
@@ -113,22 +113,22 @@ export default function TerminalHome() {
       <div className="grid-2">
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Unlock ที่กำลังมา</h2>
+            <h2>Upcoming unlocks</h2>
             <Link href="/terminal/unlocks" className="total">
-              ดูทั้งหมด →
+              See all →
             </Link>
           </div>
           {calendar.map((c) => (
             <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
               <span className="event-date">
-                <b>{c.unlockDate ? thaiDate(c.unlockDate) : "–"}</b>
-                {unlockWhenTh(c)}
+                <b>{c.unlockDate ? shortDate(c.unlockDate) : "–"}</b>
+                {unlockWhen(c)}
               </span>
               <span>
-                <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% ของ circulating
+                <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% of circulating
               </span>
               <span className={`pill lv-${c.level}`}>
-                {LEVEL_TH[c.level]} {c.score}
+                {LEVEL_LABEL[c.level]} {c.score}
               </span>
             </Link>
           ))}
@@ -136,7 +136,7 @@ export default function TerminalHome() {
 
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Float ต่ำที่สุด (supply ยังรอเข้าตลาด)</h2>
+            <h2>Lowest float (supply still to come)</h2>
             <Link href="/terminal/tokens" className="total">
               screener →
             </Link>
@@ -150,7 +150,7 @@ export default function TerminalHome() {
                 </span>
                 float {r.floatPct?.toFixed(0)}% · FDV {usd(r.fdv)}
               </span>
-              <span className="note">นักลงทุนปลดล็อกแล้ว {r.pctInvestorsUnlocked ?? "–"}%</span>
+              <span className="note">investors unlocked {r.pctInvestorsUnlocked ?? "–"}%</span>
             </div>
           ))}
         </Spotlight>
@@ -159,15 +159,15 @@ export default function TerminalHome() {
       {portfolio && (
         <Spotlight className="panel" style={{ marginTop: 16 }}>
           <div className="panel-head">
-            <h2>พอร์ตของฉัน</h2>
+            <h2>My portfolio</h2>
             <Link href="/terminal/portfolio" className="total">
-              ดูรายละเอียด →
+              Details →
             </Link>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {portfolio.rows.map((r) => (
               <Link key={r.symbol} href={`/terminal/tokens/${r.symbol}`} className={`pill lv-${r.card?.level ?? "none"}`} style={{ textDecoration: "none", fontSize: 13, padding: "4px 12px" }}>
-                <span className="dot" /> {r.symbol} · {r.card ? LEVEL_TH[r.card.level] : "ไม่มี unlock"}
+                <span className="dot" /> {r.symbol} · {r.card ? LEVEL_LABEL[r.card.level] : "No unlock"}
               </Link>
             ))}
           </div>

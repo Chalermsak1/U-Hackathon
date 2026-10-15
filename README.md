@@ -28,7 +28,7 @@ U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 
 Two front-ends share one backend (agent, tools, data, auth).
 
-**Thai app** (the stage demo). It signs the browser into the demo account automatically.
+**Main app** (the stage demo, English UI; the agent answers in Thai when asked in Thai). It signs the browser into the demo account automatically.
 
 | Path | Purpose |
 |---|---|
