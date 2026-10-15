@@ -266,7 +266,7 @@ export type InvestProfile = "conservative" | "moderate" | "growth" | "aggressive
 
 export interface InvestSlice {
   id: string;
-  th: string;
+  name: string;
   example: string;
   risk: number; // Thai SEC 1-8 scale; 9 = crypto (8+)
   pct: number;
@@ -284,7 +284,7 @@ export interface InvestCheck {
 export interface InvestPlan {
   id: string;
   profile: InvestProfile;
-  profileTh: string;
+  profileName: string;
   score: number; // 5..20 from the five answers
   lumpSumThb: number;
   monthlyThb: number;

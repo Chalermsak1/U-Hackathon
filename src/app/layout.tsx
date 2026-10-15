@@ -8,7 +8,7 @@ import "./web.css";
 // app (/en, /login, /method, /assistant, /dashboard), whose pages sit in `.ug-web` wrappers.
 export const metadata: Metadata = {
   title: { default: "U-Guard", template: "%s · U-Guard" },
-  description: "รู้ก่อน เงินจะขยับ: agent ใน U-Bot ที่เช็กความเสี่ยงจากการปลดล็อกเหรียญก่อนคุณซื้อหรือถือ",
+  description: "Know before your money moves: an agent in U-Bot that checks token-unlock risk before you buy or hold.",
   applicationName: "U-Guard",
   icons: { icon: "/brand/logo-mark.svg" },
 };
@@ -26,7 +26,7 @@ const FONTS =
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="th">
+    <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />

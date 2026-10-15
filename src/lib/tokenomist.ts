@@ -1,9 +1,10 @@
 // Tokenomist API v5 client (https://docs.tokenomist.ai/api-documents/introduction).
 // Live when TOKENOMIST_API_KEY is set; on a missing key or any API error it reads the
-// matching file under data/fixtures/tokenomist and marks the result as "sample".
+// matching file under data/fixtures/tokenomist and marks the result as "snapshot" or "sample".
 
 import { config } from "./config";
 import { readFixture } from "./fixtures";
+import { logEvent } from "./log";
 import type { DataSource, Sourced } from "./types";
 
 // ─── Response shapes (subset of the v5 schema we use) ───────────────────────
@@ -98,16 +99,36 @@ interface Envelope<T> {
 // ─── Transport ──────────────────────────────────────────────────────────────
 
 const TTL_MS = 10 * 60 * 1000;
-const cache = new Map<string, { at: number; value: Sourced<unknown> }>();
+// After a failed live call the fallback is kept for a minute only, so live data comes back soon.
+const FALLBACK_TTL_MS = 60 * 1000;
+const cache = new Map<string, { at: number; ttl: number; value: Sourced<unknown> }>();
 // The last successful live response per key, kept past the TTL: if Tokenomist fails later,
-// answers use this copy marked stale rather than dropping to sample data.
+// answers use this copy marked stale rather than dropping to saved fixture data.
 const lastGood = new Map<string, Sourced<unknown>>();
 
-async function fetchLive<T>(pathAndQuery: string): Promise<Envelope<T>> {
-  const res = await fetch(`${config.tokenomist.baseUrl}${pathAndQuery}`, {
-    headers: { "x-api-key": config.tokenomist.apiKey },
-    cache: "no-store",
-  });
+// The API rate-limits bursts (429 with retry-after), so at most a few calls run at once.
+const MAX_IN_FLIGHT = 4;
+let inFlight = 0;
+const waiting: (() => void)[] = [];
+
+async function fetchLive<T>(pathAndQuery: string, retry = true): Promise<Envelope<T>> {
+  if (inFlight >= MAX_IN_FLIGHT) await new Promise<void>((go) => waiting.push(go));
+  inFlight++;
+  let res: Response;
+  try {
+    res = await fetch(`${config.tokenomist.baseUrl}${pathAndQuery}`, {
+      headers: { "x-api-key": config.tokenomist.apiKey },
+      cache: "no-store",
+    });
+  } finally {
+    inFlight--;
+    waiting.shift()?.();
+  }
+  if (res.status === 429 && retry) {
+    const waitS = Math.min(3, Number(res.headers.get("retry-after")) || 1);
+    await new Promise((r) => setTimeout(r, waitS * 1000));
+    return fetchLive<T>(pathAndQuery, false);
+  }
   if (!res.ok) {
     throw new Error(`Tokenomist ${res.status} on ${pathAndQuery.split("?")[0]}`);
   }
@@ -121,7 +142,7 @@ async function load<T>(
   empty: T,
 ): Promise<Sourced<T>> {
   const hit = cache.get(cacheKey);
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.value as Sourced<T>;
+  if (hit && Date.now() - hit.at < hit.ttl) return hit.value as Sourced<T>;
 
   let warning: string | undefined;
   if (config.tokenomist.apiKey) {
@@ -132,18 +153,19 @@ async function load<T>(
         source: "live",
         asOf: body.metadata?.queryDate ?? new Date().toISOString(),
       };
-      cache.set(cacheKey, { at: Date.now(), value });
+      cache.set(cacheKey, { at: Date.now(), ttl: TTL_MS, value });
       lastGood.set(cacheKey, value);
       return value;
     } catch (err) {
+      logEvent("tokenomist.fallback", { path: livePath.split("?")[0], error: (err as Error).message });
       const good = lastGood.get(cacheKey);
       if (good) {
         const value = { ...(good as Sourced<T>), stale: true, warning: `${(err as Error).message}; showing the last good copy` };
-        cache.set(cacheKey, { at: Date.now(), value });
+        cache.set(cacheKey, { at: Date.now(), ttl: FALLBACK_TTL_MS, value });
         return value;
       }
-      // e.g. 403 for datasets outside the plan (free trial has no forward unlocks or fundraising)
-      warning = `${(err as Error).message}; using sample data`;
+      // e.g. 429 after a burst, or 403 for datasets outside the plan
+      warning = `${(err as Error).message}; using saved data`;
     }
   }
 
@@ -156,7 +178,7 @@ async function load<T>(
     asOf: fixture?.metadata?.queryDate ?? new Date().toISOString(),
     warning,
   };
-  cache.set(cacheKey, { at: Date.now(), value });
+  cache.set(cacheKey, { at: Date.now(), ttl: config.tokenomist.apiKey ? FALLBACK_TTL_MS : TTL_MS, value });
   return value;
 }
 
@@ -164,6 +186,21 @@ async function load<T>(
 
 export function listTokens(): Promise<Sourced<TokenListItem[]>> {
   return load<TokenListItem[]>("list", "/v5/token/list", ["tokenomist", "token-list.json"], []);
+}
+
+/**
+ * Tokens U-Guard follows in full on the ticker, calendar and dashboard: the ones kept in the
+ * dated snapshot, so live and offline modes show the same set. The live list has every token
+ * Tokenomist covers (650+), and scoring all of them at once trips the API's rate limit.
+ * Any other token can still be looked up one at a time (findToken).
+ */
+export async function trackedTokens(): Promise<Sourced<TokenListItem[]>> {
+  const [list, snapshot] = await Promise.all([
+    listTokens(),
+    readFixture<Envelope<TokenListItem[]>>("tokenomist", "token-list.json"),
+  ]);
+  const ids = new Set((snapshot?.data ?? []).map((t) => t.id));
+  return ids.size ? { ...list, data: list.data.filter((t) => ids.has(t.id)) } : list;
 }
 
 /** Resolves a ticker or name ("arb", "WLD", "Avalanche") to a Tokenomist token. */

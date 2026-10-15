@@ -1,6 +1,6 @@
 // Formatting helpers shared by the server (agent replies) and the client (UI).
 
-import { asOfLabelTh } from "./freshness";
+import { asOfLabel, asOfLabelTh } from "./freshness";
 
 export function compact(n: number, digits = 1): string {
   const abs = Math.abs(n);
@@ -77,6 +77,24 @@ export function untilLabel(iso: string, nowMs = Date.now()): string {
   if (hours < 0) return `~${Math.max(1, Math.round(-hours))} hours ago`;
   if (hours < 48) return `in ~${Math.max(1, Math.round(hours))} hours`;
   return `in ${Math.round(hours / 24)} days`;
+}
+
+/** When a card's unlock happens: a continuous (daily) release has no single date. */
+export function unlockWhen(card: { timing?: string; unlockDate: string | null }, nowMs = Date.now()): string {
+  if (card.timing === "continuous") return "releasing daily";
+  return card.unlockDate ? untilLabel(card.unlockDate, nowMs) : "";
+}
+
+/** Data-source label: live data, a dated snapshot of real data, or illustrative sample data. */
+export function sourceLabel(mode: string): string {
+  return mode === "live" ? "Live data" : mode === "snapshot" ? "Real data (snapshot)" : "Sample data";
+}
+
+/** Label plus time for one data section: "Real data (snapshot) · as of 15 Oct 07:00", "Live data · as of 14:05", "Sample data". */
+export function sourceTag(src: { mode: string; asOf?: string; stale?: boolean } | null | undefined): string {
+  if (!src) return "";
+  const when = src.mode !== "sample" ? asOfLabel(src.asOf, src.stale) : "";
+  return when ? `${sourceLabel(src.mode)} · ${when}` : sourceLabel(src.mode);
 }
 
 // Thai copy for Thai replies (the agent answers in the user's language).

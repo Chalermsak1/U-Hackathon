@@ -26,3 +26,21 @@ export function asOfLabelTh(iso: string | null | undefined, stale = false, nowMs
   if (!t) return stale ? "อาจไม่ล่าสุด" : "";
   return `ณ ${t}${stale ? " (อาจไม่ล่าสุด)" : ""}`;
 }
+
+/** English: "14:05" if the time is today in Bangkok, else "15 Oct 07:00". */
+export function asOfEn(iso: string | null | undefined, nowMs = Date.now()): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const day = (x: Date) => x.toLocaleDateString("en-CA", { timeZone: "Asia/Bangkok" });
+  const time = d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" });
+  if (day(d) === day(new Date(nowMs))) return time;
+  return `${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "Asia/Bangkok" })} ${time}`;
+}
+
+/** "as of 15 Oct 07:00", plus "(may be out of date)" when the data is a fallback copy. */
+export function asOfLabel(iso: string | null | undefined, stale = false, nowMs = Date.now()): string {
+  const t = asOfEn(iso, nowMs);
+  if (!t) return stale ? "may be out of date" : "";
+  return `as of ${t}${stale ? " (may be out of date)" : ""}`;
+}

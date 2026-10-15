@@ -4,15 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ensureSession } from "@/components/EnsureSession";
 import { thb } from "@/lib/format";
-import { asOfLabelTh } from "@/lib/freshness";
+import { asOfLabel } from "@/lib/freshness";
 import type { PaperOrder, TradePlan, TradeSide } from "@/lib/types";
 
 export const TRADE_EVENT = "trade:changed";
 
 const VERDICT = {
-  ready: { th: "ผ่านการตรวจ", lv: "lv-low" },
-  caution: { th: "ควรดูก่อนอนุมัติ", lv: "lv-medium" },
-  blocked: { th: "ทำตามแผนนี้ไม่ได้", lv: "lv-high" },
+  ready: { th: "Passed the checks", lv: "lv-low" },
+  caution: { th: "Review before approving", lv: "lv-medium" },
+  blocked: { th: "This plan can't go ahead", lv: "lv-high" },
 } as const;
 const MARK = { ok: "✓", warn: "!", block: "✕" } as const;
 
@@ -37,7 +37,7 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
         body: JSON.stringify({ planId: plan.id, decision }),
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "บันทึกไม่สำเร็จ");
+      if (!res.ok) throw new Error(body.error ?? "Couldn't save");
       setOrder(body.order ?? null);
       setState(decision === "approve" ? "approved" : "declined");
       window.dispatchEvent(new Event(TRADE_EVENT));
@@ -49,9 +49,9 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
   }
 
   return (
-    <article className={`tp-plan ${v.lv}`} aria-label={`แผน${plan.side === "buy" ? "ซื้อ" : "ขาย"} ${plan.symbol}`}>
+    <article className={`tp-plan ${v.lv}`} aria-label={`Plan to ${plan.side === "buy" ? "buy" : "sell"} ${plan.symbol}`}>
       <div className="tp-plan-head">
-        <b>แผนที่ U-Bot ร่าง</b>
+        <b>Plan drafted by U-Bot</b>
         <span className="tp-verdict">
           <span className="dot" />
           {v.th}
@@ -64,19 +64,19 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
       </ul>
 
       <dl className="tp-nums">
-        <div><dt>จำนวน</dt><dd>{qtyT(plan.qty)} {plan.symbol}</dd></div>
-        <div><dt>ราคา{plan.orderType === "limit" ? " (limit)" : ""} {asOfLabelTh(plan.priceAsOf, plan.priceStale)}</dt><dd>{usdP(plan.priceUsd)}</dd></div>
-        <div><dt>ค่าธรรมเนียม (สมมติ 0.25%)</dt><dd>{thb(plan.feeThb)}</dd></div>
+        <div><dt>Amount</dt><dd>{qtyT(plan.qty)} {plan.symbol}</dd></div>
+        <div><dt>Price{plan.orderType === "limit" ? " (limit)" : ""} {asOfLabel(plan.priceAsOf, plan.priceStale)}</dt><dd>{usdP(plan.priceUsd)}</dd></div>
+        <div><dt>Fee (assumed 0.25%)</dt><dd>{thb(plan.feeThb)}</dd></div>
         {plan.side === "buy" && (
           <>
-            <div><dt>จุดตัดขาดทุน −{plan.stopLossPct}%</dt><dd>{usdP(plan.stopPriceUsd)}</dd></div>
-            <div><dt>เสียสูงสุด (ถ้าถึงจุดตัด)</dt><dd>{thb(plan.maxLossThb)}</dd></div>
-            <div><dt>{plan.symbol} หลังซื้อ</dt><dd>{plan.positionPctAfter.toFixed(1)}% ของพอร์ต</dd></div>
+            <div><dt>Stop-loss −{plan.stopLossPct}%</dt><dd>{usdP(plan.stopPriceUsd)}</dd></div>
+            <div><dt>Max loss (if stopped out)</dt><dd>{thb(plan.maxLossThb)}</dd></div>
+            <div><dt>{plan.symbol} after buying</dt><dd>{plan.positionPctAfter.toFixed(1)}% of portfolio</dd></div>
           </>
         )}
       </dl>
 
-      <h4 className="tp-sub">U-Guard ตรวจ</h4>
+      <h4 className="tp-sub">U-Guard checks</h4>
       <ul className="tp-checks">
         {plan.checks.map((c) => (
           <li key={c.id} className={`tp-check ${c.status}`}>
@@ -89,11 +89,11 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
         ))}
       </ul>
 
-      <h4 className="tp-sub">ถ้าราคาเป็นแบบนี้</h4>
+      <h4 className="tp-sub">If the price goes to</h4>
       <div className="table-scroll">
         <table className="t-table tp-table">
           <thead>
-            <tr><th>กรณี</th><th className="num">ราคา</th><th className="num">{plan.side === "buy" ? "กำไร/ขาดทุน" : "ผลต่อคุณ"}</th></tr>
+            <tr><th>Case</th><th className="num">Price</th><th className="num">{plan.side === "buy" ? "P&amp;L" : "Effect for you"}</th></tr>
           </thead>
           <tbody>
             {plan.scenarios.map((s) => (
@@ -112,33 +112,33 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
 
       {plan.agent && (
         <details className="tp-agent">
-          <summary>คำอธิบายจาก U-Bot · {plan.agent.engine} · {plan.agent.trace.length} ขั้นตอน</summary>
+          <summary>U-Bot's explanation · {plan.agent.engine} · {plan.agent.trace.length} steps</summary>
           <p>{plan.agent.reply}</p>
         </details>
       )}
 
       {state === "approved" && (
         <p className="receipt">
-          อนุมัติแล้ว · คำสั่งจำลอง {order ? `${qtyT(order.qty)} ${order.symbol}` : ""} · บันทึกบน {order?.receipt.chain ?? "Avalanche"}
+          Approved · paper order {order ? `${qtyT(order.qty)} ${order.symbol}` : ""} · recorded on {order?.receipt.chain ?? "Avalanche"}
           {order?.receipt.explorerUrl ? (
             <>
               {" "}·{" "}
-              <a href={order.receipt.explorerUrl} target="_blank" rel="noreferrer">ดูธุรกรรม</a>
+              <a href={order.receipt.explorerUrl} target="_blank" rel="noreferrer">View transaction</a>
             </>
           ) : order?.receipt.note ? (
             <> · {order.receipt.note}</>
           ) : null}{" "}
-          · <Link href="/terminal/trade">ดูคำสั่งทั้งหมด</Link>
+          · <Link href="/terminal/trade">All orders</Link>
         </p>
       )}
-      {state === "declined" && <p className="receipt">ไม่ทำตามแผนนี้ ไม่มีคำสั่งเกิดขึ้น</p>}
+      {state === "declined" && <p className="receipt">Plan declined. No order was placed.</p>}
       {(state === "pending" || state === "busy") && (
         <div className="tp-actions">
           <button className="btn btn-primary" disabled={state === "busy" || plan.verdict === "blocked"} onClick={() => decide("approve")}>
-            {state === "busy" ? "กำลังบันทึก…" : plan.side === "buy" ? "อนุมัติซื้อ (จำลอง)" : "อนุมัติขาย (จำลอง)"}
+            {state === "busy" ? "Saving…" : plan.side === "buy" ? "Approve buy (paper)" : "Approve sell (paper)"}
           </button>
           <button className="btn" disabled={state === "busy"} onClick={() => decide("decline")}>
-            ไม่ทำ
+            Decline
           </button>
           {error && <span className="error">{error}</span>}
         </div>
@@ -185,7 +185,7 @@ export function TradePanel({ symbol, defaultAmount = 5000 }: { symbol: string; d
         }),
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "ร่างแผนไม่สำเร็จ");
+      if (!res.ok) throw new Error(body.error ?? "Couldn't draft the plan");
       setPlan(body as TradePlan);
     } catch (err) {
       setError((err as Error).message);
@@ -195,22 +195,22 @@ export function TradePanel({ symbol, defaultAmount = 5000 }: { symbol: string; d
   }
 
   return (
-    <section className="panel tp" aria-label={`เทรด ${symbol}`}>
+    <section className="panel tp" aria-label={`Trade ${symbol}`}>
       <div className="panel-head">
-        <h2>เทรด {symbol}</h2>
+        <h2>Trade {symbol}</h2>
         <span className="total">paper trading</span>
       </div>
       <form onSubmit={draft} className="tp-form">
-        <div className="tp-side" role="radiogroup" aria-label="ซื้อหรือขาย">
+        <div className="tp-side" role="radiogroup" aria-label="Buy or sell">
           <button type="button" role="radio" aria-checked={side === "buy"} className={side === "buy" ? "on buy" : ""} onClick={() => setSide("buy")}>
-            ซื้อ
+            Buy
           </button>
           <button type="button" role="radio" aria-checked={side === "sell"} className={side === "sell" ? "on sell" : ""} onClick={() => setSide("sell")}>
-            ขาย
+            Sell
           </button>
         </div>
         <label>
-          จำนวนเงิน (บาท)
+          Amount (THB)
           <input inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value)} />
         </label>
         <div className="tp-presets">
@@ -222,7 +222,7 @@ export function TradePanel({ symbol, defaultAmount = 5000 }: { symbol: string; d
         </div>
         <div className="tp-row">
           <label>
-            ประเภทคำสั่ง
+            Order type
             <select value={orderType} onChange={(e) => setOrderType(e.target.value as "market" | "limit")}>
               <option value="market">Market</option>
               <option value="limit">Limit</option>
@@ -230,31 +230,31 @@ export function TradePanel({ symbol, defaultAmount = 5000 }: { symbol: string; d
           </label>
           {orderType === "limit" && (
             <label>
-              ราคา limit ($)
+              Limit price ($)
               <input inputMode="decimal" value={limitPrice} onChange={(e) => setLimitPrice(e.target.value)} placeholder="0.17" />
             </label>
           )}
         </div>
         <details className="tp-adv">
-          <summary>ตั้งค่าความเสี่ยง</summary>
+          <summary>Risk settings</summary>
           <div className="tp-row">
             <label>
-              จุดตัดขาดทุน (%)
+              Stop-loss (%)
               <input inputMode="decimal" value={stop} onChange={(e) => setStop(e.target.value)} />
             </label>
             <label>
-              งบความเสี่ยงต่อไม้ (% ของพอร์ต)
+              Risk budget per trade (% of portfolio)
               <input inputMode="decimal" value={budget} onChange={(e) => setBudget(e.target.value)} />
             </label>
           </div>
         </details>
         <button className="btn btn-primary tp-go" type="submit" disabled={busy}>
-          {busy ? "U-Bot กำลังร่างแผน…" : "ให้ AI ร่างแผนและตรวจความเสี่ยง"}
+          {busy ? "U-Bot is drafting…" : "Let AI draft a plan and check the risk"}
         </button>
         {error && <p className="error">{error}</p>}
       </form>
       {plan && <TradePlanCard key={plan.id} plan={plan} />}
-      <p className="note tp-foot">คุณเลือกเหรียญและจำนวนเอง · U-Bot ร่างแผนและตรวจความเสี่ยง · คำสั่งเป็นแบบจำลอง · ไม่ใช่คำแนะนำการลงทุน</p>
+      <p className="note tp-foot">You pick the token and amount · U-Bot drafts a plan and checks the risk · orders are simulated · not investment advice</p>
     </section>
   );
 }

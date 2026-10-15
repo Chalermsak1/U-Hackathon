@@ -8,7 +8,7 @@ import { thb } from "@/lib/format";
 import type { PaperOrder, RiskLevel, TradePlan } from "@/lib/types";
 
 const SYMBOLS = ["ARB", "WLD", "AVAX", "ETH", "BTC"];
-const LEVEL_SHORT: Record<RiskLevel, string> = { high: "เสี่ยงสูง", medium: "ปานกลาง", low: "ต่ำ", none: "–" };
+const LEVEL_SHORT: Record<RiskLevel, string> = { high: "High", medium: "Medium", low: "Low", none: "–" };
 
 interface Position {
   symbol: string;
@@ -54,11 +54,11 @@ export default function TradePage() {
   return (
     <>
       <div className="page-title">
-        <h1>เทรด</h1>
-        <p>คุณเลือกเหรียญและจำนวนเอง · U-Bot ร่างแผนและตรวจความเสี่ยง · คุณเป็นคนอนุมัติ · คำสั่งเป็นแบบจำลอง (paper trading)</p>
+        <h1>Trade</h1>
+        <p>You pick the token and amount · U-Bot drafts a plan and checks the risk · you approve · orders are simulated (paper trading)</p>
       </div>
 
-      <div className="trade-picker" role="tablist" aria-label="เลือกเหรียญ">
+      <div className="trade-picker" role="tablist" aria-label="Pick a token">
         {SYMBOLS.map((s) => (
           <button
             key={s}
@@ -77,7 +77,7 @@ export default function TradePage() {
           </button>
         ))}
         <Link href={`/terminal/tokens/${symbol}`} className="note trade-more">
-          ดูข้อมูลเต็มของ {symbol} →
+          Full data for {symbol} →
         </Link>
       </div>
 
@@ -86,7 +86,7 @@ export default function TradePage() {
         <div style={{ display: "grid", gap: 16, alignContent: "start" }}>
           {pending.length > 0 && (
             <Spotlight className="panel">
-              <div className="panel-head"><h2>แผนที่รอคุณตัดสินใจ</h2><span className="total">{pending.length} แผน</span></div>
+              <div className="panel-head"><h2>Plans waiting for you</h2><span className="total">{pending.length} plans</span></div>
               <div style={{ display: "grid", gap: 10 }}>
                 {pending.map((p) => (
                   <TradePlanCard key={p.id} plan={p} />
@@ -95,14 +95,14 @@ export default function TradePage() {
             </Spotlight>
           )}
           <Spotlight className="panel">
-            <div className="panel-head"><h2>สถานะจำลอง</h2><span className="total">จากคำสั่งที่อนุมัติ</span></div>
+            <div className="panel-head"><h2>Paper positions</h2><span className="total">From approved orders</span></div>
             {positions.length === 0 ? (
-              <p className="empty">ยังไม่มี ลองให้ U-Bot ร่างแผนแล้วกดอนุมัติ</p>
+              <p className="empty">None yet. Let U-Bot draft a plan, then approve it.</p>
             ) : (
               <div className="table-scroll">
                 <table className="t-table" style={{ minWidth: 0 }}>
                   <thead>
-                    <tr><th>เหรียญ</th><th className="num">จำนวน</th><th className="num">ต้นทุน</th><th className="num">มูลค่าตอนนี้</th><th className="num">กำไร/ขาดทุน</th></tr>
+                    <tr><th>Token</th><th className="num">Amount</th><th className="num">Cost</th><th className="num">Value now</th><th className="num">P&amp;L</th></tr>
                   </thead>
                   <tbody>
                     {positions.map((p) => (
@@ -120,29 +120,29 @@ export default function TradePage() {
             )}
           </Spotlight>
           <Spotlight className="panel">
-            <div className="panel-head"><h2>คำสั่งจำลองของฉัน</h2><span className="total">{orders.length} รายการ</span></div>
-            {orders.length === 0 && <p className="empty">ยังไม่มีคำสั่ง</p>}
+            <div className="panel-head"><h2>My paper orders</h2><span className="total">{orders.length} orders</span></div>
+            {orders.length === 0 && <p className="empty">No orders yet</p>}
             {orders.map((o) => (
               <div key={o.id} className="event-row" style={{ gridTemplateColumns: "auto 1fr auto" }}>
-                <span className={`pill ${o.side === "buy" ? "lv-low" : "lv-high"}`}>{o.side === "buy" ? "ซื้อ" : "ขาย"}</span>
+                <span className={`pill ${o.side === "buy" ? "lv-low" : "lv-high"}`}>{o.side === "buy" ? "Buy" : "Sell"}</span>
                 <span>
-                  <b>{qtyT(o.qty)} {o.symbol}</b> · {thb(o.amountThb)} ที่ ${o.priceUsd.toLocaleString("en-US", { maximumFractionDigits: o.priceUsd < 1 ? 4 : 2 })}
+                  <b>{qtyT(o.qty)} {o.symbol}</b> · {thb(o.amountThb)} at ${o.priceUsd.toLocaleString("en-US", { maximumFractionDigits: o.priceUsd < 1 ? 4 : 2 })}
                   <small className="note" style={{ display: "block" }}>
-                    {new Date(o.at).toLocaleString("th-TH", { dateStyle: "short", timeStyle: "short" })} · บันทึกบน {o.receipt.chain}
+                    {new Date(o.at).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" })} · recorded on {o.receipt.chain}
                     {o.receipt.explorerUrl && (
                       <>
                         {" "}·{" "}
-                        <a href={o.receipt.explorerUrl} target="_blank" rel="noreferrer">ดูธุรกรรม</a>
+                        <a href={o.receipt.explorerUrl} target="_blank" rel="noreferrer">View transaction</a>
                       </>
                     )}
                   </small>
                 </span>
-                <span className="note">จุดตัด ${o.stopPriceUsd.toLocaleString("en-US", { maximumFractionDigits: o.stopPriceUsd < 1 ? 4 : 2 })}</span>
+                <span className="note">Stop ${o.stopPriceUsd.toLocaleString("en-US", { maximumFractionDigits: o.stopPriceUsd < 1 ? 4 : 2 })}</span>
               </div>
             ))}
           </Spotlight>
           <p className="note">
-            ยังไม่ได้ส่งคำสั่งจริง: การเทรดจริงต้องผ่านโบรกเกอร์หรือแพลตฟอร์มที่มีใบอนุญาต (เช่น swap ใน U-topia ผ่าน U-Bot) ซึ่งอยู่ใน roadmap
+            No real orders are sent: real trading has to go through a licensed broker or platform (e.g. a U-topia swap via U-Bot), which is on the roadmap
           </p>
         </div>
       </div>

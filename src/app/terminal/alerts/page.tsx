@@ -23,8 +23,8 @@ interface Rule {
   channel: "ubot" | "telegram" | "line";
 }
 
-const CHANNEL_TH = { ubot: "U-Bot ในแอป", telegram: "Telegram", line: "LINE" };
-const TYPE_TH = { unlock: "Unlock", drift: "พอร์ตเบี้ยวจากเป้า", news: "ข่าวลบ" };
+const CHANNEL_TH = { ubot: "U-Bot in the app", telegram: "Telegram", line: "LINE" };
+const TYPE_TH = { unlock: "Unlock", drift: "Portfolio drift", news: "Negative news" };
 
 interface AlertEvent {
   id: string;
@@ -47,13 +47,13 @@ interface WatchInfo {
   events?: AlertEvent[];
 }
 
-const hhmm = (iso: string) => new Date(iso).toLocaleString("th-TH", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const hhmm = (iso: string) => new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 function ruleText(r: Rule): string {
-  const who = r.symbol === "*" ? "ทุกเหรียญในพอร์ต" : r.symbol;
-  if (r.type === "drift") return `พอร์ตเบี้ยวเกินกรอบจากเป้าที่ตั้งไว้ · ${CHANNEL_TH[r.channel]}`;
-  if (r.type === "news") return `ข่าวลบของ ${who} · ระดับ${r.minLevel === "high" ? "รุนแรง" : "ปานกลางขึ้นไป"} · ${CHANNEL_TH[r.channel]}`;
-  return `unlock ของ ${who} · เสี่ยง${r.minLevel === "high" ? "สูง" : "ปานกลางขึ้นไป"} · ${r.daysBefore} วันก่อน · ${CHANNEL_TH[r.channel]}`;
+  const who = r.symbol === "*" ? "every token in my portfolio" : r.symbol;
+  if (r.type === "drift") return `portfolio drifts outside the band around your targets · ${CHANNEL_TH[r.channel]}`;
+  if (r.type === "news") return `negative news on ${who} · ${r.minLevel === "high" ? "serious only" : "medium or higher"} · ${CHANNEL_TH[r.channel]}`;
+  return `unlocks of ${who} · ${r.minLevel === "high" ? "high" : "medium or higher"} risk · ${r.daysBefore} days before · ${CHANNEL_TH[r.channel]}`;
 }
 
 // Smart alerts: rules for when U-Guard should speak up, and the protection decisions so far.
@@ -112,7 +112,7 @@ export default function AlertsPage() {
     setError(null);
     const res = await fetch("/api/alerts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
     if (!res.ok) {
-      setError((await res.json().catch(() => ({}))).error ?? "เพิ่มไม่สำเร็จ");
+      setError((await res.json().catch(() => ({}))).error ?? "Couldn't add the rule");
       return;
     }
     load();
@@ -125,7 +125,7 @@ export default function AlertsPage() {
     try {
       const res = await fetch("/api/alerts/run", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "ตรวจไม่สำเร็จ");
+      if (!res.ok) throw new Error(body.error ?? "The check failed");
       setOutcomes(body.outcomes ?? []);
       if (body.fired > 0) window.dispatchEvent(new Event(INBOX_EVENT));
       inbox.reload();
@@ -145,8 +145,8 @@ export default function AlertsPage() {
   return (
     <>
       <div className="page-title">
-        <h1>การแจ้งเตือน</h1>
-        <p>ให้ U-Guard บอกเฉพาะเรื่องที่สำคัญ · ส่งผ่าน U-Bot (Telegram / LINE เป็น roadmap)</p>
+        <h1>Alerts</h1>
+        <p>U-Guard only speaks up when it matters · delivered through U-Bot (Telegram / LINE on the roadmap)</p>
       </div>
       <div className="grid-2">
         <Spotlight className="panel">
@@ -154,70 +154,70 @@ export default function AlertsPage() {
             <span className={`watch-dot ${watch?.enabled ? "on" : ""}`} aria-hidden="true" />
             <span>
               {watch?.enabled
-                ? `U-Bot เฝ้าดูอัตโนมัติทุก ${watch.intervalMin} นาที`
-                : "การเฝ้าดูอัตโนมัติปิดอยู่ (ตั้ง WATCH_INTERVAL_MIN หรือใช้ cron)"}
+                ? `U-Bot checks automatically every ${watch.intervalMin} min`
+                : "Automatic checks are off (set WATCH_INTERVAL_MIN or use a cron)"}
               {watch?.lastRun && (
                 <small className="note">
-                  {" "}· ตรวจล่าสุด {new Date(watch.lastRun).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} · เตือน {watch.lastFired}
+                  {" "}· last check {new Date(watch.lastRun).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })} · alerts {watch.lastFired}
                 </small>
               )}
               {watch?.quietHours && (
                 <small className="note" style={{ display: "block" }}>
                   {watch.quietHours.start === watch.quietHours.end
-                    ? "ไม่มีช่วงเวลาเงียบ"
-                    : `ช่วง ${watch.quietHours.start}:00–${watch.quietHours.end}:00 แจ้งเฉพาะเรื่องเสี่ยงสูง`}{" "}
-                  · ไม่เกิน {watch.maxPerDay} ครั้งต่อวัน · ไม่แจ้งซ้ำเรื่องเดิม
+                    ? "No quiet hours"
+                    : `${watch.quietHours.start}:00–${watch.quietHours.end}:00 high-risk alerts only`}{" "}
+                  · at most {watch.maxPerDay} a day · never the same alert twice
                 </small>
               )}
             </span>
             <button className="btn btn-sm" onClick={watchWallet} disabled={adding || checking}>
-              {adding ? "กำลังตั้ง…" : "เฝ้าดูทุกเหรียญในพอร์ต"}
+              {adding ? "Setting up…" : "Watch every token in my portfolio"}
             </button>
           </div>
-          <div className="panel-head"><h2>สร้างกฎแจ้งเตือน</h2></div>
+          <div className="panel-head"><h2>New alert rule</h2></div>
           <form className="form-row" onSubmit={add}>
             <label>
-              ประเภท
+              Type
               <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>
                 <option value="unlock">Unlock</option>
-                <option value="drift">พอร์ตเบี้ยวจากเป้า</option>
-                <option value="news">ข่าวลบ</option>
+                <option value="drift">Portfolio drift</option>
+                <option value="news">Negative news</option>
               </select>
             </label>
             {form.type !== "drift" && (
               <label>
-                เหรียญ (* = ทั้งพอร์ต)
+                Token (* = whole portfolio)
                 <input value={form.symbol} onChange={(e) => setForm({ ...form, symbol: e.target.value })} maxLength={20} style={{ width: 90 }} />
               </label>
             )}
             {form.type !== "drift" && (
               <label>
-                {form.type === "news" ? "ความรุนแรงอย่างน้อย" : "เมื่อความเสี่ยงอย่างน้อย"}
+                {form.type === "news" ? "Severity at least" : "When risk is at least"}
                 <select value={form.minLevel} onChange={(e) => setForm({ ...form, minLevel: e.target.value })}>
-                  <option value="medium">ปานกลาง</option>
-                  <option value="high">สูง</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
                 </select>
               </label>
             )}
             {form.type === "unlock" && (
               <label>
-                ล่วงหน้า (วัน)
+                Days ahead
                 <input type="number" min={1} max={30} value={form.daysBefore} onChange={(e) => setForm({ ...form, daysBefore: Number(e.target.value) })} style={{ width: 80 }} />
               </label>
             )}
             <label>
-              ช่องทาง
+              Channel
               <select value={form.channel} onChange={(e) => setForm({ ...form, channel: e.target.value })}>
-                <option value="ubot">U-Bot ในแอป</option>
+                <option value="ubot">U-Bot in the app</option>
                 <option value="telegram">Telegram</option>
                 <option value="line">LINE</option>
               </select>
             </label>
-            <button className="btn btn-primary" type="submit">เพิ่ม</button>
+            <button className="btn btn-primary" type="submit">Add</button>
           </form>
           {error && <p className="error">{error}</p>}
           <div style={{ marginTop: 14 }}>
-            {rules.length === 0 && <p className="empty">ยังไม่มีกฎ ลองเพิ่ม ARB ด้านบน</p>}
+            {rules.length === 0 && <p className="empty">No rules yet. Try adding ARB above, or watch the whole portfolio.</p>}
             {rules.map((r) => {
               const o = outcomes?.find((x) => x.ruleId === r.id);
               return (
@@ -226,13 +226,13 @@ export default function AlertsPage() {
                     <b>{TYPE_TH[r.type ?? "unlock"]}</b> · {ruleText(r)}
                     {o && (
                       <span className={`note alert-outcome ${o.fired ? "fired" : ""}`}>
-                        {o.fired ? "✓ ส่งเข้า U-Bot แล้ว · " : "ไม่เตือน · "}
+                        {o.fired ? "✓ sent to U-Bot · " : "no alert · "}
                         {o.reason}
                         {o.channelNote ? ` · ${o.channelNote}` : ""}
                       </span>
                     )}
                   </span>
-                  <button className="btn btn-sm" onClick={() => remove(r.id)}>ลบ</button>
+                  <button className="btn btn-sm" onClick={() => remove(r.id)}>Delete</button>
                 </div>
               );
             })}
@@ -240,19 +240,19 @@ export default function AlertsPage() {
           {rules.length > 0 && (
             <div className="row" style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 12 }}>
               <button className="btn btn-primary" onClick={checkNow} disabled={checking}>
-                {checking ? "กำลังตรวจ…" : "ตรวจตอนนี้"}
+                {checking ? "Checking…" : "Check now"}
               </button>
-              <span className="note">เช็กทุกกฎกับข้อมูลล่าสุด ข้อไหนเข้าเงื่อนไขจะส่งเข้า U-Bot เป็นข้อความเดียว</span>
+              <span className="note">Checks every rule against the latest data; matches go to U-Bot as one message</span>
             </div>
           )}
         </Spotlight>
         <Spotlight className="panel">
-          <div className="panel-head"><h2>ข้อความจาก U-Bot</h2><span className="total">ล่าสุดก่อน</span></div>
+          <div className="panel-head"><h2>Messages from U-Bot</h2><span className="total">Newest first</span></div>
           <InboxList items={inbox.items.slice(0, 6)} />
         </Spotlight>
         <Spotlight className="panel">
-          <div className="panel-head"><h2>ประวัติการแจ้งเตือน</h2><span className="total">{watch?.events?.length ?? 0} รายการ</span></div>
-          {(watch?.events ?? []).length === 0 && <p className="empty">ยังไม่มีการแจ้งเตือน</p>}
+          <div className="panel-head"><h2>Alert history</h2><span className="total">{watch?.events?.length ?? 0} sent</span></div>
+          {(watch?.events ?? []).length === 0 && <p className="empty">No alerts sent yet</p>}
           {(watch?.events ?? []).map((e) => (
             <div key={e.id} className="event-row" style={{ gridTemplateColumns: "auto 1fr" }}>
               <span className={`pill ${e.severity === "high" ? "lv-high" : "lv-medium"}`}>{TYPE_TH[e.type]}</span>
@@ -264,7 +264,7 @@ export default function AlertsPage() {
           ))}
           {(watch?.last?.skipped ?? []).length > 0 && (
             <>
-              <h4 className="tp-sub" style={{ marginTop: 12 }}>รอบล่าสุดที่ยังไม่ส่ง</h4>
+              <h4 className="tp-sub" style={{ marginTop: 12 }}>Held back on the last run</h4>
               {watch!.last!.skipped.slice(0, 6).map((s) => (
                 <p key={s.title + s.reason} className="note" style={{ margin: "4px 0" }}>
                   {s.title} · <span style={{ color: "var(--amber)" }}>{s.reason}</span>
@@ -274,14 +274,14 @@ export default function AlertsPage() {
           )}
         </Spotlight>
         <Spotlight className="panel">
-          <div className="panel-head"><h2>การตัดสินใจที่บันทึกไว้</h2><span className="total">อนุมัติ / ไม่อนุมัติ</span></div>
-          {decisions.length === 0 && <p className="empty">ยังไม่มี ลองอนุมัติข้อเสนอในหน้า AI Agent, เทรด หรือ ลงทุน</p>}
+          <div className="panel-head"><h2>Your decisions</h2><span className="total">Approved / declined</span></div>
+          {decisions.length === 0 && <p className="empty">None yet. Approve a proposal on the AI Agent, Trade or Invest page.</p>}
           {decisions.map((d) => (
             <div key={d.id} className="event-row" style={{ gridTemplateColumns: "1fr auto" }}>
               <span>
                 <b>{d.symbol}</b> · {d.title}
               </span>
-              <span className={`pill ${d.status === "approved" ? "lv-low" : "lv-none"}`}>{d.status === "approved" ? "อนุมัติ" : "ไม่อนุมัติ"}</span>
+              <span className={`pill ${d.status === "approved" ? "lv-low" : "lv-none"}`}>{d.status === "approved" ? "Approved" : "Declined"}</span>
             </div>
           ))}
         </Spotlight>

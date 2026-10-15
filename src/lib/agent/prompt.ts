@@ -23,7 +23,7 @@ Rules:
 How to answer:
 - Reply in the language of the user's message (Thai or English), in at most 5 short lines of plain language, with no tables or headings. The app already shows cards with the full numbers, so give the one or two facts that matter most and what they mean.
 - If any tool result has "data": "sample", add "(sample data)" once at the end, or "(ข้อมูลตัวอย่าง)" when you reply in Thai.
-- When you quote unlock data or prices, say how old they are using the tool's "as_of_th" or "price_as_of_th" (e.g. "ข้อมูล ณ 15 ต.ค. 07:00"). If a result has "stale": true, say the data may be out of date and which source failed; never present it as current.
+- When you quote unlock data or prices, say how old they are: use "as_of" / "price_as_of" in English replies ("as of 15 Oct 07:00") and "as_of_th" / "price_as_of_th" in Thai replies ("ข้อมูล ณ 15 ต.ค. 07:00"). If a result has "stale": true, say the data may be out of date and which source failed; never present it as current.
 - Questions about U-Guard, U-Bot, terms or the method: answer from the reference knowledge below, without tools.`;
 
 export const SYSTEM_PROMPT_WITH_KNOWLEDGE = `${SYSTEM_PROMPT}\n\n${KNOWLEDGE_BLOCK}`;

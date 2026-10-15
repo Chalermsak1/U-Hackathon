@@ -24,7 +24,7 @@ export interface LastRun {
 export const WELCOME: ChatMessage = {
   id: "welcome",
   role: "bot",
-  text: "สวัสดี ฉันคือ U-Guard ก่อนคุณซื้อหรือถือเหรียญ ฉันจะเช็กให้ว่ามีเหรียญก้อนใหญ่กำลังจะปลดล็อกเข้าตลาดไหม ลองพิมพ์ชื่อเหรียญหรือกดตัวอย่างด้านล่างได้เลย",
+  text: "Hi, I'm U-Guard. Before you buy or hold a token, I check whether a large batch is about to unlock into the market. Type a token or tap an example below. You can ask in English or Thai.",
 };
 
 /** Chat state shared by the U-topia phone view (/app) and the terminal's AI Agent page. */
@@ -60,7 +60,7 @@ export function useAgentChat() {
           body: JSON.stringify({ message, history }),
         });
         const body = await res.json();
-        if (!res.ok) throw new Error(body.error ?? "U-Guard ตอบไม่ได้ตอนนี้ ลองใหม่อีกครั้ง");
+        if (!res.ok) throw new Error(body.error ?? "U-Guard can't answer right now. Try again.");
         const result = body as AgentResult;
         absorb(result, Math.round(performance.now() - t0));
         setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "bot", text: result.reply, result }]);
@@ -83,10 +83,10 @@ export function useAgentChat() {
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lang: "th" }),
+        body: JSON.stringify({ lang: "en" }),
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "สแกนไม่สำเร็จ ลองใหม่อีกครั้ง");
+      if (!res.ok) throw new Error(body.error ?? "The scan failed. Try again.");
       const result = body as AgentResult & { pushed: boolean };
       absorb(result, Math.round(performance.now() - t0));
       setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "bot", text: result.reply, result, push: result.pushed }]);
@@ -100,7 +100,7 @@ export function useAgentChat() {
 
   /** The user message that led to bot message i (for the PDF report title). */
   const questionFor = useCallback(
-    (i: number) => (messages[i - 1]?.role === "user" ? messages[i - 1].text : "สแกนพอร์ต"),
+    (i: number) => (messages[i - 1]?.role === "user" ? messages[i - 1].text : "Portfolio scan"),
     [messages],
   );
 

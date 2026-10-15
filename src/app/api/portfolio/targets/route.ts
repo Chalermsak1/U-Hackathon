@@ -15,14 +15,14 @@ const Body = z
   .refine((b) => {
     const sum = Object.values(b.targets).reduce((s, v) => s + v, 0);
     return sum === 0 || Math.abs(sum - 100) <= 1;
-  }, "เป้าสัดส่วนต้องรวมกันได้ 100% (หรือใส่ 0 ทั้งหมดเพื่อล้างเป้า)");
+  }, "Targets must add up to 100% (or all 0 to clear them)");
 
 // The signed-in user's own target mix and the drift report against it. Drift is measured against
 // this plan, never against our opinion.
 export async function GET() {
   const session = await getSession();
   if (!session) return jsonError(401, "Sign in to see your targets.");
-  const [targets, drift] = await Promise.all([getTargets(session.sub), checkDrift(session.sub, { now: now(), locale: "th" })]);
+  const [targets, drift] = await Promise.all([getTargets(session.sub), checkDrift(session.sub, { now: now(), locale: "en" })]);
   return Response.json({ ...targets, drift });
 }
 
@@ -36,6 +36,6 @@ export async function PUT(req: Request) {
   if (!parsed.success) return jsonError(400, parsed.error.issues[0]?.message ?? "invalid targets");
   const targets = Object.fromEntries(Object.entries(parsed.data.targets).filter(([, v]) => v > 0));
   setTargets(session.sub, { targets, bandPp: parsed.data.bandPp });
-  const drift = await checkDrift(session.sub, { now: now(), locale: "th" });
+  const drift = await checkDrift(session.sub, { now: now(), locale: "en" });
   return Response.json({ ...(await getTargets(session.sub)), drift });
 }

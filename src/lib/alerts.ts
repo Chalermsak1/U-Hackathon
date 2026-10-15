@@ -9,7 +9,7 @@
 import { randomUUID } from "node:crypto";
 import { executeTool, newContext, type RunContext } from "./agent/tools";
 import { config } from "./config";
-import { thaiDate, untilText } from "./format";
+import { LEVEL_LABEL, shortDate, untilLabel } from "./format";
 import { getHoldings } from "./portfolio";
 import { store, type AlertEvent, type AlertRule, type AlertType, type WatchSummary } from "./store";
 import type { AgentResult, NewsItem, RiskCard, RiskLevel } from "./types";
@@ -18,14 +18,13 @@ import { getUBot } from "./ubot";
 const STABLES = new Set(["USDC", "USDT", "DAI"]);
 const RANK: Record<RiskLevel, number> = { none: 0, low: 1, medium: 2, high: 3 };
 const SEV = { medium: 2, high: 3 } as const;
-const LEVEL_TH: Record<RiskLevel, string> = { high: "สูง", medium: "ปานกลาง", low: "ต่ำ", none: "ไม่มี unlock ใกล้นี้" };
 const SERIOUS = /hack|exploit|breach|lawsuit|sued|sec|delist|regulat|ban|bankrupt|insolv|halt/i;
 
 export interface AlertOutcome {
   ruleId: string;
   symbol: string;
   fired: boolean;
-  /** Why it fired or not, in Thai, for the alerts page. */
+  /** Why it fired or not, for the alerts page. */
   reason: string;
   channelNote?: string;
 }
@@ -43,13 +42,13 @@ export function inQuietHours(nowMs: number): boolean {
 
 /** Does this card meet an unlock rule? Level threshold plus the timing window. */
 export function matches(rule: Pick<AlertRule, "minLevel" | "daysBefore">, card: RiskCard): { ok: boolean; reason: string } {
-  const level = `${LEVEL_TH[card.level]}${card.level === "none" ? "" : ` ${card.score}/100`}`;
-  if (RANK[card.level] < RANK[rule.minLevel]) return { ok: false, reason: `ยังไม่ถึงเกณฑ์ (ตอนนี้ ${level})` };
+  const level = card.level === "none" ? LEVEL_LABEL.none : `${LEVEL_LABEL[card.level]} risk ${card.score}/100`;
+  if (RANK[card.level] < RANK[rule.minLevel]) return { ok: false, reason: `Below your threshold (now ${level})` };
   if (card.timing === "upcoming" && card.daysUntil !== null && card.daysUntil > rule.daysBefore) {
-    return { ok: false, reason: `unlock อีก ${card.daysUntil} วัน เกินช่วง ${rule.daysBefore} วันที่ตั้งไว้` };
+    return { ok: false, reason: `Unlock in ${card.daysUntil} days, outside your ${rule.daysBefore}-day window` };
   }
-  const when = card.timing === "continuous" ? "กำลังทยอยปลดล็อก" : card.unlockDate ? `unlock ${thaiDate(card.unlockDate)}` : "มี unlock";
-  return { ok: true, reason: `เสี่ยง${level} · ${when}` };
+  const when = card.timing === "continuous" ? "releasing daily" : card.unlockDate ? `unlock ${shortDate(card.unlockDate)}` : "unlock ahead";
+  return { ok: true, reason: `${level} · ${when}` };
 }
 
 /** Severity of a news item: negative news is medium; negative and serious (hack, lawsuit...) is high. */
@@ -87,7 +86,7 @@ export async function runAlerts(
 ): Promise<{ outcomes: AlertOutcome[]; summary: WatchSummary }> {
   const rules = store.alerts.filter((r) => r.ownerId === userId);
   const typeOf = (r: AlertRule): AlertType => r.type ?? "unlock";
-  const ctx = newContext({ userId, scope: "user", requestId: randomUUID(), now, locale: "th" });
+  const ctx = newContext({ userId, scope: "user", requestId: randomUUID(), now, locale: "en" });
   const skipped: WatchSummary["skipped"] = [];
   const outcomes = new Map<string, AlertOutcome & { rank: number }>();
   // A rule over several tokens keeps its most telling reason: fired, then a real candidate held
@@ -101,7 +100,7 @@ export async function runAlerts(
         symbol: r.symbol,
         fired,
         reason,
-        channelNote: r.channel === "ubot" ? undefined : "LINE / Telegram ยังเป็น roadmap จึงส่งเข้า U-Bot ในแอปแทน",
+        channelNote: r.channel === "ubot" ? undefined : "LINE / Telegram are on the roadmap, so this goes to U-Bot in the app",
       });
     }
   };
@@ -126,7 +125,7 @@ export async function runAlerts(
     for (const symbol of expand(r.symbol)) {
       const card = ctx.cards.get(symbol);
       if (!card) {
-        note(r, false, ctx.notes.get(symbol) ?? `${symbol}: ไม่มีข้อมูล unlock`);
+        note(r, false, ctx.notes.get(symbol) ? `${symbol}: ${ctx.notes.get(symbol)}` : `${symbol}: no unlock data`);
         continue;
       }
       const m = matches(r, card);
@@ -141,7 +140,7 @@ export async function runAlerts(
         symbol,
         severity: card.level === "high" ? "high" : "medium",
         dedupeKey: `unlock:${symbol}:${(card.unlockDate ?? "none").slice(0, 10)}:${card.level}`,
-        title: `${symbol} ใกล้ถึงวัน unlock (เสี่ยง${LEVEL_TH[card.level]} ${card.score}/100)`,
+        title: `${symbol} unlock coming up (${LEVEL_LABEL[card.level]} risk ${card.score}/100)`,
         lines: card.reasons.slice(0, 2),
       });
     }
@@ -150,11 +149,11 @@ export async function runAlerts(
   const drift = ctx.drift;
   for (const r of driftRules) {
     if (!drift?.hasTargets) {
-      note(r, false, "ยังไม่ได้ตั้งเป้าสัดส่วนพอร์ต (ตั้งได้ที่หน้าพอร์ต)");
+      note(r, false, "No target mix set yet (set it on the portfolio page)");
       continue;
     }
     const off = drift.rows.filter((row) => row.status === "over" || row.status === "under");
-    if (off.length === 0) note(r, false, `ทุกเหรียญอยู่ในกรอบ ±${drift.bandPp} จุดจากเป้า`);
+    if (off.length === 0) note(r, false, `Every holding is within ±${drift.bandPp} points of target`);
     for (const row of off) {
       const over = row.status === "over";
       const soon = row.unlockDate !== null && new Date(row.unlockDate).getTime() - now <= 7 * 86_400_000;
@@ -167,10 +166,10 @@ export async function runAlerts(
         severity: risky ? "high" : "medium",
         // Drift may repeat once a day while it lasts.
         dedupeKey: `drift:${row.symbol}:${over ? "over" : "under"}:${bangkokDay(now)}`,
-        title: `${row.symbol} ${over ? "เกิน" : "ต่ำกว่า"}เป้าที่คุณตั้ง ${Math.abs(row.driftPp ?? 0)} จุด`,
+        title: `${row.symbol} is ${Math.abs(row.driftPp ?? 0)} points ${over ? "over" : "under"} your target`,
         lines: [
-          `ตอนนี้ ${row.weightPct}% ของพอร์ต เป้าของคุณคือ ${row.targetPct}%`,
-          ...(risky && row.unlockDate ? [`และ ${row.symbol} มี unlock เสี่ยงสูง ${untilText(row.unlockDate, now)}`] : []),
+          `Now ${row.weightPct}% of the portfolio; your target is ${row.targetPct}%`,
+          ...(risky && row.unlockDate ? [`and ${row.symbol} has a high-risk unlock ${untilLabel(row.unlockDate, now)}`] : []),
         ],
       });
     }
@@ -188,8 +187,8 @@ export async function runAlerts(
       // A high alert needs a second, independent source on the same token.
       const corroborated = news.some((o) => o !== n && o.source !== n.source && o.symbols.includes(symbol) && newsSeverity(o) !== null);
       if (severity === "high" && !corroborated) {
-        skipped.push({ title: `ข่าว ${symbol}: ${n.summary}`, reason: `ข่าวสำคัญจากแหล่งเดียว (${n.source}) ยังไม่มีแหล่งที่สองยืนยัน` });
-        note(r, false, `${symbol}: ข่าวจากแหล่งเดียว รอแหล่งที่สองยืนยัน`);
+        skipped.push({ title: `${symbol} news: ${n.summary}`, reason: `Serious news from one source only (${n.source}); waiting for a second source` });
+        note(r, false, `${symbol}: single-source news, waiting for a second source`);
         continue;
       }
       candidates.push({
@@ -199,12 +198,12 @@ export async function runAlerts(
         symbol,
         severity,
         dedupeKey: `news:${n.url}#${n.summary.slice(0, 60)}`,
-        title: `ข่าว ${symbol}: ${n.summary}`,
-        lines: [`ที่มา: ${n.source}${n.date ? ` · ${thaiDate(n.date)}` : ""}`],
+        title: `${symbol} news: ${n.summary}`,
+        lines: [`Source: ${n.source}${n.date ? ` · ${shortDate(n.date)}` : ""}`],
         url: n.url,
       });
     }
-    if (!any) note(r, false, "ไม่มีข่าวลบที่เกี่ยวข้องใน 3 วันที่ผ่านมา");
+    if (!any) note(r, false, "No relevant negative news in the last 3 days");
   }
 
   // ─── 3. Dedupe, quiet hours, daily cap ───
@@ -220,14 +219,14 @@ export async function runAlerts(
   for (const c of [...byKey.values()].sort((a, b) => SEV[b.severity] - SEV[a.severity])) {
     const { rule, ...event } = c;
     if (mine.some((e) => e.dedupeKey === c.dedupeKey)) {
-      skipped.push({ title: c.title, reason: "แจ้งไปแล้ว (กันแจ้งซ้ำ)" });
-      note(rule, false, `${c.symbol}: แจ้งไปแล้ว`, 2);
+      skipped.push({ title: c.title, reason: "Already sent (no repeats)" });
+      note(rule, false, `${c.symbol}: already sent`, 2);
     } else if (quiet && c.severity !== "high") {
-      skipped.push({ title: c.title, reason: `ช่วงเวลาเงียบ ${config.watch.quietStartHour}:00–${config.watch.quietEndHour}:00 · จะแจ้งรอบถัดไป` });
-      note(rule, false, `${c.symbol}: ช่วงเวลาเงียบ จะแจ้งรอบถัดไป`, 2);
+      skipped.push({ title: c.title, reason: `Quiet hours ${config.watch.quietStartHour}:00–${config.watch.quietEndHour}:00 · will send on a later run` });
+      note(rule, false, `${c.symbol}: quiet hours, will send later`, 2);
     } else if (today >= config.watch.maxPerDay) {
-      skipped.push({ title: c.title, reason: `ครบ ${config.watch.maxPerDay} ครั้งต่อวันแล้ว · จะแจ้งพรุ่งนี้` });
-      note(rule, false, `${c.symbol}: ครบจำนวนแจ้งเตือนต่อวันแล้ว`, 2);
+      skipped.push({ title: c.title, reason: `Daily limit of ${config.watch.maxPerDay} reached · will send tomorrow` });
+      note(rule, false, `${c.symbol}: daily limit reached`, 2);
     } else {
       fired.push({ ...event, id: randomUUID(), ownerId: userId, firedAt: new Date(now).toISOString() });
       note(rule, true, c.title);
@@ -245,9 +244,9 @@ export async function runAlerts(
       }
     }
     const reply = [
-      `U-Guard แจ้งเตือน ${fired.length} เรื่อง`,
+      `U-Guard alert: ${fired.length} item${fired.length === 1 ? "" : "s"}`,
       ...fired.map((e) => `• ${e.title}${e.lines[0] ? ` · ${e.lines[0]}` : ""}`),
-      ...(fired.some((e) => outcomes.get(e.ruleId)?.channelNote) ? ["(LINE / Telegram ยังเป็น roadmap จึงส่งผ่าน U-Bot)"] : []),
+      ...(fired.some((e) => outcomes.get(e.ruleId)?.channelNote) ? ["(LINE / Telegram are on the roadmap, so this came through U-Bot)"] : []),
     ].join("\n");
     const base = resultFrom(ctx, reply);
     const firedSyms = new Set(fired.filter((e) => e.type !== "news").map((e) => e.symbol));
@@ -263,11 +262,11 @@ export async function runAlerts(
       store.alertEvents.splice(500);
     } catch (err) {
       // Not recorded, so the next run tries again.
-      for (const e of fired) skipped.push({ title: e.title, reason: `ส่งไม่สำเร็จ: ${(err as Error).message}` });
+      for (const e of fired) skipped.push({ title: e.title, reason: `Could not send: ${(err as Error).message}` });
       fired.length = 0;
     }
   }
-  for (const r of rules) if (!outcomes.has(r.id)) note(r, false, "ไม่มีอะไรเข้าเงื่อนไข");
+  for (const r of rules) if (!outcomes.has(r.id)) note(r, false, "Nothing matched");
 
   const summary: WatchSummary = { ranAt: new Date(now).toISOString(), trigger, fired, skipped };
   store.lastWatch.set(userId, summary);

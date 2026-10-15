@@ -32,10 +32,10 @@ export async function GET() {
       // Trade and invest plans the user decided on, in the same list.
       ...[...store.tradePlans.values()]
         .filter((r) => r.ownerId === session.sub && r.plan.status !== "pending")
-        .map(({ plan }) => ({ id: plan.id, symbol: plan.symbol, title: `แผน${plan.side === "buy" ? "ซื้อ" : "ขาย"} ${thb(plan.amountThb)} (จำลอง)`, status: plan.status })),
+        .map(({ plan }) => ({ id: plan.id, symbol: plan.symbol, title: `${plan.side === "buy" ? "Buy" : "Sell"} plan ${thb(plan.amountThb)} (paper)`, status: plan.status })),
       ...[...store.investPlans.values()]
         .filter((r) => r.ownerId === session.sub && r.plan.status !== "pending")
-        .map(({ plan }) => ({ id: plan.id, symbol: "พอร์ต", title: `แผนลงทุนระดับ${plan.profileTh} · DCA ${thb(plan.monthlyThb)}/เดือน`, status: plan.status })),
+        .map(({ plan }) => ({ id: plan.id, symbol: "Portfolio", title: `"${plan.profileName}" investment plan · DCA ${thb(plan.monthlyThb)}/month`, status: plan.status })),
     ],
   });
 }

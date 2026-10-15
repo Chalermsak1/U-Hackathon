@@ -1,7 +1,7 @@
 // U-Bot stand-in: a real MCP client that calls U-Guard the way U-Bot would before it moves a
 // user's money. U-Bot's own interface isn't public yet, so this plays its part on stage.
 //
-//   npm run ubot                                  # Thai, ARB, ฿5,000, Enter between steps
+//   npm run ubot                                  # English, ARB, ฿5,000, Enter between steps
 //   npm run ubot -- --symbol AVAX --thb 2000      # another token
 //   npm run ubot -- --auto                        # no pauses (rehearsal, video)
 //   npm run ubot -- --url https://<host>/api/mcp  # a deployed server
@@ -30,7 +30,7 @@ const url = opt("url", process.env.MCP_URL || `http://localhost:${process.env.PO
 const user = opt("user", "demo-user");
 const symbol = opt("symbol", "ARB").toUpperCase();
 const thb = Number(opt("thb", "5000"));
-const lang = opt("lang", "th");
+const lang = opt("lang", "en");
 const auto = args.includes("--auto");
 const key = process.env.MCP_API_KEY;
 
@@ -100,7 +100,7 @@ try {
       console.log(`     ${c.dim}id ${proposal.proposal_id} · status ${proposal.status}${c.off}`);
       console.log(
         key
-          ? `\n  ${c.green}Delivered to ${user}'s U-Bot inbox.${c.off} Open the app → bell → "อนุมัติ" → receipt on Avalanche.`
+          ? `\n  ${c.green}Delivered to ${user}'s U-Bot inbox.${c.off} Open the app → bell → "Approve" → receipt on Avalanche.`
           : `\n  ${c.amber}No MCP_API_KEY: the proposal belongs to an anonymous client and reaches no user.${c.off}`,
       );
     } else {

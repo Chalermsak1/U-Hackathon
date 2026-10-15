@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { compact, engineLabel, LEVEL_TH, pct, thaiDate, usd } from "@/lib/format";
+import { compact, engineLabel, LEVEL_LABEL, pct, shortDate, usd } from "@/lib/format";
 import { readReport, type ReportData } from "@/lib/report";
 import type { RecipientClass } from "@/lib/types";
 
 const RECIPIENT_TH: Record<RecipientClass, string> = {
-  team: "ทีม",
-  investor: "นักลงทุน",
-  community: "ชุมชน",
-  other: "อื่นๆ",
-  reserve: "เงินสำรองโครงการ",
-  ecosystem: "กองทุนพัฒนา ecosystem",
+  team: "Team",
+  investor: "Investors",
+  community: "Community",
+  other: "Other",
+  reserve: "Project reserve",
+  ecosystem: "Ecosystem development fund",
 };
 
 // Printable A4 summary of one U-Guard answer. Opens the print dialog once fonts are ready.
@@ -30,8 +30,8 @@ export default function ReportPage() {
   if (data === null) {
     return (
       <main className="report-page">
-        <p>ยังไม่มีผลให้สรุป เปิด Terminal ถาม U-Guard แล้วกด &ldquo;สรุปเป็น PDF&rdquo; อีกครั้ง</p>
-        <Link href="/terminal">กลับไป Terminal</Link>
+        <p>Nothing to summarise yet. Open the Terminal, ask U-Guard, then press &ldquo;Save as PDF&rdquo; again.</p>
+        <Link href="/terminal">Back to the Terminal</Link>
       </main>
     );
   }
@@ -43,10 +43,10 @@ export default function ReportPage() {
     <main className="report-page">
       <div className="no-print report-actions">
         <button className="btn btn-primary" onClick={() => window.print()}>
-          บันทึกเป็น PDF
+          Save as PDF
         </button>
         <Link href="/terminal" className="btn">
-          กลับไป Terminal
+          Back to the Terminal
         </Link>
       </div>
 
@@ -54,48 +54,48 @@ export default function ReportPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/brand/logo-mark.svg" width={44} height={44} alt="" />
         <div>
-          <h1>สรุปการตรวจความเสี่ยงจากการปลดล็อกเหรียญ</h1>
+          <h1>Token unlock risk check: summary</h1>
           <p>
-            U-Guard ใน U-Bot · {new Date(at).toLocaleString("th-TH", { dateStyle: "long", timeStyle: "short" })} ·{" "}
+            U-Guard in U-Bot · {new Date(at).toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" })} ·{" "}
             {engineLabel(result)}
           </p>
         </div>
       </header>
 
       <section>
-        <h2>คำถาม</h2>
+        <h2>Question</h2>
         <p>{question}</p>
-        <h2>คำตอบของ U-Guard</h2>
+        <h2>U-Guard's answer</h2>
         <p style={{ whiteSpace: "pre-wrap" }}>{result.reply}</p>
       </section>
 
       {result.cards.map((c) => (
         <section key={c.symbol} className="report-card">
           <h2>
-            {c.symbol} · {c.name} — {LEVEL_TH[c.level]}
+            {c.symbol} · {c.name} — {LEVEL_LABEL[c.level]}
             {c.level !== "none" ? ` (${c.score}/100)` : ""}
           </h2>
           {c.level !== "none" && (
             <table>
               <tbody>
                 <tr>
-                  <th>วันที่ปลดล็อก</th>
-                  <td>{c.unlockDate ? thaiDate(c.unlockDate) : "–"}</td>
-                  <th>จำนวน</th>
+                  <th>Unlock date</th>
+                  <td>{c.unlockDate ? shortDate(c.unlockDate) : "–"}</td>
+                  <th>Amount</th>
                   <td>
                     {compact(c.amount)} {c.symbol} (~{usd(c.valueUsd)})
                   </td>
                 </tr>
                 <tr>
-                  <th>% ของเหรียญหมุนเวียน</th>
+                  <th>% of circulating supply</th>
                   <td>{pct(c.pctOfCirculating)}</td>
-                  <th>เทียบ volume ซื้อขาย</th>
-                  <td>{c.daysOfVolume === null ? "–" : `${c.daysOfVolume.toFixed(2)} วัน`}</td>
+                  <th>vs trading volume</th>
+                  <td>{c.daysOfVolume === null ? "–" : `${c.daysOfVolume.toFixed(2)} days`}</td>
                 </tr>
                 <tr>
-                  <th>กำไรของนักลงทุนรอบล่าสุด</th>
-                  <td>{c.investorMultiple === null ? "–" : `~${c.investorMultiple.toFixed(1)} เท่า`}</td>
-                  <th>ผู้รับ</th>
+                  <th>Latest round investors' profit</th>
+                  <td>{c.investorMultiple === null ? "–" : `~${c.investorMultiple.toFixed(1)}×`}</td>
+                  <th>Recipients</th>
                   <td>{c.breakdown.map((b) => `${RECIPIENT_TH[b.recipient]} ${Math.round(b.share * 100)}%`).join(" · ")}</td>
                 </tr>
               </tbody>
@@ -111,7 +111,7 @@ export default function ReportPage() {
 
       {result.proposals.length > 0 && (
         <section>
-          <h2>ข้อเสนอการป้องกัน (ต้องให้ผู้ใช้อนุมัติ)</h2>
+          <h2>Protection proposals (need the user's approval)</h2>
           <ul>
             {result.proposals.map((p) => (
               <li key={p.id}>
@@ -124,7 +124,7 @@ export default function ReportPage() {
 
       {result.trace.length > 0 && (
         <section>
-          <h2>ขั้นตอนที่ agent ทำ</h2>
+          <h2>What the agent did</h2>
           <ol className="report-trace">
             {result.trace.map((t, i) => (
               <li key={`${t.name}-${i}`}>
@@ -137,12 +137,12 @@ export default function ReportPage() {
 
       <footer className="report-foot">
         <p>
-          แหล่งข้อมูล: Tokenomist ({sample ? "ข้อมูลตัวอย่างสำหรับ demo" : "ข้อมูลสด"}) · ราคาและ volume: CoinGecko / ข้อมูลตัวอย่าง ·
-          วิธีคิดคะแนนอ้างอิงงานวิจัย Keyrock (16,000+ unlock events) คะแนนคำนวณด้วยโค้ด ไม่ใช่ AI
+          Sources: Tokenomist ({sample ? "sample data for the demo" : "live data"}) · prices and volume: CoinGecko / sample data ·
+          the score follows Keyrock research (16,000+ unlock events) and is computed in code, not by AI
         </p>
         <p>
-          เอกสารนี้เป็นข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน U-Guard ไม่ได้แนะนำให้ซื้อ ขาย หรือถือสินทรัพย์ใด
-          การลงทุนในสินทรัพย์ดิจิทัลมีความเสี่ยงสูง
+          This document is decision support, not investment advice. U-Guard does not recommend buying, selling or holding any asset.
+          Investing in digital assets is high risk.
         </p>
       </footer>
     </main>

@@ -5,7 +5,7 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { compact, shortDate, thaiDate, usd } from "../format";
-import { asOfTh } from "../freshness";
+import { asOfEn, asOfTh } from "../freshness";
 import { checkDrift } from "../drift";
 import { getEventCalendar } from "../intel/calendar";
 import { searchNews } from "../intel/news";
@@ -315,6 +315,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           amount: h.amount,
           value_thb: Math.round(h.valueThb),
           data: h.source,
+          price_as_of: asOfEn(h.asOf, ctx.now),
           price_as_of_th: asOfTh(h.asOf, ctx.now),
         })),
         summary: holdings.map((h) => h.symbol).join(", "),
@@ -428,6 +429,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           next_unlock: c.nextUnlock ? { date: c.nextUnlock.date.slice(0, 10), amount: c.nextUnlock.amount } : null,
           reasons: c.reasons,
           data: c.source.mode,
+          as_of: asOfEn(c.source.asOf, ctx.now),
           as_of_th: asOfTh(c.source.asOf, ctx.now),
           stale: c.source.stale ?? false,
         },
@@ -565,6 +567,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           weighted_dilution_6m_pct: d.weightedDilutionPct,
           largest: d.concentration,
           lines: d.lines,
+          price_as_of: asOfEn(d.pricesAsOf, ctx.now),
           price_as_of_th: asOfTh(d.pricesAsOf, ctx.now),
           data: "sample",
         },

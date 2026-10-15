@@ -11,7 +11,7 @@ export function SiteNav({ signedIn = false }: { signedIn?: boolean }) {
           <a href="/en#signals">Signals</a>
           <Link href="/method">Method</Link>
           <Link href="/terminal">Terminal</Link>
-          <Link href="/" lang="th">ไทย</Link>
+          <Link href="/">Home</Link>
         </nav>
         <div className="actions">
           {signedIn ? (
@@ -48,7 +48,7 @@ export function SiteFooter() {
         </p>
         <div className="row" style={{ gap: 16 }}>
           <Link href="/method">Method &amp; data</Link>
-          <Link href="/terminal">U-Guard Terminal (ไทย)</Link>
+          <Link href="/terminal">U-Guard Terminal</Link>
           <Link href="/login">Sign in</Link>
         </div>
       </div>

@@ -327,7 +327,9 @@ export async function assessUnlockRisk(
     const valueUsd = c.amount * priceUsd;
     const pctCirc = token.circulatingSupply > 0 ? (c.amount / token.circulatingSupply) * 100 : 0;
     const daysOfVolume = quote && quote.volume24hUsd > 0 ? valueUsd / quote.volume24hUsd : null;
-    const breakdown: RecipientSlice[] = c.slices
+    // Tokenomist can list one recipient twice (two allocations with the same name): merge them.
+    const merged = [...c.slices.reduce((m, s) => m.set(s.name, { ...s, amount: (m.get(s.name)?.amount ?? 0) + s.amount }), new Map<string, (typeof c.slices)[number]>()).values()];
+    const breakdown: RecipientSlice[] = merged
       .map((s) => ({
         name: s.name,
         recipient: classifyRecipient(s.name, s.std),
