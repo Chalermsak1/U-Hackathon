@@ -1,0 +1,4281 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:49Z",
+    "credit": {
+      "used": 30,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "page": 1,
+    "totalPages": 1,
+    "pageSize": 199,
+    "total": 199,
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": [
+    {
+      "startDate": "2026-10-01T00:00:00Z",
+      "endDate": "2026-10-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 97168.25804314895,
+      "referencePrice": 0.202949,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 97168.25804314895,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5945695933.620966,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-02T00:00:00Z",
+      "endDate": "2026-10-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 95619.87817179436,
+      "referencePrice": 0.199715,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 95619.87817179436,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5946174715.275682,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-03T00:00:00Z",
+      "endDate": "2026-10-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93821.57427667752,
+      "referencePrice": 0.195959,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93821.57427667752,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5946653496.930399,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-04T00:00:00Z",
+      "endDate": "2026-10-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 96381.61978444902,
+      "referencePrice": 0.201306,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 96381.61978444902,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5947132278.585115,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-05T00:00:00Z",
+      "endDate": "2026-10-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 97698.26933492061,
+      "referencePrice": 0.204056,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 97698.26933492061,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5947611060.239832,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-06T00:00:00Z",
+      "endDate": "2026-10-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 99571.26316817329,
+      "referencePrice": 0.207968,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 99571.26316817329,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5948089841.894548,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-07T00:00:00Z",
+      "endDate": "2026-10-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 95628.49624157927,
+      "referencePrice": 0.199733,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 95628.49624157927,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5948568623.549265,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-08T00:00:00Z",
+      "endDate": "2026-10-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 88909.7532809364,
+      "referencePrice": 0.1857,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 88909.7532809364,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5949047405.203981,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-09T00:00:00Z",
+      "endDate": "2026-10-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 82626.70162608595,
+      "referencePrice": 0.172577,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 82626.70162608595,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5949526186.858698,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-10T00:00:00Z",
+      "endDate": "2026-10-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 87425.53015131388,
+      "referencePrice": 0.1826,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 87425.53015131388,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5950004968.513414,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-11T00:00:00Z",
+      "endDate": "2026-10-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 90636.2399278457,
+      "referencePrice": 0.189306,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 90636.2399278457,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5950483750.168131,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-12T00:00:00Z",
+      "endDate": "2026-10-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 95493.9585966038,
+      "referencePrice": 0.199452,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 95493.9585966038,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5950962531.822847,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-13T00:00:00Z",
+      "endDate": "2026-10-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 86035.14822601587,
+      "referencePrice": 0.179696,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 86035.14822601587,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5951441313.477564,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-14T00:00:00Z",
+      "endDate": "2026-10-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 91518.63451748903,
+      "referencePrice": 0.191149,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 91518.63451748903,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5951920095.13228,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-15T00:00:00Z",
+      "endDate": "2026-10-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 92422.0954999399,
+      "referencePrice": 0.193036,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 92422.0954999399,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 5952398876.786997,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-16T00:00:00Z",
+      "endDate": "2026-10-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124614.65471694,
+      "unlockValue": 18202882.177328214,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520833,
+          "unlockValue": 7138654.184844,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6045523491.441713,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-17T00:00:00Z",
+      "endDate": "2026-10-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6046002273.09643,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-18T00:00:00Z",
+      "endDate": "2026-10-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6046481054.751146,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-19T00:00:00Z",
+      "endDate": "2026-10-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6046959836.405863,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-20T00:00:00Z",
+      "endDate": "2026-10-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6047438618.060579,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-21T00:00:00Z",
+      "endDate": "2026-10-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6047917399.715296,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-22T00:00:00Z",
+      "endDate": "2026-10-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6048396181.370012,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-23T00:00:00Z",
+      "endDate": "2026-10-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6048874963.024729,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-24T00:00:00Z",
+      "endDate": "2026-10-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6049353744.679445,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-25T00:00:00Z",
+      "endDate": "2026-10-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6049832526.334162,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-26T00:00:00Z",
+      "endDate": "2026-10-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6050311307.988878,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-27T00:00:00Z",
+      "endDate": "2026-10-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6050790089.643595,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-28T00:00:00Z",
+      "endDate": "2026-10-29T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6051268871.298311,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-29T00:00:00Z",
+      "endDate": "2026-10-30T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6051747652.953028,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-30T00:00:00Z",
+      "endDate": "2026-10-31T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6052226434.607744,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-31T00:00:00Z",
+      "endDate": "2026-11-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6052705216.262461,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-01T00:00:00Z",
+      "endDate": "2026-11-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6053183997.917177,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-02T00:00:00Z",
+      "endDate": "2026-11-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6053662779.571894,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-03T00:00:00Z",
+      "endDate": "2026-11-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6054141561.22661,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-04T00:00:00Z",
+      "endDate": "2026-11-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6054620342.881327,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-05T00:00:00Z",
+      "endDate": "2026-11-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6055099124.536043,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-06T00:00:00Z",
+      "endDate": "2026-11-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6055577906.19076,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-07T00:00:00Z",
+      "endDate": "2026-11-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6056056687.845476,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-08T00:00:00Z",
+      "endDate": "2026-11-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6056535469.500193,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-09T00:00:00Z",
+      "endDate": "2026-11-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6057014251.154909,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-10T00:00:00Z",
+      "endDate": "2026-11-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6057493032.809626,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-11T00:00:00Z",
+      "endDate": "2026-11-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6057971814.464342,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-12T00:00:00Z",
+      "endDate": "2026-11-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6058450596.119059,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-13T00:00:00Z",
+      "endDate": "2026-11-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6058929377.773775,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-14T00:00:00Z",
+      "endDate": "2026-11-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6059408159.428492,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-15T00:00:00Z",
+      "endDate": "2026-11-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6059886941.083208,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-16T00:00:00Z",
+      "endDate": "2026-11-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124615.65471694,
+      "unlockValue": 18202882.37279621,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520834,
+          "unlockValue": 7138654.380312,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6153011556.737925,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-17T00:00:00Z",
+      "endDate": "2026-11-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6153490338.392641,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-18T00:00:00Z",
+      "endDate": "2026-11-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6153969120.047358,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-19T00:00:00Z",
+      "endDate": "2026-11-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6154447901.702074,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-20T00:00:00Z",
+      "endDate": "2026-11-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6154926683.356791,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-21T00:00:00Z",
+      "endDate": "2026-11-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6155405465.011507,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-22T00:00:00Z",
+      "endDate": "2026-11-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6155884246.666224,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-23T00:00:00Z",
+      "endDate": "2026-11-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6156363028.32094,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-24T00:00:00Z",
+      "endDate": "2026-11-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6156841809.9756565,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-25T00:00:00Z",
+      "endDate": "2026-11-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6157320591.630373,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-26T00:00:00Z",
+      "endDate": "2026-11-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6157799373.2850895,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-27T00:00:00Z",
+      "endDate": "2026-11-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6158278154.939806,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-28T00:00:00Z",
+      "endDate": "2026-11-29T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6158756936.594522,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-29T00:00:00Z",
+      "endDate": "2026-11-30T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6159235718.249239,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-30T00:00:00Z",
+      "endDate": "2026-12-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6159714499.903955,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-01T00:00:00Z",
+      "endDate": "2026-12-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6160193281.558672,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-02T00:00:00Z",
+      "endDate": "2026-12-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6160672063.213388,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-03T00:00:00Z",
+      "endDate": "2026-12-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6161150844.868105,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-04T00:00:00Z",
+      "endDate": "2026-12-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6161629626.522821,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-05T00:00:00Z",
+      "endDate": "2026-12-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6162108408.177538,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-06T00:00:00Z",
+      "endDate": "2026-12-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6162587189.832254,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-07T00:00:00Z",
+      "endDate": "2026-12-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6163065971.486971,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-08T00:00:00Z",
+      "endDate": "2026-12-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6163544753.141687,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-09T00:00:00Z",
+      "endDate": "2026-12-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6164023534.796404,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-10T00:00:00Z",
+      "endDate": "2026-12-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6164502316.45112,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-11T00:00:00Z",
+      "endDate": "2026-12-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6164981098.105837,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-12T00:00:00Z",
+      "endDate": "2026-12-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6165459879.760553,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-13T00:00:00Z",
+      "endDate": "2026-12-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6165938661.41527,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-14T00:00:00Z",
+      "endDate": "2026-12-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6166417443.069986,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-15T00:00:00Z",
+      "endDate": "2026-12-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6166896224.724703,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-16T00:00:00Z",
+      "endDate": "2026-12-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124614.65471694,
+      "unlockValue": 18202882.177328214,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520833,
+          "unlockValue": 7138654.184844,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6260020839.379419,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-17T00:00:00Z",
+      "endDate": "2026-12-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6260499621.034136,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-18T00:00:00Z",
+      "endDate": "2026-12-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6260978402.688852,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-19T00:00:00Z",
+      "endDate": "2026-12-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6261457184.343569,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-20T00:00:00Z",
+      "endDate": "2026-12-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6261935965.998285,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-21T00:00:00Z",
+      "endDate": "2026-12-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6262414747.653002,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-22T00:00:00Z",
+      "endDate": "2026-12-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6262893529.307718,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-23T00:00:00Z",
+      "endDate": "2026-12-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6263372310.962435,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-24T00:00:00Z",
+      "endDate": "2026-12-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6263851092.617151,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-25T00:00:00Z",
+      "endDate": "2026-12-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6264329874.271868,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-26T00:00:00Z",
+      "endDate": "2026-12-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6264808655.926584,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-27T00:00:00Z",
+      "endDate": "2026-12-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6265287437.581301,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-28T00:00:00Z",
+      "endDate": "2026-12-29T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6265766219.236017,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-29T00:00:00Z",
+      "endDate": "2026-12-30T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6266245000.890734,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-30T00:00:00Z",
+      "endDate": "2026-12-31T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6266723782.54545,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-31T00:00:00Z",
+      "endDate": "2027-01-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6267202564.200167,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-01T00:00:00Z",
+      "endDate": "2027-01-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6267681345.854883,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-02T00:00:00Z",
+      "endDate": "2027-01-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6268160127.5096,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-03T00:00:00Z",
+      "endDate": "2027-01-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6268638909.164316,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-04T00:00:00Z",
+      "endDate": "2027-01-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6269117690.819033,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-05T00:00:00Z",
+      "endDate": "2027-01-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6269596472.473749,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-06T00:00:00Z",
+      "endDate": "2027-01-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6270075254.128466,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-07T00:00:00Z",
+      "endDate": "2027-01-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6270554035.783182,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-08T00:00:00Z",
+      "endDate": "2027-01-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6271032817.437899,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-09T00:00:00Z",
+      "endDate": "2027-01-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6271511599.092615,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-10T00:00:00Z",
+      "endDate": "2027-01-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6271990380.747332,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-11T00:00:00Z",
+      "endDate": "2027-01-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6272469162.402048,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-12T00:00:00Z",
+      "endDate": "2027-01-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6272947944.056765,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-13T00:00:00Z",
+      "endDate": "2027-01-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6273426725.711481,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-14T00:00:00Z",
+      "endDate": "2027-01-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6273905507.366198,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-15T00:00:00Z",
+      "endDate": "2027-01-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6274384289.020914,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-16T00:00:00Z",
+      "endDate": "2027-01-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124614.65471694,
+      "unlockValue": 18202882.177328214,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520833,
+          "unlockValue": 7138654.184844,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6367508903.675631,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-17T00:00:00Z",
+      "endDate": "2027-01-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6367987685.330347,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-18T00:00:00Z",
+      "endDate": "2027-01-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6368466466.985064,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-19T00:00:00Z",
+      "endDate": "2027-01-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6368945248.63978,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-20T00:00:00Z",
+      "endDate": "2027-01-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6369424030.294497,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-21T00:00:00Z",
+      "endDate": "2027-01-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6369902811.949213,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-22T00:00:00Z",
+      "endDate": "2027-01-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6370381593.6039295,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-23T00:00:00Z",
+      "endDate": "2027-01-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6370860375.258646,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-24T00:00:00Z",
+      "endDate": "2027-01-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6371339156.9133625,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-25T00:00:00Z",
+      "endDate": "2027-01-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6371817938.568079,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-26T00:00:00Z",
+      "endDate": "2027-01-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6372296720.2227955,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-27T00:00:00Z",
+      "endDate": "2027-01-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6372775501.877512,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-28T00:00:00Z",
+      "endDate": "2027-01-29T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6373254283.532228,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-29T00:00:00Z",
+      "endDate": "2027-01-30T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6373733065.186945,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-30T00:00:00Z",
+      "endDate": "2027-01-31T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6374211846.841661,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-31T00:00:00Z",
+      "endDate": "2027-02-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6374690628.496378,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-01T00:00:00Z",
+      "endDate": "2027-02-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6375169410.151094,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-02T00:00:00Z",
+      "endDate": "2027-02-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6375648191.805811,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-03T00:00:00Z",
+      "endDate": "2027-02-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6376126973.460527,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-04T00:00:00Z",
+      "endDate": "2027-02-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6376605755.115244,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-05T00:00:00Z",
+      "endDate": "2027-02-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6377084536.76996,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-06T00:00:00Z",
+      "endDate": "2027-02-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6377563318.424677,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-07T00:00:00Z",
+      "endDate": "2027-02-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6378042100.079393,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-08T00:00:00Z",
+      "endDate": "2027-02-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6378520881.73411,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-09T00:00:00Z",
+      "endDate": "2027-02-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6378999663.388826,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-10T00:00:00Z",
+      "endDate": "2027-02-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6379478445.043543,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-11T00:00:00Z",
+      "endDate": "2027-02-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6379957226.698259,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-12T00:00:00Z",
+      "endDate": "2027-02-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6380436008.352976,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-13T00:00:00Z",
+      "endDate": "2027-02-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6380914790.007692,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-14T00:00:00Z",
+      "endDate": "2027-02-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6381393571.662409,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-15T00:00:00Z",
+      "endDate": "2027-02-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6381872353.317125,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-16T00:00:00Z",
+      "endDate": "2027-02-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124615.65471694,
+      "unlockValue": 18202882.37279621,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520834,
+          "unlockValue": 7138654.380312,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6474996968.971842,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-17T00:00:00Z",
+      "endDate": "2027-02-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6475475750.626558,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-18T00:00:00Z",
+      "endDate": "2027-02-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6475954532.281275,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-19T00:00:00Z",
+      "endDate": "2027-02-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6476433313.935991,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-20T00:00:00Z",
+      "endDate": "2027-02-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6476912095.590708,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-21T00:00:00Z",
+      "endDate": "2027-02-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6477390877.245424,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-22T00:00:00Z",
+      "endDate": "2027-02-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6477869658.900141,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-23T00:00:00Z",
+      "endDate": "2027-02-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6478348440.554857,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-24T00:00:00Z",
+      "endDate": "2027-02-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6478827222.209574,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-25T00:00:00Z",
+      "endDate": "2027-02-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6479306003.86429,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-26T00:00:00Z",
+      "endDate": "2027-02-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6479784785.519007,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-27T00:00:00Z",
+      "endDate": "2027-02-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6480263567.173723,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-28T00:00:00Z",
+      "endDate": "2027-03-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6480742348.82844,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-01T00:00:00Z",
+      "endDate": "2027-03-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6481221130.483156,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-02T00:00:00Z",
+      "endDate": "2027-03-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6481699912.137873,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-03T00:00:00Z",
+      "endDate": "2027-03-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6482178693.792589,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-04T00:00:00Z",
+      "endDate": "2027-03-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6482657475.447306,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-05T00:00:00Z",
+      "endDate": "2027-03-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6483136257.102022,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-06T00:00:00Z",
+      "endDate": "2027-03-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6483615038.756739,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-07T00:00:00Z",
+      "endDate": "2027-03-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6484093820.411455,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-08T00:00:00Z",
+      "endDate": "2027-03-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6484572602.066172,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-09T00:00:00Z",
+      "endDate": "2027-03-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6485051383.720888,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-10T00:00:00Z",
+      "endDate": "2027-03-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6485530165.375605,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-11T00:00:00Z",
+      "endDate": "2027-03-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6486008947.030321,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-12T00:00:00Z",
+      "endDate": "2027-03-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6486487728.685038,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-13T00:00:00Z",
+      "endDate": "2027-03-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6486966510.339754,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-14T00:00:00Z",
+      "endDate": "2027-03-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6487445291.994471,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-15T00:00:00Z",
+      "endDate": "2027-03-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6487924073.649187,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-16T00:00:00Z",
+      "endDate": "2027-03-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 93124614.65471694,
+      "unlockValue": 18202882.177328214,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Team, Future Team + Advisors",
+          "standardAllocationName": "Founder / Team",
+          "unlockAmount": 56125000,
+          "unlockValue": 10970641.5,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Investors",
+          "standardAllocationName": "Private Investors",
+          "unlockAmount": 36520833,
+          "unlockValue": 7138654.184844,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6581048688.303904,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-17T00:00:00Z",
+      "endDate": "2027-03-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6581527469.95862,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-18T00:00:00Z",
+      "endDate": "2027-03-19T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6582006251.613337,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-19T00:00:00Z",
+      "endDate": "2027-03-20T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6582485033.268053,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-20T00:00:00Z",
+      "endDate": "2027-03-21T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6582963814.92277,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-21T00:00:00Z",
+      "endDate": "2027-03-22T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6583442596.577486,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-22T00:00:00Z",
+      "endDate": "2027-03-23T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6583921378.232203,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-23T00:00:00Z",
+      "endDate": "2027-03-24T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6584400159.886919,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-24T00:00:00Z",
+      "endDate": "2027-03-25T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6584878941.5416355,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-25T00:00:00Z",
+      "endDate": "2027-03-26T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6585357723.196352,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-26T00:00:00Z",
+      "endDate": "2027-03-27T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6585836504.8510685,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-27T00:00:00Z",
+      "endDate": "2027-03-28T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6586315286.505785,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-28T00:00:00Z",
+      "endDate": "2027-03-29T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6586794068.1605015,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-29T00:00:00Z",
+      "endDate": "2027-03-30T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6587272849.815218,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-30T00:00:00Z",
+      "endDate": "2027-03-31T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6587751631.469934,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-31T00:00:00Z",
+      "endDate": "2027-04-01T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6588230413.124651,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-01T00:00:00Z",
+      "endDate": "2027-04-02T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6588709194.779367,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-02T00:00:00Z",
+      "endDate": "2027-04-03T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6589187976.434084,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-03T00:00:00Z",
+      "endDate": "2027-04-04T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6589666758.0888,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-04T00:00:00Z",
+      "endDate": "2027-04-05T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6590145539.743517,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-05T00:00:00Z",
+      "endDate": "2027-04-06T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6590624321.398233,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-06T00:00:00Z",
+      "endDate": "2027-04-07T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6591103103.05295,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-07T00:00:00Z",
+      "endDate": "2027-04-08T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6591581884.707666,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-08T00:00:00Z",
+      "endDate": "2027-04-09T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6592060666.362383,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-09T00:00:00Z",
+      "endDate": "2027-04-10T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6592539448.017099,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-10T00:00:00Z",
+      "endDate": "2027-04-11T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6593018229.671816,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-11T00:00:00Z",
+      "endDate": "2027-04-12T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6593497011.326532,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-12T00:00:00Z",
+      "endDate": "2027-04-13T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6593975792.981249,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-13T00:00:00Z",
+      "endDate": "2027-04-14T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6594454574.635965,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-14T00:00:00Z",
+      "endDate": "2027-04-15T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6594933356.290682,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-15T00:00:00Z",
+      "endDate": "2027-04-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6595412137.945398,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-16T00:00:00Z",
+      "endDate": "2027-04-17T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 478781.65471694345,
+      "unlockValue": 93586.4924842115,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 478781.65471694345,
+          "unlockValue": 93586.4924842115,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6595890919.600115,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-17T00:00:00Z",
+      "endDate": "2027-04-18T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 359080.6995833706,
+      "unlockValue": 70188.78618616228,
+      "referencePrice": 0.195468,
+      "allocations": [
+        {
+          "allocationName": "Arbitrum DAO Treasury",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 359080.6995833706,
+          "unlockValue": 70188.78618616228,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 6596250000.299698,
+      "committedClaim": null
+    }
+  ]
+}

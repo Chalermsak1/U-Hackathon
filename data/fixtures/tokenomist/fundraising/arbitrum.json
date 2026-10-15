@@ -1,8 +1,12 @@
 {
   "metadata": {
-    "queryDate": "2026-10-15T00:00:00Z",
-    "mode": "snapshot",
-    "_note": "ARB: funding rounds copied from tokenomist.ai/arbitrum on 2026-10-15. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+    "queryDate": "2026-10-15T19:45:48Z",
+    "credit": {
+      "used": 29,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
   },
   "status": true,
   "data": {
@@ -11,41 +15,122 @@
     "tokenSymbol": "ARB",
     "listedMethod": "INTERNAL",
     "totalAmountRaised": 123700000,
-    "unlockedInvestor": 0,
-    "investorReleasedPercentage": 87,
+    "unlockedInvestor": 295984189.43288946,
+    "investorReleasedPercentage": 87.50000000213919,
     "fundingRounds": [
       {
         "fundingRound": "Series B",
         "fundingDate": "2021-08-31T00:00:00Z",
-        "raiseType": "Equity",
+        "raiseType": "Token",
         "amountRaised": 100000000,
         "valuation": 1200000000,
-        "pricePerToken": null,
-        "sourceURLList": [],
-        "investors": [],
-        "numberOfInvestors": 6
+        "pricePerToken": 0.12,
+        "sourceURLList": [
+          "https://cointelegraph.com/news/offchain-labs-launches-arbitrum-one-mainnet-secures-120m-in-funding",
+          "https://techcrunch.com/2021/08/31/offchain-labs-raises-120-million-to-hide-ethereums-shortcomings-with-arbitrum-scaling-product/?tpcc=ECTW2020"
+        ],
+        "investors": [
+          {
+            "investorId": "lightspeed-venture-partners",
+            "investorName": "Lightspeed Venture Partners",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "alameda-research",
+            "investorName": "Alameda Research",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "mark-cuban",
+            "investorName": "Mark Cuban",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "pantera-capital",
+            "investorName": "Pantera Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "polychain-capital",
+            "investorName": "Polychain Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "redpoint-ventures",
+            "investorName": "RedPoint Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "ribbit-capital",
+            "investorName": "Ribbit Capital",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 7
       },
       {
         "fundingRound": "Series A",
         "fundingDate": "2021-04-01T00:00:00Z",
-        "raiseType": "Equity",
+        "raiseType": "Token",
         "amountRaised": 20000000,
-        "valuation": null,
-        "pricePerToken": null,
-        "sourceURLList": [],
-        "investors": [],
-        "numberOfInvestors": 4
+        "valuation": 1200000000,
+        "pricePerToken": 0.12,
+        "sourceURLList": [
+          "https://techcrunch.com/2021/08/31/offchain-labs-raises-120-million-to-hide-ethereums-shortcomings-with-arbitrum-scaling-product/?tpcc=ECTW2020"
+        ],
+        "investors": [
+          {
+            "investorId": "pantera-capital",
+            "investorName": "Pantera Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "coinbase-ventures",
+            "investorName": "Coinbase Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "robert-leshner",
+            "investorName": "Robert Leshner",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 3
       },
       {
-        "fundingRound": "Seed",
-        "fundingDate": "2019-01-01T00:00:00Z",
-        "raiseType": "Equity",
+        "fundingRound": "Seed Round",
+        "fundingDate": "2019-04-03T00:00:00Z",
+        "raiseType": "Token",
         "amountRaised": 3700000,
-        "valuation": null,
-        "pricePerToken": null,
-        "sourceURLList": [],
-        "investors": [],
-        "numberOfInvestors": 2
+        "valuation": 50000000,
+        "pricePerToken": 0.005,
+        "sourceURLList": [
+          "https://alearesearch.io/deep-dives/arbitrum/",
+          "https://techcrunch.com/2019/04/03/enterprise-blockchain-startup-offchain-labs-scores-3-7m-seed-round/"
+        ],
+        "investors": [
+          {
+            "investorId": "pantera-capital",
+            "investorName": "Pantera Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "raphael-ouzan",
+            "investorName": "Raphael Ouzan",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "compound-ventures",
+            "investorName": "Compound Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "jake-seid",
+            "investorName": "Jake Seid",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 4
       }
     ]
   }

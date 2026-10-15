@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:50Z",
+    "credit": {
+      "used": 39,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "name": "Avalanche",
+    "symbol": "AVAX",
+    "listedMethod": "INTERNAL",
+    "maxSupply": 720000000,
+    "lastUpdatedDate": "2026-10-06T07:31:16Z",
+    "totalUnlockedAmount": 555931200,
+    "totalLockedAmount": 163989390.9316771,
+    "totalUntrackedAmount": 0,
+    "totalTBDLockedAmount": 0,
+    "allocations": [
+      {
+        "allocationName": "Staking Reward",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 222600000,
+        "allocationLockedAmount": 137400000,
+        "allocationAmount": 360000000,
+        "trackedAllocationPercentage": 50
+      },
+      {
+        "allocationName": "Team",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Founder / Team",
+        "allocationUnlockedAmount": 72000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 72000000,
+        "trackedAllocationPercentage": 10
+      },
+      {
+        "allocationName": "Foundation",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 40003200,
+        "allocationLockedAmount": 26668800,
+        "allocationAmount": 66672000,
+        "trackedAllocationPercentage": 9.26
+      },
+      {
+        "allocationName": "Public Sale Option A2",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Public Investors",
+        "allocationUnlockedAmount": 59760000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 59760000,
+        "trackedAllocationPercentage": 8.3
+      },
+      {
+        "allocationName": "Community & Development Endowment",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 50400000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 50400000,
+        "trackedAllocationPercentage": 7.000000000000001
+      },
+      {
+        "allocationName": "Strategic Partners",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 36000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 36000000,
+        "trackedAllocationPercentage": 5
+      },
+      {
+        "allocationName": "Private Sale",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Private Investors",
+        "allocationUnlockedAmount": 25200000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 25200000,
+        "trackedAllocationPercentage": 3.5000000000000004
+      },
+      {
+        "allocationName": "Airdrop",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 18000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 18000000,
+        "trackedAllocationPercentage": 2.5
+      },
+      {
+        "allocationName": "Seed Sale",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Private Investors",
+        "allocationUnlockedAmount": 18000000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 18000000,
+        "trackedAllocationPercentage": 2.5
+      },
+      {
+        "allocationName": "Public Sale Option A1",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Public Investors",
+        "allocationUnlockedAmount": 7200000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 7200000,
+        "trackedAllocationPercentage": 1
+      },
+      {
+        "allocationName": "Public Sale Option B",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Public Investors",
+        "allocationUnlockedAmount": 4824000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 4824000,
+        "trackedAllocationPercentage": 0.67
+      },
+      {
+        "allocationName": "Incentivized Testnet Program",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 1944000,
+        "allocationLockedAmount": 0,
+        "allocationAmount": 1944000,
+        "trackedAllocationPercentage": 0.27
+      }
+    ]
+  }
+}

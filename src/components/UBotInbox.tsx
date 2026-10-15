@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LEVEL_TH } from "@/lib/format";
 import type { AgentResult } from "@/lib/types";
+import { ProposalCardView } from "./Cards";
 import { Icon } from "./Icon";
 
 export interface InboxItem {
@@ -68,7 +69,10 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
                 </Link>
               </div>
             ))}
-            {it.result.proposals.length > 0 && <p className="note">มีข้อเสนอรออนุมัติ {it.result.proposals.length} รายการ (เปิดในแชตเพื่ออนุมัติ)</p>}
+            {/* Proposals U-Bot made for this user (chat, scan, alerts or MCP): decide right here. */}
+            {it.result.proposals.map((p) => (
+              <ProposalCardView key={p.id} proposal={p} />
+            ))}
           </li>
         );
       })}

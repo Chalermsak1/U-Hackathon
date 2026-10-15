@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:49Z",
+    "credit": {
+      "used": 33,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "name": "Worldcoin",
+    "symbol": "WLD",
+    "listedMethod": "INTERNAL",
+    "maxSupply": 10000000000,
+    "lastUpdatedDate": "2026-10-06T07:32:18Z",
+    "totalUnlockedAmount": 5788889497.716847,
+    "totalLockedAmount": 4208805826.309313,
+    "totalUntrackedAmount": 0,
+    "totalTBDLockedAmount": 0,
+    "allocations": [
+      {
+        "allocationName": "Worldcoin Community",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Community",
+        "allocationUnlockedAmount": 4132648401.826447,
+        "allocationLockedAmount": 3367351598.173553,
+        "allocationAmount": 7500000000,
+        "trackedAllocationPercentage": 75
+      },
+      {
+        "allocationName": "TFH Investors",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Private Investors",
+        "allocationUnlockedAmount": 889470684.9315001,
+        "allocationLockedAmount": 488529315.0684999,
+        "allocationAmount": 1378000000,
+        "trackedAllocationPercentage": 13.780000000000001
+      },
+      {
+        "allocationName": "Initial Development Team",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Founder / Team",
+        "allocationUnlockedAmount": 646770410.9589014,
+        "allocationLockedAmount": 355229589.0410986,
+        "allocationAmount": 1002000000,
+        "trackedAllocationPercentage": 10.02
+      },
+      {
+        "allocationName": "TFH Reserve",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 119999999.99999906,
+        "allocationLockedAmount": 9.387731552124023e-7,
+        "allocationAmount": 120000000,
+        "trackedAllocationPercentage": 1.2
+      }
+    ]
+  }
+}

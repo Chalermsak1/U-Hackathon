@@ -13,6 +13,8 @@ U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 | File | What it covers |
 |---|---|
 | [SPEC.md](SPEC.md) | **Start here.** The whole system: features, architecture, workflows, agents, data model, API, status, decisions (Thai) |
+| [DEMO.md](DEMO.md) | **Stage script:** 3-minute run of show (EN + TH lines), fallbacks, judge Q&A, pre-stage checklist |
+| [DEMO-DAY-PLAN.md](DEMO-DAY-PLAN.md) | Step-by-step plan for demo day: keys, MCP demo, tests, rehearsal, risks, post-hackathon roadmap |
 | [TODO.md](TODO.md) | **What is left:** not done, missing, or still waiting on keys/people, with priorities and a plan for demo day (Thai) |
 | [STATUS.md](STATUS.md) | Latest status: every feature built, which flows work, what doesn't fit together yet, Trade/Invest direction, models, integrations, data pipeline (Thai) |
 | [AGENTIC-WORKFLOW.md](AGENTIC-WORKFLOW.md) | Agentic AI design v2: what is new, models per job, LangGraph or not, RAG types, live data, alerts, portfolio drift |
@@ -78,7 +80,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 - **11 tools** (`src/lib/agent/tools.ts`), zod-validated, shared by every provider and by MCP.
 - **RAG** for fresh facts (unlocks, news ranked by relevance + recency with citations, odds, pulse); **CAG** for static knowledge (`data/knowledge/faq.json`, preloaded into the cached system prompt).
 - **Guardrails**: input guard (seed phrases/private keys blocked, PII redacted, injection flagged), rate limits, Origin checks, output compliance check (no buy/sell/hold advice or price predictions in EN/TH; every number must come from a tool result; one rewrite, then a checked template).
-- **U-Bot reaches U-Guard three ways**, all through the same `runAgent`: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`).
+- **U-Bot reaches U-Guard three ways**, all through the same tools: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`). A caller with the key may act for a user (`X-UGuard-User`, optional `X-UGuard-Locale: th`): proposals it creates belong to that user and land in their U-Bot inbox (the bell), where they approve them. `npm run ubot` is a stand-in MCP client that plays U-Bot for the stage demo.
 - **Watcher**: alert rules are checked on a timer (`WATCH_INTERVAL_MIN`, default 10) in `npm start`; on serverless hosts a cron calls `POST /api/watch` with `Bearer $CRON_SECRET`. Hits go to the U-Bot inbox (bell in the terminal header), with a 12-hour cooldown.
 - **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key).
 - **Run log**: every agent run is appended to `logs/YYYY-MM-DD.jsonl` (redacted text, tool trace, timings); `LOG_SILENT=true` turns it off.
@@ -87,13 +89,16 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 
 ```bash
 npm run typecheck
-npm run eval          # 28 golden cases (EN + TH), offline and deterministic
+npm run eval          # 30 golden cases (EN + TH), offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
+npm run ubot          # U-Bot stand-in: MCP client acting for demo-user (needs the server's MCP_API_KEY in .env)
 npm run responsive    # 16 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
 npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)
 ```
 
 ## Data
 
-Offline data lives in `data/fixtures` and is labelled in the UI: **Snapshot** = real data captured on the date shown (ARB unlocks from tokenomist.ai on 15 Oct, news, odds, pulse), **Sample** = illustrative (WLD/AVAX supply, demo wallet). `npm run snapshot -- ARB WLD AVAX` replaces the Tokenomist fixtures with live data. The Tokenomist free trial has no forward unlocks; use the booth key.
+Offline data lives in `data/fixtures` and is labelled in the UI: **Snapshot** = real data captured on the date shown (ARB, WLD and AVAX unlocks, daily emission, allocations and funding from the Tokenomist API on 16 Oct; news, odds, pulse), **Sample** = illustrative (prices, demo wallet). `npm run snapshot -- ARB WLD AVAX` refreshes the Tokenomist fixtures (in a sandboxed shell, prefix `NODE_USE_ENV_PROXY=1` so Node's fetch uses the proxy).
+
+The v5 unlock-events endpoint lists cliffs only. Continuous releases (WLD ~2.9M a day, AVAX staking rewards, the ARB DAO treasury) come from daily emission, which `getUnlockEvents` folds into one linear event (cliff days are skipped, so nothing is counted twice).
 
 Stack: Next.js 15 · React 19 · TypeScript · plain CSS · zod · Claude (Anthropic SDK, default) or any OpenAI-compatible model · Tokenomist API · ElevenLabs · Avalanche (viem) · @modelcontextprotocol/sdk · Playwright (dev) · Supabase (post-hackathon).

@@ -1,8 +1,12 @@
 {
   "metadata": {
-    "queryDate": "2026-10-15T00:00:00Z",
-    "mode": "snapshot",
-    "_note": "ARB: allocation shares copied from tokenomist.ai/arbitrum on 2026-10-15; per-allocation locked amounts are approximate. Run `npm run snapshot -- ARB WLD AVAX` with a Tokenomist key to replace."
+    "queryDate": "2026-10-15T19:45:48Z",
+    "credit": {
+      "used": 28,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
   },
   "status": true,
   "data": {
@@ -10,42 +14,42 @@
     "symbol": "ARB",
     "listedMethod": "INTERNAL",
     "maxSupply": 10000000000,
-    "lastUpdatedDate": "2026-10-14T00:00:00Z",
-    "totalUnlockedAmount": 5952000000,
-    "totalLockedAmount": 4048000000,
+    "lastUpdatedDate": "2026-10-06T07:31:16Z",
+    "totalUnlockedAmount": 5951920095.132517,
+    "totalLockedAmount": 643949708.8161879,
     "totalUntrackedAmount": 0,
-    "totalTBDLockedAmount": 0,
+    "totalTBDLockedAmount": 3403750000,
     "allocations": [
       {
         "allocationName": "Arbitrum DAO Treasury",
-        "allocationType": "Scheduled",
+        "allocationType": "TBD",
         "standardAllocationName": "Reserve",
-        "allocationUnlockedAmount": 786000000,
-        "allocationLockedAmount": 3492000000,
-        "allocationAmount": 4278000000,
-        "trackedAllocationPercentage": 42.78
+        "allocationUnlockedAmount": 0,
+        "allocationLockedAmount": 3403750000,
+        "allocationAmount": 3403750000,
+        "trackedAllocationPercentage": 34.0375
       },
       {
         "allocationName": "Team, Future Team + Advisors",
         "allocationType": "Scheduled",
         "standardAllocationName": "Founder / Team",
-        "allocationUnlockedAmount": 2357000000,
-        "allocationLockedAmount": 337000000,
+        "allocationUnlockedAmount": 2357250000,
+        "allocationLockedAmount": 336750000,
         "allocationAmount": 2694000000,
-        "trackedAllocationPercentage": 26.94
+        "trackedAllocationPercentage": 26.939999999999998
       },
       {
         "allocationName": "Investors",
         "allocationType": "Scheduled",
         "standardAllocationName": "Private Investors",
-        "allocationUnlockedAmount": 1534000000,
-        "allocationLockedAmount": 219000000,
+        "allocationUnlockedAmount": 1533875000.2999997,
+        "allocationLockedAmount": 219124999.7000003,
         "allocationAmount": 1753000000,
         "trackedAllocationPercentage": 17.53
       },
       {
         "allocationName": "Individual Wallets",
-        "allocationType": "Airdrop",
+        "allocationType": "Scheduled",
         "standardAllocationName": "Community",
         "allocationUnlockedAmount": 1162000000,
         "allocationLockedAmount": 0,
@@ -53,8 +57,17 @@
         "trackedAllocationPercentage": 11.62
       },
       {
-        "allocationName": "DAOs in Arbitrum Ecosystem",
-        "allocationType": "Airdrop",
+        "allocationName": "Arbitrum DAO Treasury",
+        "allocationType": "Scheduled",
+        "standardAllocationName": "Reserve",
+        "allocationUnlockedAmount": 785795094.8325174,
+        "allocationLockedAmount": 88454905.16748261,
+        "allocationAmount": 874250000,
+        "trackedAllocationPercentage": 8.7425
+      },
+      {
+        "allocationName": "Daos in Arbitrum Ecosystem",
+        "allocationType": "Scheduled",
         "standardAllocationName": "Community",
         "allocationUnlockedAmount": 113000000,
         "allocationLockedAmount": 0,

@@ -1,0 +1,225 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:49Z",
+    "credit": {
+      "used": 34,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "tokenId": "worldcoin-wld",
+    "tokenName": "Worldcoin",
+    "tokenSymbol": "WLD",
+    "listedMethod": "INTERNAL",
+    "totalAmountRaised": 375000000,
+    "unlockedInvestor": 449290322.6541124,
+    "investorReleasedPercentage": 64.59282978183663,
+    "fundingRounds": [
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2023-05-25T00:00:00Z",
+        "raiseType": "Token",
+        "amountRaised": 135000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://www.coindesk.com/business/2023/05/25/sam-altmans-crypto-project-worldcoin-raises-115m-led-by-blockchain-capital"
+        ],
+        "investors": [
+          {
+            "investorId": "andreessen-horowitz",
+            "investorName": "Andreessen Horowitz (a16z)",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "bain-capital-crypto",
+            "investorName": "Bain Capital Crypto",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "arctic-digital",
+            "investorName": "Arctic Digital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "mirana-ventures",
+            "investorName": "Mirana Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "selini-capital",
+            "investorName": "Selini Capital",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 5
+      },
+      {
+        "fundingRound": "Series C",
+        "fundingDate": "2023-05-25T00:00:00Z",
+        "raiseType": null,
+        "amountRaised": 115000000,
+        "valuation": 3115000000,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://www.coindesk.com/business/2023/05/25/sam-altmans-crypto-project-worldcoin-raises-115m-led-by-blockchain-capital"
+        ],
+        "investors": [
+          {
+            "investorId": "blockchain-capital",
+            "investorName": "Blockchain Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "andreessen-horowitz",
+            "investorName": "Andreessen Horowitz (a16z)",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "bain-capital-crypto",
+            "investorName": "Bain Capital Crypto",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "distributed-global",
+            "investorName": "Distributed Global",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 4
+      },
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2022-03-23T00:00:00Z",
+        "raiseType": null,
+        "amountRaised": 100000000,
+        "valuation": 3000000000,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://cointelegraph.com/news/worldcoin-advanced-talks-100-m-funding"
+        ],
+        "investors": [
+          {
+            "investorId": "andreessen-horowitz",
+            "investorName": "Andreessen Horowitz (a16z)",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "khosla-ventures",
+            "investorName": "Khosla Ventures",
+            "isLeadInvestor": true
+          }
+        ],
+        "numberOfInvestors": 2
+      },
+      {
+        "fundingRound": "Series A",
+        "fundingDate": "2019-10-21T00:00:00Z",
+        "raiseType": null,
+        "amountRaised": 25000000,
+        "valuation": 1000000000,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://www.coinspeaker.com/worldcoin-free-coin-scanning-eye/",
+          "https://cointelegraph.com/news/sam-altman-worldcoin-secures-115-million-decentralized-id"
+        ],
+        "investors": [
+          {
+            "investorId": "andreessen-horowitz",
+            "investorName": "Andreessen Horowitz (a16z)",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "1confirmation",
+            "investorName": "1confirmation",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "blockchange-ventures",
+            "investorName": "Blockchange Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "coin-fund",
+            "investorName": "CoinFund",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "coinbase-ventures",
+            "investorName": "Coinbase Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "day-one-ventures",
+            "investorName": "Day One Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "digital-currency-group",
+            "investorName": "Digital Currency Group (DCG)",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "fifty-years",
+            "investorName": "Fifty Years",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "hashed",
+            "investorName": "Hashed",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "kenetic-capital",
+            "investorName": "Kent Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "multicoin-capital",
+            "investorName": "Multicoin Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "sam-bankman-fried",
+            "investorName": "Sam Bankman-Fried",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "three-arrows-capital",
+            "investorName": "Three Arrows Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "variant-fund",
+            "investorName": "Variant Fund",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "denis-nazarov",
+            "investorName": "Denis Nazarov",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "hypersphere",
+            "investorName": "Hypersphere Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "jesse-walden",
+            "investorName": "Jesse Walden",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "reid-hoffman",
+            "investorName": "Reid Hoffman",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 18
+      }
+    ]
+  }
+}

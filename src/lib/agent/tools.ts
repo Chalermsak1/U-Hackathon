@@ -419,7 +419,17 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
     }
     case "propose_protection": {
       const symbol = (input.symbol as string).toUpperCase();
-      const card = ctx.cards.get(symbol);
+      let card = ctx.cards.get(symbol);
+      // Stateless callers (MCP: one request per tool call) can't carry the card over from an
+      // earlier assess_unlock_risk call, so score it here. The medium/high gate below still applies.
+      if (!card) {
+        const res = await assessUnlockRisk(symbol, null, { now: ctx.now, locale: ctx.locale });
+        if (res.ok) {
+          card = res.card;
+          ctx.cards.set(card.symbol, card);
+          ctx.sources.add(card.source.mode);
+        }
+      }
       if (!card || card.level === "low" || card.level === "none") {
         return {
           result: { created: false, note: "Call assess_unlock_risk first; proposals are only for medium or high risk." },
