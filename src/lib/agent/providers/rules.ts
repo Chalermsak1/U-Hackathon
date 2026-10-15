@@ -5,7 +5,7 @@
 
 import { compact, LEVEL_LABEL, LEVEL_TH, shortDate, signedPct, thaiDate, usd, usdFull } from "../../format";
 import { usdToThb } from "../../market";
-import { listTokens } from "../../tokenomist";
+import { trackedTokens } from "../../tokenomist";
 import type { AnswerMode, ChatTurn, RiskCard } from "../../types";
 import { matchFaq, type FaqEntry } from "../../knowledge";
 import { executeTool, type RunContext } from "../tools";
@@ -80,14 +80,16 @@ async function extractSymbols(text: string): Promise<string[]> {
   };
   for (const word of text.toLowerCase().split(/[^a-z0-9฀-๿]+/)) if (NAMES[word]) add(NAMES[word]);
   for (const [name, sym] of Object.entries(THAI_NAMES)) if (text.includes(name)) add(sym);
-  const tokens = await listTokens();
-  const known = new Set(tokens.data.map((t) => t.symbol.toUpperCase()));
   // Any other all-caps word is treated as a ticker, so unknown tokens get an honest
-  // "not in dataset" answer instead of being ignored.
+  // "not in dataset" answer instead of being ignored. Words like THB or AI never count, even
+  // though the live list has tokens with those tickers.
   for (const m of text.matchAll(/\b[A-Z][A-Z0-9]{1,5}\b/g)) {
-    if (known.has(m[0]) || !NOT_TICKERS.has(m[0])) add(m[0]);
+    if (!NOT_TICKERS.has(m[0])) add(m[0]);
   }
-  for (const t of tokens.data) if (text.toLowerCase().includes(t.name.toLowerCase())) add(t.symbol.toUpperCase());
+  // Names of the tracked tokens as whole words. Not the whole live list: 650+ names include
+  // "RE" and "UR", which sit inside "are" and "your".
+  const words = new Set(text.toLowerCase().split(/[^a-z0-9]+/));
+  for (const t of (await trackedTokens()).data) if (words.has(t.name.toLowerCase())) add(t.symbol.toUpperCase());
   return found.slice(0, 3);
 }
 

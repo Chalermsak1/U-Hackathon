@@ -3,7 +3,7 @@ import { readFixture } from "@/lib/fixtures";
 import { langOf } from "@/lib/http";
 import { getEventCalendar } from "@/lib/intel/calendar";
 import { assessUnlockRisk } from "@/lib/risk";
-import { listTokens } from "@/lib/tokenomist";
+import { trackedTokens } from "@/lib/tokenomist";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ interface MarketEvent {
 export async function GET(req: Request) {
   const t = now();
   const locale = langOf(req);
-  const tokens = (await listTokens()).data;
+  const tokens = (await trackedTokens()).data;
   const cards = (await Promise.all(tokens.map((tk) => assessUnlockRisk(tk.symbol, null, { now: t, locale }))))
     .flatMap((r) => (r.ok && r.card.unlockDate ? [r.card] : []))
     .sort((a, b) => a.unlockDate!.localeCompare(b.unlockDate!));

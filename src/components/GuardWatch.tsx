@@ -12,7 +12,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { RecipientClass, RiskLevel } from "@/lib/types";
-import { LEVEL_TH } from "@/lib/format";
+import { LEVEL_LABEL } from "@/lib/format";
 import { RECIPIENT_COLOR } from "./fx";
 import { GuardMark } from "./GuardMark";
 
@@ -44,22 +44,22 @@ const EVENTS: WatchEvent[] = [
     parts: [["team", 0.61], ["investor", 0.39]],
     level: "high",
     score: 67,
-    lines: ["ปลดล็อก 92.65M ARB หรือ 1.37% ของเหรียญที่หมุนเวียน", "ผู้รับคือทีม 61% และนักลงทุน 39%", "unlock แบบนี้ราคามักถูกกดตั้งแต่ก่อนถึงวัน"],
-    proposal: "พักการซื้อ ARB ช่วง unlock",
-    when: "วันนี้ 20:00 น.",
+    lines: ["92.65M ARB unlocks: 1.37% of circulating supply", "Recipients: team 61%, investors 39%", "Unlocks like this usually push the price down before the day"],
+    proposal: "Pause ARB buys around the unlock",
+    when: "Today, 8 pm Bangkok",
   },
   {
     sym: "WLD",
     day: 1,
     span: 28,
-    amount: "~2.9M/วัน",
+    amount: "~2.9M/day",
     pct: 2.28,
     parts: [["community", 0.55], ["investor", 0.26], ["team", 0.19]],
     level: "medium",
     score: 39,
-    lines: ["ทยอยปลดล็อกทุกวัน ~87M WLD ใน 30 วัน (2.28%)", "ชุมชน 55% · นักลงทุน 26% · ทีม 19%", "ไม่ใช่ก้อนเดียว แต่ไหลเข้าตลาดต่อเนื่อง"],
-    proposal: "เตือนเมื่อราคาลด 10%",
-    when: "ทุกวัน",
+    lines: ["Releases daily: ~87M WLD in 30 days (2.28%)", "Community 55% · investors 26% · team 19%", "Not one big cliff, a steady flow into the market"],
+    proposal: "Alert me if the price drops 10%",
+    when: "Every day",
   },
   {
     sym: "AVAX",
@@ -69,9 +69,9 @@ const EVENTS: WatchEvent[] = [
     parts: [["reserve", 1]],
     level: "low",
     score: 22,
-    lines: ["ปลดล็อก 1.67M AVAX ให้ Foundation (0.38%)", "ที่ทยอยออกทุกวันส่วนใหญ่คือรางวัล staking", "ไม่ต้องทำอะไร U-Guard จะเฝ้าดูต่อ"],
+    lines: ["1.67M AVAX unlocks to the Foundation (0.38%)", "Most of the daily release is staking rewards", "Nothing to do; U-Guard keeps watching"],
     proposal: null,
-    when: "8 พ.ย.",
+    when: "Nov 8",
   },
 ];
 
@@ -84,8 +84,8 @@ const GHOSTS = [
 
 const barHeight = (pct: number) => Math.min(96, 18 + Math.sqrt(pct / 3) * 70);
 const pos = (day: number) => `calc(8% + ${(day / WINDOW_DAYS) * 100}%)`;
-const dateTh = (day: number) =>
-  new Date(AS_OF + day * 86_400_000).toLocaleDateString("th-TH", { day: "numeric", month: "short", timeZone: "UTC" });
+const dateLabel = (day: number) =>
+  new Date(AS_OF + day * 86_400_000).toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC" });
 
 export function GuardWatch() {
   const [focus, setFocus] = useState(0); // event the track is sliding to
@@ -155,7 +155,7 @@ export function GuardWatch() {
       ref={ref}
       className="gw"
       role="img"
-      aria-label="ตัวอย่างการทำงาน: U-Guard เฝ้าตาราง unlock 30 วันข้างหน้า เช่น ARB จะปลดล็อก 92.65M คืนนี้ 20:00 น. ผู้รับคือทีมและนักลงทุน จึงเสี่ยงสูง และเสนอให้พักการซื้อ ซึ่งผู้ใช้เป็นคนอนุมัติ"
+      aria-label="How it works: U-Guard watches the next 30 days of unlocks. ARB unlocks 92.65M tonight at 8 pm Bangkok, mostly to the team and investors, so it is high risk; U-Guard proposes pausing buys, and the user approves."
       onPointerMove={(e) => {
         const r = ref.current?.getBoundingClientRect();
         if (!r) return;
@@ -166,7 +166,7 @@ export function GuardWatch() {
       <div className="gw-head" aria-hidden="true">
         <span className="gw-live" />
         <b>U-Guard Watch</b>
-        <span>ตาราง unlock 30 วันข้างหน้า</span>
+        <span>Unlocks, next 30 days</span>
       </div>
 
       <div className="gw-stage" aria-hidden="true">
@@ -177,7 +177,7 @@ export function GuardWatch() {
           <div className="gw-track" style={{ transform: `translateX(${(-EVENTS[focus].day / WINDOW_DAYS) * 100}%)` }}>
             {[0, 7, 14, 21, 28, 35, 42].map((d) => (
               <span key={d} className="gw-tick" style={{ left: pos(d) }}>
-                {dateTh(d)}
+                {dateLabel(d)}
               </span>
             ))}
             {GHOSTS.map((g) => (
@@ -219,7 +219,7 @@ export function GuardWatch() {
             <i />
           </span>
           <span className={`gw-level gw-level-${ev.level}`}>
-            {LEVEL_TH[ev.level]} {ev.score}
+            {LEVEL_LABEL[ev.level]} {ev.score}
           </span>
         </div>
         <ol key={hit} className={scanning ? "gw-dim" : ""}>
@@ -230,15 +230,15 @@ export function GuardWatch() {
         <div className="gw-action">
           {ev.proposal ? (
             <span className={`gw-chip ${approved ? "gw-chip-ok" : ""}`}>
-              {approved ? `✓ คุณอนุมัติแล้ว · บันทึกบน Avalanche` : `ข้อเสนอ: ${ev.proposal} · รอคุณอนุมัติ`}
+              {approved ? `✓ You approved · recorded on Avalanche` : `Proposal: ${ev.proposal} · waiting for you`}
             </span>
           ) : (
-            <span className="gw-chip gw-chip-calm">ไม่มีข้อเสนอ · ไม่เตือนพร่ำเพรื่อ</span>
+            <span className="gw-chip gw-chip-calm">No proposal · no alarm fatigue</span>
           )}
         </div>
       </div>
       <p className="gw-foot" aria-hidden="true">
-        ข้อมูลจริงจาก Tokenomist API 16 ต.ค. · แถบยาว = ทยอยปลดล็อกทุกวัน · แท่งสีเทา = unlock อื่นในปฏิทิน · ไม่ใช่คำแนะนำการลงทุน
+        Real data from the Tokenomist API, Oct 16 · long band = daily release · grey bars = other unlocks on the calendar · not investment advice
       </p>
     </div>
   );

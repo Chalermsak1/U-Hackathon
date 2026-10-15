@@ -3,12 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { ensureSession } from "@/components/EnsureSession";
 import { Spotlight } from "@/components/fx";
-import { LEVEL_TH, thaiDate, thb } from "@/lib/format";
+import { LEVEL_LABEL, shortDate, thb } from "@/lib/format";
 import type { InvestPlan } from "@/lib/types";
 
 interface Defaults {
   questions: { q: string; a: string[] }[];
-  classes: { id: string; th: string; example: string; risk: number; color: string }[];
+  classes: { id: string; name: string; example: string; risk: number; color: string }[];
   plans: InvestPlan[];
 }
 
@@ -20,16 +20,16 @@ function AllocationBar({ plan }: { plan: InvestPlan }) {
   const slices = plan.slices.filter((s) => s.pct > 0);
   return (
     <div>
-      <div className="inv-bar" role="img" aria-label={slices.map((s) => `${s.th} ${s.pct}%`).join(", ")}>
+      <div className="inv-bar" role="img" aria-label={slices.map((s) => `${s.name} ${s.pct}%`).join(", ")}>
         {slices.map((s) => (
-          <i key={s.id} style={{ width: `${s.pct}%`, background: s.color }} title={`${s.th} ${s.pct}%`} />
+          <i key={s.id} style={{ width: `${s.pct}%`, background: s.color }} title={`${s.name} ${s.pct}%`} />
         ))}
       </div>
       <div className="legend" style={{ marginTop: 8 }}>
         {slices.map((s) => (
           <span key={s.id}>
             <i style={{ background: s.color }} />
-            {s.th} {s.pct}%
+            {s.name} {s.pct}%
           </span>
         ))}
       </div>
@@ -56,7 +56,7 @@ export default function InvestPage() {
     fetch("/api/invest")
       .then((r) => r.json())
       .then(setDefs)
-      .catch(() => setError("โหลดข้อมูลไม่สำเร็จ"));
+      .catch(() => setError("Couldn't load the data"));
   }, []);
   useEffect(load, [load]);
 
@@ -80,7 +80,7 @@ export default function InvestPage() {
         }),
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "ร่างแผนไม่สำเร็จ");
+      if (!res.ok) throw new Error(body.error ?? "Couldn't draft the plan");
       const p = body as InvestPlan;
       setPlan(p);
       setState("pending");
@@ -103,7 +103,7 @@ export default function InvestPage() {
         body: JSON.stringify({ planId: plan.id, decision }),
       });
       const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "บันทึกไม่สำเร็จ");
+      if (!res.ok) throw new Error(body.error ?? "Couldn't save");
       setPlan(body.plan);
       setState(decision === "approve" ? "approved" : "declined");
       load();
@@ -116,17 +116,17 @@ export default function InvestPage() {
   return (
     <>
       <div className="page-title">
-        <h1>ลงทุน</h1>
-        <p>ตอบ 5 ข้อ → U-Bot ร่างพอร์ตตัวอย่างตามระดับความเสี่ยงของคุณ → ปรับเองได้ → U-Guard ตรวจส่วนคริปโตและวัน DCA → คุณอนุมัติ</p>
+        <h1>Invest</h1>
+        <p>Answer 5 questions → U-Bot drafts a model portfolio for your risk level → adjust it → U-Guard checks the crypto part and the DCA dates → you approve</p>
       </div>
       <p className="note inv-disclaimer">
-        พอร์ตตัวอย่างเพื่อการศึกษา ใช้ข้อมูลตัวอย่าง (ชื่อกองทุนเป็นตัวอย่าง ไม่ใช่สินค้าจริง) · ไม่ใช่คำแนะนำการลงทุนเฉพาะบุคคล · บริการแนะนำการลงทุนจริงต้องผ่านผู้ที่ได้รับใบอนุญาตจาก ก.ล.ต.
+        An educational model portfolio on sample data (fund names are examples, not real products) · not personal investment advice · real advice must come from someone licensed by the SEC
       </p>
 
       <div className="inv-grid">
         <Spotlight className="panel">
-          <div className="panel-head"><h2>แบบประเมินความเสี่ยง</h2><span className="total">{answers.filter(Boolean).length}/5</span></div>
-          {!defs && <p className="note">กำลังโหลด…</p>}
+          <div className="panel-head"><h2>Risk profile</h2><span className="total">{answers.filter(Boolean).length}/5</span></div>
+          {!defs && <p className="note">Loading…</p>}
           <div className="inv-quiz">
             {defs?.questions.map((q, i) => (
               <fieldset key={q.q}>
@@ -148,24 +148,24 @@ export default function InvestPage() {
             ))}
           </div>
 
-          <div className="panel-head" style={{ marginTop: 16 }}><h2>เงินที่จะลงทุน</h2></div>
+          <div className="panel-head" style={{ marginTop: 16 }}><h2>Money to invest</h2></div>
           <div className="tp-form">
             <div className="tp-row">
               <label>
-                เงินก้อน (บาท)
+                Lump sum (THB)
                 <input inputMode="numeric" value={lump} onChange={(e) => setLump(e.target.value)} />
               </label>
               <label>
-                DCA ต่อเดือน (บาท)
+                DCA per month (THB)
                 <input inputMode="numeric" value={monthly} onChange={(e) => setMonthly(e.target.value)} />
               </label>
               <label>
-                วันที่ DCA (1–28)
+                DCA day (1–28)
                 <input inputMode="numeric" value={day} onChange={(e) => setDay(e.target.value)} />
               </label>
             </div>
             <div>
-              <p className="note" style={{ margin: "0 0 6px" }}>คริปโตที่อยากมีในพอร์ต (คุณเลือกเอง)</p>
+              <p className="note" style={{ margin: "0 0 6px" }}>Crypto you want in the portfolio (your choice)</p>
               <div className="tp-presets">
                 {PICKS.map((p) => (
                   <button
@@ -181,7 +181,7 @@ export default function InvestPage() {
               </div>
             </div>
             <button className="btn btn-primary tp-go" disabled={!done || busy} onClick={() => draft(null)}>
-              {busy ? "U-Bot กำลังร่างแผน…" : done ? "ให้ U-Bot ร่างแผนลงทุน" : "ตอบแบบประเมินให้ครบก่อน"}
+              {busy ? "U-Bot is drafting…" : done ? "Let U-Bot draft an investment plan" : "Answer every question first"}
             </button>
             {error && <p className="error">{error}</p>}
           </div>
@@ -190,15 +190,15 @@ export default function InvestPage() {
         <div style={{ display: "grid", gap: 16, alignContent: "start" }}>
           {!plan && (
             <Spotlight className="panel">
-              <div className="panel-head"><h2>แผนของคุณ</h2></div>
-              <p className="empty">ตอบแบบประเมินแล้วกด &ldquo;ให้ U-Bot ร่างแผนลงทุน&rdquo; แผนจะขึ้นตรงนี้</p>
+              <div className="panel-head"><h2>Your plan</h2></div>
+              <p className="empty">Answer the questions and press &ldquo;Let U-Bot draft an investment plan&rdquo;. The plan shows up here.</p>
             </Spotlight>
           )}
           {plan && (
             <Spotlight className="panel">
               <div className="panel-head">
-                <h2>แผนลงทุนระดับ &ldquo;{plan.profileTh}&rdquo;</h2>
-                <span className="total">ข้อมูลตัวอย่าง</span>
+                <h2>&ldquo;{plan.profileName}&rdquo; investment plan</h2>
+                <span className="total">Sample data</span>
               </div>
               <ul className="tp-summary">
                 {plan.summary.map((l) => (
@@ -212,14 +212,14 @@ export default function InvestPage() {
               <div className="table-scroll" style={{ marginTop: 12 }}>
                 <table className="t-table tp-table">
                   <thead>
-                    <tr><th>สินทรัพย์</th><th className="num">ความเสี่ยง</th><th className="num">สัดส่วน %</th><th className="num">เงินก้อน</th><th className="num">ต่อเดือน</th></tr>
+                    <tr><th>Asset</th><th className="num">Risk</th><th className="num">Weight %</th><th className="num">Lump sum</th><th className="num">Monthly</th></tr>
                   </thead>
                   <tbody>
                     {plan.slices.map((s) => (
                       <tr key={s.id}>
                         <td>
                           <span className="dot" style={{ display: "inline-block", marginRight: 6, background: s.color }} />
-                          {s.th}
+                          {s.name}
                           <small className="tp-basis">{s.example}</small>
                         </td>
                         <td className="num">{riskText(s.risk)}</td>
@@ -227,7 +227,7 @@ export default function InvestPage() {
                           <input
                             className="inv-pct"
                             inputMode="decimal"
-                            aria-label={`สัดส่วน ${s.th}`}
+                            aria-label={`Weight of ${s.name}`}
                             value={weights?.[s.id] ?? String(s.pct)}
                             onChange={(e) => setWeights((w) => ({ ...(w ?? {}), [s.id]: e.target.value }))}
                             disabled={state !== "pending"}
@@ -242,11 +242,11 @@ export default function InvestPage() {
               </div>
               {state === "pending" && (
                 <button className="btn btn-sm" style={{ marginTop: 8 }} disabled={busy} onClick={() => draft(weights)}>
-                  คำนวณใหม่ตามสัดส่วนที่ปรับ
+                  Recalculate with my weights
                 </button>
               )}
 
-              <h4 className="tp-sub" style={{ marginTop: 14 }}>U-Guard ตรวจ</h4>
+              <h4 className="tp-sub" style={{ marginTop: 14 }}>U-Guard checks</h4>
               <ul className="tp-checks">
                 {plan.checks.map((c) => (
                   <li key={c.label} className={`tp-check ${c.status}`}>
@@ -261,13 +261,13 @@ export default function InvestPage() {
 
               {plan.crypto.length > 0 && (plan.slices.find((s) => s.id === "crypto")?.pct ?? 0) > 0 && (
                 <>
-                  <h4 className="tp-sub" style={{ marginTop: 14 }}>ส่วนคริปโต (แบ่งเท่ากันตามที่คุณเลือก)</h4>
+                  <h4 className="tp-sub" style={{ marginTop: 14 }}>Crypto part (split evenly across your picks)</h4>
                   {plan.crypto.map((c) => (
                     <div key={c.symbol} className={`inbox-card lv-${c.level}`} style={{ marginTop: 6 }}>
                       <b>{c.symbol} · {c.pctOfCrypto}%</b>
                       <span className="inbox-lv">
                         <span className="dot" />
-                        {c.level === "none" ? "ไม่มี unlock" : `${LEVEL_TH[c.level]} ${c.score}/100`}
+                        {c.level === "none" ? "No unlock" : `${LEVEL_LABEL[c.level]} ${c.score}/100`}
                       </span>
                       <p className="inbox-text">{c.note}</p>
                     </div>
@@ -275,12 +275,12 @@ export default function InvestPage() {
                 </>
               )}
 
-              <h4 className="tp-sub" style={{ marginTop: 14 }}>DCA 3 งวดข้างหน้า</h4>
+              <h4 className="tp-sub" style={{ marginTop: 14 }}>Next 3 DCA dates</h4>
               {plan.dca.map((d) => (
                 <div key={d.date} className="event-row" style={{ gridTemplateColumns: "88px 1fr auto" }}>
-                  <span>{thaiDate(d.date)}</span>
+                  <span>{shortDate(d.date)}</span>
                   <span>
-                    {d.notes.length === 0 ? <span className="note">ปกติ</span> : d.notes.map((n) => <small key={n} className="inv-dca-note">{n}</small>)}
+                    {d.notes.length === 0 ? <span className="note">Normal</span> : d.notes.map((n) => <small key={n} className="inv-dca-note">{n}</small>)}
                   </span>
                   <span>{thb(d.amountThb)}</span>
                 </div>
@@ -288,25 +288,25 @@ export default function InvestPage() {
 
               {state === "approved" && (
                 <p className="receipt" style={{ marginTop: 12 }}>
-                  อนุมัติแล้ว · บันทึกบน {plan.receipt?.chain ?? "Avalanche"}
+                  Approved · recorded on {plan.receipt?.chain ?? "Avalanche"}
                   {plan.receipt?.explorerUrl ? (
                     <>
                       {" "}·{" "}
-                      <a href={plan.receipt.explorerUrl} target="_blank" rel="noreferrer">ดูธุรกรรม</a>
+                      <a href={plan.receipt.explorerUrl} target="_blank" rel="noreferrer">View transaction</a>
                     </>
                   ) : plan.receipt?.note ? (
                     <> · {plan.receipt.note}</>
                   ) : null}
                 </p>
               )}
-              {state === "declined" && <p className="receipt" style={{ marginTop: 12 }}>ไม่ใช้แผนนี้</p>}
+              {state === "declined" && <p className="receipt" style={{ marginTop: 12 }}>Plan not used</p>}
               {(state === "pending" || state === "busy") && (
                 <div className="tp-actions" style={{ marginTop: 12 }}>
                   <button className="btn btn-primary" disabled={state === "busy"} onClick={() => decide("approve")}>
-                    {state === "busy" ? "กำลังบันทึก…" : "อนุมัติแผนนี้"}
+                    {state === "busy" ? "Saving…" : "Approve this plan"}
                   </button>
                   <button className="btn" disabled={state === "busy"} onClick={() => decide("decline")}>
-                    ไม่ใช้
+                    Not now
                   </button>
                 </div>
               )}
@@ -315,13 +315,13 @@ export default function InvestPage() {
 
           {defs && defs.plans.length > 0 && (
             <Spotlight className="panel">
-              <div className="panel-head"><h2>แผนที่อนุมัติแล้ว</h2><span className="total">{defs.plans.length}</span></div>
+              <div className="panel-head"><h2>Approved plans</h2><span className="total">{defs.plans.length}</span></div>
               {defs.plans.map((p) => (
                 <div key={p.id} className="event-row" style={{ gridTemplateColumns: "1fr auto" }}>
                   <span>
-                    <b>{p.profileTh}</b> · DCA {thb(p.monthlyThb)}/เดือน · {p.slices.filter((s) => s.pct > 0).map((s) => `${s.th} ${s.pct}%`).join(", ")}
+                    <b>{p.profileName}</b> · DCA {thb(p.monthlyThb)}/month · {p.slices.filter((s) => s.pct > 0).map((s) => `${s.name} ${s.pct}%`).join(", ")}
                   </span>
-                  <span className="pill lv-low">อนุมัติ</span>
+                  <span className="pill lv-low">Approved</span>
                 </div>
               ))}
             </Spotlight>

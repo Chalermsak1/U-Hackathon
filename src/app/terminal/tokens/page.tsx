@@ -20,9 +20,9 @@ interface Row {
 
 type SortKey = "fdv" | "marketCap" | "floatPct" | "totalRaised" | "pctInvestorsUnlocked";
 const FILTERS = [
-  { key: "all", th: "ทั้งหมด" },
-  { key: "lowfloat", th: "Float ต่ำกว่า 50%" },
-  { key: "analysed", th: "วิเคราะห์เต็มได้" },
+  { key: "all", th: "All" },
+  { key: "lowfloat", th: "Float under 50%" },
+  { key: "analysed", th: "Fully analysed" },
 ] as const;
 
 function floatColor(p: number | null) {
@@ -63,13 +63,13 @@ export default function TokensPage() {
   return (
     <>
       <div className="page-title">
-        <h1>เหรียญ · Supply Screener</h1>
+        <h1>Tokens · Supply screener</h1>
         <p>
-          เรียงตาม FDV · Float = market cap ÷ FDV (ยิ่งต่ำ ยิ่งมี supply รอเข้าตลาด) · Tokenomist {asOf ? new Date(asOf).toLocaleDateString("th-TH") : ""}
+          Sorted by FDV · Float = market cap ÷ FDV (lower means more supply still to come) · Tokenomist {asOf ? new Date(asOf).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
         </p>
       </div>
       <div style={{ display: "flex", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
-        <div className="seg" role="group" aria-label="กรอง">
+        <div className="seg" role="group" aria-label="Filter">
           {FILTERS.map((f) => (
             <button key={f.key} aria-pressed={filter === f.key} onClick={() => setFilter(f.key)}>
               {f.th}
@@ -77,20 +77,20 @@ export default function TokensPage() {
           ))}
         </div>
         <span className="note" style={{ alignSelf: "center" }}>
-          {shown.length} เหรียญ · กดหัวตารางเพื่อเรียง
+          {shown.length} tokens · click a column to sort
         </span>
       </div>
       <div className="table-wrap">
         <table className="t-table">
           <thead>
             <tr>
-              <th>เหรียญ</th>
+              <th>Token</th>
               {head("marketCap", "Market cap")}
               {head("fdv", "FDV")}
               {head("floatPct", "Float")}
-              {head("totalRaised", "ระดมทุนรวม")}
-              {head("pctInvestorsUnlocked", "นักลงทุนปลดล็อกแล้ว")}
-              <th>รอบล่าสุด</th>
+              {head("totalRaised", "Total raised")}
+              {head("pctInvestorsUnlocked", "Investors unlocked")}
+              <th>Latest round</th>
               <th>Lead investors</th>
             </tr>
           </thead>
@@ -124,7 +124,7 @@ export default function TokensPage() {
         </table>
       </div>
       <p className="note" style={{ marginTop: 10 }}>
-        ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน · เหรียญที่มีป้าย U-Guard มีตาราง unlock เต็มให้วิเคราะห์ความเสี่ยงได้
+        Decision support, not investment advice · tokens with the U-Guard badge have a full unlock schedule for risk analysis
       </p>
     </>
   );

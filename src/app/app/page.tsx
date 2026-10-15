@@ -9,11 +9,11 @@ import { Ticker } from "@/components/Ticker";
 import { TopBar } from "@/components/TopBar";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
-import { sourceLabelTh, thb } from "@/lib/format";
+import { sourceLabel, thb } from "@/lib/format";
 import { openReport } from "@/lib/report";
 import type { Holding } from "@/lib/types";
 
-const SUGGESTIONS = ["ซื้อ ARB 5,000 บาท", "AVAX น่ากังวลไหม", "WLD มี unlock ไหม", "สแกนพอร์ตของฉัน"];
+const SUGGESTIONS = ["Buy 5,000 THB of ARB", "Is AVAX worrying?", "Does WLD have an unlock?", "Scan my portfolio"];
 
 // The U-topia phone view: wallet + U-Bot chat, with Agent Trace and a large latest-result panel.
 export default function AppPage() {
@@ -43,20 +43,20 @@ export default function AppPage() {
     <>
       <TopBar current="app">
         {last && (
-          <span className="pill" title="ใครตอบคำถามล่าสุด">
+          <span className="pill" title="Who answered the last question">
             Agent: {last.engine}
           </span>
         )}
         <span className={`pill ${dataMode === "sample" ? "lv-medium" : "lv-low"}`}>
-          {sourceLabelTh(dataMode)}
+          {sourceLabel(dataMode)}
         </span>
       </TopBar>
       <div className="ticker-wrap">
-        <Ticker onPick={(s) => send(`เช็ก ${s} ให้หน่อย`)} />
+        <Ticker onPick={(s) => send(`Check ${s} for me`)} />
       </div>
 
       <main className="app-grid">
-        <section className="phone" aria-label="แอป U-topia">
+        <section className="phone" aria-label="U-topia app">
           <div className="phone-status">
             <span>U-topia</span>
             <span className="mono">9:41</span>
@@ -65,14 +65,14 @@ export default function AppPage() {
           <div className="wallet">
             <div className="wallet-top">
               <div>
-                <div className="wallet-label">ยอดรวมในกระเป๋า</div>
+                <div className="wallet-label">Wallet balance</div>
                 <div className="wallet-total">{thb(totalThb)}</div>
               </div>
               <button className="btn btn-sm" onClick={scan} disabled={busy}>
-                สแกนพอร์ต
+                Scan portfolio
               </button>
             </div>
-            <ul className="holdings" aria-label="เหรียญในกระเป๋า">
+            <ul className="holdings" aria-label="Tokens in the wallet">
               {holdings.map((h) => {
                 const lv = levels[h.symbol];
                 const flagged = lv === "high" || lv === "medium";
@@ -80,12 +80,12 @@ export default function AppPage() {
                   <li key={h.symbol}>
                     <button
                       className={`holding ${lv ? `lv-${lv}` : ""}`}
-                      onClick={() => send(`เช็ก ${h.symbol} ที่ฉันถืออยู่`)}
+                      onClick={() => send(`Check the ${h.symbol} I hold`)}
                       disabled={busy}
                       title={`${h.name}: ${h.amount.toLocaleString("en-US")} ${h.symbol}`}
                     >
                       <span className="holding-sym">
-                        {flagged && <span className="dot" aria-label="มี unlock ที่ต้องระวัง" />}
+                        {flagged && <span className="dot" aria-label="Has an unlock to watch" />}
                         {h.symbol}
                       </span>
                       <span className="holding-val">{thb(h.valueThb)}</span>
@@ -101,7 +101,7 @@ export default function AppPage() {
               <Avatar size={30} thinking={busy} level={topLevel(Object.values(levels))} />
               <div>
                 <p>U-Bot · U-Guard</p>
-                <span>{busy ? "กำลังตรวจสอบ…" : "เช็กความเสี่ยงก่อนเงินขยับ"}</span>
+                <span>{busy ? "Checking…" : "Check the risk before your money moves"}</span>
               </div>
             </div>
 
@@ -114,7 +114,7 @@ export default function AppPage() {
             )}
             <div className="chips">
               {SUGGESTIONS.map((s) => (
-                <button key={s} className="chip" onClick={() => (s.startsWith("สแกน") ? scan() : send(s))} disabled={busy}>
+                <button key={s} className="chip" onClick={() => (s.startsWith("Scan") ? scan() : send(s))} disabled={busy}>
                   {s}
                 </button>
               ))}
@@ -127,19 +127,19 @@ export default function AppPage() {
               }}
             >
               <label htmlFor="ask" className="sr-only">
-                ถาม U-Guard
+                Ask U-Guard
               </label>
               <input
                 id="ask"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="ซื้อ ARB 5,000 บาท"
+                placeholder="Buy 5,000 THB of ARB"
                 autoComplete="off"
                 maxLength={500}
               />
               <MicButton onText={send} onError={setError} disabled={busy} />
               <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>
-                ส่ง
+                Send
               </button>
             </form>
           </div>
@@ -147,13 +147,13 @@ export default function AppPage() {
 
         <aside className="side">
           {last && last.result.cards.length > 0 && (
-            <section className="panel spotlight" aria-label="ผลล่าสุด">
+            <section className="panel spotlight" aria-label="Latest result">
               <div className="panel-head">
-                <h2>ผลล่าสุด</h2>
-                <span className="total">ขยายจากแชตสำหรับจอใหญ่</span>
+                <h2>Latest result</h2>
+                <span className="total">Enlarged from the chat for big screens</span>
                 <button
                   className="btn btn-sm"
-                  onClick={() => openReport([...messages].reverse().find((m) => m.role === "user")?.text ?? "สแกนพอร์ต", last.result)}
+                  onClick={() => openReport([...messages].reverse().find((m) => m.role === "user")?.text ?? "Portfolio scan", last.result)}
                 >
                   PDF
                 </button>
@@ -167,23 +167,23 @@ export default function AppPage() {
           )}
           <TracePanel last={last} />
 
-          <section className="panel" aria-label="U-Guard ทำงานอย่างไร">
+          <section className="panel" aria-label="How U-Guard works">
             <div className="panel-head">
-              <h2>U-Guard ทำงานอย่างไร</h2>
+              <h2>How U-Guard works</h2>
             </div>
             <div className="steps">
               <div>
-                <b>1. ดึงข้อมูล</b>ตาราง unlock, ผู้รับ, รอบระดมทุน จาก Tokenomist
+                <b>1. Fetch</b>Unlock schedule, recipients and funding rounds from Tokenomist
               </div>
               <div>
-                <b>2. คำนวณด้วยโค้ด</b>ขนาด, สภาพคล่อง, ประเภทผู้รับ ตามงานวิจัย Keyrock
+                <b>2. Score in code</b>Size, liquidity and recipient type, based on Keyrock research
               </div>
               <div>
-                <b>3. คุณตัดสินใจ</b>อนุมัติแล้วบันทึกกฎบน Avalanche
+                <b>3. You decide</b>Approve, and the rule is recorded on Avalanche
               </div>
             </div>
             <p className="note" style={{ marginTop: 10 }}>
-              U-Guard ไม่ทายราคาและไม่แนะนำให้ซื้อหรือขาย ทุกตัวเลขมาจากแหล่งข้อมูลพร้อมวันที่
+              U-Guard doesn't predict prices or tell you to buy or sell. Every number comes from a dated source.
             </p>
           </section>
         </aside>

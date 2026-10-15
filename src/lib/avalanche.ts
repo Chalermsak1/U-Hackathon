@@ -52,7 +52,7 @@ export async function recordMemo(id: string, memo: string): Promise<ProtectionRe
       txHash: null,
       explorerUrl: null,
       memo,
-      note: "ตั้ง DEMO_PRIVATE_KEY (testnet) เพื่อบันทึกจริงบน Fuji",
+      note: "Set DEMO_PRIVATE_KEY (testnet) to record it on Fuji for real",
     };
   }
 
@@ -68,7 +68,7 @@ export async function recordMemo(id: string, memo: string): Promise<ProtectionRe
   try {
     await client.waitForTransactionReceipt({ hash: txHash, timeout: 20_000 });
   } catch {
-    note = "ส่งธุรกรรมแล้ว รอการยืนยันบนเครือข่าย";
+    note = "Transaction sent, waiting for network confirmation";
   }
   return {
     proposalId: proposal.id,

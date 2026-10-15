@@ -4,7 +4,7 @@
 import { now as clockNow } from "../config";
 import { readFixture } from "../fixtures";
 import { compact } from "../format";
-import { getUnlockEvents, listTokens } from "../tokenomist";
+import { getUnlockEvents, trackedTokens } from "../tokenomist";
 import type { CalendarEvent } from "../types";
 
 interface CalendarFixture {
@@ -16,7 +16,7 @@ export async function getEventCalendar(days = 45, opts: { now?: number } = {}): 
   const start = new Date(t).toISOString().slice(0, 10);
   const end = new Date(t + days * 86_400_000).toISOString().slice(0, 10);
 
-  const [fixture, tokens] = await Promise.all([readFixture<CalendarFixture>("calendar.json"), listTokens()]);
+  const [fixture, tokens] = await Promise.all([readFixture<CalendarFixture>("calendar.json"), trackedTokens()]);
   const macro = (fixture?.events ?? []).filter((e) => e.date >= start && e.date <= end);
 
   const unlocks = await Promise.all(

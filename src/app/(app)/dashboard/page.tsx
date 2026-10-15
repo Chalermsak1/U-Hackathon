@@ -12,7 +12,7 @@ import { searchNews } from "@/lib/intel/news";
 import { getEventOdds } from "@/lib/intel/odds";
 import { getMarketPulse } from "@/lib/intel/pulse";
 import { investorPressure } from "@/lib/risk";
-import { listTokens } from "@/lib/tokenomist";
+import { trackedTokens } from "@/lib/tokenomist";
 import type { Citation } from "@/lib/types";
 import { portfolioView } from "@/lib/views";
 
@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const t = now();
-  const tokens = await listTokens();
+  const tokens = await trackedTokens();
   const symbols = tokens.data.map((x) => x.symbol);
   const [portfolio, calendar, news, odds, pulse, forecasts, investors] = await Promise.all([
     portfolioView(),

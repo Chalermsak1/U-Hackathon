@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { LEVEL_TH } from "@/lib/format";
+import { LEVEL_LABEL } from "@/lib/format";
 import type { AgentResult } from "@/lib/types";
 import { ProposalCardView } from "./Cards";
 import { Icon } from "./Icon";
@@ -39,12 +39,12 @@ export function useInbox() {
 }
 
 function hhmm(iso: string): string {
-  return new Date(iso).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
+  return new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
 }
 
 /** U-Bot messages, newest first: each card's level, score and first reason, plus a link to follow up. */
 export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () => void }) {
-  if (items.length === 0) return <p className="empty">ยังไม่มีข้อความจาก U-Bot · ลองสแกนพอร์ตหรือกด &ldquo;ตรวจตอนนี้&rdquo; ในหน้าการแจ้งเตือน</p>;
+  if (items.length === 0) return <p className="empty">No messages from U-Bot yet · scan your portfolio or press &ldquo;Check now&rdquo; on the Alerts page</p>;
   return (
     <ul className="inbox-list">
       {items.map((it) => {
@@ -52,7 +52,7 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
         return (
           <li key={it.id}>
             <div className="inbox-meta">
-              <span className="push-tag">{it.kind === "alert" ? "U-BOT แจ้งเตือน" : "U-BOT"}</span>
+              <span className="push-tag">{it.kind === "alert" ? "U-BOT ALERT" : "U-BOT"}</span>
               <span className="note">{hhmm(it.at)}</span>
             </div>
             {cards.length === 0 && <p className="inbox-text">{it.result.reply.split("\n")[0]}</p>}
@@ -61,11 +61,11 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
                 <b>{c.symbol}</b>
                 <span className="inbox-lv">
                   <span className="dot" />
-                  {LEVEL_TH[c.level]} {c.score}/100
+                  {LEVEL_LABEL[c.level]} {c.score}/100
                 </span>
                 <p className="inbox-text">{c.reasons[0]}</p>
-                <Link href={`/terminal/agent?q=${encodeURIComponent(`เช็ก ${c.symbol} ให้หน่อย`)}`} className="note" onClick={onPick}>
-                  ถาม U-Bot ต่อ →
+                <Link href={`/terminal/agent?q=${encodeURIComponent(`Check ${c.symbol} for me`)}`} className="note" onClick={onPick}>
+                  Ask U-Bot more →
                 </Link>
               </div>
             ))}
@@ -126,16 +126,16 @@ export function UBotInbox() {
 
   return (
     <div className="inbox" ref={box}>
-      <button className="btn btn-sm inbox-bell" onClick={toggle} aria-expanded={open} aria-label={`ข้อความจาก U-Bot${unread ? ` ยังไม่อ่าน ${unread}` : ""}`}>
+      <button className="btn btn-sm inbox-bell" onClick={toggle} aria-expanded={open} aria-label={`Messages from U-Bot${unread ? `, ${unread} unread` : ""}`}>
         <Icon name="bell" size={15} />
         {unread > 0 && <span className="inbox-count">{unread}</span>}
       </button>
       {open && (
-        <div className="inbox-pop panel" role="dialog" aria-label="ข้อความจาก U-Bot">
+        <div className="inbox-pop panel" role="dialog" aria-label="Messages from U-Bot">
           <div className="panel-head">
-            <h2>ข้อความจาก U-Bot</h2>
+            <h2>Messages from U-Bot</h2>
             <Link href="/terminal/alerts" className="note" onClick={() => setOpen(false)} style={{ marginLeft: "auto" }}>
-              ตั้งการแจ้งเตือน
+              Alert settings
             </Link>
           </div>
           <InboxList items={items.slice(0, 8)} onPick={() => setOpen(false)} />

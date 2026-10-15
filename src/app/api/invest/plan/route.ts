@@ -29,8 +29,8 @@ export async function POST(req: Request) {
     const limit = rateLimit(`invest:${session.sub}`, LIMITS.agent.max, LIMITS.agent.windowMs);
     if (!limit.ok) return tooMany(limit);
     const parsed = Input.safeParse(await req.json().catch(() => null));
-    if (!parsed.success) return jsonError(400, "ตอบแบบประเมินให้ครบ 5 ข้อ และใส่จำนวนเงิน");
-    if (parsed.data.lumpSumThb + parsed.data.monthlyThb <= 0) return jsonError(400, "ใส่เงินก้อนหรือเงิน DCA อย่างน้อยหนึ่งอย่าง");
+    if (!parsed.success) return jsonError(400, "Answer all 5 questions and enter an amount.");
+    if (parsed.data.lumpSumThb + parsed.data.monthlyThb <= 0) return jsonError(400, "Enter a lump sum or a monthly DCA amount.");
     const plan = await draftInvestPlan(parsed.data, session.sub, now());
     return Response.json(plan);
   } catch (err) {

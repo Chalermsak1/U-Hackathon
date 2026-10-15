@@ -6,23 +6,23 @@
 import { randomUUID } from "node:crypto";
 import { recordMemo } from "./avalanche";
 import { readFixture } from "./fixtures";
-import { thaiDate, thb } from "./format";
+import { LEVEL_LABEL, shortDate, thb } from "./format";
 import { assessUnlockRisk } from "./risk";
 import { store } from "./store";
 import type { DataSource, InvestCheck, InvestPlan, InvestProfile, InvestSlice } from "./types";
 
 interface Universe {
   mode?: DataSource;
-  classes: { id: string; th: string; example: string; risk: number; feePct: number; color: string }[];
-  profiles: Record<InvestProfile, { th: string; weights: Record<string, number>; cryptoMax: number }>;
+  classes: { id: string; name: string; example: string; risk: number; feePct: number; color: string }[];
+  profiles: Record<InvestProfile, { name: string; weights: Record<string, number>; cryptoMax: number }>;
 }
 
 export const QUESTIONS = [
-  { q: "ตั้งใจลงทุนนานแค่ไหน", a: ["ไม่ถึง 1 ปี", "1–3 ปี", "3–5 ปี", "มากกว่า 5 ปี"] },
-  { q: "ถ้าพอร์ตลดลง 20% ในเดือนเดียว คุณจะ", a: ["ขายทั้งหมด", "ขายบางส่วน", "ถือต่อ", "ซื้อเพิ่ม"] },
-  { q: "เคยลงทุนอะไรมาแล้ว", a: ["ยังไม่เคย", "เงินฝาก / กองทุนตลาดเงิน", "หุ้น / กองทุนหุ้น", "คริปโต / อนุพันธ์"] },
-  { q: "เงินที่จะลงทุนคิดเป็นเท่าไรของเงินออมทั้งหมด", a: ["มากกว่า 75%", "50–75%", "25–50%", "น้อยกว่า 25%"] },
-  { q: "เป้าหมายหลัก", a: ["รักษาเงินต้น", "รายได้สม่ำเสมอ", "เติบโตปานกลาง", "เติบโตสูง"] },
+  { q: "How long do you plan to invest?", a: ["Under 1 year", "1–3 years", "3–5 years", "Over 5 years"] },
+  { q: "If your portfolio fell 20% in one month, you would", a: ["Sell everything", "Sell some", "Hold", "Buy more"] },
+  { q: "What have you invested in before?", a: ["Nothing yet", "Deposits / money market funds", "Stocks / equity funds", "Crypto / derivatives"] },
+  { q: "How much of your total savings is this money?", a: ["Over 75%", "50–75%", "25–50%", "Under 25%"] },
+  { q: "Main goal", a: ["Keep my capital safe", "Steady income", "Moderate growth", "High growth"] },
 ] as const;
 
 export interface InvestInput {
@@ -86,7 +86,7 @@ export async function draftInvestPlan(input: InvestInput, userId: string, now: n
     const pct = Math.round((raw[c.id] / total) * 1000) / 10;
     return {
       id: c.id,
-      th: c.th,
+      name: c.name,
       example: c.example,
       risk: c.risk,
       pct,
@@ -102,14 +102,14 @@ export async function draftInvestPlan(input: InvestInput, userId: string, now: n
   // Crypto split and U-Guard's unlock check on each pick.
   const picks = [...new Set((input.cryptoPicks?.length ? input.cryptoPicks : ["BTC", "ETH"]).map((p) => p.toUpperCase()))].slice(0, 5);
   const crypto: InvestPlan["crypto"] = [];
-  const unlocks: { symbol: string; date: string; th: string }[] = [];
+  const unlocks: { symbol: string; date: string; label: string }[] = [];
   for (const sym of picks) {
-    const r = await assessUnlockRisk(sym, null, { now, locale: "th" });
+    const r = await assessUnlockRisk(sym, null, { now, locale: "en" });
     if (r.ok) {
       const c = r.card;
       crypto.push({ symbol: sym, pctOfCrypto: Math.round(1000 / picks.length) / 10, level: c.level, score: c.score, note: c.reasons[0] ?? c.headline });
       for (const d of [c.unlockDate, c.nextUnlock?.date]) {
-        if (d && c.timing !== "continuous") unlocks.push({ symbol: sym, date: d, th: thaiDate(d) });
+        if (d && c.timing !== "continuous") unlocks.push({ symbol: sym, date: d, label: shortDate(d) });
       }
     } else {
       crypto.push({ symbol: sym, pctOfCrypto: Math.round(1000 / picks.length) / 10, level: "none", score: null, note: r.reason });
@@ -124,47 +124,47 @@ export async function draftInvestPlan(input: InvestInput, userId: string, now: n
         const gap = (new Date(x.date).getTime() - t) / DAY;
         return gap >= -2 && gap <= 7;
       })
-      .map((x) => `${x.symbol}: งวดนี้อยู่ในช่วง unlock ${x.th} · เลื่อนงวด ${x.symbol} ไปหลัง unlock ได้ถ้าต้องการ`);
+      .map((x) => `${x.symbol}: this buy falls near the ${x.label} unlock · you can move the ${x.symbol} part to after the unlock`);
     return { date, amountThb: input.monthlyThb, notes };
   });
 
   const checks: InvestCheck[] = [];
   checks.push(
     cryptoPct > base.cryptoMax
-      ? { status: "warn", label: `คริปโต ${cryptoPct}% สูงกว่าระดับ "${base.th}"`, detail: `แบบประเมินของคุณอยู่ระดับ${base.th} ซึ่งพอร์ตตัวอย่างมีคริปโตไม่เกิน ${base.cryptoMax}%` }
-      : { status: "ok", label: `คริปโต ${cryptoPct}% อยู่ในระดับ "${base.th}"`, detail: `พอร์ตตัวอย่างระดับนี้มีคริปโตไม่เกิน ${base.cryptoMax}%` },
+      ? { status: "warn", label: `Crypto ${cryptoPct}% is above the "${base.name}" level`, detail: `Your answers put you at "${base.name}", whose model portfolio holds at most ${base.cryptoMax}% crypto` }
+      : { status: "ok", label: `Crypto ${cryptoPct}% fits the "${base.name}" level`, detail: `The model portfolio at this level holds at most ${base.cryptoMax}% crypto` },
   );
   for (const c of crypto.filter((x) => x.level === "high" || x.level === "medium")) {
-    checks.push({ status: "warn", label: `${c.symbol} มี unlock ใกล้ (เสี่ยง${c.level === "high" ? "สูง" : "ปานกลาง"} ${c.score}/100)`, detail: c.note });
+    checks.push({ status: "warn", label: `${c.symbol} has an unlock coming up (${LEVEL_LABEL[c.level]} risk ${c.score}/100)`, detail: c.note });
   }
   const flagged = dca.filter((d) => d.notes.length > 0).length;
   if (cryptoPct > 0) {
     checks.push(
       flagged > 0
-        ? { status: "warn", label: `DCA ${flagged} งวดตรงกับช่วง unlock`, detail: "ดูวันที่ที่มีหมายเหตุในตาราง DCA ด้านล่าง" }
-        : { status: "ok", label: "DCA ไม่ตรงกับ unlock ใหญ่", detail: "3 งวดข้างหน้าไม่อยู่ในช่วง 7 วันก่อน unlock ของเหรียญที่เลือก" },
+        ? { status: "warn", label: `${flagged === 1 ? "1 DCA buy lands" : `${flagged} DCA buys land`} near an unlock`, detail: "See the dates with notes in the DCA table below" }
+        : { status: "ok", label: "DCA avoids big unlocks", detail: "None of the next 3 buys is within 7 days before an unlock of the coins you picked" },
     );
   }
   if (input.answers[3] === 1) {
-    checks.push({ status: "warn", label: "ลงทุนเกิน 75% ของเงินออม", detail: "ควรกันเงินสำรองฉุกเฉิน (ราว 3–6 เดือนของรายจ่าย) ไว้นอกพอร์ตก่อน" });
+    checks.push({ status: "warn", label: "Investing over 75% of your savings", detail: "Keep an emergency fund (about 3–6 months of expenses) outside the portfolio first" });
   }
   const riskyPct = slices.filter((s) => ["thai_equity", "global_equity", "gold", "crypto"].includes(s.id)).reduce((s, x) => s + x.pct, 0);
   if (input.answers[0] === 1 && riskyPct > 30) {
-    checks.push({ status: "warn", label: "ระยะเวลาสั้นแต่สินทรัพย์เสี่ยงเยอะ", detail: `ลงทุนไม่ถึง 1 ปี แต่หุ้น/ทอง/คริปโตรวม ${riskyPct.toFixed(0)}% ราคาอาจยังไม่ฟื้นทันเวลาที่ต้องใช้เงิน` });
+    checks.push({ status: "warn", label: "Short horizon, lots of risky assets", detail: `Under 1 year, but stocks, gold and crypto make up ${riskyPct.toFixed(0)}%: prices may not recover before you need the money` });
   }
 
   const top = [...slices].sort((a, b) => b.pct - a.pct).slice(0, 3);
   const warns = checks.filter((c) => c.status === "warn");
   const summary = [
-    `แบบประเมิน ${score}/20 → ระดับ "${base.th}" · พอร์ตตัวอย่างเน้น ${top.map((t) => `${t.th} ${t.pct}%`).join(", ")}`,
-    `เงินก้อน ${thb(input.lumpSumThb)} + DCA ${thb(input.monthlyThb)} ทุกวันที่ ${dates[0].slice(8, 10).replace(/^0/, "")} · ความเสี่ยงเฉลี่ย ${weightedRisk.toFixed(1)}/8 · ค่าธรรมเนียมราว ${feePctYear.toFixed(2)}%/ปี`,
-    warns.length ? `U-Guard ขอให้ดู ${warns.length} เรื่อง: ${warns.map((w) => w.label).join(" · ")}` : "ผ่านการตรวจของ U-Guard ทุกข้อ · คุณปรับสัดส่วนเองได้ก่อนอนุมัติ",
+    `Risk profile ${score}/20 → "${base.name}" · model portfolio led by ${top.map((t) => `${t.name} ${t.pct}%`).join(", ")}`,
+    `Lump sum ${thb(input.lumpSumThb)} + DCA ${thb(input.monthlyThb)} on day ${dates[0].slice(8, 10).replace(/^0/, "")} of each month · average risk ${weightedRisk.toFixed(1)}/8 · fees about ${feePctYear.toFixed(2)}%/year`,
+    warns.length ? `U-Guard flags ${warns.length === 1 ? "one thing" : `${warns.length} things`}: ${warns.map((w) => w.label).join(" · ")}` : "Passes every U-Guard check · you can still change the weights before approving",
   ];
 
   const plan: InvestPlan = {
     id: randomUUID(),
     profile,
-    profileTh: base.th,
+    profileName: base.name,
     score,
     lumpSumThb: input.lumpSumThb,
     monthlyThb: input.monthlyThb,
@@ -187,11 +187,11 @@ export async function draftInvestPlan(input: InvestInput, userId: string, now: n
 
 export async function decideInvestPlan(planId: string, decision: "approve" | "decline", userId: string) {
   const rec = store.investPlans.get(planId);
-  if (!rec || rec.ownerId !== userId) return { ok: false as const, status: 404, error: "ไม่พบแผนนี้ ลองร่างใหม่" };
+  if (!rec || rec.ownerId !== userId) return { ok: false as const, status: 404, error: "Plan not found. Draft a new one." };
   const { plan } = rec;
   if (plan.status !== "pending") {
     const same = (plan.status === "approved") === (decision === "approve");
-    return same ? { ok: true as const, plan } : { ok: false as const, status: 409, error: "แผนนี้ตัดสินใจไปแล้ว" };
+    return same ? { ok: true as const, plan } : { ok: false as const, status: 409, error: "You already decided on this plan" };
   }
   if (decision === "decline") {
     plan.status = "declined";

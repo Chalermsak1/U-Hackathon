@@ -72,7 +72,7 @@ export function bearerMatches(req: Request, key: string): boolean {
 
 // Language for card copy in GET responses: `?lang=en` or `?lang=th`, else the fallback.
 // The Thai app's pages read these routes, so their fallback is Thai.
-export function langOf(req: Request, fallback: Locale = "th"): Locale {
+export function langOf(req: Request, fallback: Locale = "en"): Locale {
   const lang = new URL(req.url).searchParams.get("lang");
   return lang === "en" || lang === "th" ? lang : fallback;
 }

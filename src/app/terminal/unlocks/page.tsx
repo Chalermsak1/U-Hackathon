@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Spotlight } from "@/components/fx";
-import { compact, LEVEL_TH, thaiDate, unlockWhenTh, untilText, usd } from "@/lib/format";
+import { compact, LEVEL_LABEL, shortDate, unlockWhen, untilLabel, usd } from "@/lib/format";
 import type { RiskCard } from "@/lib/types";
 
 interface MarketEvent {
@@ -38,27 +38,27 @@ export default function UnlocksPage() {
   return (
     <>
       <div className="page-title">
-        <h1>ปฏิทินปลดล็อก</h1>
-        <p>ราคามักเริ่มถูกกดตั้งแต่ ~30 วันก่อนวัน unlock (Keyrock) · U-Guard ให้คะแนนตามขนาด, สภาพคล่อง และผู้รับ</p>
+        <h1>Unlock calendar</h1>
+        <p>Prices often start sliding ~30 days before an unlock (Keyrock) · U-Guard scores size, liquidity and recipients</p>
       </div>
 
       <Spotlight className="panel">
         <div className="panel-head">
-          <h2>U-Guard วิเคราะห์เต็ม</h2>
-          <span className="total">คะแนนคำนวณด้วยโค้ด</span>
+          <h2>Fully analysed by U-Guard</h2>
+          <span className="total">Scores computed in code</span>
         </div>
         {analysed.map((c) => (
           <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
             <span className="event-date">
-              <b>{c.unlockDate ? thaiDate(c.unlockDate) : "–"}</b>
-              {unlockWhenTh(c)}
+              <b>{c.unlockDate ? shortDate(c.unlockDate) : "–"}</b>
+              {unlockWhen(c)}
             </span>
             <span>
-              <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% ของ circulating ·{" "}
+              <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% of circulating ·{" "}
               <span className="note">{c.reasons[2] ?? ""}</span>
             </span>
             <span className={`pill lv-${c.level}`}>
-              {LEVEL_TH[c.level]} {c.score}
+              {LEVEL_LABEL[c.level]} {c.score}
             </span>
           </Link>
         ))}
@@ -67,14 +67,14 @@ export default function UnlocksPage() {
       <div className="grid-2" style={{ marginTop: 16 }}>
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>ในตลาดสัปดาห์นี้และเร็วๆ นี้</h2>
-            <span className="total">จากรายงานสาธารณะ</span>
+            <h2>Elsewhere in the market</h2>
+            <span className="total">From public reports</span>
           </div>
           {upcoming.map((e) => (
             <div key={e.symbol + e.date} className="event-row">
               <span className="event-date">
-                <b>{e.dateApprox ? "พ.ย." : thaiDate(e.date)}</b>
-                {e.dateApprox ? "ยังไม่ระบุวัน" : untilText(e.date)}
+                <b>{e.dateApprox ? "Nov" : shortDate(e.date)}</b>
+                {e.dateApprox ? "date TBC" : untilLabel(e.date)}
               </span>
               <span>
                 <b>{e.symbol}</b> · {e.summary}
@@ -92,12 +92,12 @@ export default function UnlocksPage() {
         </Spotlight>
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>เพิ่งผ่านไป (บทเรียน)</h2>
+            <h2>Recently passed (lessons)</h2>
           </div>
           {past.map((e) => (
             <div key={e.symbol + e.date} className="event-row">
               <span className="event-date">
-                <b>{thaiDate(e.date)}</b>
+                <b>{shortDate(e.date)}</b>
               </span>
               <span>
                 <b>{e.symbol}</b> · {e.summary}

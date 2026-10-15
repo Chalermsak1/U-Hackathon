@@ -34,13 +34,13 @@ export function ChatThread({
           <div key={m.id} className="msg msg-bot">
             <Avatar size={26} level={topLevel(m.result?.cards.map((c) => c.level) ?? [])} />
             <div className="msg-stack">
-              {m.push && <span className="push-tag">U-BOT แจ้งเตือน</span>}
+              {m.push && <span className="push-tag">U-BOT ALERT</span>}
               <div className="bubble">{m.text}</div>
               {m.result?.cards.map((c) => <RiskCardView key={c.symbol} card={c} />)}
               {m.result?.proposals.map((p) => <ProposalCardView key={p.id} proposal={p} />)}
               {m.result && m.result.cards.length > 0 && (
                 <button className="btn btn-sm" style={{ alignSelf: "flex-start" }} onClick={() => openReport(questionFor(i), m.result!)}>
-                  สรุปเป็น PDF
+                  Save as PDF
                 </button>
               )}
             </div>
@@ -50,7 +50,7 @@ export function ChatThread({
       {busy && (
         <div className="msg msg-bot">
           <Avatar size={26} thinking />
-          <div className="bubble note">กำลังดึงตาราง unlock และคำนวณความเสี่ยง…</div>
+          <div className="bubble note">Fetching the latest data and scoring the risk…</div>
         </div>
       )}
     </div>

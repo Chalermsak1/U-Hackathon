@@ -8,48 +8,48 @@ import { GuardMark } from "./GuardMark";
 import { GuardWatch } from "./GuardWatch";
 
 const SECTIONS = [
-  { id: "home", th: "หน้าแรก" },
-  { id: "problem", th: "ปัญหา" },
-  { id: "features", th: "ฟีเจอร์" },
+  { id: "home", th: "Home" },
+  { id: "problem", th: "Problem" },
+  { id: "features", th: "Features" },
   { id: "demo", th: "Demo" },
-  { id: "method", th: "ทำงานอย่างไร" },
+  { id: "method", th: "How it works" },
   { id: "faq", th: "FAQ" },
 ];
 
-const ROTATING = ["เงินจะขยับ", "เหรียญจะปลดล็อก", "ตลาดจะเทขาย"];
+const ROTATING = ["your money moves", "the unlock lands", "the market sells"];
 
 
 const FEATURES = [
-  { n: "01", title: "เช็กก่อนซื้อ", desc: "พิมพ์ \"ซื้อ ARB 5,000 บาท\" แล้ว agent ดึงตาราง unlock, ผู้รับ และรอบระดมทุน มาคำนวณความเสี่ยงด้วยโค้ดก่อนเงินขยับ", href: "/terminal/agent" },
-  { n: "02", title: "ภาษาไทย 3 บรรทัด + เสียง", desc: "สรุปสั้นที่มือใหม่อ่านเข้าใจ พูดถามด้วยเสียง และฟังคำตอบด้วย ElevenLabs พร้อมสรุปเป็น PDF", href: "/terminal/agent" },
-  { n: "03", title: "คุณเป็นคนอนุมัติ", desc: "U-Guard เสนอการป้องกันเท่านั้น เมื่อคุณกดอนุมัติ กฎจะถูกบันทึกบน Avalanche ให้ตรวจสอบได้", href: "/terminal/trade" },
-  { n: "04", title: "Terminal + Forecast", desc: "screener, ปฏิทินปลดล็อก, supply ล่วงหน้า 6 เดือน, พอร์ต และการแจ้งเตือน ในที่เดียว", href: "/terminal" },
+  { n: "01", title: "Check before you buy", desc: "Type \"Buy 5,000 THB of ARB\" and the agent pulls the unlock schedule, recipients and funding rounds, then scores the risk in code before any money moves", href: "/terminal/agent" },
+  { n: "02", title: "Three plain lines + voice", desc: "A short summary a beginner can follow. Ask by voice and hear the answer with ElevenLabs, in English or Thai, and save it as a PDF", href: "/terminal/agent" },
+  { n: "03", title: "You approve", desc: "U-Guard only proposes protection. When you approve, the rule is recorded on Avalanche so anyone can verify it", href: "/terminal/trade" },
+  { n: "04", title: "Terminal + Forecast", desc: "Screener, unlock calendar, 6-month supply forecast, portfolio and alerts in one place", href: "/terminal" },
 ];
 
 const DEMOS = [
-  { tag: "Terminal", badge: "ใหม่", title: "U-Guard Terminal", desc: "ภาพรวม, ถาม AI, screener 25 เหรียญ และปฏิทินปลดล็อก", tags: ["Screener", "Unlocks", "⌘K"], href: "/terminal" },
-  { tag: "Trade", badge: "U-Bot", title: "เทรดพร้อม AI ร่างแผน", desc: "เลือกเหรียญและงบเอง U-Bot ร่างแผน ตรวจความเสี่ยง แล้วคุณเป็นคนอนุมัติ", tags: ["Plan", "Approval", "Paper trade"], href: "/terminal/trade" },
-  { tag: "Token", badge: "Forecast", title: "Supply Mode: ARB", desc: "92.65M ARB ปลดล็อกทุกเดือนจนถึง มี.ค. 2027 พร้อมกราฟแยกผู้รับ", tags: ["Allocation", "Fundraising"], href: "/terminal/tokens/ARB" },
-  { tag: "Portfolio", badge: "Dilution", title: "พอร์ตของฉัน", desc: "มูลค่าที่เสี่ยง, การกระจุกตัว และสัดส่วนที่จะลดลงใน 6 เดือน", tags: ["Risk", "PDF"], href: "/terminal/portfolio" },
-  { tag: "Alerts", badge: "U-Bot", title: "การแจ้งเตือนอัจฉริยะ", desc: "ตั้งกฎว่าอยากให้เตือนเมื่อไร และดูประวัติการอนุมัติ", tags: ["Rules", "Decisions"], href: "/terminal/alerts" },
-  { tag: "Calendar", badge: "30 วัน", title: "ปฏิทินปลดล็อก", desc: "unlock ที่ใกล้ถึงพร้อมคะแนน และเหตุการณ์ในตลาดที่มีแหล่งข้อมูลกำกับทุกแถว", tags: ["Keyrock", "Tokenomist"], href: "/terminal/unlocks" },
+  { tag: "Terminal", badge: "New", title: "U-Guard Terminal", desc: "Overview, ask the AI, a 25-token screener and the unlock calendar", tags: ["Screener", "Unlocks", "⌘K"], href: "/terminal" },
+  { tag: "Trade", badge: "U-Bot", title: "Trade with an AI-drafted plan", desc: "You pick the token and budget; U-Bot drafts a plan, checks the risk, and you approve", tags: ["Plan", "Approval", "Paper trade"], href: "/terminal/trade" },
+  { tag: "Token", badge: "Forecast", title: "Supply Mode: ARB", desc: "92.65M ARB unlocks every month until Mar 2027, charted by recipient", tags: ["Allocation", "Fundraising"], href: "/terminal/tokens/ARB" },
+  { tag: "Portfolio", badge: "Dilution", title: "My portfolio", desc: "Value at risk, concentration, and how much your share gets diluted over 6 months", tags: ["Risk", "PDF"], href: "/terminal/portfolio" },
+  { tag: "Alerts", badge: "U-Bot", title: "Smart alerts", desc: "Set rules for when to be alerted, and see your approval history", tags: ["Rules", "Decisions"], href: "/terminal/alerts" },
+  { tag: "Calendar", badge: "30 days", title: "Unlock calendar", desc: "Upcoming unlocks with scores, plus market events with a source on every row", tags: ["Keyrock", "Tokenomist"], href: "/terminal/unlocks" },
 ];
 
 const STEPS = [
-  { k: "Perceive", th: "รับคำสั่ง", d: "คำถามจากแชต, เสียง หรือการสแกนพอร์ต" },
-  { k: "Plan", th: "วางแผน", d: "agent เลือกเองว่าต้องใช้ tool ไหน" },
-  { k: "Act", th: "ดึงข้อมูล", d: "Tokenomist, ราคา, พอร์ต" },
-  { k: "Score", th: "คำนวณ", d: "โค้ดให้คะแนน ไม่ใช่ AI เดา" },
-  { k: "Explain", th: "อธิบาย", d: "ไทย 3 บรรทัด + เสียง + PDF" },
-  { k: "Approve", th: "คุณอนุมัติ", d: "บันทึกบน Avalanche" },
+  { k: "Perceive", th: "Listen", d: "A chat question, voice, or a portfolio scan" },
+  { k: "Plan", th: "Plan", d: "The agent chooses which tools it needs" },
+  { k: "Act", th: "Fetch", d: "Tokenomist, prices, portfolio" },
+  { k: "Score", th: "Score", d: "Code computes the score; the AI doesn't guess" },
+  { k: "Explain", th: "Explain", d: "Three plain lines + voice + PDF" },
+  { k: "Approve", th: "Approve", d: "Recorded on Avalanche" },
 ];
 
 const FAQ = [
-  { q: "U-Guard แนะนำให้ซื้อหรือขายไหม?", a: "ไม่ U-Guard ให้ข้อมูลประกอบการตัดสินใจเท่านั้น การแนะนำการลงทุนสินทรัพย์ดิจิทัลในไทยต้องมีใบอนุญาตที่ปรึกษาจาก ก.ล.ต. ทุก action ต้องให้คุณกดอนุมัติเอง" },
-  { q: "ข้อมูลมาจากไหน?", a: "ตาราง unlock, allocation และการระดมทุนจาก Tokenomist · ราคาและ volume จาก CoinGecko · ทุกการ์ดแสดงแหล่งข้อมูลและบอกชัดเจนว่าเป็นข้อมูลสดหรือข้อมูลตัวอย่าง" },
-  { q: "ทำไมไม่เตือนทุก unlock?", a: "เพราะไม่ใช่ทุก unlock กดราคา งานวิจัยพบว่า unlock ของทีมกดราคาแรงที่สุด ส่วนกองทุน ecosystem มักไม่กด U-Guard จึงให้คะแนนตามขนาด, สภาพคล่อง และผู้รับ" },
-  { q: "ทำงานกับ U-Bot อย่างไร?", a: "U-Guard ถูกออกแบบเป็น skill ที่ U-Bot (orchestrator ของ U-topia) เรียกก่อนทำธุรกรรม และส่งแจ้งเตือนกลับผ่าน U-Bot ตอนนี้ต่อผ่าน adapter ที่รองรับ webhook" },
-  { q: "ทำไมบันทึกบน Avalanche?", a: "เพื่อให้การอนุมัติของคุณตรวจสอบได้และแก้ไขย้อนหลังไม่ได้ demo ใช้ Fuji testnet เท่านั้น ไม่มีเงินจริง" },
+  { q: "Does U-Guard tell me to buy or sell?", a: "No. U-Guard gives decision support only. Advising on digital assets in Thailand needs a licence from the SEC, and every action waits for your approval." },
+  { q: "Where does the data come from?", a: "Unlock schedules, allocations and funding from Tokenomist; prices and volume from CoinGecko. Every card shows its source and says whether it is live, a dated snapshot, or sample data." },
+  { q: "Why not alert on every unlock?", a: "Not every unlock pushes the price down. Research found team unlocks hit hardest while ecosystem-fund unlocks often don't, so U-Guard scores size, liquidity and who receives the tokens." },
+  { q: "How does it work with U-Bot?", a: "U-Guard is a skill that U-Bot, U-topia's orchestrator, calls before a transaction, over MCP or a webhook. Its alerts and proposals come back through U-Bot for you to approve." },
+  { q: "Why record it on Avalanche?", a: "So your approval can be verified and never edited afterwards. The demo uses the Fuji testnet only: no real money." },
 ];
 
 // Platform page: loader → story → proof → enter the terminal.
@@ -115,8 +115,8 @@ export function Landing() {
       {loading && (
         <div className="lp-loader" role="status" aria-live="polite">
           <GuardMark size={72} />
-          <p>กำลังสแกนปฏิทินปลดล็อก…</p>
-          <small>{found === null ? "เชื่อมต่อ Tokenomist" : `พบ ${found} unlock ใน 30 วัน`}</small>
+          <p>Scanning the unlock calendar…</p>
+          <small>{found === null ? "Connecting to Tokenomist" : `Found ${found} unlocks in the next 30 days`}</small>
         </div>
       )}
 
@@ -125,18 +125,18 @@ export function Landing() {
           <span className="lp-logo-dot" aria-hidden="true" />
           U-GUARD
         </a>
-        <nav className="lp-pills" aria-label="ส่วนของหน้า">
+        <nav className="lp-pills" aria-label="Page sections">
           {SECTIONS.map((s) => (
             <a key={s.id} href={`#${s.id}`} aria-current={active === s.id ? "true" : undefined}>
               {s.th}
             </a>
           ))}
         </nav>
-        <Link href="/en" className="lp-lang" lang="en" title="English version">
-          EN
+        <Link href="/en" className="lp-lang" title="Platform overview: signals, U-Bot/MCP, trust">
+          Platform
         </Link>
         <Link href="/terminal" className="lp-cta">
-          เข้าสู่ Terminal →
+          Enter the Terminal →
         </Link>
       </header>
 
@@ -144,10 +144,10 @@ export function Landing() {
         <div className="lp-dots" aria-hidden="true" />
         <div className="lp-hero-copy">
           <span className="lp-chip">
-            <i /> Agentic AI ใน U-Bot · U-Hackathon 2026
+            <i /> Agentic AI in U-Bot · U-Hackathon 2026
           </span>
           <h1>
-            รู้ก่อน
+            Know before
             <br />
             {/* The wrapper animates; the inner span carries the gradient text. Animating a
                 background-clip:text element directly can leave it unpainted in Chromium. */}
@@ -157,14 +157,14 @@ export function Landing() {
           </h1>
           <p className="lp-quote">&ldquo;Retail no longer finds out last.&rdquo;</p>
           <p className="lp-lead">
-            U-Guard เช็ก <b>ตาราง unlock</b> ของเหรียญก่อนคุณซื้อหรือถือ อธิบายเป็น <b>ภาษาไทย 3 บรรทัด</b> พร้อมเสียง และให้ <b>คุณเป็นคนอนุมัติ</b> ทุกครั้ง
+            U-Guard checks a token&apos;s <b>unlock schedule</b> before you buy or hold it, explains it in <b>three plain lines</b> with voice, and <b>you approve</b> every action
           </p>
           <div className="lp-buttons">
             <Link href="/terminal" className="lp-btn lp-btn-primary">
-              เข้าสู่ Terminal →
+              Enter the Terminal →
             </Link>
             <Link href="/terminal/agent" className="lp-btn">
-              คุยกับ U-Bot
+              Talk to U-Bot
             </Link>
           </div>
           <div className="lp-tags">
@@ -178,8 +178,8 @@ export function Landing() {
         </div>
       </section>
 
-      <div className="lp-marquee" aria-label="ข้อมูลและเทคโนโลยีที่ใช้">
-        <p>ข้อมูลและเทคโนโลยีที่ใช้</p>
+      <div className="lp-marquee" aria-label="Data and technology we use">
+        <p>Data and technology we use</p>
         <div className="lp-marquee-track lp-logos">
           {[...BRANDS, ...BRANDS, ...BRANDS].map((b, i) => (
             <div key={i} className="lp-logo-tile" aria-hidden={i >= BRANDS.length}>
@@ -194,15 +194,15 @@ export function Landing() {
           <span className="lp-chip">
             <i /> THE PROBLEM
           </span>
-          <h2 className="lp-grad">รายย่อยรู้เป็นคนสุดท้าย</h2>
-          <p>เหรียญถูกปลดล็อกตามตารางที่ประกาศไว้ล่วงหน้า ข้อมูลมีอยู่จริง แต่ไม่เคยโผล่มาตอนที่คุณกำลังกดซื้อ</p>
+          <h2 className="lp-grad">Retail finds out last</h2>
+          <p>Tokens unlock on schedules published in advance. The data exists, but it never shows up at the moment you tap buy.</p>
         </Reveal>
         <div className="lp-stats">
           {[
-            { v: 97.4, f: (n: number) => `$${n.toFixed(1)}B`, l: "ปลดล็อกทั้งปี 2025", s: "Tokenomist" },
-            { v: 90, f: (n: number) => `${Math.round(n)}%`, l: "ของ unlock กดราคา", s: "Keyrock, 16,000+ events" },
-            { v: 30, f: (n: number) => `~${Math.round(n)} วัน`, l: "ราคาเริ่มถูกกดก่อน unlock", s: "Keyrock" },
-            { v: 92.6, f: (n: number) => `${n.toFixed(1)}M`, l: "ARB ปลดล็อก 16 ต.ค.", s: "Tokenomist" },
+            { v: 97.4, f: (n: number) => `$${n.toFixed(1)}B`, l: "unlocked in 2025", s: "Tokenomist" },
+            { v: 90, f: (n: number) => `${Math.round(n)}%`, l: "of unlocks push the price down", s: "Keyrock, 16,000+ events" },
+            { v: 30, f: (n: number) => `~${Math.round(n)} days`, l: "before an unlock, prices start to slide", s: "Keyrock" },
+            { v: 92.6, f: (n: number) => `${n.toFixed(1)}M`, l: "ARB unlocking Oct 16", s: "Tokenomist" },
           ].map((st, i) => (
             <Reveal key={st.l} delay={i * 80}>
               <Spotlight className="lp-stat">
@@ -219,10 +219,10 @@ export function Landing() {
           <div className="lp-mission">
             <h3>MISSION</h3>
             <p>
-              เราสร้าง <b>safety layer ของ agentic banking</b> ที่ทำงาน<b>ก่อนเงินขยับ</b> ไม่ทายราคา แต่ forecast <b>supply</b> ซึ่งเป็นตัวแปรเดียวที่รู้ล่วงหน้าได้จริง
-              สำหรับคนไทยอายุ 20 ปีขึ้นไป <b>ตั้งแต่มือใหม่จนถึงมือโปร</b>
+              We are building the <b>safety layer for agentic banking</b>: it works <b>before money moves</b>. It doesn&apos;t predict prices; it forecasts <b>supply</b>, the one market variable that is known in advance.
+              For anyone 20 and up, <b>from first-time buyers to pros</b>.
             </p>
-            <a href="#features">ดูว่าทำอะไรได้บ้าง →</a>
+            <a href="#features">See what it does →</a>
           </div>
         </Reveal>
       </section>
@@ -232,8 +232,8 @@ export function Landing() {
           <span className="lp-chip">
             <i /> WHAT IT DOES
           </span>
-          <h2 className="lp-grad">ฟีเจอร์หลัก</h2>
-          <p>จากคำถามหนึ่งข้อ ไปจนถึงการอนุมัติที่ตรวจสอบได้</p>
+          <h2 className="lp-grad">Features</h2>
+          <p>From one question to an approval anyone can verify</p>
         </Reveal>
         <div className="lp-features">
           {FEATURES.map((f, i) => (
@@ -242,7 +242,7 @@ export function Landing() {
                 <span className="lp-num">{f.n}</span>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
-                <Link href={f.href}>ลองใน demo →</Link>
+                <Link href={f.href}>Try it in the demo →</Link>
               </Spotlight>
             </Reveal>
           ))}
@@ -254,8 +254,8 @@ export function Landing() {
           <span className="lp-chip">
             <i /> LIVE DEMO
           </span>
-          <h2 className="lp-grad">ลองใช้งานจริง</h2>
-          <p>ทุกการ์ดเปิดหน้าที่ทำงานได้จริงใน demo นี้</p>
+          <h2 className="lp-grad">Try it live</h2>
+          <p>Every card opens a working page of this demo</p>
         </Reveal>
         <div className="lp-demos">
           {DEMOS.map((d, i) => (
@@ -285,8 +285,8 @@ export function Landing() {
           <span className="lp-chip">
             <i /> HOW IT WORKS
           </span>
-          <h2 className="lp-grad">Agent ทำงานอย่างไร</h2>
-          <p>ตัวเลขทุกตัวมาจาก tool และโค้ด · AI ทำหน้าที่วางแผนและอธิบาย · คุณเป็นคนตัดสินใจ</p>
+          <h2 className="lp-grad">How the agent works</h2>
+          <p>Every number comes from a tool or code · the AI plans and explains · you decide</p>
         </Reveal>
         <div className="lp-steps">
           {STEPS.map((s, i) => (
@@ -303,13 +303,13 @@ export function Landing() {
         <Reveal>
           <div className="lp-score">
             <div>
-              <h3>คะแนนความเสี่ยง (v0)</h3>
-              <p>เวลา × (0.35 ขนาด + 0.30 สภาพคล่อง + 0.35 ผู้รับ) + โบนัสกำไรนักลงทุน</p>
+              <h3>Risk score</h3>
+              <p>time × (0.35 size + 0.30 liquidity + 0.35 recipient) + investor-profit bonus</p>
             </div>
             <ul>
-              <li><i style={{ background: "var(--coral)" }} /> ทีม: กดราคาแรงที่สุด (เฉลี่ย −25%)</li>
-              <li><i style={{ background: "var(--amber)" }} /> นักลงทุน: มัก hedge / OTC</li>
-              <li><i style={{ background: "var(--teal)" }} /> กองทุน ecosystem: มักไม่กดราคา</li>
+              <li><i style={{ background: "var(--coral)" }} /> Team: hits the price hardest (−25% on average)</li>
+              <li><i style={{ background: "var(--amber)" }} /> Investors: often hedge or sell OTC</li>
+              <li><i style={{ background: "var(--teal)" }} /> Ecosystem funds: usually no price pressure</li>
             </ul>
           </div>
         </Reveal>
@@ -320,7 +320,7 @@ export function Landing() {
           <span className="lp-chip">
             <i /> FAQ
           </span>
-          <h2 className="lp-grad">คำถามที่พบบ่อย</h2>
+          <h2 className="lp-grad">FAQ</h2>
         </Reveal>
         <div className="lp-faq">
           {FAQ.map((f, i) => (
@@ -340,27 +340,27 @@ export function Landing() {
       <section className="lp-section lp-final">
         <Reveal className="lp-head">
           <h2>
-            พร้อม<span className="lp-grad">รู้ก่อน</span>แล้วหรือยัง?
+            Ready to <span className="lp-grad">know before</span>?
           </h2>
-          <p>เปิด Terminal แล้วถามเรื่องเหรียญแรกของคุณ</p>
+          <p>Open the Terminal and ask about your first token</p>
           <div className="lp-buttons" style={{ justifyContent: "center" }}>
             <Link href="/terminal" className="lp-btn lp-btn-primary">
-              เข้าสู่ Terminal →
+              Enter the Terminal →
             </Link>
             <Link href="/terminal/agent" className="lp-btn">
-              คุยกับ U-Bot
+              Talk to U-Bot
             </Link>
           </div>
         </Reveal>
         <footer className="lp-footer">
-          U-Guard · U-Hackathon 2026 · ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน ·{" "}
-          <Link href="/en" lang="en" style={{ color: "var(--teal-2)" }}>
-            English version
+          U-Guard · U-Hackathon 2026 · Decision support, not investment advice ·{" "}
+          <Link href="/en" style={{ color: "var(--teal-2)" }}>
+            Platform overview
           </Link>
         </footer>
       </section>
 
-      <a href="#home" className={`lp-top ${scrolled ? "lp-top-show" : ""}`} aria-label="กลับขึ้นบน" style={{ "--p": progress } as React.CSSProperties}>
+      <a href="#home" className={`lp-top ${scrolled ? "lp-top-show" : ""}`} aria-label="Back to top" style={{ "--p": progress } as React.CSSProperties}>
         ↑
       </a>
     </div>
