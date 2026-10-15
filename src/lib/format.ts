@@ -2,6 +2,7 @@
 
 export function compact(n: number, digits = 1): string {
   const abs = Math.abs(n);
+  if (abs === 0) return "0";
   if (abs >= 1e9) return `${(n / 1e9).toFixed(digits)}B`;
   if (abs >= 1e6) return `${(n / 1e6).toFixed(digits)}M`;
   if (abs >= 1e3) return `${(n / 1e3).toFixed(digits)}K`;

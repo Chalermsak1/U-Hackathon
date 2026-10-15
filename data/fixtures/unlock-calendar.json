@@ -1,0 +1,56 @@
+{
+  "source": "Market unlock events from public reports, for context next to the tokens U-Guard analyses in full.",
+  "events": [
+    {
+      "symbol": "ARB",
+      "date": "2026-10-16T13:00:00Z",
+      "summary": "92.65M ARB ปลดล็อกให้ทีมและนักลงทุน (~$16.5M)",
+      "sizeNote": "~1.56% ของ circulating",
+      "source": "Tokenomist",
+      "url": "https://tokenomist.ai/arbitrum"
+    },
+    {
+      "symbol": "CRO",
+      "date": "2026-10-17T00:00:00Z",
+      "summary": "1.17B CRO ปลดล็อก",
+      "sizeNote": "2.33% ของ circulating",
+      "source": "CoinMarketCap",
+      "url": "https://coinmarketcap.com/top-stories/6accdb226b2625336466bb1c/"
+    },
+    {
+      "symbol": "DBR",
+      "date": "2026-10-17T00:00:00Z",
+      "summary": "deBridge cliff unlock ใหญ่ที่สุดของสัปดาห์เมื่อเทียบกับ supply",
+      "sizeNote": "~10% ของ circulating",
+      "source": "Tokenomist Weekly Digest",
+      "url": "https://tokenomist.ai/research/weekly-unlock-digest-oct-12-18-2026-debridge-releases-10-of-cir-supply"
+    },
+    {
+      "symbol": "MON",
+      "date": "2026-11-15T00:00:00Z",
+      "dateApprox": true,
+      "summary": "Monad มี unlock ใหญ่เดือน พ.ย. ขณะที่ float ยังบาง",
+      "sizeNote": "หมุนเวียนเพียง ~11.8% ของ supply (ก.ย.)",
+      "source": "BSCNews อ้าง Tokenomist",
+      "url": "https://x.com/BSCNews/status/2099457787445313684"
+    },
+    {
+      "symbol": "ENA",
+      "date": "2026-10-05T00:00:00Z",
+      "past": true,
+      "summary": "Ethena ปลดล็อกเหรียญนักลงทุนที่เหลือทั้งหมดในวันเดียว (~1.4B ENA)",
+      "sizeNote": "เลื่อนมาเร็วกว่าตาราง",
+      "source": "Tokenomist Weekly Digest",
+      "url": "https://tokenomist.ai/research"
+    },
+    {
+      "symbol": "HYPE",
+      "date": "2026-10-06T00:00:00Z",
+      "past": true,
+      "summary": "Team unlock 3.75M HYPE (~$336.75M) ขาย OTC ให้สถาบันรายเดียว",
+      "sizeNote": "OTC จึงไม่เข้าตลาดโดยตรง",
+      "source": "Tokenomist Weekly Digest",
+      "url": "https://tokenomist.ai/research"
+    }
+  ]
+}

@@ -1,38 +1,45 @@
 # U-Guard
 
-**รู้ก่อน เงินจะขยับ** · *Know before your money moves.*
+**Know before your money moves.** (รู้ก่อน เงินจะขยับ)
 
-U-Guard คือ agent ใน U-Bot ที่เช็กความเสี่ยงจาก supply (token unlock / emission) ก่อนที่ผู้ใช้ U-topia จะซื้อหรือถือเหรียญ อธิบายเป็นภาษาไทย 3 บรรทัดพร้อมเสียง และผู้ใช้เป็นคนอนุมัติเองทุกครั้ง (บันทึกการอนุมัติบน Avalanche)
+U-Guard is an agent inside U-Bot that checks supply risk (token unlocks and emissions) before a U-topia user buys or holds a token. It explains the risk in three lines of Thai with voice, and the user approves every protective action themselves. Approvals are recorded on Avalanche.
 
-U-Hackathon 2026 · AI Track · Flow Summit Bangkok
+U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 
-> ข้อมูลประกอบการตัดสินใจ ไม่ใช่คำแนะนำการลงทุน
+> Decision support only. Not investment advice.
 
-## เอกสาร
+## Documents
 
-| ไฟล์ | เนื้อหา |
+| File | What it covers |
 |---|---|
-| [SPEC.md](SPEC.md) | **เริ่มอ่านที่นี่** ระบบทั้งหมด: features, architecture, workflows, agents, data model, API, สถานะ |
-| [PLAN.md](PLAN.md) | ปัญหาและหลักฐาน, U-topia, timeline, demo script, เกณฑ์ตัดสิน, forecast |
-| [UI-PLAN.md](UI-PLAN.md) | หน้าเว็บ, navigation, AI Gateway, auth + DB, หน้า loading, resource UI |
-| [ANALYSIS.md](ANALYSIS.md) | โมเดล AI / VLM, เทียบกับ Nansen, กลุ่มผู้ใช้, กฎหมาย, ช่องว่างของ U-topia, roadmap |
-| [UI-REVIEW.md](UI-REVIEW.md) | ผลตรวจ UI 3 ขนาดจอ, สิ่งที่แก้แล้ว, สิ่งที่ยังเหลือ |
-| [LOGS.md](LOGS.md) | บันทึกการพัฒนา (runtime log ของ agent ดูที่ `/logs`) |
+| [SPEC.md](SPEC.md) | **Start here.** The whole system: features, architecture, workflows, agents, data model, API, status (Thai) |
+| [AGENTIC-WORKFLOW.md](AGENTIC-WORKFLOW.md) | Agentic AI design v2: what is new, models per job, LangGraph or not, RAG types, live data, alerts, portfolio drift |
+| [PLAN.md](PLAN.md) | Problem and evidence, U-topia, timeline, demo script, judging criteria, forecast (Thai) |
+| [UI-PLAN.md](UI-PLAN.md) | Pages, navigation, AI gateway, auth and DB, loading page, UI resources (Thai) |
+| [ANALYSIS.md](ANALYSIS.md) | Models and VLMs, Nansen comparison, user segments, regulation, U-topia gaps, roadmap (Thai) |
+| [UI-REVIEW.md](UI-REVIEW.md) | UI test results, fixes, what to show to whom, logo slots |
+| [LOGS.md](LOGS.md) | Development log (the agent's runtime log is at `/logs`) |
 
-## สถานะ
+## Pages
 
-ใช้งานได้แล้ว: `/app` (แชต U-Bot, การ์ดความเสี่ยง, อนุมัติ → บันทึก Avalanche, Agent Trace, Live Unlock Ticker, เสียงเข้า/ออก, สรุปเป็น PDF) · `/logs` · `/report`
-ยังไม่ได้ทดสอบกับ key จริง (Claude, ElevenLabs, Fuji, Tokenomist) · ยังไม่มี `/dashboard`, landing เต็ม และ auth (ดู [LOGS.md](LOGS.md))
+| Path | Purpose |
+|---|---|
+| `/` | Landing: loader, pill nav, hero with orbit, problem numbers, features, demo cards, how it works, FAQ |
+| `/terminal` | Nansen-style web app in our own style: overview, AI agent, token screener (25 tokens), token page with a 6-month supply forecast, unlock calendar, portfolio, alerts |
+| `/app` | U-topia phone screen with U-Bot chat: risk cards, approval with an Avalanche receipt, agent trace, voice in and out, PDF summary |
+| `/logs` · `/report` | Agent run log, and an A4 report to save as PDF |
 
-## เริ่มใช้งาน
+Not yet tested with real keys (Claude, ElevenLabs, Fuji, Tokenomist). Alert rules live in memory. No sign-in yet. See [LOGS.md](LOGS.md).
+
+## Run it
 
 ```bash
 npm install
-cp .env.example .env   # ทุก key ไม่บังคับ ถ้าไม่ใส่จะใช้ข้อมูลตัวอย่าง/โหมดสำรอง
-npm run dev            # http://localhost:3000/app
-npm run snapshot -- ARB WLD AVAX   # ดึงข้อมูลจริงจาก Tokenomist (ต้องมี TOKENOMIST_API_KEY)
+cp .env.example .env   # every key is optional; without keys the app uses sample data and fallbacks
+npm run dev            # http://localhost:3000 (landing) · /terminal · /app
+npm run snapshot -- ARB WLD AVAX   # pull real data from Tokenomist (needs TOKENOMIST_API_KEY)
 ```
 
 ## Stack
 
-Next.js 15 · TypeScript · Claude (Anthropic SDK) · Tokenomist API · ElevenLabs · Avalanche (viem) · Supabase (แผน)
+Next.js 15 · TypeScript · Claude (Anthropic SDK) · Tokenomist API · ElevenLabs · Avalanche (viem) · Supabase (planned)

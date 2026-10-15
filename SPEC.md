@@ -3,6 +3,7 @@
 > อัปเดต 15 ต.ค. 2026 · ทีม U-Hackathon 2026 (AI Track)
 > เอกสารนี้คือ **แหล่งความจริงหลัก (source of truth)** ใครมาต่องาน (คนหรือ AI session ใหม่) อ่านไฟล์นี้ก่อน
 > รายละเอียดเสริม: [PLAN.md](PLAN.md) (ปัญหา, หลักฐาน, timeline, pitch) · [UI-PLAN.md](UI-PLAN.md) (หน้าเว็บ, nav, auth, loader)
+> **Agent design v2 (English):** [AGENTIC-WORKFLOW.md](AGENTIC-WORKFLOW.md): models per job, LangGraph decision, RAG types, live data, alerts, portfolio drift. It supersedes §7 where they differ.
 
 ---
 
@@ -270,6 +271,8 @@ U-Bot → `POST /api/ubot/webhook {userId, text, signature}` → ตรวจล
 
 ## 7. Agents: การออกแบบ (ปัจจุบันและต่อยอด)
 
+> v2 design (news, drift, alerts, freshness, RAG): see [AGENTIC-WORKFLOW.md](AGENTIC-WORKFLOW.md).
+
 ### 7.1 ตอนนี้: Single agent + deterministic tools (ทำไปแล้ว)
 - **Orchestrator:** Claude Opus 5.5 ใช้ manual tool loop (`src/lib/agent/claude.ts`) สูงสุด 8 turn เรียก tool พร้อมกันได้ และส่ง thinking blocks กลับไปตามเดิมไม่แก้ไข
 - **Tools (7):** `get_portfolio` · `lookup_token` · `get_unlock_schedule` · `get_allocations` · `get_fundraising` · `assess_unlock_risk` · `propose_protection` ทุกตัวใช้ `strict: true` และตรวจ input ด้วย zod
@@ -376,7 +379,12 @@ chat_messages(id uuid pk, user_id uuid, role text, text text, created_at timesta
 | POST | `/api/scan` | `{}` | `AgentResult` (และ push ไปที่ U-Bot inbox) |
 | POST | `/api/protect` | `{proposalId: string, decision: 'approve'\|'decline'}` | `ProtectionReceipt {mode, chain, txHash, explorerUrl, memo, note?}` |
 | POST | `/api/voice` | `{text: string}` | `audio/mpeg` หรือ `204` (ให้ client ใช้เสียงของเบราว์เซอร์) |
-| GET | `/api/forecast` | `?symbol=ARB&months=6` | `{symbol, baseline, series:[{month, insider, other}], monthlyPctOfMcap, dilutionPct, source, asOf}` |
+| GET | `/api/token/{symbol}` | — | `{tracked, token{marketCap, circulating, maxSupply, floatPct, priceUsd}, card, forecast{months[{month,total,byRecipient}], totalNew, dilutionPct, pctOfMcapPerMonth}, allocations, fundraising, totalRaised, source}` (แทน `/api/forecast` เดิม) |
+| GET | `/api/screener` | — | `{rows:[{symbol, marketCap, fdv, floatPct, totalRaised, pctInvestorsUnlocked, latestRound, leadInvestors, analysed}]}` |
+| GET | `/api/calendar` | — | `{analysed: RiskCard[], market:[{symbol, date, amount, note, sourceUrl}]}` |
+| GET | `/api/portfolio/risk` | — | `{rows:[Holding & {weightPct, card, dilutionPct}], totalThb, atRiskThb, topHolding}` |
+| GET/POST/DELETE | `/api/alerts` | POST `{symbol, minLevel: medium\|high, daysBefore: 1–30, channel: ubot\|telegram\|line}` · DELETE `?id=` | `AlertRule[]` (เก็บในหน่วยความจำ) |
+| POST | `/api/stt` | `multipart audio` | `{text}` หรือ `204` (ให้ใช้ระบบรู้จำเสียงของเบราว์เซอร์) |
 | GET | `/api/ticker` | — | `[{symbol, date, amount, valueUsd, recipients, level}]` (Tokenomist upcoming) |
 | GET | `/api/portfolio` | — | `Holding[]` |
 | POST | `/api/ubot/webhook` | `{userId, text, signature?}` | `AgentResult` |
@@ -409,29 +417,28 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
   1. `/` hook: "พรุ่งนี้ (16 ต.ค.) ARB ปลดล็อก 92.6M และวันนี้ U-topia เปิดตัวแอป"
   2. `/app` "ซื้อ ARB 5,000 บาท" → การ์ด + เสียง → อนุมัติ → tx บน Fuji
   3. ถาม AVAX → "เสี่ยงต่ำ เพราะเป็นกองทุน ecosystem" → ชี้ Agent Trace
-  4. `/dashboard` forecast
+  4. `/terminal/tokens/ARB`: supply 6 เดือนแยกผู้รับ + ปฏิทินปลดล็อก (หน้าจอใหญ่สำหรับ projector)
   5. ปิด: "safety layer ของ U-Bot บน Visa Intelligent Commerce"
 - **การเก็บคะแนนแต่ละเกณฑ์:** Execution (สด + fallback + วิดีโอ) · Practicality (ปัญหาจริงในปี 2026, เหรียญ EVM, ทำตามกฎ ก.ล.ต., ตรงกับ VIC/U-Bot) · UX (การ์ดเดียว ภาษาไทย มีเสียง) · Innovation (คะแนนแบบมีเงื่อนไข, 3 sponsor, บันทึกการอนุมัติ on-chain) · U-Bot (เป็น skill/sub-agent ของ orchestrator)
 
 ## 14. สถานะและขั้นต่อไป
 
-**ทำแล้ว**
+**ทำแล้ว** (branch `feat/app-ui`, รายละเอียดใน LOGS.md)
 - โครง Next.js + deps (next 15.5, react 19, @anthropic-ai/sdk 0.134, zod 4, viem 2, typescript 5.9)
-- `src/lib/*` + `src/lib/agent/{tools,prompt,claude,offline,index}.ts` · API routes ทั้งหมด · `/app`, `/logs`, `/report` · STT/TTS · run logs ✅ typecheck และ build ผ่าน (branch `feat/app-ui`, รายละเอียดใน LOGS.md)
-- fixtures ARB (ข้อมูลจริง 15 ต.ค.) / WLD / AVAX / USDC · snapshot script · brand assets · เอกสาร 6 ไฟล์
+- Agent: `src/lib/agent/{tools,prompt,claude,offline,index}.ts` · Claude / offline / auto · Agent Trace
+- `/app`: แชต U-Bot, การ์ด, อนุมัติ → Fuji (simulated เมื่อไม่มี key), STT/TTS, PDF · `/logs` · `/report`
+- `/terminal` (แบบ Nansen ในสไตล์ของเรา): ภาพรวม, AI Agent, screener, หน้าเหรียญ + forecast 6 เดือน, ปฏิทินปลดล็อก, พอร์ต + dilution, การแจ้งเตือน, sidebar ⌘B / ค้นหา ⌘K
+- Landing `/` (โครงหน้าจาก areazeroai.com เท่านั้น เนื้อหาของเราเอง): loader, nav pill + scrollspy, hero + orbit, FAQ, ลูกเล่นใน `fx.tsx`
+- ข้อมูล: ARB จริง (15 ต.ค.), WLD/AVAX ตัวอย่าง, screener 25 เหรียญจริง, ปฏิทินตลาดพร้อมแหล่งที่มา
+- ✅ typecheck ผ่าน · ทดสอบในเบราว์เซอร์ที่ 1440px และ 375px
 
 **ขั้นต่อไป (เรียงตามลำดับ ประมาณเวลา)**
-1. `npm run typecheck` แล้วแก้ error (15 นาที)
-2. เปลี่ยน fixtures เป็น ARB/WLD/AVAX/USDC ตามข้อมูลจริงใน PLAN §14 (30 นาที)
-3. `offline.ts` + `agent/index.ts` (router) (30 นาที)
-4. API routes: agent, protect, voice, portfolio, ticker (45 นาที)
-5. `/app` UI: หน้าจอโทรศัพท์ + แชต + RiskCard + ProposalCard + Agent Trace + avatar (2 ชั่วโมง)
-6. ทดสอบ end-to-end (offline → Claude → ใส่ key จริง) (30 นาที)
-7. `/dashboard` + `/api/forecast` (1 ชั่วโมง)
-8. Landing ขั้นต่ำ + Loader + Nav ticker (1.5 ชั่วโมง)
-9. Supabase auth + DB + โหมด demo (1–1.5 ชั่วโมง ต้องได้รับอนุญาตสร้าง project ก่อน)
-10. ใส่ key จริง: Tokenomist (snapshot), ElevenLabs, Fuji wallet + faucet (30 นาที)
-11. ซ้อม 3 รอบ + อัดวิดีโอสำรอง (1 ชั่วโมง)
+1. ใส่ key จริง: Anthropic, Tokenomist (snapshot), ElevenLabs, Fuji wallet + faucet แล้วทดสอบ end-to-end (45 นาที)
+2. หยุด dev แล้วรัน `npm run build` ยืนยัน production build (10 นาที)
+3. การแจ้งเตือน: เก็บลง DB และส่งผ่าน U-Bot inbox จริง (30 นาที)
+4. Supabase auth + DB + โหมด demo (1–1.5 ชั่วโมง ต้องได้รับอนุญาตสร้าง project ก่อน)
+5. (ถ้ามีเวลา) tool ข่าวล่าสุดด้วย Claude web search (30 นาที)
+6. ซ้อม 3 รอบกับ projector จริง + อัดวิดีโอสำรอง (1 ชั่วโมง)
 
 **ข้อควรรู้ด้าน environment:** sandbox เขียน `~/.npm` ไม่ได้ ให้ใช้ `npm_config_cache="$TMPDIR/npm-cache" npm install …`
 

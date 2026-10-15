@@ -10,6 +10,7 @@
 import { config } from "./config";
 import { compact, daysBetween, pct, thaiDate, untilText, usd } from "./format";
 import { getQuote } from "./market";
+import { classifyRecipient } from "./recipient";
 import { findToken, getFundraising, getUnlockEvents, type AllocationUnlock, type FundraisingData } from "./tokenomist";
 import type { DataSource, RecipientClass, RecipientSlice, RiskCard, RiskLevel } from "./types";
 
@@ -30,17 +31,6 @@ export const RECIPIENT_TH: Record<RecipientClass, string> = {
   reserve: "เงินสำรองโครงการ",
   ecosystem: "กองทุนพัฒนา ecosystem",
 };
-
-export function classifyRecipient(allocationName: string, standardName: string): RecipientClass {
-  const name = allocationName.toLowerCase();
-  if (/ecosystem|grant|liquidity|development fund|incentive/.test(name)) return "ecosystem";
-  const std = standardName.toLowerCase();
-  if (std.includes("team") || std.includes("founder")) return "team";
-  if (std.includes("investor")) return "investor";
-  if (std.includes("community")) return "community";
-  if (std.includes("reserve")) return "reserve";
-  return "other";
-}
 
 function sizeScore(pctCirc: number): number {
   if (pctCirc < 0.1) return 0.05; // nano
