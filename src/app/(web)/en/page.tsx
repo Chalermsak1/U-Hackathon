@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BRANDS, BrandLogo } from "@/components/logos";
 import { RiskCardView } from "@/components/chat/RiskCardView";
 import { Icon, type IconName } from "@/components/Icon";
 import { Loader } from "@/components/site/Loader";
@@ -243,7 +244,11 @@ export default async function Home() {
                   </div>
                 </div>
               ))}
-              <p className="source-line">Sponsors in the stack: Tokenomist (unlock data) · ElevenLabs (voice) · Avalanche (on-chain approval receipts).</p>
+              <div className="logo-row" aria-label="Data and technology">
+                {BRANDS.map((b) => (
+                  <BrandLogo key={b.id} brand={b} />
+                ))}
+              </div>
             </div>
           </div>
         </section>

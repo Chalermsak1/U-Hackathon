@@ -31,6 +31,10 @@ const PAGES = [
   { name: "th-agent", path: "/terminal/agent" },
   { name: "th-token", path: "/terminal/tokens/ARB" },
   { name: "th-portfolio", path: "/terminal/portfolio" },
+  { name: "th-trade", path: "/terminal/trade" },
+  { name: "th-invest", path: "/terminal/invest" },
+  { name: "th-alerts", path: "/terminal/alerts" },
+  { name: "th-unlocks", path: "/terminal/unlocks" },
   // English app
   { name: "landing", path: "/en" },
   { name: "login", path: "/login" },

@@ -125,7 +125,7 @@ export default function InvestPage() {
 
       <div className="inv-grid">
         <Spotlight className="panel">
-          <div className="panel-head"><h2>1. แบบประเมินความเสี่ยง</h2><span className="total">{answers.filter(Boolean).length}/5</span></div>
+          <div className="panel-head"><h2>แบบประเมินความเสี่ยง</h2><span className="total">{answers.filter(Boolean).length}/5</span></div>
           {!defs && <p className="note">กำลังโหลด…</p>}
           <div className="inv-quiz">
             {defs?.questions.map((q, i) => (
@@ -148,7 +148,7 @@ export default function InvestPage() {
             ))}
           </div>
 
-          <div className="panel-head" style={{ marginTop: 16 }}><h2>2. เงินที่จะลงทุน</h2></div>
+          <div className="panel-head" style={{ marginTop: 16 }}><h2>เงินที่จะลงทุน</h2></div>
           <div className="tp-form">
             <div className="tp-row">
               <label>
@@ -278,7 +278,7 @@ export default function InvestPage() {
               <h4 className="tp-sub" style={{ marginTop: 14 }}>DCA 3 งวดข้างหน้า</h4>
               {plan.dca.map((d) => (
                 <div key={d.date} className="event-row" style={{ gridTemplateColumns: "88px 1fr auto" }}>
-                  <span className="mono">{thaiDate(d.date)}</span>
+                  <span>{thaiDate(d.date)}</span>
                   <span>
                     {d.notes.length === 0 ? <span className="note">ปกติ</span> : d.notes.map((n) => <small key={n} className="inv-dca-note">{n}</small>)}
                   </span>

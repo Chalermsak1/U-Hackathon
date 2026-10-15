@@ -161,6 +161,29 @@ Built in a separate session without seeing `feat/app-ui`.
   - How the AI phrases things: drafts plans and scenarios that the user approves, or direct buy/sell advice (a licensing risk with the Thai SEC).
   - Whether the Thai terminal becomes the single app.
 
+### Oct 16, ~01:50 · Trade, Invest, alerts that fire, logos
+- **Trade:** `/terminal/trade` plus a trade ticket on every token page, laid out like Nansen's Token God Mode.
+  - The user picks the token, side and amount.
+  - U-Bot drafts the plan: size against a risk budget, stop-loss, and what-if rows.
+  - U-Guard checks unlock, balance, size, concentration and chasing.
+  - Approval places a paper order recorded on Avalanche (simulated).
+- **Invest:** `/terminal/invest`.
+  - A five-question risk profile picks a model portfolio, which the user can adjust.
+  - U-Guard checks the crypto part and flags DCA dates that land on a big unlock.
+  - Sample data, clearly labelled.
+- **Alerts actually fire:**
+  - "Check now" runs each rule deterministically with a 12h cooldown.
+  - A watcher (`src/instrumentation.ts`) checks every rule every `WATCH_INTERVAL_MIN` minutes; `POST /api/watch` is there for crons.
+  - Hits land in the U-Bot inbox, a bell in the terminal header.
+- **Phone mock-up:** at the user's request, `/app` left the terminal and landing menus; it stays reachable by URL for the stage.
+- **Data labels:**
+  - The ARB allocation and funding fixtures are real tokenomist.ai copies, now marked snapshot.
+  - The header and token page label each section from its own source.
+- **"Data and technology" strip:** logos only.
+  - The U-topia mark was redrawn as SVG from the logo the user sent, without the background.
+  - Tokenomist stays a wordmark until we have its logo file.
+- **Checked:** typecheck ✅ · build ✅ · eval 28/28 ✅ · responsive 80/80 ✅ · trade/invest/alert/watcher flows in the browser and API.
+
 ---
 
 ## Adding the next entry

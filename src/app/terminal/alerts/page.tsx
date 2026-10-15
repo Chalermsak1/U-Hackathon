@@ -33,6 +33,8 @@ export default function AlertsPage() {
   const [checking, setChecking] = useState(false);
   const [outcomes, setOutcomes] = useState<Outcome[] | null>(null);
   const inbox = useInbox();
+  const [watch, setWatch] = useState<{ enabled: boolean; intervalMin: number; lastRun: string | null; lastFired: number } | null>(null);
+  const [adding, setAdding] = useState(false);
 
   const load = () =>
     fetch("/api/alerts")
@@ -44,7 +46,37 @@ export default function AlertsPage() {
       .catch(() => undefined);
   useEffect(() => {
     load();
+    const loadWatch = () =>
+      fetch("/api/watch")
+        .then((r) => (r.ok ? r.json() : null))
+        .then(setWatch)
+        .catch(() => undefined);
+    loadWatch();
+    const t = setInterval(loadWatch, 30_000);
+    return () => clearInterval(t);
   }, []);
+
+  // One tap: a rule for every token in the wallet (stablecoins skipped), then check right away.
+  async function watchWallet() {
+    setAdding(true);
+    setError(null);
+    try {
+      const b = await fetch("/api/portfolio").then((r) => r.json());
+      const have = new Set(rules.map((r) => r.symbol));
+      const syms: string[] = (b.holdings ?? []).map((h: { symbol: string }) => h.symbol).filter((x: string) => !["USDC", "USDT", "DAI"].includes(x) && !have.has(x));
+      for (const symbol of syms) {
+        await fetch("/api/alerts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ symbol, minLevel: "medium", daysBefore: 7, channel: "ubot" }),
+        });
+      }
+      await load();
+      await checkNow();
+    } finally {
+      setAdding(false);
+    }
+  }
 
   async function add(e: React.FormEvent) {
     e.preventDefault();
@@ -88,6 +120,22 @@ export default function AlertsPage() {
       </div>
       <div className="grid-2">
         <Spotlight className="panel">
+          <div className="watch-bar">
+            <span className={`watch-dot ${watch?.enabled ? "on" : ""}`} aria-hidden="true" />
+            <span>
+              {watch?.enabled
+                ? `U-Bot เฝ้าดูอัตโนมัติทุก ${watch.intervalMin} นาที`
+                : "การเฝ้าดูอัตโนมัติปิดอยู่ (ตั้ง WATCH_INTERVAL_MIN หรือใช้ cron)"}
+              {watch?.lastRun && (
+                <small className="note">
+                  {" "}· ตรวจล่าสุด {new Date(watch.lastRun).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} · เตือน {watch.lastFired}
+                </small>
+              )}
+            </span>
+            <button className="btn btn-sm" onClick={watchWallet} disabled={adding || checking}>
+              {adding ? "กำลังตั้ง…" : "เฝ้าดูทุกเหรียญในพอร์ต"}
+            </button>
+          </div>
           <div className="panel-head"><h2>สร้างกฎแจ้งเตือน</h2></div>
           <form className="form-row" onSubmit={add}>
             <label>
@@ -152,7 +200,7 @@ export default function AlertsPage() {
         </Spotlight>
         <Spotlight className="panel">
           <div className="panel-head"><h2>การตัดสินใจที่บันทึกไว้</h2><span className="total">อนุมัติ / ไม่อนุมัติ</span></div>
-          {decisions.length === 0 && <p className="empty">ยังไม่มี ลองอนุมัติข้อเสนอในหน้า AI Agent หรือแอปมือถือ</p>}
+          {decisions.length === 0 && <p className="empty">ยังไม่มี ลองอนุมัติข้อเสนอในหน้า AI Agent, เทรด หรือ ลงทุน</p>}
           {decisions.map((d) => (
             <div key={d.id} className="event-row" style={{ gridTemplateColumns: "1fr auto" }}>
               <span>

@@ -747,3 +747,25 @@ body:has(.report-page) { background: #fff; color: #10151f; color-scheme: light; 
 .inv-pct { width: 64px; text-align: right; background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: 8px; color: var(--text); font: inherit; font-size: 16px; padding: 3px 6px; }
 .inv-pct:disabled { opacity: 0.7; }
 .inv-dca-note { display: block; color: var(--amber); font-size: 12px; line-height: 1.45; }
+.watch-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; margin-bottom: 14px; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); }
+.watch-bar > span:nth-child(2) { flex: 1; min-width: 180px; }
+.watch-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--slate); flex: none; }
+.watch-dot.on { background: var(--teal); box-shadow: 0 0 0 4px color-mix(in srgb, var(--teal) 25%, transparent); }
+
+/* ─── Brand logos (data and technology strip): logos only ─── */
+.brand-logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text); line-height: 1; white-space: nowrap; }
+.brand-svg { display: inline-flex; align-items: center; }
+.brand-svg svg { height: 100%; width: auto; display: block; }
+.brand-word { font-family: var(--font); font-weight: 700; font-size: 19px; letter-spacing: -0.4px; }
+.brand-tokenomist { letter-spacing: -0.2px; }
+.brand-utopia { letter-spacing: 0.2px; }
+.lp-marquee-track.lp-logos { align-items: center; gap: 14px; }
+.lp-logo-tile {
+  display: flex; align-items: center; justify-content: center; height: 64px; padding: 0 26px; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text-2);
+}
+.lp-marquee-track .lp-logo-tile span { padding: 0; border: 0; background: none; border-radius: 0; color: inherit; font-weight: inherit; }
+.lp-logo-tile .brand-logo { color: var(--text-2); opacity: 0.9; }
+.lp-logo-tile:hover .brand-logo { color: var(--text); opacity: 1; }
+.logo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 26px; margin-top: 8px; color: var(--text-2); }
+.logo-row .brand-logo { color: inherit; }

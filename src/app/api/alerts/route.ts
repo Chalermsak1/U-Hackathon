@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getSession } from "@/lib/auth/session";
 import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkOrigin, checkPost, jsonError, tooMany } from "@/lib/http";
+import { thb } from "@/lib/format";
 import { store } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -21,9 +22,18 @@ export async function GET() {
   if (!session) return jsonError(401, "Sign in to see your alerts.");
   return Response.json({
     rules: store.alerts.filter((r) => r.ownerId === session.sub),
-    decisions: [...store.proposals.values()]
-      .filter((r) => r.ownerId === session.sub && r.proposal.status !== "pending")
-      .map((r) => ({ ...r.proposal, receipt: r.receipt ?? null })),
+    decisions: [
+      ...[...store.proposals.values()]
+        .filter((r) => r.ownerId === session.sub && r.proposal.status !== "pending")
+        .map((r) => ({ ...r.proposal, receipt: r.receipt ?? null })),
+      // Trade and invest plans the user decided on, in the same list.
+      ...[...store.tradePlans.values()]
+        .filter((r) => r.ownerId === session.sub && r.plan.status !== "pending")
+        .map(({ plan }) => ({ id: plan.id, symbol: plan.symbol, title: `แผน${plan.side === "buy" ? "ซื้อ" : "ขาย"} ${thb(plan.amountThb)} (จำลอง)`, status: plan.status })),
+      ...[...store.investPlans.values()]
+        .filter((r) => r.ownerId === session.sub && r.plan.status !== "pending")
+        .map(({ plan }) => ({ id: plan.id, symbol: "พอร์ต", title: `แผนลงทุนระดับ${plan.profileTh} · DCA ${thb(plan.monthlyThb)}/เดือน`, status: plan.status })),
+    ],
   });
 }
 

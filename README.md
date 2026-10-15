@@ -30,8 +30,10 @@ Two front-ends share one backend (agent, tools, data, auth).
 | Path | Purpose |
 |---|---|
 | `/` | Landing: loader, pill nav, GuardWatch hero, problem numbers, features, demo cards, how it works, FAQ |
-| `/app` | U-topia phone screen with U-Bot chat: risk cards, approval with an Avalanche receipt, agent trace, voice in and out, PDF summary |
-| `/terminal` | Nansen-style web app in our own style: overview, AI agent, token screener (25 tokens), token page with a 6-month supply forecast, unlock calendar, portfolio, alerts |
+| `/terminal` | Nansen-style web app in our own style: overview, U-Bot AI agent, token screener (25 tokens), token page with a 6-month supply forecast and a trade ticket, unlock calendar, portfolio, alerts with a U-Bot inbox |
+| `/terminal/trade` | Trade: the user picks token, side and amount; U-Bot drafts the plan (size, stop-loss, what-if rows), U-Guard checks it, the user approves a paper order |
+| `/terminal/invest` | Invest: five-question risk profile → adjustable model portfolio (sample data) → U-Guard checks the crypto part and DCA dates → approve |
+| `/app` | Stage demo only (not in the menus): U-topia phone screen with U-Bot chat |
 | `/report` | An A4 report to save as PDF |
 
 **English app** (linked from the landing's `EN` button and the terminal sidebar).
@@ -76,6 +78,8 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 - **RAG** for fresh facts (unlocks, news ranked by relevance + recency with citations, odds, pulse); **CAG** for static knowledge (`data/knowledge/faq.json`, preloaded into the cached system prompt).
 - **Guardrails**: input guard (seed phrases/private keys blocked, PII redacted, injection flagged), rate limits, Origin checks, output compliance check (no buy/sell/hold advice or price predictions in EN/TH; every number must come from a tool result; one rewrite, then a checked template).
 - **U-Bot reaches U-Guard three ways**, all through the same `runAgent`: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`).
+- **Watcher**: alert rules are checked on a timer (`WATCH_INTERVAL_MIN`, default 10) in `npm start`; on serverless hosts a cron calls `POST /api/watch` with `Bearer $CRON_SECRET`. Hits go to the U-Bot inbox (bell in the terminal header), with a 12-hour cooldown.
+- **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key).
 - **Run log**: every agent run is appended to `logs/YYYY-MM-DD.jsonl` (redacted text, tool trace, timings); `LOG_SILENT=true` turns it off.
 
 ## Checks
@@ -83,7 +87,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 ```bash
 npm run typecheck
 npm run eval          # 28 golden cases (EN + TH), offline and deterministic
-npm run responsive    # iPhone SE/15 Pro/15 Pro Max/iPad/desktop screenshots + layout audit, both apps
+npm run responsive    # 16 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
 npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)
 ```
 

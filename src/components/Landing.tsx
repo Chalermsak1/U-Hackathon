@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { BRANDS, BrandLogo } from "./logos";
 import { useEffect, useState } from "react";
 import { CountUp, Reveal, Spotlight } from "./fx";
 import { GuardMark } from "./GuardMark";
@@ -17,7 +18,6 @@ const SECTIONS = [
 
 const ROTATING = ["เงินจะขยับ", "เหรียญจะปลดล็อก", "ตลาดจะเทขาย"];
 
-const PARTNERS = ["Tokenomist", "ElevenLabs", "Avalanche", "U-topia · U-Bot", "Visa Intelligent Commerce", "Claude"];
 
 const FEATURES = [
   { n: "01", title: "เช็กก่อนซื้อ", desc: "พิมพ์ \"ซื้อ ARB 5,000 บาท\" แล้ว agent ดึงตาราง unlock, ผู้รับ และรอบระดมทุน มาคำนวณความเสี่ยงด้วยโค้ดก่อนเงินขยับ", href: "/terminal/agent" },
@@ -180,11 +180,11 @@ export function Landing() {
 
       <div className="lp-marquee" aria-label="ข้อมูลและเทคโนโลยีที่ใช้">
         <p>ข้อมูลและเทคโนโลยีที่ใช้</p>
-        <div className="lp-marquee-track">
-          {[...PARTNERS, ...PARTNERS, ...PARTNERS].map((p, i) => (
-            <span key={i} aria-hidden={i >= PARTNERS.length}>
-              {p}
-            </span>
+        <div className="lp-marquee-track lp-logos">
+          {[...BRANDS, ...BRANDS, ...BRANDS].map((b, i) => (
+            <div key={i} className="lp-logo-tile" aria-hidden={i >= BRANDS.length}>
+              <BrandLogo brand={b} />
+            </div>
           ))}
         </div>
       </div>

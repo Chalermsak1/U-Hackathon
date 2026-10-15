@@ -548,6 +548,10 @@ Streamable HTTP (stateless, JSON) ด้วย `@modelcontextprotocol/sdk` · `A
 | GET/POST/DELETE | `/api/alerts` | กฎแจ้งเตือนของผู้ใช้แต่ละคน |
 | GET/POST | `/api/stt` | ElevenLabs Scribe (204 เมื่อไม่มี key) |
 | POST | `/api/ubot/webhook` · GET `/api/ubot/inbox` | U-Bot (Bearer `UBOT_API_KEY`) |
+| POST | `/api/alerts/run` | ตรวจกฎแจ้งเตือนของผู้ใช้ตอนนี้ ส่งข้อที่เข้าเงื่อนไขเข้า U-Bot |
+| GET · POST | `/api/watch` | สถานะ watcher · cron เรียกรอบตรวจ (Bearer `CRON_SECRET`) |
+| GET · POST | `/api/trade` · `/api/trade/plan` · `/api/trade/decide` | คำสั่งจำลองและสถานะ · ร่างแผนเทรด · อนุมัติ/ไม่ทำ |
+| GET · POST | `/api/invest` · `/api/invest/plan` · `/api/invest/decide` | คำถาม + พอร์ตตัวอย่าง · ร่างแผนลงทุน · อนุมัติ/ไม่ใช้ |
 
 ### 17.10 ENV ใหม่
 `AGENT_PROVIDER` · `LLM_BASE_URL` · `LLM_API_KEY` · `LLM_MODEL` · `LLM_LABEL` · `AUTH_SECRET` · `DEMO_LOGIN` · `DATA_DIR` · `MCP_API_KEY` · `NEWS_SOURCE` · `ODDS_SOURCE` · `DEMO_NOW` (ดู `.env.example`)
