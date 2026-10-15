@@ -184,6 +184,18 @@ Built in a separate session without seeing `feat/app-ui`.
   - Tokenomist stays a wordmark until we have its logo file.
 - **Checked:** typecheck ✅ · build ✅ · eval 28/28 ✅ · responsive 80/80 ✅ · trade/invest/alert/watcher flows in the browser and API.
 
+### Oct 16, ~02:10 · U-topia logo, remaining-work plan
+- U-topia logo: the team's own file is used unchanged; only the white area outside the circle is transparent (`public/brand/utopia-logo.png`). The redrawn SVG was removed at the user's request.
+- Confirmed with `git ls-remote`: `main` is still `1f787ba` (scaffold), and all work is on `feat/merge-app-ui-agentic`. Pushing to `main` needs the PR to be merged.
+- Wrote [TODO.md](TODO.md) (Thai). It covers:
+  - everything not done, missing, or still waiting on keys and people, with priorities
+  - a step-by-step plan and new stage script for demo day
+  - known issues
+- Gaps found while writing it:
+  - The SPEC §13 demo script still uses `/app`.
+  - On Vercel, cron calls `GET`, but `/api/watch` runs a pass only on `POST`.
+  - MCP has no trade, invest or alert tools yet.
+
 ---
 
 ## Adding the next entry
