@@ -1,0 +1,4526 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:50Z",
+    "credit": {
+      "used": 41,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "page": 1,
+    "totalPages": 1,
+    "pageSize": 214,
+    "total": 214,
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": [
+    {
+      "startDate": "2026-10-01T00:00:00Z",
+      "endDate": "2026-10-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1094000,
+      "referencePrice": 10.94,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1094000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 554631200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-02T00:00:00Z",
+      "endDate": "2026-10-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1099000,
+      "referencePrice": 10.99,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1099000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 554731200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-03T00:00:00Z",
+      "endDate": "2026-10-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1080000,
+      "referencePrice": 10.8,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1080000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 554831200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-04T00:00:00Z",
+      "endDate": "2026-10-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1112000,
+      "referencePrice": 11.12,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1112000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 554931200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-05T00:00:00Z",
+      "endDate": "2026-10-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1110000,
+      "referencePrice": 11.1,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1110000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555031200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-06T00:00:00Z",
+      "endDate": "2026-10-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1113000,
+      "referencePrice": 11.13,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1113000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555131200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-07T00:00:00Z",
+      "endDate": "2026-10-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1161000,
+      "referencePrice": 11.61,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1161000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555231200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-08T00:00:00Z",
+      "endDate": "2026-10-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1112000,
+      "referencePrice": 11.12,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1112000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555331200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-09T00:00:00Z",
+      "endDate": "2026-10-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555431200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-10T00:00:00Z",
+      "endDate": "2026-10-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1033000,
+      "referencePrice": 10.33,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1033000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555531200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-11T00:00:00Z",
+      "endDate": "2026-10-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1035000,
+      "referencePrice": 10.35,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1035000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555631200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-12T00:00:00Z",
+      "endDate": "2026-10-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1096000,
+      "referencePrice": 10.96,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1096000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555731200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-13T00:00:00Z",
+      "endDate": "2026-10-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1014000,
+      "referencePrice": 10.14,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1014000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555831200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-14T00:00:00Z",
+      "endDate": "2026-10-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1022000.0000000001,
+      "referencePrice": 10.22,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1022000.0000000001,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 555931200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-15T00:00:00Z",
+      "endDate": "2026-10-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1002000,
+      "referencePrice": 10.02,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1002000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556031200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-16T00:00:00Z",
+      "endDate": "2026-10-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556131200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-17T00:00:00Z",
+      "endDate": "2026-10-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556231200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-18T00:00:00Z",
+      "endDate": "2026-10-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556331200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-19T00:00:00Z",
+      "endDate": "2026-10-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556431200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-20T00:00:00Z",
+      "endDate": "2026-10-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556531200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-21T00:00:00Z",
+      "endDate": "2026-10-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556631200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-22T00:00:00Z",
+      "endDate": "2026-10-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556731200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-23T00:00:00Z",
+      "endDate": "2026-10-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556831200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-24T00:00:00Z",
+      "endDate": "2026-10-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 556931200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-25T00:00:00Z",
+      "endDate": "2026-10-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557031200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-26T00:00:00Z",
+      "endDate": "2026-10-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557131200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-27T00:00:00Z",
+      "endDate": "2026-10-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557231200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-28T00:00:00Z",
+      "endDate": "2026-10-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557331200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-29T00:00:00Z",
+      "endDate": "2026-10-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557431200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-30T00:00:00Z",
+      "endDate": "2026-10-31T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557531200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-10-31T00:00:00Z",
+      "endDate": "2026-11-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557631200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-01T00:00:00Z",
+      "endDate": "2026-11-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557731200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-02T00:00:00Z",
+      "endDate": "2026-11-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557831200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-03T00:00:00Z",
+      "endDate": "2026-11-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 557931200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-04T00:00:00Z",
+      "endDate": "2026-11-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 558031200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-05T00:00:00Z",
+      "endDate": "2026-11-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 558131200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-06T00:00:00Z",
+      "endDate": "2026-11-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 558231200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-07T00:00:00Z",
+      "endDate": "2026-11-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 558331200,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-08T00:00:00Z",
+      "endDate": "2026-11-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 1766800,
+      "unlockValue": 17791676,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Foundation",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 1666800,
+          "unlockValue": 16784676,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-09T00:00:00Z",
+      "endDate": "2026-11-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-10T00:00:00Z",
+      "endDate": "2026-11-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-11T00:00:00Z",
+      "endDate": "2026-11-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-12T00:00:00Z",
+      "endDate": "2026-11-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-13T00:00:00Z",
+      "endDate": "2026-11-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-14T00:00:00Z",
+      "endDate": "2026-11-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-15T00:00:00Z",
+      "endDate": "2026-11-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-16T00:00:00Z",
+      "endDate": "2026-11-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-17T00:00:00Z",
+      "endDate": "2026-11-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 560998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-18T00:00:00Z",
+      "endDate": "2026-11-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-19T00:00:00Z",
+      "endDate": "2026-11-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-20T00:00:00Z",
+      "endDate": "2026-11-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-21T00:00:00Z",
+      "endDate": "2026-11-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-22T00:00:00Z",
+      "endDate": "2026-11-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-23T00:00:00Z",
+      "endDate": "2026-11-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-24T00:00:00Z",
+      "endDate": "2026-11-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-25T00:00:00Z",
+      "endDate": "2026-11-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-26T00:00:00Z",
+      "endDate": "2026-11-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-27T00:00:00Z",
+      "endDate": "2026-11-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 561998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-28T00:00:00Z",
+      "endDate": "2026-11-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-29T00:00:00Z",
+      "endDate": "2026-11-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-11-30T00:00:00Z",
+      "endDate": "2026-12-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-01T00:00:00Z",
+      "endDate": "2026-12-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-02T00:00:00Z",
+      "endDate": "2026-12-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-03T00:00:00Z",
+      "endDate": "2026-12-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-04T00:00:00Z",
+      "endDate": "2026-12-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-05T00:00:00Z",
+      "endDate": "2026-12-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-06T00:00:00Z",
+      "endDate": "2026-12-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-07T00:00:00Z",
+      "endDate": "2026-12-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 562998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-08T00:00:00Z",
+      "endDate": "2026-12-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-09T00:00:00Z",
+      "endDate": "2026-12-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-10T00:00:00Z",
+      "endDate": "2026-12-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-11T00:00:00Z",
+      "endDate": "2026-12-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-12T00:00:00Z",
+      "endDate": "2026-12-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-13T00:00:00Z",
+      "endDate": "2026-12-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-14T00:00:00Z",
+      "endDate": "2026-12-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-15T00:00:00Z",
+      "endDate": "2026-12-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-16T00:00:00Z",
+      "endDate": "2026-12-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-17T00:00:00Z",
+      "endDate": "2026-12-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 563998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-18T00:00:00Z",
+      "endDate": "2026-12-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-19T00:00:00Z",
+      "endDate": "2026-12-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-20T00:00:00Z",
+      "endDate": "2026-12-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-21T00:00:00Z",
+      "endDate": "2026-12-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-22T00:00:00Z",
+      "endDate": "2026-12-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-23T00:00:00Z",
+      "endDate": "2026-12-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-24T00:00:00Z",
+      "endDate": "2026-12-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-25T00:00:00Z",
+      "endDate": "2026-12-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-26T00:00:00Z",
+      "endDate": "2026-12-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-27T00:00:00Z",
+      "endDate": "2026-12-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 564998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-28T00:00:00Z",
+      "endDate": "2026-12-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-29T00:00:00Z",
+      "endDate": "2026-12-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-30T00:00:00Z",
+      "endDate": "2026-12-31T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2026-12-31T00:00:00Z",
+      "endDate": "2027-01-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-01T00:00:00Z",
+      "endDate": "2027-01-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-02T00:00:00Z",
+      "endDate": "2027-01-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-03T00:00:00Z",
+      "endDate": "2027-01-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-04T00:00:00Z",
+      "endDate": "2027-01-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-05T00:00:00Z",
+      "endDate": "2027-01-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-06T00:00:00Z",
+      "endDate": "2027-01-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 565998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-07T00:00:00Z",
+      "endDate": "2027-01-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-08T00:00:00Z",
+      "endDate": "2027-01-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-09T00:00:00Z",
+      "endDate": "2027-01-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-10T00:00:00Z",
+      "endDate": "2027-01-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-11T00:00:00Z",
+      "endDate": "2027-01-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-12T00:00:00Z",
+      "endDate": "2027-01-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-13T00:00:00Z",
+      "endDate": "2027-01-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-14T00:00:00Z",
+      "endDate": "2027-01-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-15T00:00:00Z",
+      "endDate": "2027-01-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-16T00:00:00Z",
+      "endDate": "2027-01-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 566998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-17T00:00:00Z",
+      "endDate": "2027-01-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-18T00:00:00Z",
+      "endDate": "2027-01-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-19T00:00:00Z",
+      "endDate": "2027-01-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-20T00:00:00Z",
+      "endDate": "2027-01-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-21T00:00:00Z",
+      "endDate": "2027-01-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-22T00:00:00Z",
+      "endDate": "2027-01-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-23T00:00:00Z",
+      "endDate": "2027-01-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-24T00:00:00Z",
+      "endDate": "2027-01-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-25T00:00:00Z",
+      "endDate": "2027-01-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-26T00:00:00Z",
+      "endDate": "2027-01-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 567998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-27T00:00:00Z",
+      "endDate": "2027-01-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568098000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-28T00:00:00Z",
+      "endDate": "2027-01-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568198000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-29T00:00:00Z",
+      "endDate": "2027-01-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568298000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-30T00:00:00Z",
+      "endDate": "2027-01-31T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568398000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-01-31T00:00:00Z",
+      "endDate": "2027-02-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568498000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-01T00:00:00Z",
+      "endDate": "2027-02-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568598000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-02T00:00:00Z",
+      "endDate": "2027-02-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568698000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-03T00:00:00Z",
+      "endDate": "2027-02-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568798000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-04T00:00:00Z",
+      "endDate": "2027-02-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568898000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-05T00:00:00Z",
+      "endDate": "2027-02-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 568998000,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-06T00:00:00Z",
+      "endDate": "2027-02-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 1766800,
+      "unlockValue": 17791676,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Foundation",
+          "standardAllocationName": "Reserve",
+          "unlockAmount": 1666800,
+          "unlockValue": 16784676,
+          "committedClaim": null
+        },
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 570764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-07T00:00:00Z",
+      "endDate": "2027-02-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 570864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-08T00:00:00Z",
+      "endDate": "2027-02-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 570964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-09T00:00:00Z",
+      "endDate": "2027-02-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-10T00:00:00Z",
+      "endDate": "2027-02-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-11T00:00:00Z",
+      "endDate": "2027-02-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-12T00:00:00Z",
+      "endDate": "2027-02-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-13T00:00:00Z",
+      "endDate": "2027-02-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-14T00:00:00Z",
+      "endDate": "2027-02-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-15T00:00:00Z",
+      "endDate": "2027-02-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-16T00:00:00Z",
+      "endDate": "2027-02-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-17T00:00:00Z",
+      "endDate": "2027-02-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-18T00:00:00Z",
+      "endDate": "2027-02-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 571964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-19T00:00:00Z",
+      "endDate": "2027-02-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-20T00:00:00Z",
+      "endDate": "2027-02-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-21T00:00:00Z",
+      "endDate": "2027-02-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-22T00:00:00Z",
+      "endDate": "2027-02-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-23T00:00:00Z",
+      "endDate": "2027-02-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-24T00:00:00Z",
+      "endDate": "2027-02-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-25T00:00:00Z",
+      "endDate": "2027-02-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-26T00:00:00Z",
+      "endDate": "2027-02-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-27T00:00:00Z",
+      "endDate": "2027-02-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-02-28T00:00:00Z",
+      "endDate": "2027-03-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 572964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-01T00:00:00Z",
+      "endDate": "2027-03-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-02T00:00:00Z",
+      "endDate": "2027-03-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-03T00:00:00Z",
+      "endDate": "2027-03-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-04T00:00:00Z",
+      "endDate": "2027-03-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-05T00:00:00Z",
+      "endDate": "2027-03-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-06T00:00:00Z",
+      "endDate": "2027-03-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-07T00:00:00Z",
+      "endDate": "2027-03-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-08T00:00:00Z",
+      "endDate": "2027-03-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-09T00:00:00Z",
+      "endDate": "2027-03-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-10T00:00:00Z",
+      "endDate": "2027-03-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 573964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-11T00:00:00Z",
+      "endDate": "2027-03-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-12T00:00:00Z",
+      "endDate": "2027-03-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-13T00:00:00Z",
+      "endDate": "2027-03-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-14T00:00:00Z",
+      "endDate": "2027-03-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-15T00:00:00Z",
+      "endDate": "2027-03-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-16T00:00:00Z",
+      "endDate": "2027-03-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-17T00:00:00Z",
+      "endDate": "2027-03-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-18T00:00:00Z",
+      "endDate": "2027-03-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-19T00:00:00Z",
+      "endDate": "2027-03-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-20T00:00:00Z",
+      "endDate": "2027-03-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 574964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-21T00:00:00Z",
+      "endDate": "2027-03-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-22T00:00:00Z",
+      "endDate": "2027-03-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-23T00:00:00Z",
+      "endDate": "2027-03-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-24T00:00:00Z",
+      "endDate": "2027-03-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-25T00:00:00Z",
+      "endDate": "2027-03-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-26T00:00:00Z",
+      "endDate": "2027-03-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-27T00:00:00Z",
+      "endDate": "2027-03-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-28T00:00:00Z",
+      "endDate": "2027-03-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-29T00:00:00Z",
+      "endDate": "2027-03-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-30T00:00:00Z",
+      "endDate": "2027-03-31T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 575964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-03-31T00:00:00Z",
+      "endDate": "2027-04-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-01T00:00:00Z",
+      "endDate": "2027-04-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-02T00:00:00Z",
+      "endDate": "2027-04-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-03T00:00:00Z",
+      "endDate": "2027-04-04T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-04T00:00:00Z",
+      "endDate": "2027-04-05T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-05T00:00:00Z",
+      "endDate": "2027-04-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-06T00:00:00Z",
+      "endDate": "2027-04-07T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-07T00:00:00Z",
+      "endDate": "2027-04-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-08T00:00:00Z",
+      "endDate": "2027-04-09T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-09T00:00:00Z",
+      "endDate": "2027-04-10T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 576964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-10T00:00:00Z",
+      "endDate": "2027-04-11T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-11T00:00:00Z",
+      "endDate": "2027-04-12T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-12T00:00:00Z",
+      "endDate": "2027-04-13T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-13T00:00:00Z",
+      "endDate": "2027-04-14T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-14T00:00:00Z",
+      "endDate": "2027-04-15T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-15T00:00:00Z",
+      "endDate": "2027-04-16T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-16T00:00:00Z",
+      "endDate": "2027-04-17T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-17T00:00:00Z",
+      "endDate": "2027-04-18T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-18T00:00:00Z",
+      "endDate": "2027-04-19T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-19T00:00:00Z",
+      "endDate": "2027-04-20T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 577964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-20T00:00:00Z",
+      "endDate": "2027-04-21T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-21T00:00:00Z",
+      "endDate": "2027-04-22T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-22T00:00:00Z",
+      "endDate": "2027-04-23T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578264800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-23T00:00:00Z",
+      "endDate": "2027-04-24T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578364800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-24T00:00:00Z",
+      "endDate": "2027-04-25T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578464800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-25T00:00:00Z",
+      "endDate": "2027-04-26T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578564800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-26T00:00:00Z",
+      "endDate": "2027-04-27T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578664800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-27T00:00:00Z",
+      "endDate": "2027-04-28T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578764800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-28T00:00:00Z",
+      "endDate": "2027-04-29T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578864800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-29T00:00:00Z",
+      "endDate": "2027-04-30T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 578964800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-04-30T00:00:00Z",
+      "endDate": "2027-05-01T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 579064800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-05-01T00:00:00Z",
+      "endDate": "2027-05-02T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 579164800,
+      "committedClaim": null
+    },
+    {
+      "startDate": "2027-05-02T00:00:00Z",
+      "endDate": "2027-05-03T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "unlockAmount": 100000,
+      "unlockValue": 1007000,
+      "referencePrice": 10.07,
+      "allocations": [
+        {
+          "allocationName": "Staking Reward",
+          "standardAllocationName": "Community",
+          "unlockAmount": 100000,
+          "unlockValue": 1007000,
+          "committedClaim": null
+        }
+      ],
+      "totalCumulativeUnlockedAmount": 579264800,
+      "committedClaim": null
+    }
+  ]
+}

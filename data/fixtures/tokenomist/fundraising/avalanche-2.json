@@ -1,0 +1,285 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:50Z",
+    "credit": {
+      "used": 41,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "tokenId": "avalanche-2",
+    "tokenName": "Avalanche",
+    "tokenSymbol": "AVAX",
+    "listedMethod": "INTERNAL",
+    "totalAmountRaised": 498000000,
+    "unlockedInvestor": 1156739040,
+    "investorReleasedPercentage": 100,
+    "fundingRounds": [
+      {
+        "fundingRound": "Strategic Round",
+        "fundingDate": "2026-03-19T00:00:00Z",
+        "raiseType": null,
+        "amountRaised": null,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://x.com/animocabrands/status/2034604583805231122?s=20",
+          "https://x.com/avax/status/2034602242846916953?s=20"
+        ],
+        "investors": [
+          {
+            "investorId": "animoca-brands",
+            "investorName": "Animoca Brands",
+            "isLeadInvestor": true
+          }
+        ],
+        "numberOfInvestors": 1
+      },
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2024-12-12T00:00:00Z",
+        "raiseType": "Token",
+        "amountRaised": 250000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://www.avax.network/blog/avalanche-momentum-accelerates-as-galaxy-dragonfly-and-parafi-lead-250m-investment-in-support-of-avalanche9000-upgrade"
+        ],
+        "investors": [
+          {
+            "investorId": "dragonfly-capital",
+            "investorName": "Dragonfly Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "galaxy-ventures",
+            "investorName": "Galaxy Ventures",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "parafi-capital",
+            "investorName": "ParaFi Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "big-brain-holdings",
+            "investorName": "Big Brain Holdings",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "cadenza-ventures",
+            "investorName": "Cadenza Ventures",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "chorus-one",
+            "investorName": "Chorus One",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "cmcc-global",
+            "investorName": "CMCC Global",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "fintech-collective",
+            "investorName": "FinTech Collective",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "lvna-capital",
+            "investorName": "Lvna Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "morgan-creek-capital",
+            "investorName": "Morgan Creek Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "republic-capital",
+            "investorName": "Republic Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "scb-limited",
+            "investorName": "SCB Limited",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "skybridge",
+            "investorName": "SkyBridge Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "superscrypt",
+            "investorName": "Superscrypt",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "tane-labs",
+            "investorName": "Tane Labs",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "hivemind",
+            "investorName": "Hivemind",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "hypersphere",
+            "investorName": "Hypersphere Ventures",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 17
+      },
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2021-06-01T00:00:00Z",
+        "raiseType": "Token",
+        "amountRaised": 230000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://medium.com/avalancheavax/polychain-capital-three-arrows-capital-lead-230m-investment-in-avalanche-ecosystem-1f0622fdf03a",
+          "https://www.bloomberg.com/news/articles/2021-09-16/avalanche-raises-230-million-from-sale-of-surging-crypto-token"
+        ],
+        "investors": [
+          {
+            "investorId": "polychain-capital",
+            "investorName": "Polychain Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "three-arrows-capital",
+            "investorName": "Three Arrows Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "cms-holdings",
+            "investorName": "CMS Holdings",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "collab-currency",
+            "investorName": "Collab+Currency",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "dragonfly-capital",
+            "investorName": "Dragonfly Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "lvna-capital",
+            "investorName": "Lvna Capital",
+            "isLeadInvestor": false
+          },
+          {
+            "investorId": "republic",
+            "investorName": "Republic",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 7
+      },
+      {
+        "fundingRound": "Private Round",
+        "fundingDate": "2020-06-24T00:00:00Z",
+        "raiseType": "Token",
+        "amountRaised": 12000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://medium.com/avalancheavax/avalanche-raises-12m-in-private-token-sale-led-by-initialized-galaxy-bitmain-ngc-and-dragonfly-96e5ae2cf6e"
+        ],
+        "investors": [
+          {
+            "investorId": "bitmain",
+            "investorName": "Bitmain",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "dragonfly-capital",
+            "investorName": "Dragonfly Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "galaxy-ventures",
+            "investorName": "Galaxy Ventures",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "initialized-capital",
+            "investorName": "Initialized Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "ngc-ventures",
+            "investorName": "NGC Ventures",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "iosg-ventures",
+            "investorName": "IOSG Ventures",
+            "isLeadInvestor": false
+          }
+        ],
+        "numberOfInvestors": 6
+      },
+      {
+        "fundingRound": "Seed Round",
+        "fundingDate": "2019-02-01T00:00:00Z",
+        "raiseType": null,
+        "amountRaised": 6000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "sourceURLList": [
+          "https://medium.com/avalancheavax/avalanche-ava-monthly-update-may-2019-7a78657217f4"
+        ],
+        "investors": [
+          {
+            "investorId": "andreessen-horowitz",
+            "investorName": "Andreessen Horowitz (a16z)",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "balaji-srinivasan",
+            "investorName": "Balaji Srinivasan",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "initialized-capital",
+            "investorName": "Initialized Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "meta-stable-capital",
+            "investorName": "Metastable Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "naval-ravikant",
+            "investorName": "Naval Ravikant",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "polychain-capital",
+            "investorName": "Polychain Capital",
+            "isLeadInvestor": true
+          },
+          {
+            "investorId": "ramtin-naimi",
+            "investorName": "Ramtin Naimi",
+            "isLeadInvestor": true
+          }
+        ],
+        "numberOfInvestors": 7
+      }
+    ]
+  }
+}

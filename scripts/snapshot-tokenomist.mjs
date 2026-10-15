@@ -74,6 +74,18 @@ for (const token of picked) {
       console.warn(`  skipped ${rel}: ${err.message}`);
     }
   }
+  // Continuous (linear) releases live in daily emission, not in unlock events (e.g. WLD).
+  // Paginated: collect every page into one file.
+  try {
+    const first = await get(`/v5/daily-emission/${token.id}?start=${day(-14)}&end=${day(200)}&pageSize=100&page=1`);
+    const rows = [...(first.data ?? [])];
+    for (let page = 2; page <= (first.metadata?.totalPages ?? 1); page++) {
+      rows.push(...((await get(`/v5/daily-emission/${token.id}?start=${day(-14)}&end=${day(200)}&pageSize=100&page=${page}`)).data ?? []));
+    }
+    await save(`daily-emission/${token.id}.json`, { ...first, data: rows, metadata: { ...first.metadata, page: 1, totalPages: 1, pageSize: rows.length } });
+  } catch (err) {
+    console.warn(`  skipped daily-emission/${token.id}.json: ${err.message}`);
+  }
 }
 console.log(
   "\nDone. Check one unlock-events file: if linear unlocks use different field names than `linearUnlocks.linearAmount`, map them in src/lib/tokenomist.ts.\nAlso add the tickers to data/fixtures/market.json and portfolio.json.",

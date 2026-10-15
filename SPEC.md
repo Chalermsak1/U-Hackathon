@@ -413,6 +413,8 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
 - ทุกคำตอบเป็นข้อมูล ไม่ใช่คำแนะนำการลงทุน มีแหล่งข้อมูลและวันที่ และติดป้ายข้อมูลตัวอย่าง
 
 ## 13. Demo & Judging (สรุป)
+> **Current stage script: [DEMO.md](DEMO.md)** (16 Oct: ARB unlock tonight, U-Bot stand-in over MCP, approve from the bell). The flow below is the earlier draft.
+
 - **Flow บนเวที (3 นาที):**
   1. `/` hook: "วันนี้ (16 ต.ค.) ARB ปลดล็อก 92.6M ให้ทีมและนักลงทุน และวันนี้ U-topia เปิดตัวแอป"
   2. `/app` "ซื้อ ARB 5,000 บาท" → การ์ด + เสียง → อนุมัติ → tx บน Fuji

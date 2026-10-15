@@ -4,12 +4,13 @@
 > สิ่งที่ทำแล้วดู [STATUS.md](STATUS.md) · ประวัติการทำงานดู [LOGS.md](LOGS.md)
 > ระดับความด่วน: 🔴 ต้องทำก่อน demo · 🟠 ควรทำถ้ามีเวลา · ⚪ หลัง hackathon
 > ผู้รับผิดชอบ: **คุณ** (เจ้าของ repo/ทีม) · **Claude** · **mentor/sponsor**
+> **Demo day:** step-by-step plan in [DEMO-DAY-PLAN.md](DEMO-DAY-PLAN.md) · stage script in [DEMO.md](DEMO.md)
 
 ---
 
 ## 0. สรุป 1 นาที
 
-1. **งานทั้งหมดอยู่ที่ branch `feat/merge-app-ui-agentic`** (commit `b5a4007`) · `main` ยังเป็นโครงเริ่มต้น (`1f787ba`) → **ต้องกด merge PR** ไม่งั้นคนที่ clone จะไม่เห็นอะไรเลย
+1. ✅ **Done:** PR #1 was merged into `main` (16 Oct 02:00). Demo prep continues on `feat/demo-script-mcp-standin`.
 2. **ยังไม่มี key จริงสักตัว:** Claude, ElevenLabs, Fuji wallet ยังเป็นตัวสำรอง/จำลอง · Tokenomist มี key แล้วแต่เครือข่ายของ session บล็อก
 3. **ยังไม่ได้ขึ้น host:** Vercel connector มีสิทธิ์แค่อ่าน
 4. **บท demo บนเวทีใน SPEC §13 ยังเป็นแบบเก่า** (ใช้ `/app` กรอบโทรศัพท์) ต้องเขียนใหม่ให้มีหน้าเทรด/ลงทุน/แจ้งเตือน
@@ -21,9 +22,9 @@
 
 | # | ต้องการ | ใช้ทำอะไร | ถ้าไม่มี ตอนนี้เป็นอย่างไร | ใคร | ด่วน |
 |---|---|---|---|---|---|
-| 1 | **Merge PR เข้า `main`** ([ลิงก์](https://github.com/nathirad/U-Hackathon/pull/new/feat/merge-app-ui-agentic)) | ให้ทุกคนดึงโค้ดล่าสุดได้ | `main` ว่าง · ระบบสิทธิ์ของ Claude บล็อกการ push เข้า `main` | คุณ | 🔴 |
+| 1 | **Merge PR เข้า `main`** ([ลิงก์](https://github.com/nathirad/U-Hackathon/pull/new/feat/merge-app-ui-agentic)) | ให้ทุกคนดึงโค้ดล่าสุดได้ | `main` ว่าง · ระบบสิทธิ์ของ Claude บล็อกการ push เข้า `main` | คุณ | 🔴 | ✅ merged 16 Oct
 | 2 | `ANTHROPIC_API_KEY` | ให้ U-Bot ตอบด้วย Claude จริง | ตอบด้วย rules engine (ตอบได้ แต่ภาษาแข็งและตอบนอกแบบไม่ได้) | คุณ | 🔴 |
-| 3 | Tokenomist snapshot | ข้อมูล unlock จริงของ ARB/WLD/AVAX | ARB = คัดลอกจากเว็บ 15 ต.ค. · WLD/AVAX = ข้อมูลตัวอย่าง · key มีแล้ว แต่ session นี้เรียก `api.tokenomist.ai` ไม่ได้ | คุณ: รัน `npm run snapshot -- ARB WLD AVAX` บนเครื่อง หรือเพิ่ม `api.tokenomist.ai` ใน Allowed domains ของ environment | 🔴 |
+| 3 | Tokenomist snapshot | ข้อมูล unlock จริงของ ARB/WLD/AVAX | ARB = คัดลอกจากเว็บ 15 ต.ค. · WLD/AVAX = ข้อมูลตัวอย่าง · key มีแล้ว แต่ session นี้เรียก `api.tokenomist.ai` ไม่ได้ | คุณ: รัน `npm run snapshot -- ARB WLD AVAX` บนเครื่อง หรือเพิ่ม `api.tokenomist.ai` ใน Allowed domains ของ environment | 🔴 | ✅ done 16 Oct 02:45 via the API, incl. daily emission (WLD/AVAX continuous releases)
 | 4 | `ELEVENLABS_API_KEY` + `ELEVENLABS_VOICE_ID` (เสียงไทย) | เสียงอ่าน + พูดถาม (STT) | ใช้เสียงของเบราว์เซอร์แทน · ยังไม่เคยทดสอบไมค์จริง | คุณ | 🔴 |
 | 5 | `DEMO_PRIVATE_KEY` (Fuji testnet เท่านั้น) + AVAX จาก faucet | หลักฐานการอนุมัติบน Avalanche จริง | หลักฐานเป็น "จำลอง" กรรมการกดดู tx ไม่ได้ | คุณ | 🔴 |
 | 6 | `AUTH_SECRET`, `MCP_API_KEY`, `UBOT_API_KEY`, `CRON_SECRET` | ค่าลับสำหรับ production | `npm start` ไม่ขึ้นถ้าไม่มี `AUTH_SECRET` · webhook/MCP ปิดใน production ถ้าไม่มี key | คุณ (สุ่มเองได้ด้วย `openssl rand -base64 32`) | 🔴 |
@@ -50,9 +51,9 @@
 |---|---|---|---|---|
 | 1 | Merge PR | คุณ | 2 นาที | ดูข้อ 1.1 |
 | 2 | ใส่ key ใน `.env` บนเครื่องที่จะ demo | คุณ | 10 นาที | ห้าม commit `.env` · `DEMO_PRIVATE_KEY` ต้องเป็นกระเป๋า testnet ใหม่เท่านั้น |
-| 3 | Tokenomist snapshot | คุณ | 15 นาที | `npm run snapshot -- ARB WLD AVAX` → ตรวจเวลา ARB (ตอนนี้ 13:00 UTC = 20:00 น.) → commit `data/fixtures/tokenomist/` |
+| 3 | Tokenomist snapshot | คุณ | 15 นาที | `npm run snapshot -- ARB WLD AVAX` → ตรวจเวลา ARB (ตอนนี้ 13:00 UTC = 20:00 น.) → commit `data/fixtures/tokenomist/` | ✅ done
 | 4 | ทดสอบ end-to-end ด้วย key จริง | คุณ + Claude | 45 นาที | Claude ตอบไทย · เสียงไทย ElevenLabs · ไมค์ STT · tx บน Fuji · ทุกหน้าใน STATUS.md "หน้าแอปทั้งหมด" |
-| 5 | **เขียนบท demo ใหม่** (SPEC §13) | Claude | 20 นาที | ร่างด้านล่าง (ข้อ 2.1) |
+| 5 | **เขียนบท demo ใหม่** (SPEC §13) | Claude | 20 นาที | ร่างด้านล่าง (ข้อ 2.1) | ✅ see [DEMO.md](DEMO.md)
 | 6 | เลือกที่รัน | คุณ | – | **แนะนำ: laptop** `npm run build && AUTH_SECRET=… npm start` เพราะ watcher ทำงานได้ และข้อมูลในหน่วยความจำอยู่ครบตลอด demo · ถ้าใช้ Vercel ต้องทำข้อ 3.4 ก่อน |
 | 7 | ซ้อม 3 รอบกับ projector จริง | ทีม | 1 ชม. | เช็กจอ 1280/1920 px, ขนาดตัวอักษร, เสียง, ไมค์ |
 | 8 | อัดวิดีโอสำรอง | ทีม | 20 นาที | เผื่อเน็ต/เครื่องมีปัญหาบนเวที |
@@ -132,7 +133,7 @@
 ### 3.6 ข้อมูล
 | งาน | สถานะตอนนี้ | ด่วน |
 |---|---|---|
-| Tokenomist จริง: ARB/WLD/AVAX | ARB snapshot 15 ต.ค. · WLD/AVAX ตัวอย่าง · หลัง snapshot ต้อง map ช่อง linear unlock ของ WLD และแก้วันที่ AVAX (SPEC §17.6) | 🔴 |
+| Tokenomist จริง: ARB/WLD/AVAX | ARB snapshot 15 ต.ค. · WLD/AVAX ตัวอย่าง · หลัง snapshot ต้อง map ช่อง linear unlock ของ WLD และแก้วันที่ AVAX (SPEC §17.6) | 🔴 | ✅ real data; WLD/AVAX linear releases come from daily emission
 | ราคา/ข่าว/odds สด | โค้ดรองรับแล้ว (`MARKET_SOURCE`, `NEWS_SOURCE`, `ODDS_SOURCE=live`) แต่ยังไม่ได้ทดสอบ | 🟠 |
 | "ณ HH:MM" ทุกตัวเลข + ป้ายข้อมูลเก่า | มีป้าย จริง/ตัวอย่าง + วันที่ แต่ยังไม่ครบทุกตัวเลข | 🟠 |
 | คะแนนความเสี่ยง v0.2 ยังไม่ backtest | – | ⚪ |
@@ -155,7 +156,7 @@
 ### 3.9 เอกสาร
 | งาน | สถานะตอนนี้ | ด่วน |
 |---|---|---|
-| SPEC §13 บท demo | ยังเป็นแบบเก่า (ใช้ `/app`) → แทนด้วยข้อ 2.1 | 🔴 |
+| SPEC §13 บท demo | ยังเป็นแบบเก่า (ใช้ `/app`) → แทนด้วยข้อ 2.1 | 🔴 | ✅ replaced by [DEMO.md](DEMO.md)
 | UI-REVIEW รอบ 3 (หน้าอังกฤษ + หน้าใหม่) · ANALYSIS ตารางช่องว่าง · AGENTIC-WORKFLOW §10 คอลัมน์สถานะ | ยังไม่ได้อัปเดต | 🟠 |
 | คู่มือ deploy (laptop / Vercel) | มีใน README บางส่วน | 🟠 |
 

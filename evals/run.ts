@@ -20,7 +20,8 @@ async function main() {
   const { checkReply } = require("../src/lib/agent/compliance") as typeof import("../src/lib/agent/compliance");
   const { guardInput } = require("../src/lib/guard/input") as typeof import("../src/lib/guard/input");
   const { matchFaq } = require("../src/lib/knowledge") as typeof import("../src/lib/knowledge");
-  const { handleMcp } = require("../src/lib/mcp") as typeof import("../src/lib/mcp");
+  const { handleMcp, mcpCaller } = require("../src/lib/mcp") as typeof import("../src/lib/mcp");
+  const { store } = require("../src/lib/store") as typeof import("../src/lib/store");
 
   const DEMO = Date.parse(process.env.DEMO_NOW!);
   const DAY_BEFORE = DEMO - 86_400_000;
@@ -215,6 +216,45 @@ async function main() {
         const text = res?.result?.content?.[0]?.text ?? "";
         const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 11 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
+      },
+    },
+    {
+      name: "MCP: a caller without the key cannot act for a user",
+      run: () => {
+        const req = new Request("http://localhost/api/mcp", { headers: { "x-uguard-user": "demo-user", "x-uguard-locale": "th" } });
+        const untrusted = mcpCaller(req, false, "mcp:anon");
+        const trusted = mcpCaller(req, true, "mcp:anon");
+        const bad = mcpCaller(new Request("http://localhost/api/mcp", { headers: { "x-uguard-user": "a b<script>" } }), true);
+        return untrusted.userId === undefined && trusted.userId === "demo-user" && trusted.locale === "th" && bad.userId === undefined
+          ? true
+          : JSON.stringify({ untrusted, trusted, bad });
+      },
+    },
+    {
+      name: "MCP: U-Bot acting for a user → proposal owned by them, delivered to their inbox",
+      run: async () => {
+        const user = "eval-mcp-user";
+        const res = await (
+          await handleMcp(
+            new Request("http://localhost/api/mcp", {
+              method: "POST",
+              headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+              body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "propose_protection", arguments: { symbol: "ARB", action: "pause_buying" } } }),
+            }),
+            { userId: user, locale: "th" },
+          )
+        ).json();
+        const out = JSON.parse(res?.result?.content?.[0]?.text ?? "{}");
+        const record = out.proposal_id ? store.proposals.get(out.proposal_id) : undefined;
+        const inbox = store.inbox.get(user) ?? [];
+        const msg = inbox.at(-1)?.result;
+        const ok =
+          out.created === true &&
+          record?.ownerId === user &&
+          inbox.length === 1 &&
+          msg?.proposals[0]?.id === out.proposal_id &&
+          /[฀-๿]/.test(msg?.reply ?? "");
+        return ok ? true : JSON.stringify({ out, owner: record?.ownerId, inbox: inbox.length, reply: msg?.reply?.slice(0, 120) });
       },
     },
   ];

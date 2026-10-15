@@ -135,10 +135,17 @@ export default async function MethodPage() {
           </p>
           <pre className="code">{`POST /api/mcp   (Streamable HTTP, JSON-RPC)
 Authorization: Bearer $MCP_API_KEY
+X-UGuard-User: <the U-topia user U-Bot is serving>   (optional)
+X-UGuard-Locale: th | en                             (optional)
 
 {"jsonrpc":"2.0","id":1,"method":"tools/call",
  "params":{"name":"assess_unlock_risk",
            "arguments":{"symbol":"ARB","trade_amount_thb":5000}}}`}</pre>
+          <p>
+            A caller holding the key may act for one of its users. A proposal it creates then belongs to that user and lands in their U-Bot inbox,
+            where they approve or decline it. Without the key the header is ignored. Once U-topia shares its spec, a delegated user token replaces the
+            header. Try it locally with <code>npm run ubot</code>, a stand-in MCP client that plays U-Bot.
+          </p>
 
           <h2>Compliance</h2>
           <p>

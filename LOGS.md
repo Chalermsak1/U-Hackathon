@@ -196,6 +196,17 @@ Built in a separate session without seeing `feat/app-ui`.
   - On Vercel, cron calls `GET`, but `/api/watch` runs a pass only on `POST`.
   - MCP has no trade, invest or alert tools yet.
 
+### Oct 16, ~02:40–03:00 · Demo prep: plan, real Tokenomist data, U-Bot over MCP (branch `feat/demo-script-mcp-standin`)
+- **Backup:** the uncommitted v2 work from the old `feat/app-ui` base (freshness labels, news search, portfolio drift, quiet hours, cron GET) is saved on `wip/v2-freshness-drift-alerts`, to port later. A local-only `/logs` page that was never committed (the old `.gitignore` rule `logs/` also matched `src/app/logs`) was moved to `~/code/U-Hackathon-local-backup/`.
+- **Plan and script:** [DEMO-DAY-PLAN.md](DEMO-DAY-PLAN.md) (who does what, commands, checks, risks, roadmap) and [DEMO.md](DEMO.md) (3-minute run of show around tonight's ARB unlock, EN + TH lines, fallbacks, judge Q&A). SPEC §13 and TODO.md point to them.
+- **Real Tokenomist data:** `npm run snapshot -- ARB WLD AVAX` with the team key. ARB: 92.65M on 16 Oct 13:00 UTC, 61% team / 39% investors, **1.37%** of circulating (the website copy said 1.56%; the API's circulating supply is 6.79B). WLD and AVAX now real too.
+- **Problem:** WLD had zero unlock events, so it read "no unlock", but it releases ~2.9M a day. The v5 events endpoint lists cliffs only. **Fix:** the snapshot also saves daily emission (paginated, 20 per page by default), and `getUnlockEvents` folds non-cliff emission days into one linear event, so the scorer and the forecast see continuous releases without double-counting cliffs. Result: ARB high 67 (cliff tonight) · WLD medium 39 (continuous, community 55 / investors 26 / team 19) · AVAX low 22 (staking rewards). The landing hero now uses these numbers; old sample fixtures removed.
+- **Problem:** over MCP every request gets a fresh context, so `propose_protection` never saw the card from the earlier `assess_unlock_risk` call and always refused. **Fix:** it scores the token itself when the card is missing (the medium/high gate still applies).
+- **U-Bot acting for a user:** a caller holding `MCP_API_KEY` may send `X-UGuard-User` (+ `X-UGuard-Locale`); tools run as that user and a proposal lands in their U-Bot inbox. Without the key the header is ignored. The bell now shows proposal cards with approve/decline (before, it only said "open the chat", which created a new proposal).
+- **U-Bot stand-in:** `npm run ubot`, a real MCP client (initialize → tools/list → assess ARB ฿5,000 → propose), paced with Enter for the stage. Tested end to end on the dev server: HIGH 67 from Tokenomist live → bell → approve → receipt (simulated until the Fuji key is set).
+- **Problem:** `next dev` failed to compile (`node:crypto` in the edge bundle via `instrumentation.ts → watch → alerts → agent`). The early-return guard doesn't stop webpack bundling; **fix:** Next's documented `if (NEXT_RUNTIME === "nodejs") { await import(...) }` block. Production builds were not affected.
+- **Checks:** typecheck ✅ · eval **30/30** ✅ (2 new MCP cases: no acting for a user without the key; delegated proposal is owned by and delivered to the user). In this sandbox `tsx` can't open its IPC pipe, so evals run with `node --import tsx evals/run.ts`.
+
 ---
 
 ## Adding the next entry

@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:49Z",
+    "credit": {
+      "used": 32,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "page": 1,
+    "totalPages": 1,
+    "pageSize": 100,
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": []
+}

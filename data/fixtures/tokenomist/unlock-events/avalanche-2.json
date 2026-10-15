@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "queryDate": "2026-10-15T19:45:50Z",
+    "credit": {
+      "used": 38,
+      "limit": 50000,
+      "resetAt": "2026-11-01T00:00:00Z"
+    },
+    "page": 1,
+    "totalPages": 1,
+    "pageSize": 100,
+    "total": 2,
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": [
+    {
+      "unlockDate": "2026-11-08T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "dataSource": "Whitepaper",
+      "cliffUnlocks": {
+        "cliffAmount": 1666800,
+        "cliffValue": 16784676,
+        "valueToMarketCap": 0.38053774279832014,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2026-11-08T00:00:00Z",
+            "allocationName": "Foundation",
+            "standardAllocationName": "Reserve",
+            "cliffAmount": 1666800,
+            "cliffValue": 16784676,
+            "referencePrice": 10.07,
+            "referencePriceUpdatedTime": "2026-11-08T00:00:00Z",
+            "unlockPrecision": "day",
+            "committedClaim": null
+          }
+        ]
+      },
+      "latestUpdateDate": "2026-10-06T07:31:16Z"
+    },
+    {
+      "unlockDate": "2027-02-06T00:00:00Z",
+      "tokenName": "Avalanche",
+      "tokenSymbol": "AVAX",
+      "listedMethod": "INTERNAL",
+      "dataSource": "Whitepaper",
+      "cliffUnlocks": {
+        "cliffAmount": 1666800,
+        "cliffValue": 16784676,
+        "valueToMarketCap": 0.38053774279832014,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2027-02-06T00:00:00Z",
+            "allocationName": "Foundation",
+            "standardAllocationName": "Reserve",
+            "cliffAmount": 1666800,
+            "cliffValue": 16784676,
+            "referencePrice": 10.07,
+            "referencePriceUpdatedTime": "2027-02-06T00:00:00Z",
+            "unlockPrecision": "day",
+            "committedClaim": null
+          }
+        ]
+      },
+      "latestUpdateDate": "2026-10-06T07:31:16Z"
+    }
+  ]
+}

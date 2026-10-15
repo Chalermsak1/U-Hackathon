@@ -6,8 +6,9 @@
 // the user approves the proposal. Bars are stacked by recipient in the same colours as
 // the terminal's supply chart.
 //
-// Data: ARB is real (Tokenomist, 15 Oct 2026). WLD and AVAX match the labelled sample
-// fixtures. CRO and DBR come from unlock-calendar.json (not analysed, shown grey).
+// Data: Tokenomist API snapshot of 16 Oct 2026 (unlock events + daily emission) and the
+// scores U-Guard gives them. WLD releases every day, so it is drawn as a band, not a bar.
+// CRO and DBR come from unlock-calendar.json (not analysed, shown grey).
 
 import { useEffect, useRef, useState } from "react";
 import type { RecipientClass, RiskLevel } from "@/lib/types";
@@ -15,7 +16,7 @@ import { LEVEL_TH } from "@/lib/format";
 import { RECIPIENT_COLOR } from "./fx";
 import { GuardMark } from "./GuardMark";
 
-const AS_OF = Date.UTC(2026, 9, 15);
+const AS_OF = Date.UTC(2026, 9, 16);
 const WINDOW_DAYS = 30;
 const STEP_MS = 4600;
 const SLIDE_MS = 1100;
@@ -30,49 +31,55 @@ interface WatchEvent {
   score: number;
   lines: [string, string, string];
   proposal: string | null;
+  when: string; // shown in the card header
+  span?: number; // days: a continuous release, drawn as a band
 }
 
 const EVENTS: WatchEvent[] = [
   {
     sym: "ARB",
-    day: 1,
-    amount: "92.6M",
-    pct: 1.56,
+    day: 0,
+    amount: "92.65M",
+    pct: 1.37,
     parts: [["team", 0.61], ["investor", 0.39]],
     level: "high",
     score: 67,
-    lines: ["ปลดล็อก 92.6M ARB หรือ 1.56% ของเหรียญที่หมุนเวียน", "ผู้รับคือทีม 61% และนักลงทุน 39%", "unlock แบบนี้ราคามักถูกกดตั้งแต่ก่อนถึงวัน"],
-    proposal: "พักการซื้อ ARB 7 วัน",
+    lines: ["ปลดล็อก 92.65M ARB หรือ 1.37% ของเหรียญที่หมุนเวียน", "ผู้รับคือทีม 61% และนักลงทุน 39%", "unlock แบบนี้ราคามักถูกกดตั้งแต่ก่อนถึงวัน"],
+    proposal: "พักการซื้อ ARB ช่วง unlock",
+    when: "วันนี้ 20:00 น.",
   },
   {
     sym: "WLD",
-    day: 9,
-    amount: "152M",
-    pct: 2.63,
-    parts: [["team", 0.64], ["investor", 0.36]],
-    level: "high",
-    score: 63,
-    lines: ["ปลดล็อก 152M WLD หรือ 2.63% ของเหรียญที่หมุนเวียน", "ผู้รับคือทีม 64% และนักลงทุน 36%", "ใหญ่กว่า ARB เมื่อเทียบกับ supply ที่มีอยู่"],
-    proposal: "เตือนก่อนถึงวัน 3 วัน",
+    day: 1,
+    span: 28,
+    amount: "~2.9M/วัน",
+    pct: 2.28,
+    parts: [["community", 0.55], ["investor", 0.26], ["team", 0.19]],
+    level: "medium",
+    score: 39,
+    lines: ["ทยอยปลดล็อกทุกวัน ~87M WLD ใน 30 วัน (2.28%)", "ชุมชน 55% · นักลงทุน 26% · ทีม 19%", "ไม่ใช่ก้อนเดียว แต่ไหลเข้าตลาดต่อเนื่อง"],
+    proposal: "เตือนเมื่อราคาลด 10%",
+    when: "ทุกวัน",
   },
   {
     sym: "AVAX",
-    day: 13,
-    amount: "1.7M",
-    pct: 0.3,
-    parts: [["ecosystem", 1]],
+    day: 23,
+    amount: "1.67M",
+    pct: 0.38,
+    parts: [["reserve", 1]],
     level: "low",
-    score: 8,
-    lines: ["ปลดล็อก 1.7M AVAX หรือ 0.30% เท่านั้น", "ผู้รับคือกองทุน ecosystem ไม่ใช่นักลงทุน", "ไม่ต้องทำอะไร U-Guard จะเฝ้าดูต่อ"],
+    score: 22,
+    lines: ["ปลดล็อก 1.67M AVAX ให้ Foundation (0.38%)", "ที่ทยอยออกทุกวันส่วนใหญ่คือรางวัล staking", "ไม่ต้องทำอะไร U-Guard จะเฝ้าดูต่อ"],
     proposal: null,
+    when: "8 พ.ย.",
   },
 ];
 
 // Other scheduled unlocks on the calendar (CRO and DBR on 17 Oct, ARB's next monthly
 // cliff). Context only: unlabelled, grey, and kept shorter than the analysed bars.
 const GHOSTS = [
-  { key: "cro-dbr", day: 2, pct: 10 },
-  { key: "arb-nov", day: 32, pct: 1.56 },
+  { key: "cro-dbr", day: 1, pct: 10 },
+  { key: "arb-nov", day: 31, pct: 1.37 },
 ];
 
 const barHeight = (pct: number) => Math.min(96, 18 + Math.sqrt(pct / 3) * 70);
@@ -148,7 +155,7 @@ export function GuardWatch() {
       ref={ref}
       className="gw"
       role="img"
-      aria-label="ตัวอย่างการทำงาน: U-Guard เฝ้าตาราง unlock 30 วันข้างหน้า เช่น ARB จะปลดล็อก 92.6M ในวันที่ 16 ต.ค. ผู้รับคือทีมและนักลงทุน จึงเสี่ยงสูง และเสนอให้พักการซื้อ ซึ่งผู้ใช้เป็นคนอนุมัติ"
+      aria-label="ตัวอย่างการทำงาน: U-Guard เฝ้าตาราง unlock 30 วันข้างหน้า เช่น ARB จะปลดล็อก 92.65M คืนนี้ 20:00 น. ผู้รับคือทีมและนักลงทุน จึงเสี่ยงสูง และเสนอให้พักการซื้อ ซึ่งผู้ใช้เป็นคนอนุมัติ"
       onPointerMove={(e) => {
         const r = ref.current?.getBoundingClientRect();
         if (!r) return;
@@ -180,7 +187,11 @@ export function GuardWatch() {
               <span
                 key={e.sym}
                 className={`gw-bar ${i === hit && !scanning ? "gw-bar-on" : ""} ${e.day < EVENTS[focus].day ? "gw-past" : ""}`}
-                style={{ left: pos(e.day), height: barHeight(e.pct) }}
+                style={
+                  e.span
+                    ? { left: pos(e.day), height: 14, width: `${(e.span / WINDOW_DAYS) * 100}%`, marginLeft: 0, flexDirection: "row" }
+                    : { left: pos(e.day), height: barHeight(e.pct) }
+                }
               >
                 {e.parts.map(([r, share]) => (
                   <i key={r} style={{ flexGrow: share, background: RECIPIENT_COLOR[r] }} />
@@ -200,7 +211,7 @@ export function GuardWatch() {
         <div className="gw-card-head">
           <b>{ev.sym}</b>
           <span>
-            {dateTh(ev.day)} · อีก {ev.day} วัน
+            {ev.when}
           </span>
           <span className={`gw-voice ${scanning ? "" : "gw-voice-on"}`} key={`v${react}`}>
             <i />
@@ -227,7 +238,7 @@ export function GuardWatch() {
         </div>
       </div>
       <p className="gw-foot" aria-hidden="true">
-        แท่งสีเทา = unlock อื่นในปฏิทิน · ARB ข้อมูลจริงจาก Tokenomist 15 ต.ค. · WLD / AVAX ข้อมูลตัวอย่าง · ไม่ใช่คำแนะนำการลงทุน
+        ข้อมูลจริงจาก Tokenomist API 16 ต.ค. · แถบยาว = ทยอยปลดล็อกทุกวัน · แท่งสีเทา = unlock อื่นในปฏิทิน · ไม่ใช่คำแนะนำการลงทุน
       </p>
     </div>
   );
