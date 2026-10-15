@@ -1,9 +1,61 @@
 {
-  "metadata": { "queryDate": "2026-10-15T00:00:00Z", "_sample": "Illustrative numbers for the demo. Run `npm run snapshot` with a Tokenomist key to replace with live data." },
+  "_note": "Offline dataset. ARB: public reporting (Coinotag, 12 Oct 2026). WLD: price/market cap from CoinGecko's page, supply split illustrative. AVAX: illustrative. `npm run snapshot -- ARB WLD AVAX` replaces this with live Tokenomist data.",
+  "metadata": {
+    "queryDate": "2026-10-15T00:00:00Z",
+    "mode": "sample"
+  },
   "status": true,
   "data": [
-    { "id": "sui", "name": "Sui", "symbol": "SUI", "listedMethod": "INTERNAL", "circulatingSupply": 4120000000, "marketCap": 4140000000, "maxSupply": 10000000000, "totalLockedAmount": 5880000000, "tbdLockedAmount": 0, "unlockedAmount": 4120000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Series B", "hasBurn": false, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/sui", "lastUpdatedDate": "2026-10-14T00:00:00Z" },
-    { "id": "worldcoin", "name": "Worldcoin", "symbol": "WLD", "listedMethod": "INTERNAL", "circulatingSupply": 5790000000, "marketCap": 2810000000, "maxSupply": 10000000000, "totalLockedAmount": 4210000000, "tbdLockedAmount": 0, "unlockedAmount": 5790000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Private Round", "hasBurn": false, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/worldcoin", "lastUpdatedDate": "2026-10-14T00:00:00Z" },
-    { "id": "avalanche", "name": "Avalanche", "symbol": "AVAX", "listedMethod": "INTERNAL", "circulatingSupply": 551000000, "marketCap": 5340000000, "maxSupply": 720000000, "totalLockedAmount": 169000000, "tbdLockedAmount": 0, "unlockedAmount": 551000000, "untrackedAmount": 0, "hasStandardAllocation": true, "hasFundraising": true, "latestFundraisingRound": "Strategic Round", "hasBurn": true, "hasBuyback": false, "hasCommittedClaim": false, "websiteUrl": "https://tokenomist.ai/avalanche", "lastUpdatedDate": "2026-10-14T00:00:00Z" }
+    {
+      "listedMethod": "INTERNAL",
+      "hasStandardAllocation": true,
+      "hasFundraising": true,
+      "hasBurn": false,
+      "hasBuyback": false,
+      "id": "arbitrum",
+      "name": "Arbitrum",
+      "symbol": "ARB",
+      "circulatingSupply": 5950000000,
+      "marketCap": 1184050000,
+      "maxSupply": 10000000000,
+      "totalLockedAmount": 463250000,
+      "latestFundraisingRound": "Series B",
+      "websiteUrl": "https://tokenomist.ai/arbitrum",
+      "lastUpdatedDate": "2026-10-12T00:00:00Z"
+    },
+    {
+      "listedMethod": "INTERNAL",
+      "hasStandardAllocation": true,
+      "hasFundraising": true,
+      "hasBurn": false,
+      "hasBuyback": false,
+      "id": "worldcoin",
+      "name": "Worldcoin",
+      "symbol": "WLD",
+      "circulatingSupply": 3250000000,
+      "marketCap": 878000000,
+      "maxSupply": 10000000000,
+      "totalLockedAmount": 6750000000,
+      "latestFundraisingRound": "Private Round",
+      "websiteUrl": "https://tokenomist.ai/worldcoin",
+      "lastUpdatedDate": "2026-10-14T00:00:00Z"
+    },
+    {
+      "listedMethod": "INTERNAL",
+      "hasStandardAllocation": true,
+      "hasFundraising": true,
+      "hasBurn": true,
+      "hasBuyback": false,
+      "id": "avalanche",
+      "name": "Avalanche",
+      "symbol": "AVAX",
+      "circulatingSupply": 551000000,
+      "marketCap": 5340000000,
+      "maxSupply": 720000000,
+      "totalLockedAmount": 169000000,
+      "latestFundraisingRound": "Strategic Round",
+      "websiteUrl": "https://tokenomist.ai/avalanche",
+      "lastUpdatedDate": "2026-10-14T00:00:00Z"
+    }
   ]
 }

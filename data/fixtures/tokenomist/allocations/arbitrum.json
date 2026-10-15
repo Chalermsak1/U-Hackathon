@@ -1,0 +1,58 @@
+{
+  "_note": "Allocation split from Arbitrum's published tokenomics; locked amounts derived from the vesting schedule after the 16 Oct 2026 unlock. DAO treasury is governance-controlled and shown as unlocked.",
+  "metadata": {
+    "queryDate": "2026-10-12T00:00:00Z",
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "name": "Arbitrum",
+    "symbol": "ARB",
+    "maxSupply": 10000000000,
+    "lastUpdatedDate": "2026-10-12T00:00:00Z",
+    "totalUnlockedAmount": 9536750000,
+    "totalLockedAmount": 463250000,
+    "allocations": [
+      {
+        "allocationName": "Arbitrum DAO Treasury",
+        "standardAllocationName": "Reserve",
+        "allocationAmount": 4278000000,
+        "allocationUnlockedAmount": 4278000000,
+        "allocationLockedAmount": 0,
+        "trackedAllocationPercentage": 42.78
+      },
+      {
+        "allocationName": "Team & Future Team + Advisors",
+        "standardAllocationName": "Founder / Team",
+        "allocationAmount": 2694000000,
+        "allocationUnlockedAmount": 2413350000,
+        "allocationLockedAmount": 280650000,
+        "trackedAllocationPercentage": 26.94
+      },
+      {
+        "allocationName": "Investors",
+        "standardAllocationName": "Private Investors",
+        "allocationAmount": 1753000000,
+        "allocationUnlockedAmount": 1570400000,
+        "allocationLockedAmount": 182600000,
+        "trackedAllocationPercentage": 17.53
+      },
+      {
+        "allocationName": "User Airdrop",
+        "standardAllocationName": "Community",
+        "allocationAmount": 1162000000,
+        "allocationUnlockedAmount": 1162000000,
+        "allocationLockedAmount": 0,
+        "trackedAllocationPercentage": 11.62
+      },
+      {
+        "allocationName": "DAOs in the Arbitrum Ecosystem",
+        "standardAllocationName": "Ecosystem",
+        "allocationAmount": 113000000,
+        "allocationUnlockedAmount": 113000000,
+        "allocationLockedAmount": 0,
+        "trackedAllocationPercentage": 1.13
+      }
+    ]
+  }
+}

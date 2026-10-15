@@ -1,0 +1,264 @@
+// Deterministic planner + writer. It runs when no LLM is configured, when the LLM fails,
+// and as the last-resort template when an LLM answer fails the compliance check. It uses
+// the same tools as the LLM agents, so the trace and cards look the same.
+
+import { compact, LEVEL_LABEL, shortDate, signedPct, usd, usdFull } from "../../format";
+import { usdToThb } from "../../market";
+import { listTokens } from "../../tokenomist";
+import type { AnswerMode, ChatTurn, RiskCard } from "../../types";
+import { matchFaq, type FaqEntry } from "../../knowledge";
+import { executeTool, type RunContext } from "../tools";
+
+export type Intent = "buy" | "sell" | "scan" | "news" | "odds" | "calendar" | "risk" | "learn" | "help";
+
+export interface Plan {
+  intents: Intent[];
+  symbols: string[];
+  amountThb: number | null;
+  faq: FaqEntry | null; // answered from the static knowledge base (CAG), no tools needed
+  needsSymbol: boolean;
+}
+
+const NAMES: Record<string, string> = {
+  bitcoin: "BTC",
+  btc: "BTC",
+  บิตคอยน์: "BTC",
+  บิทคอยน์: "BTC",
+  ethereum: "ETH",
+  ether: "ETH",
+  eth: "ETH",
+  อีเธอเรียม: "ETH",
+  arbitrum: "ARB",
+  arb: "ARB",
+  worldcoin: "WLD",
+  wld: "WLD",
+  avalanche: "AVAX",
+  avax: "AVAX",
+  usdc: "USDC",
+  usdt: "USDT",
+  tether: "USDT",
+  solana: "SOL",
+  sol: "SOL",
+};
+
+// Uppercase words that are not tickers.
+const NOT_TICKERS = new Set(["I", "OK", "ETF", "ETFS", "USD", "THB", "FED", "FOMC", "CPI", "SEC", "AI", "US", "UK", "EU", "THE", "DCA", "OTC", "API", "FDV", "TVL", "NFT", "IPO", "GDP", "ATH"]);
+
+const STABLES = new Set(["USDC", "USDT", "DAI"]);
+
+const INTENTS: [Intent, RegExp][] = [
+  ["learn", /\b(what is|what's an?|what are|explain|meaning of|define|how does)\b|คืออะไร|อธิบาย|หมายถึง/i],
+  ["buy", /\b(buy|buying|purchase|invest(ing)? in|ape|accumulate|dca)\b|ซื้อ|ลงทุน/i],
+  ["sell", /\b(sell|selling|take profit|cash out)\b|ขาย/i],
+  ["scan", /\b(scan|portfolio|my (holdings|wallet|bag|coins|assets)|what do i (own|hold))\b|พอร์ต|สแกน|ถืออะไร/i],
+  ["news", /\b(news|headlines?|what'?s (moving|happening|going on)|why (is|did|are|has)|happening|events?)\b|ข่าว|เหตุการณ์|ทำไม/i],
+  ["odds", /\b(odds|probabilit(y|ies)|chances?|likely|prediction market|polymarket|fed|fomc|rate (cut|hike)|interest rates?)\b|โอกาส|ความน่าจะเป็น|ดอกเบี้ย|เฟด/i],
+  ["calendar", /\b(calendar|upcoming|coming up|next (week|month)|schedule|this week)\b|ปฏิทิน|เร็วๆ\s?นี้|สัปดาห์นี้/i],
+  ["risk", /\b(unlocks?|vesting|risk|risky|safe|supply|dilution)\b|ปลดล็อก|เสี่ยง|ปลอดภัย/i],
+];
+
+async function extractSymbols(text: string): Promise<string[]> {
+  const found: string[] = [];
+  const add = (s: string) => {
+    if (!found.includes(s)) found.push(s);
+  };
+  for (const word of text.toLowerCase().split(/[^a-z0-9฀-๿]+/)) if (NAMES[word]) add(NAMES[word]);
+  const tokens = await listTokens();
+  const known = new Set(tokens.data.map((t) => t.symbol.toUpperCase()));
+  // Any other all-caps word is treated as a ticker, so unknown tokens get an honest
+  // "not in dataset" answer instead of being ignored.
+  for (const m of text.matchAll(/\b[A-Z][A-Z0-9]{1,5}\b/g)) {
+    if (known.has(m[0]) || !NOT_TICKERS.has(m[0])) add(m[0]);
+  }
+  for (const t of tokens.data) if (text.toLowerCase().includes(t.name.toLowerCase())) add(t.symbol.toUpperCase());
+  return found.slice(0, 3);
+}
+
+async function extractAmountThb(text: string): Promise<number | null> {
+  const num = (s: string, k?: string) => Number(s.replace(/,/g, "")) * (k ? 1000 : 1);
+  let m = /(?:฿|thb\s?)\s?(\d[\d,]*(?:\.\d+)?)\s?(k)?\b/i.exec(text) ?? /(\d[\d,]*(?:\.\d+)?)\s?(k)?\s?(?:baht|thb|บาท)/i.exec(text);
+  if (m) return num(m[1], m[2]);
+  m = /\$\s?(\d[\d,]*(?:\.\d+)?)\s?(k)?\b/i.exec(text) ?? /(\d[\d,]*(?:\.\d+)?)\s?(k)?\s?(?:usd|dollars?)\b/i.exec(text);
+  if (m) return Math.round(num(m[1], m[2]) * (await usdToThb()));
+  // "buy ARB 5000": a bare amount right after the ticker is read as baht.
+  m = /\b[A-Za-z]{2,6}\s+(\d[\d,]{2,}(?:\.\d+)?)\s?(k)?\b/.exec(text);
+  return m ? num(m[1], m[2]) : null;
+}
+
+export async function makePlan(message: string): Promise<Plan> {
+  const intents = INTENTS.filter(([, re]) => re.test(message)).map(([i]) => i);
+  const symbols = await extractSymbols(message);
+  const amountThb = intents.includes("buy") ? await extractAmountThb(message) : null;
+  const tradeOrRisk = intents.some((i) => i === "buy" || i === "sell" || i === "risk");
+  const acting = intents.some((i) => i === "buy" || i === "sell" || i === "scan");
+  const faq = !acting && (symbols.length === 0 || intents.includes("learn")) ? matchFaq(message) : null;
+  if (intents.length === 0) intents.push(symbols.length ? "risk" : "help");
+  return { intents, symbols, amountThb, faq, needsSymbol: tradeOrRisk && symbols.length === 0 && !intents.includes("scan") };
+}
+
+/** Runs the plan's tools. Independent calls run in parallel. */
+export async function runPlan(plan: Plan, message: string, ctx: RunContext): Promise<void> {
+  const has = (i: Intent) => plan.intents.includes(i);
+  if (plan.faq || plan.needsSymbol) return;
+
+  if (has("scan")) {
+    if (ctx.scope === "public") return;
+    await executeTool("get_portfolio", {}, ctx);
+    const rateable = (ctx.holdings ?? []).map((h) => h.symbol).filter((s) => !STABLES.has(s));
+    await Promise.all(rateable.map((symbol) => executeTool("assess_unlock_risk", { symbol, trade_amount_thb: null }, ctx)));
+    for (const card of ctx.cards.values()) {
+      if (card.level === "high" || card.level === "medium") {
+        await executeTool("propose_protection", { symbol: card.symbol, action: "price_alert" }, ctx);
+      }
+    }
+    return;
+  }
+
+  const jobs: Promise<unknown>[] = [];
+  const macroAsked = /\b(fed|fomc|rates?|macro|inflation)\b|ดอกเบี้ย|เฟด/i.test(message);
+  if (plan.symbols.length && (has("buy") || has("sell") || has("risk"))) {
+    for (const symbol of plan.symbols) {
+      jobs.push(executeTool("assess_unlock_risk", { symbol, trade_amount_thb: has("buy") ? plan.amountThb : null }, ctx));
+    }
+  }
+  if (has("news") || has("buy") || has("sell") || has("risk") || plan.symbols.length || macroAsked) {
+    jobs.push(executeTool("get_market_news", { query: message, symbols: plan.symbols, days: 14 }, ctx));
+  }
+  const majors = plan.symbols.some((s) => s === "BTC" || s === "ETH");
+  if (has("news") && (majors || plan.symbols.length === 0)) jobs.push(executeTool("get_market_pulse", {}, ctx));
+  if (has("odds") || macroAsked || (has("news") && plan.symbols.length === 0) || (majors && (has("buy") || has("sell")))) {
+    jobs.push(executeTool("get_event_odds", { topic: macroAsked || has("odds") ? "fed rates" : plan.symbols.join(" ") || "crypto" }, ctx));
+  }
+  if (has("calendar") || (has("odds") && macroAsked)) jobs.push(executeTool("get_event_calendar", { days: 45 }, ctx));
+  await Promise.all(jobs);
+
+  for (const symbol of plan.symbols) {
+    const card = ctx.cards.get(symbol);
+    if (card && (card.level === "high" || card.level === "medium")) {
+      await executeTool("propose_protection", { symbol, action: has("buy") ? "pause_buying" : "price_alert" }, ctx);
+    }
+  }
+}
+
+function cardLine(card: RiskCard, mode: AnswerMode): string {
+  if (card.level === "none") return `${card.symbol}: no unlocks in the next 30 days.`;
+  const head = `${card.symbol} · ${LEVEL_LABEL[card.level]} unlock risk (${card.score}/100).`;
+  if (mode === "beginner") return `${head} ${card.plain}`;
+  const recipient = card.reasons.find((r) => r.startsWith("Main recipient")) ?? "";
+  return `${head} ${card.reasons[0]} ${recipient}`.trim();
+}
+
+/** Writes the answer from what the tools found. Only numbers from tool results appear. */
+export function composeReply(ctx: RunContext, plan: Plan, mode: AnswerMode): string {
+  const lines: string[] = [];
+  const has = (i: Intent) => plan.intents.includes(i);
+
+  if (plan.faq) return plan.faq.a;
+  if (has("scan") && ctx.scope === "public") {
+    return "Sign in to scan your own wallet. Meanwhile, ask me about any token, for example “Is ARB risky right now?”";
+  }
+  if (plan.needsSymbol) {
+    return "Which token do you mean? Name it, for example ARB, WLD or AVAX, and I'll check its unlock schedule and news before you decide.";
+  }
+  if (plan.intents.includes("help") && ctx.trace.every((s) => s.kind !== "tool")) {
+    return "I check what could move your money before you act: scheduled token unlocks, news, and what markets are pricing. Try “I want to buy ARB”, “Scan my portfolio” or “What's moving Bitcoin this week?”";
+  }
+
+  const cards = [...ctx.cards.values()];
+  if (has("scan")) {
+    const flagged = cards.filter((c) => c.level === "high" || c.level === "medium");
+    const held = ctx.holdings?.length ?? 0;
+    lines.push(
+      flagged.length
+        ? `I checked ${held} holdings. ${flagged.length === 1 ? "One needs" : `${flagged.length} need`} attention: ${flagged.map((c) => `${c.symbol} (${LEVEL_LABEL[c.level].toLowerCase()})`).join(", ")}.`
+        : `I checked ${held} holdings. None has a significant unlock in the next 30 days.`,
+    );
+    flagged.forEach((c) => lines.push(cardLine(c, mode)));
+    const calm = cards.filter((c) => c.level === "low" || c.level === "none").map((c) => c.symbol);
+    const noVesting = [...ctx.notes.keys(), ...(ctx.holdings ?? []).map((h) => h.symbol).filter((sym) => STABLES.has(sym))];
+    if (calm.length) lines.push(`${calm.join(", ")}: low or no unlock pressure.`);
+    if (noVesting.length) lines.push(`${noVesting.join(", ")}: no vesting unlocks apply.`);
+  } else {
+    for (const symbol of plan.symbols) {
+      const card = ctx.cards.get(symbol);
+      if (card) lines.push(cardLine(card, mode));
+      else if (ctx.notes.has(symbol)) lines.push(`${symbol}: ${ctx.notes.get(symbol)}`);
+    }
+  }
+
+  if (ctx.proposals.length) {
+    lines.push(
+      `I've prepared ${ctx.proposals.length === 1 ? "a protection rule" : "protection rules"} below. Nothing happens unless you approve it.`,
+    );
+  }
+
+  const news = (ctx.news?.data ?? []).slice(0, mode === "pro" ? 2 : 1);
+  for (const item of news) {
+    const cite = ctx.citations.find((c) => c.url === item.url && c.title === item.summary);
+    lines.push(`In the news: ${item.summary}${cite ? ` [${cite.n}]` : ""}`);
+  }
+  if (!has("scan") && (has("news") || plan.symbols.length) && ctx.news && ctx.news.data.length === 0) {
+    lines.push("I found no relevant news for this in the last two weeks.");
+  }
+
+  const pulse = ctx.pulse?.data;
+  if (pulse?.btc) {
+    const change = pulse.btc.change24hPct === null ? "" : ` (${signedPct(pulse.btc.change24hPct)} on ${shortDate(pulse.btc.date)})`;
+    const mood = pulse.sentiment ? `; Fear & Greed ${pulse.sentiment.value} (${pulse.sentiment.label})` : "";
+    lines.push(`Bitcoin ${usdFull(pulse.btc.priceUsd)}${change}${mood}.`);
+    if (mode === "pro" && pulse.etfFlows.length) {
+      lines.push(`Spot ETF flows, ${pulse.etfFlows[0].label}: ${pulse.etfFlows.map((f) => `${f.asset} ${usd(f.netUsd)}`).join(", ")}.`);
+    }
+    if (pulse.impliedMove) {
+      lines.push(
+        `Options imply a ±${pulse.impliedMove.pct.toFixed(1)}% ${pulse.impliedMove.days}-day BTC range (${usd(pulse.impliedMove.low)} to ${usd(pulse.impliedMove.high)}), at roughly two-in-three odds.`,
+      );
+    }
+  }
+
+  const market = ctx.odds?.data[0];
+  if (market) {
+    const outcomes = [...market.outcomes]
+      .sort((a, b) => b.probability - a.probability)
+      .map((o) => `${o.name.toLowerCase()} ${Math.round(o.probability * 100)}%`)
+      .join(", ");
+    const via = market.reportedBy ? ` via ${market.reportedBy.name}` : "";
+    const when = ctx.odds && ctx.odds.source !== "live" ? `, ${shortDate(ctx.odds.asOf)}` : "";
+    const question = market.question.trim().endsWith("?") ? `“${market.question.trim()}”` : `the ${market.question.trim()}`;
+    lines.push(`Traders price ${question}: ${outcomes} (${market.provider}${via}${when}).`);
+  }
+
+  if (ctx.calendar?.length) {
+    const today = new Date(ctx.now).toISOString().slice(0, 10);
+    const next = ctx.calendar
+      .slice(0, 3)
+      .map((e) => `${e.date === today ? "today" : shortDate(e.date)} ${e.title.replace(/:.*$/, "")}`);
+    lines.push(`Coming up: ${next.join("; ")}.`);
+  }
+
+  if (lines.length === 0) {
+    lines.push("I couldn't find data for that. Try naming a token (ARB, WLD, AVAX, BTC) or ask me to scan your portfolio.");
+  }
+  if (ctx.sources.has("sample")) lines.push("(sample data)");
+  return lines.join("\n");
+}
+
+/** A plan that matches what the tools already found (used to rewrite an LLM answer). */
+export function planFromContext(ctx: RunContext, base: Plan): Plan {
+  const symbols = [...new Set([...base.symbols, ...ctx.cards.keys(), ...ctx.notes.keys()])];
+  return { ...base, symbols, needsSymbol: false, faq: null, intents: base.intents.filter((i) => i !== "help") };
+}
+
+export async function runRules(message: string, _history: ChatTurn[], mode: AnswerMode, ctx: RunContext): Promise<{ reply: string; plan: Plan }> {
+  const t0 = Date.now();
+  const plan = await makePlan(message);
+  ctx.trace.push({
+    kind: "plan",
+    name: "rules_planner",
+    summary: `intent: ${plan.intents.join("+")}${plan.symbols.length ? ` · ${plan.symbols.join(", ")}` : ""}${plan.amountThb ? ` · ฿${compact(plan.amountThb)}` : ""}`,
+    ms: Date.now() - t0,
+    ok: true,
+  });
+  await runPlan(plan, message, ctx);
+  return { reply: composeReply(ctx, plan, mode), plan };
+}

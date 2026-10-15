@@ -1,0 +1,206 @@
+{
+  "_note": "Monthly cliff on the 16th (Mar 2024 - Mar 2027): 56.13M ARB to team & advisors + 36.52M ARB to investors. October figures from Coinotag (12 Oct 2026, citing Tokenomist); later months follow the same published vesting schedule. Values use ~$0.199/ARB.",
+  "metadata": {
+    "queryDate": "2026-10-12T00:00:00Z",
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": [
+    {
+      "unlockDate": "2026-09-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2026-09-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2026-09-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2026-10-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2026-10-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2026-10-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2026-11-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2026-11-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2026-11-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2026-12-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2026-12-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2026-12-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2027-01-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2027-01-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2027-01-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2027-02-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2027-02-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2027-02-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    },
+    {
+      "unlockDate": "2027-03-16T00:00:00Z",
+      "tokenName": "Arbitrum",
+      "tokenSymbol": "ARB",
+      "cliffUnlocks": {
+        "cliffAmount": 92650000,
+        "cliffValue": 18437350,
+        "valueToMarketCap": 1.557,
+        "allocationBreakdown": [
+          {
+            "unlockDate": "2027-03-16T00:00:00Z",
+            "allocationName": "Team & Future Team + Advisors",
+            "standardAllocationName": "Founder / Team",
+            "cliffAmount": 56130000,
+            "cliffValue": 11169870,
+            "referencePrice": 0.199
+          },
+          {
+            "unlockDate": "2027-03-16T00:00:00Z",
+            "allocationName": "Investors",
+            "standardAllocationName": "Private Investors",
+            "cliffAmount": 36520000,
+            "cliffValue": 7267480,
+            "referencePrice": 0.199
+          }
+        ]
+      }
+    }
+  ]
+}

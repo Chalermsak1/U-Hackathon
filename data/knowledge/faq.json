@@ -1,0 +1,131 @@
+{
+  "_note": "Static knowledge for Cache-Augmented Generation (CAG): loaded whole into the cached system prompt, and keyword-matched by the rules engine. Keep it short, factual and stable. Fresh facts (news, prices, odds) belong in tools, not here.",
+  "entries": [
+    {
+      "id": "what-is-uguard",
+      "q": "What is U-Guard?",
+      "a": "U-Guard is a safety skill for U-Bot, U-topia's AI assistant. Before your money moves, it checks scheduled token unlocks (new supply), the news and events around a coin, and what markets themselves are pricing. It explains them in plain language, can read the answer aloud, and offers protection rules that you approve yourself.",
+      "tags": ["uguard", "u-guard", "what", "about", "app", "does", "skill"]
+    },
+    {
+      "id": "what-is-ubot",
+      "q": "What is U-Bot and how does U-Guard connect to it?",
+      "a": "U-Bot is U-topia's AI orchestration system for agentic banking and commerce. U-Guard is built as a skill U-Bot can call before a swap, a buy or a recurring purchase. It publishes its tools through an MCP endpoint (/api/mcp). In this demo the chat stands in for U-Bot until U-topia shares U-Bot's interface.",
+      "tags": ["ubot", "u-bot", "bot", "utopia", "u-topia", "connect", "integration", "mcp", "orchestrator"]
+    },
+    {
+      "id": "is-advice",
+      "q": "Is this investment advice?",
+      "a": "No. U-Guard gives information, not investment advice. In Thailand, advising on digital assets requires a licence from the SEC, so U-Guard never tells you to buy, sell or hold and never predicts prices. It shows the facts and their sources, and you decide.",
+      "tags": ["advice", "recommend", "should", "financial", "legal", "sec", "licence", "license"]
+    },
+    {
+      "id": "risk-score",
+      "q": "How is the unlock risk score calculated?",
+      "a": "The score (0 to 100) is computed by code, never by the AI. It weighs the unlock's size against circulating supply, its value against daily trading volume, who receives the tokens (team unlocks weigh most, ecosystem funds least), how much early investors are up, and timing: pressure builds over the 30 days before an unlock and fades about two weeks after. 55 or more is high, 30 to 54 medium. The weights follow Keyrock's study of 16,000+ unlocks. It is a v0.2 heuristic, not a prediction.",
+      "tags": ["score", "scoring", "calculate", "calculated", "risk", "method", "formula", "how", "weights", "level"]
+    },
+    {
+      "id": "why-unlocks",
+      "q": "Why do token unlocks matter?",
+      "a": "An unlock releases tokens that insiders such as the team or early investors can then sell. In Keyrock's study of 16,000+ unlocks, about 90% put downward pressure on price, usually starting around 30 days before. Team unlocks were the most damaging (about -25% on average), while ecosystem-fund unlocks averaged +1.18%.",
+      "tags": ["why", "unlock", "unlocks", "matter", "important", "price", "pressure"]
+    },
+    {
+      "id": "unlock",
+      "q": "What is a token unlock?",
+      "a": "A token unlock is when coins that were locked for the team, investors or a fund become free to sell. Unlock dates follow a published vesting schedule, so they can be known before they happen. A cliff releases a big batch on one date; a linear unlock releases a little every day.",
+      "tags": ["unlock", "token", "vesting", "cliff", "linear", "what", "meaning", "define"]
+    },
+    {
+      "id": "float",
+      "q": "What is float?",
+      "a": "Float is the share of a token's total supply that can already be traded. A low float means a lot of supply is still locked and can still arrive in the market.",
+      "tags": ["float", "circulating", "supply", "what"]
+    },
+    {
+      "id": "fdv",
+      "q": "What is FDV?",
+      "a": "FDV (fully diluted valuation) is the token price times its maximum supply: what the project would be worth if every token were already circulating. A big gap between FDV and market cap means a lot of supply is still to come.",
+      "tags": ["fdv", "fully", "diluted", "valuation", "market", "cap", "what"]
+    },
+    {
+      "id": "investor-multiple",
+      "q": "What does 'investors are at 1.7x their entry price' mean?",
+      "a": "It compares today's price with the price early investors paid in their latest funding round. Investors sitting on big gains have more reason to sell when their tokens unlock; investors below their entry price usually sell less.",
+      "tags": ["investor", "investors", "entry", "multiple", "fundraising", "round", "valuation", "gains"]
+    },
+    {
+      "id": "etf-flows",
+      "q": "What are ETF flows?",
+      "a": "ETF flows are the money moving into (inflows) or out of (outflows) exchange-traded funds that hold coins like bitcoin. They show what large investors are doing.",
+      "tags": ["etf", "etfs", "flows", "inflows", "outflows", "what"]
+    },
+    {
+      "id": "odds",
+      "q": "What are event odds?",
+      "a": "Event odds come from prediction markets such as Polymarket, where traders bet on real-world outcomes like a Fed decision. A price of 0.61 means traders put a 61% chance on that outcome. U-Guard reports them as market pricing, never as its own forecast.",
+      "tags": ["odds", "probability", "chance", "polymarket", "prediction", "market", "event"]
+    },
+    {
+      "id": "implied-range",
+      "q": "What does an options-implied range mean?",
+      "a": "It is the price band options traders are pricing for the coming days, from bitcoin's implied volatility. The price ends inside that band roughly two times out of three. It is market pricing, not a forecast.",
+      "tags": ["implied", "options", "volatility", "range", "dvol", "band"]
+    },
+    {
+      "id": "fear-greed",
+      "q": "What is the Fear & Greed Index?",
+      "a": "A 0 to 100 gauge of crypto market mood built from price momentum, volatility, volume and social data: low means fear, high means greed.",
+      "tags": ["fear", "greed", "sentiment", "index", "mood"]
+    },
+    {
+      "id": "data-sources",
+      "q": "Where does the data come from?",
+      "a": "Unlock schedules, allocations and fundraising: Tokenomist. Prices and volume: CoinGecko. News: GDELT when live, otherwise a dated snapshot of real reporting with links. Event odds: Polymarket. Sentiment: the Fear & Greed Index. Every card says whether its data is live, a dated snapshot, or an illustrative sample.",
+      "tags": ["data", "source", "sources", "where", "tokenomist", "coingecko", "news", "live", "sample", "snapshot"]
+    },
+    {
+      "id": "approve",
+      "q": "What happens when I approve a protection rule?",
+      "a": "Nothing moves your money. Approving records the rule, for example pausing auto-buys until two weeks after an unlock, as a receipt on the Avalanche Fuji testnet, so the decision is verifiable. You can decline any proposal.",
+      "tags": ["approve", "approval", "protection", "rule", "avalanche", "receipt", "onchain", "decline", "proposal"]
+    },
+    {
+      "id": "custody",
+      "q": "Does U-Guard hold my funds or keys?",
+      "a": "No. The wallet is self-custody: only you hold your keys. U-Guard reads public market data and your holdings, and never needs your seed phrase or private key. Anyone who asks for them is trying to steal your funds.",
+      "tags": ["custody", "keys", "seed", "phrase", "private", "key", "funds", "safe", "security", "hold"]
+    },
+    {
+      "id": "voice-language",
+      "q": "Can U-Guard speak Thai?",
+      "a": "Yes. It replies in the language you write in, Thai or English, and the speaker button reads the answer aloud with an ElevenLabs voice, or your browser's voice when ElevenLabs isn't configured.",
+      "tags": ["thai", "language", "voice", "speak", "audio", "elevenlabs", "english", "read"]
+    },
+    {
+      "id": "coverage",
+      "q": "Which tokens are covered?",
+      "a": "With a live Tokenomist key, 500+ tokens. The offline demo dataset covers ARB, WLD and AVAX for unlocks; BTC, ETH and stablecoins such as USDC have no vesting unlocks at all.",
+      "tags": ["tokens", "coins", "covered", "supported", "which", "list", "coverage"]
+    },
+    {
+      "id": "modes",
+      "q": "What's the difference between Beginner and Pro mode?",
+      "a": "Beginner mode explains terms in everyday words. Pro mode is shorter and numbers-first. Switch at the top of the chat at any time.",
+      "tags": ["beginner", "pro", "mode", "expert", "simple"]
+    },
+    {
+      "id": "privacy",
+      "q": "What data do you keep?",
+      "a": "Only what the demo needs: your account (email or wallet address) and the protection rules you approve. Messages are checked for secrets and personal data before any AI model sees them.",
+      "tags": ["privacy", "data", "store", "keep", "personal", "information"]
+    },
+    {
+      "id": "built-by",
+      "q": "Who built this?",
+      "a": "A team at U-Hackathon 2026 (AI Track), FLOW Summit Bangkok. It is a prototype built for U-Bot, not an official U-topia product.",
+      "tags": ["who", "built", "team", "hackathon", "official", "made"]
+    }
+  ]
+}

@@ -11,7 +11,7 @@
 - **U-Guard** คือ agent ใน U-Bot ที่**เช็กความเสี่ยงจาก supply (token unlock / emission) ก่อนเงินของผู้ใช้ขยับ** อธิบายเป็นภาษาไทย 3 บรรทัดพร้อมเสียง แล้วให้ผู้ใช้**อนุมัติเองทุกครั้ง** (บันทึกการอนุมัติบน Avalanche)
 - **Positioning:** *"The safety layer for U-Bot's agentic banking."* U-Bot สร้างบน Visa Intelligent Commerce ซึ่งเน้น spending control + approval workflow + trust signal และ U-Guard คือ trust signal ฝั่ง crypto
 - **ไม่ทายราคา** แต่ forecast **supply** ซึ่งเป็นตัวแปรเดียวที่รู้ล่วงหน้าได้จริง และ**ไม่ให้คำแนะนำการลงทุน** (ไทยต้องมีใบอนุญาตที่ปรึกษาสินทรัพย์ดิจิทัลจาก ก.ล.ต.)
-- **สถานะโค้ด:** backend core เขียนแล้วแต่**ยังไม่ได้ build/typecheck** · ยังไม่มี UI, API routes, auth (ดู §14)
+- **สถานะโค้ด (15 ต.ค. เย็น):** เว็บภาษาอังกฤษครบ 5 หน้า + login · agent harness ที่สลับโมเดลได้ (ยังไม่ผูกกับ Claude) · 11 tools · RAG + CAG · MCP server · eval 26 เคสผ่าน · build ผ่าน (ดู §17 ซึ่ง**แทนที่**ส่วนที่ขัดกันด้านล่าง)
 
 ---
 
@@ -413,25 +413,23 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
   5. ปิด: "safety layer ของ U-Bot บน Visa Intelligent Commerce"
 - **การเก็บคะแนนแต่ละเกณฑ์:** Execution (สด + fallback + วิดีโอ) · Practicality (ปัญหาจริงในปี 2026, เหรียญ EVM, ทำตามกฎ ก.ล.ต., ตรงกับ VIC/U-Bot) · UX (การ์ดเดียว ภาษาไทย มีเสียง) · Innovation (คะแนนแบบมีเงื่อนไข, 3 sponsor, บันทึกการอนุมัติ on-chain) · U-Bot (เป็น skill/sub-agent ของ orchestrator)
 
-## 14. สถานะและขั้นต่อไป
+## 14. สถานะและขั้นต่อไป (อัปเดต 15 ต.ค. เย็น)
 
-**ทำแล้ว**
-- โครง Next.js + deps (next 15.5, react 19, @anthropic-ai/sdk 0.134, zod 4, viem 2, typescript 5.9)
-- `src/lib/*` + `src/lib/agent/{tools,prompt,claude}.ts` ⚠️ **ยังไม่เคยรัน typecheck หรือ build**
-- fixtures (ชุดเดิม SUI/WLD/AVAX ยังต้องเปลี่ยน) · snapshot script · brand assets · เอกสาร 3 ไฟล์
+**ทำแล้ว ✅** (รายละเอียดใน §17)
+- เว็บภาษาอังกฤษ: `/` · `/login` · `/app` · `/dashboard` · `/method` + ปุ่ม U-Bot ลอยทุกหน้า · ผ่านการตรวจ responsive บน iPhone SE / 15 Pro / 15 Pro Max / iPad / desktop
+- Agent harness สลับโมเดลได้ (OpenAI-compatible / Claude / rules engine สำรอง) · 11 tools · compliance check · trace
+- RAG (unlock, ข่าว, odds, pulse) + CAG (FAQ/วิธีคิดคะแนน) · MCP server `/api/mcp`
+- Auth: demo account · email+password · Sign-In with Ethereum (ไม่ใช้ Supabase)
+- fixtures: ARB จากแหล่งจริง (snapshot) · ลบ SUI · ข่าว/odds/pulse จากข่าวจริงพร้อมลิงก์
+- `npm run typecheck` ✅ · `npm run build` ✅ · `npm run eval` 26/26 ✅ · `npm run responsive` ✅
 
-**ขั้นต่อไป (เรียงตามลำดับ ประมาณเวลา)**
-1. `npm run typecheck` แล้วแก้ error (15 นาที)
-2. เปลี่ยน fixtures เป็น ARB/WLD/AVAX/USDC ตามข้อมูลจริงใน PLAN §14 (30 นาที)
-3. `offline.ts` + `agent/index.ts` (router) (30 นาที)
-4. API routes: agent, protect, voice, portfolio, ticker (45 นาที)
-5. `/app` UI: หน้าจอโทรศัพท์ + แชต + RiskCard + ProposalCard + Agent Trace + avatar (2 ชั่วโมง)
-6. ทดสอบ end-to-end (offline → Claude → ใส่ key จริง) (30 นาที)
-7. `/dashboard` + `/api/forecast` (1 ชั่วโมง)
-8. Landing ขั้นต่ำ + Loader + Nav ticker (1.5 ชั่วโมง)
-9. Supabase auth + DB + โหมด demo (1–1.5 ชั่วโมง ต้องได้รับอนุญาตสร้าง project ก่อน)
-10. ใส่ key จริง: Tokenomist (snapshot), ElevenLabs, Fuji wallet + faucet (30 นาที)
-11. ซ้อม 3 รอบ + อัดวิดีโอสำรอง (1 ชั่วโมง)
+**ขั้นต่อไป (เรียงตามความสำคัญ)**
+1. **เลือกโมเดล + ใส่ key** (`LLM_*` หรือ `ANTHROPIC_API_KEY`) แล้วลองถามจริง 10 คำถามจาก demo script
+2. ขอ **Tokenomist key** → `npm run snapshot -- ARB WLD AVAX` → ตรวจรูปแบบ linear unlock ของ WLD (ดู §17.6)
+3. ใส่ **ElevenLabs key + voice id** (ทดสอบเสียงไทย) และ **Fuji wallet + faucet** (`DEMO_PRIVATE_KEY`)
+4. ตั้ง `AUTH_SECRET`, `MCP_API_KEY` · ซ้อมด้วย `DEMO_NOW=2026-10-16T07:00:00Z`
+5. ปรับ pitch: ARB บนเวทีจะเป็น "**เพิ่งปลดล็อกวันนี้**" (คะแนน medium 50) ไม่ใช่ "พรุ่งนี้"
+6. ซ้อม 3 รอบ + อัดวิดีโอสำรอง
 
 **ข้อควรรู้ด้าน environment:** sandbox เขียน `~/.npm` ไม่ได้ ให้ใช้ `npm_config_cache="$TMPDIR/npm-cache" npm install …`
 
@@ -454,3 +452,70 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
 - Vercel AI Gateway: https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api
 - Supabase Web3 auth: https://supabase.com/docs/guides/auth/auth-web3
 - ก.ล.ต.: https://www.sec.or.th/TH/pages/lawandregulations/digitalassetbusiness.aspx
+
+---
+
+## 17. สิ่งที่สร้างจริง (15 ต.ค. เย็น) · ส่วนนี้แทนที่ข้อความที่ขัดกันด้านบน
+
+> เปลี่ยนจากแผนเดิม 3 เรื่อง: (1) **ไม่ผูกกับ Claude** แล้ว ใช้โมเดลไหนก็ได้ (2) **หน้าเว็บเป็นภาษาอังกฤษทั้งหมด** (3) **Auth ทำเองในแอป** แทน Supabase
+
+### 17.1 หน้าเว็บ
+| Path | เนื้อหา |
+|---|---|
+| `/` | Hero + การ์ด ARB สด · ปัญหา (มีแหล่งอ้างอิง) · 3 signals · How it works · ผังเชื่อม U-Bot/MCP · Unlock radar · Trust · CTA · หน้าโหลดครั้งแรก (≤1.2 วิ, ข้ามถ้า reduced motion) |
+| `/login` | Demo account (ปุ่มเดียว) · email+password · Sign-In with Ethereum (แสดงเมื่อมีกระเป๋าในเบราว์เซอร์) |
+| `/app` | แชต U-Bot (skill U-Guard) · Beginner/Pro · risk card · proposal (อนุมัติ → receipt Avalanche) · ข่าวพร้อมเลขอ้างอิง · odds · pulse · Agent Trace · ฟังเสียง · 👍/👎 · แถบ wallet + สถานะการเชื่อมต่อ |
+| `/dashboard` | KPI 4 ช่อง · holdings ตามระดับความเสี่ยง · supply forecast (กราฟ + ตาราง + dilution calculator) · investor profit pressure · ปฏิทินเหตุการณ์ · market intel |
+| `/method` | สูตรคะแนน · แหล่งข้อมูล · วิธีทำงานของ agent · วิธีเรียก MCP · compliance |
+| ปุ่ม U-Bot ลอย | ทุกหน้ายกเว้น `/app`, `/login` · ผู้ที่ยังไม่ login ถาม FAQ/เหรียญได้ (ไม่มี wallet tools) |
+
+### 17.2 Agent harness (`src/lib/agent/index.ts`)
+**Guard → Plan + Act → Reflect → Observe**
+- `AGENT_PROVIDER=auto|openai|anthropic|rules` · `openai` = endpoint แบบ OpenAI-compatible ใดก็ได้ (Gemini, OpenAI, Typhoon, Groq, OpenRouter, Vercel AI Gateway, Ollama) · `anthropic` = Claude ผ่าน SDK ตรง · `rules` = planner แบบกำหนดผลตายตัว (ใช้เป็นตัวสำรองอัตโนมัติเมื่อ LLM ล่ม)
+- Reflect: compliance check → ให้ LLM เขียนใหม่ 1 ครั้ง → ถ้ายังไม่ผ่านใช้ template ที่ตรวจแล้ว
+
+### 17.3 Tools (11 ตัว, `src/lib/agent/tools.ts`)
+เดิม 7 ตัว + `get_market_news` · `get_event_odds` · `get_market_pulse` · `get_event_calendar` · ทุกตัวตรวจ input ด้วย zod และใช้ร่วมกันทั้ง chat และ MCP
+
+### 17.4 RAG + CAG
+- **RAG แบบ agentic:** agent เลือกเองว่าจะดึงอะไร · ข่าวจัดอันดับแบบ hybrid (คำค้น + ชื่อเหรียญ + ความใหม่) · ตัดข่าวที่ไม่เกี่ยวทิ้ง (ตอบว่า "ไม่พบข่าว" แทนการเดา) · ทุกข่าวมีเลข [n] ลิงก์ไปต้นฉบับ
+- **CAG:** ความรู้คงที่ (`data/knowledge/faq.json` ~2K tokens) ใส่ใน system prompt ที่ provider cache ได้ · rules engine ใช้ไฟล์เดียวกันจับคู่คำถาม
+- live: GDELT (ข่าว), Polymarket (odds), CoinGecko + Fear & Greed + Deribit DVOL (pulse) · offline: snapshot ของข่าวจริงพร้อมลิงก์และวันที่
+
+### 17.5 Guardrails และ Observability
+- Input guard: บล็อก seed phrase / private key · ปิดบัง email, เบอร์โทร, เลขบัตร, เลขบัตรประชาชน · flag prompt injection · จำกัดความยาว
+- Rate limit ทุก endpoint · CSRF (JSON + ตรวจ Origin) · security headers
+- Compliance (EN/TH): ห้ามแนะนำซื้อ/ขาย/ถือ, ห้ามทายราคา, ห้ามสัญญาผลตอบแทน · ตัวเลขทุกตัวต้องมาจากผลของ tool
+- Trace ทุกขั้น (guard, plan, tool, model, check) + log JSON ต่อ request + feedback 👍/👎
+- `npm run eval` 26 เคส (คะแนน, planner, end-to-end, compliance, guard, FAQ, MCP)
+
+### 17.6 ข้อมูลและข้อจำกัดที่ต้องรู้
+- **ARB:** snapshot จาก Coinotag (12 ต.ค., อ้าง Tokenomist): 92.65M (ทีม 56.13M + นักลงทุน 36.52M) = 1.56% ของ 5.95B · ราคา ~$0.199 · รอบถัดไป 16 พ.ย.–16 มี.ค. 2027
+- **วัน demo:** unlock เกิด 07:00 น. เวลาไทย → การ์ดขึ้น "Unlocked today" คะแนน **medium 50** · วันก่อนหน้าเป็น **high 58** · ซ้อมด้วย `DEMO_NOW`
+- **WLD:** sample (team เดิม) จำลองเป็น linear 30 วัน · ของจริงปลดล็อกรายวัน → หลัง `npm run snapshot` ต้องดูชื่อ field ของ linear ใน v5 แล้ว map ใน `src/lib/tokenomist.ts`
+- **AVAX:** sample · ผู้รับคือ Avalanche Foundation (KuCoin) → **low** เพราะขนาดเล็ก (0.30%) ไม่ใช่เพราะ "กองทุน ecosystem" · วันที่ยังเป็น placeholder
+- คะแนน v0.2 ยังไม่ backtest · ข่าว snapshot เป็นสรุปของเราพร้อมลิงก์ต้นฉบับ · wallet demo เป็น sample
+
+### 17.7 Auth
+- Session: cookie HttpOnly ลงลายเซ็น HMAC (7 วัน) · `npm start` ต้องมี `AUTH_SECRET`
+- Email: scrypt · ล็อก 15 นาทีหลังผิด 5 ครั้ง · เก็บใน `data/runtime/users.json` (ใช้ได้บน localhost/server เดียว; ถ้า deploy serverless ให้ย้ายไป Postgres/Supabase)
+- Wallet: SIWE ด้วย `viem/siwe` · nonce ใช้ได้ครั้งเดียว · ตรวจ domain และเวลา (รองรับ EOA; smart account ต้องใช้ `publicClient.verifySiweMessage`)
+
+### 17.8 MCP (`/api/mcp`)
+Streamable HTTP (stateless, JSON) ด้วย `@modelcontextprotocol/sdk` · `Authorization: Bearer $MCP_API_KEY` · ไม่มี key: เปิดใน dev / ปิดใน production · ตรวจ Origin กัน DNS rebinding
+
+### 17.9 API ที่มีจริง
+| Method | Path | หมายเหตุ |
+|---|---|---|
+| POST | `/api/agent` | `{message, history?, mode?: "beginner"\|"pro"}` → `AgentResult` (ไม่ login = public scope) |
+| POST | `/api/scan` | ต้อง login |
+| POST | `/api/protect` | `{proposalId, decision}` เฉพาะ proposal ของผู้ใช้เอง |
+| POST | `/api/voice` | `{text}` → audio/mpeg หรือ 204 (ใช้เสียงเบราว์เซอร์) |
+| POST | `/api/feedback` | `{requestId, rating}` |
+| POST | `/api/auth/demo` · `/login` · `/register` · `/logout` · `/wallet` | |
+| GET | `/api/auth/me` · `/api/auth/nonce` | |
+| GET/POST/DELETE | `/api/mcp` | MCP |
+(`/api/forecast`, `/api/ticker`, `/api/portfolio` ในแผนเดิมไม่ทำแยก: หน้าเว็บดึงข้อมูลฝั่ง server โดยตรง)
+
+### 17.10 ENV ใหม่
+`AGENT_PROVIDER` · `LLM_BASE_URL` · `LLM_API_KEY` · `LLM_MODEL` · `LLM_LABEL` · `AUTH_SECRET` · `DEMO_LOGIN` · `DATA_DIR` · `MCP_API_KEY` · `NEWS_SOURCE` · `ODDS_SOURCE` · `DEMO_NOW` (ดู `.env.example`)

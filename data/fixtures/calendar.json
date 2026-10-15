@@ -1,0 +1,19 @@
+{
+  "_note": "Scheduled macro events. FOMC dates from the Federal Reserve calendar (via the Chicago Fed). Token unlocks are merged in from Tokenomist data at runtime.",
+  "events": [
+    {
+      "date": "2026-10-28",
+      "title": "Fed rate decision (FOMC Oct 27-28)",
+      "kind": "macro",
+      "importance": "high",
+      "source": { "name": "Fed calendar", "url": "https://www.chicagofed.org/utilities/about-us/federal-reserve-calendars" }
+    },
+    {
+      "date": "2026-12-09",
+      "title": "Fed rate decision + projections (FOMC Dec 8-9)",
+      "kind": "macro",
+      "importance": "high",
+      "source": { "name": "Fed calendar", "url": "https://www.chicagofed.org/utilities/about-us/federal-reserve-calendars" }
+    }
+  ]
+}

@@ -1,11 +1,13 @@
 {
-  "_sample": "Illustrative prices and 24h volumes. Set MARKET_SOURCE=live to read CoinGecko instead.",
-  "asOf": "2026-10-15T00:00:00Z",
+  "_note": "Offline prices and 24h volumes. BTC: BGeometrics daily report (12 Oct 2026). ARB: price implied by Coinotag (12 Oct 2026). WLD: CoinGecko page (date not shown). Everything else, including all volumes, is illustrative. Set MARKET_SOURCE=live to read CoinGecko.",
+  "asOf": "2026-10-12T00:00:00Z",
   "usdThb": 32.5,
   "tokens": {
-    "SUI": { "priceUsd": 1.005, "volume24hUsd": 620000000 },
-    "WLD": { "priceUsd": 0.485, "volume24hUsd": 140000000 },
-    "AVAX": { "priceUsd": 9.69, "volume24hUsd": 310000000 },
-    "USDC": { "priceUsd": 1.0, "volume24hUsd": 9000000000 }
+    "ARB": { "priceUsd": 0.199, "volume24hUsd": 350000000, "change24hPct": null },
+    "WLD": { "priceUsd": 0.27, "volume24hUsd": 120000000, "change24hPct": null },
+    "AVAX": { "priceUsd": 9.69, "volume24hUsd": 310000000, "change24hPct": null },
+    "ETH": { "priceUsd": 2650, "volume24hUsd": 18000000000, "change24hPct": null },
+    "BTC": { "priceUsd": 81900, "volume24hUsd": 38000000000, "change24hPct": -2.2 },
+    "USDC": { "priceUsd": 1.0, "volume24hUsd": 9000000000, "change24hPct": 0 }
   }
 }

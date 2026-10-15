@@ -1,0 +1,21 @@
+{
+  "_note": "Snapshot of prediction-market pricing as reported by Crypto Briefing (30 Sep 2026). ODDS_SOURCE=live reads Polymarket's public Gamma API instead.",
+  "asOf": "2026-09-30T00:00:00Z",
+  "mode": "snapshot",
+  "markets": [
+    {
+      "id": "fed-decision-oct-2026",
+      "question": "Fed decision at the Oct 27-28, 2026 FOMC meeting",
+      "outcomes": [
+        { "name": "No change", "probability": 0.61 },
+        { "name": "Rate hike", "probability": 0.37 }
+      ],
+      "provider": "Polymarket",
+      "url": "https://polymarket.com",
+      "reportedBy": { "name": "Crypto Briefing", "url": "https://cryptobriefing.com/polymarket-october-fed-rate-hike-odds/" },
+      "endDate": "2026-10-28",
+      "volumeUsd": null,
+      "topics": ["fed", "rates", "fomc", "macro", "btc", "eth", "crypto", "bitcoin", "ethereum"]
+    }
+  ]
+}

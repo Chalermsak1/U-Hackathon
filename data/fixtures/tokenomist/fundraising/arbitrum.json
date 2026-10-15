@@ -1,0 +1,41 @@
+{
+  "_note": "Publicly reported Offchain Labs rounds (total $123.7M). Only the Series B valuation is included; verify with Tokenomist live data.",
+  "metadata": {
+    "queryDate": "2026-10-12T00:00:00Z",
+    "mode": "snapshot"
+  },
+  "status": true,
+  "data": {
+    "tokenId": "arbitrum",
+    "tokenName": "Arbitrum",
+    "tokenSymbol": "ARB",
+    "totalAmountRaised": 123700000,
+    "investorReleasedPercentage": null,
+    "fundingRounds": [
+      {
+        "fundingRound": "Series B",
+        "fundingDate": "2021-08-31T00:00:00Z",
+        "amountRaised": 100000000,
+        "valuation": 1200000000,
+        "pricePerToken": null,
+        "numberOfInvestors": null
+      },
+      {
+        "fundingRound": "Series A",
+        "fundingDate": "2021-04-01T00:00:00Z",
+        "amountRaised": 20000000,
+        "valuation": null,
+        "pricePerToken": null,
+        "numberOfInvestors": null
+      },
+      {
+        "fundingRound": "Seed",
+        "fundingDate": "2019-01-01T00:00:00Z",
+        "amountRaised": 3700000,
+        "valuation": null,
+        "pricePerToken": null,
+        "numberOfInvestors": null
+      }
+    ]
+  }
+}
