@@ -163,7 +163,10 @@ export default function AlertsPage() {
               )}
               {watch?.quietHours && (
                 <small className="note" style={{ display: "block" }}>
-                  ช่วง {watch.quietHours.start}:00–{watch.quietHours.end}:00 แจ้งเฉพาะเรื่องเสี่ยงสูง · ไม่เกิน {watch.maxPerDay} ครั้งต่อวัน · ไม่แจ้งซ้ำเรื่องเดิม
+                  {watch.quietHours.start === watch.quietHours.end
+                    ? "ไม่มีช่วงเวลาเงียบ"
+                    : `ช่วง ${watch.quietHours.start}:00–${watch.quietHours.end}:00 แจ้งเฉพาะเรื่องเสี่ยงสูง`}{" "}
+                  · ไม่เกิน {watch.maxPerDay} ครั้งต่อวัน · ไม่แจ้งซ้ำเรื่องเดิม
                 </small>
               )}
             </span>

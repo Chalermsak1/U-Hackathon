@@ -89,11 +89,14 @@ export async function runAlerts(
   const typeOf = (r: AlertRule): AlertType => r.type ?? "unlock";
   const ctx = newContext({ userId, scope: "user", requestId: randomUUID(), now, locale: "th" });
   const skipped: WatchSummary["skipped"] = [];
-  const outcomes = new Map<string, AlertOutcome>();
-  const note = (r: AlertRule, fired: boolean, reason: string) => {
+  const outcomes = new Map<string, AlertOutcome & { rank: number }>();
+  // A rule over several tokens keeps its most telling reason: fired, then a real candidate held
+  // back (already sent, quiet hours, daily cap), then "nothing matched".
+  const note = (r: AlertRule, fired: boolean, reason: string, rank = fired ? 3 : 1) => {
     const prev = outcomes.get(r.id);
-    if (!prev || (fired && !prev.fired)) {
+    if (!prev || rank > prev.rank) {
       outcomes.set(r.id, {
+        rank,
         ruleId: r.id,
         symbol: r.symbol,
         fired,
@@ -218,13 +221,13 @@ export async function runAlerts(
     const { rule, ...event } = c;
     if (mine.some((e) => e.dedupeKey === c.dedupeKey)) {
       skipped.push({ title: c.title, reason: "แจ้งไปแล้ว (กันแจ้งซ้ำ)" });
-      note(rule, false, `${c.symbol}: แจ้งไปแล้ว`);
+      note(rule, false, `${c.symbol}: แจ้งไปแล้ว`, 2);
     } else if (quiet && c.severity !== "high") {
       skipped.push({ title: c.title, reason: `ช่วงเวลาเงียบ ${config.watch.quietStartHour}:00–${config.watch.quietEndHour}:00 · จะแจ้งรอบถัดไป` });
-      note(rule, false, `${c.symbol}: ช่วงเวลาเงียบ จะแจ้งรอบถัดไป`);
+      note(rule, false, `${c.symbol}: ช่วงเวลาเงียบ จะแจ้งรอบถัดไป`, 2);
     } else if (today >= config.watch.maxPerDay) {
       skipped.push({ title: c.title, reason: `ครบ ${config.watch.maxPerDay} ครั้งต่อวันแล้ว · จะแจ้งพรุ่งนี้` });
-      note(rule, false, `${c.symbol}: ครบจำนวนแจ้งเตือนต่อวันแล้ว`);
+      note(rule, false, `${c.symbol}: ครบจำนวนแจ้งเตือนต่อวันแล้ว`, 2);
     } else {
       fired.push({ ...event, id: randomUUID(), ownerId: userId, firedAt: new Date(now).toISOString() });
       note(rule, true, c.title);
@@ -268,5 +271,11 @@ export async function runAlerts(
 
   const summary: WatchSummary = { ranAt: new Date(now).toISOString(), trigger, fired, skipped };
   store.lastWatch.set(userId, summary);
-  return { outcomes: rules.map((r) => outcomes.get(r.id)!), summary };
+  return {
+    outcomes: rules.map((r) => {
+      const o = outcomes.get(r.id)!;
+      return { ruleId: o.ruleId, symbol: o.symbol, fired: o.fired, reason: o.reason, channelNote: o.channelNote };
+    }),
+    summary,
+  };
 }

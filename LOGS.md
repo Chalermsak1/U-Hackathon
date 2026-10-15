@@ -207,6 +207,35 @@ Built in a separate session without seeing `feat/app-ui`.
 - **Problem:** `next dev` failed to compile (`node:crypto` in the edge bundle via `instrumentation.ts → watch → alerts → agent`). The early-return guard doesn't stop webpack bundling; **fix:** Next's documented `if (NEXT_RUNTIME === "nodejs") { await import(...) }` block. Production builds were not affected.
 - **Checks:** typecheck ✅ · eval **30/30** ✅ (2 new MCP cases: no acting for a user without the key; delegated proposal is owned by and delivered to the user). In this sandbox `tsx` can't open its IPC pipe, so evals run with `node --import tsx evals/run.ts`.
 
+### Oct 16, ~07:00 · Ported the WIP branch into main's code (branch `feat/merge-app-ui-agentic`)
+- **Found:** `npm run dev` on main returned 500 on every page (`node:crypto` reached the edge bundle through `src/instrumentation.ts`).
+  - nathirad's fix arrived in PR #2 (merged).
+  - This branch restarts from that main.
+- **Ported from `wip/v2-freshness-drift-alerts`:** it was built on the pre-merge code, so its features were rewritten for main instead of merged.
+- **Freshness:**
+  - "ณ HH:MM" on unlock cards, token-page sections, trade plans and the portfolio.
+  - `as_of_th` and `stale` in tool results, plus a prompt rule to quote them.
+  - Last good live copy when Tokenomist or CoinGecko fails, labelled "อาจไม่ล่าสุด".
+- **Portfolio drift:**
+  - Per-user target mix (`data/fixtures/targets.json` as the default), editable on `/terminal/portfolio`.
+  - `/api/portfolio/targets` GET/PUT.
+  - `check_portfolio_drift` tool, so MCP now has 12 tools.
+  - Drift card in chat; "พอร์ตเบี้ยวจากเป้าไหม" is understood by the rules engine.
+- **Alert engine:**
+  - Rule types: unlock, drift, news (`*` = every holding).
+  - Dedupe: unlock and news alerts go out once; drift at most once a day.
+  - Quiet hours 22:00–07:00 Bangkok (high severity only) and a daily cap of 5.
+  - High-severity news needs a second source.
+  - One U-Bot message per run, with cards and proposals.
+  - Alert history and held-back reasons on `/terminal/alerts`.
+  - `GET /api/watch` with Bearer `CRON_SECRET` for Vercel Cron, plus `vercel.json`.
+- **Checked:**
+  - typecheck ✅ · eval 32/32 ✅ · build ✅ · responsive 80/80 ✅
+  - `next dev`: all 17 pages 200 ✅
+  - Alerts at 06:42 (quiet hours): only the 2 high ones went out; a second run sent nothing new.
+  - With a cap of 2: 2 sent, the rest deferred to tomorrow.
+  - Cron: 401 without the secret.
+
 ---
 
 ## Adding the next entry
