@@ -4,17 +4,26 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Avatar, topLevel } from "@/components/Avatar";
 import { ChatThread } from "@/components/ChatThread";
+import { Icon } from "@/components/Icon";
 import { MicButton } from "@/components/MicButton";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
 
-const SUGGESTIONS = ["Should I buy 5,000 THB of ARB now?", "Scan my portfolio", "How risky is my portfolio?", "Is AVAX worrying?", "What's in the news for my coins?", "Explain FDV simply"];
+const SUGGESTIONS = [
+  "Should I buy 5,000 THB of ARB now?",
+  "Scan my portfolio",
+  "How risky is my portfolio?",
+  "Is AVAX worrying?",
+  "What's in the news for my coins?",
+  "Explain FDV simply",
+];
 
 function AgentInner() {
   const params = useSearchParams();
-  const { messages, busy, error, setError, levels, last, ask, scan, questionFor } = useAgentChat();
+  const { messages, busy, error, setError, levels, last, ask, scan, checkScreenshot, questionFor } = useAgentChat();
   const [input, setInput] = useState("");
   const asked = useRef(false);
+  const fileInput = useRef<HTMLInputElement>(null);
 
   // A question passed from the home page or the ⌘K search runs once on arrival.
   useEffect(() => {
@@ -31,6 +40,27 @@ function AgentInner() {
     else ask(t);
   };
 
+  const handleFile = (file?: File | null) => {
+    if (!file) return;
+    checkScreenshot(file, input.trim() || undefined);
+    setInput("");
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.startsWith("image/")) {
+        const file = items[i].getAsFile();
+        if (file) {
+          e.preventDefault();
+          handleFile(file);
+          return;
+        }
+      }
+    }
+  };
+
   return (
     <div className="agent-layout">
       <section className="agent-chat" aria-label="Chat with U-Bot">
@@ -44,6 +74,16 @@ function AgentInner() {
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
         {error && <p className="error" style={{ padding: "0 14px" }}>{error}</p>}
         <div className="chips">
+          <button
+            type="button"
+            className="chip"
+            style={{ borderColor: "var(--teal)", color: "var(--teal)" }}
+            onClick={() => fileInput.current?.click()}
+            disabled={busy}
+            title="Upload a trading signal, chart or portfolio screenshot to check"
+          >
+            📸 Check Signal Screenshot
+          </button>
           {SUGGESTIONS.map((s) => (
             <button key={s} className="chip" onClick={() => send(s)} disabled={busy}>
               {s}
@@ -57,8 +97,36 @@ function AgentInner() {
             send(input);
           }}
         >
+          <input
+            type="file"
+            ref={fileInput}
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              handleFile(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
+          <button
+            type="button"
+            className="btn"
+            style={{ padding: "0 10px", display: "inline-flex", alignItems: "center", gap: 4 }}
+            onClick={() => fileInput.current?.click()}
+            disabled={busy}
+            title="Upload screenshot or paste image (Cmd+V)"
+          >
+            <Icon name="image" size={16} />
+          </button>
           <label htmlFor="agent-ask" className="sr-only">Ask U-Bot</label>
-          <input id="agent-ask" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask about a token, your portfolio or unlocks…" autoComplete="off" maxLength={500} />
+          <input
+            id="agent-ask"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onPaste={handlePaste}
+            placeholder="Ask a question or paste screenshot (Cmd+V)…"
+            autoComplete="off"
+            maxLength={500}
+          />
           <MicButton onText={send} onError={setError} disabled={busy} />
           <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>Send</button>
         </form>
