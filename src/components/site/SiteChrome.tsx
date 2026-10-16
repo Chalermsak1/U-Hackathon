@@ -5,17 +5,15 @@ export function SiteNav({ signedIn = false }: { signedIn?: boolean }) {
   return (
     <header className="site-nav">
       <div className="container">
-        <Logo href="/en" />
+        <Logo href="/" />
         <nav aria-label="Main">
-          <a href="/en#how">How it works</a>
-          <a href="/en#signals">Signals</a>
-          <Link href="/method">Method</Link>
-          <Link href="/terminal">Terminal</Link>
           <Link href="/">Home</Link>
+          <Link href="/terminal">Open the app</Link>
+          <Link href="/method">Method</Link>
         </nav>
         <div className="actions">
           {signedIn ? (
-            <Link href="/assistant" className="btn btn-primary btn-sm">
+            <Link href="/terminal" className="btn btn-primary btn-sm">
               Open app
             </Link>
           ) : (
@@ -39,7 +37,7 @@ export function SiteFooter() {
     <footer className="footer">
       <div className="container">
         <div className="row" style={{ gap: 16 }}>
-          <Logo href="/en" />
+          <Logo href="/" />
           <span>Built for U-Bot at U-Hackathon 2026 · FLOW Summit Bangkok</span>
         </div>
         <p style={{ margin: 0 }}>

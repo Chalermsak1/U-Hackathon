@@ -55,7 +55,7 @@ export const config = {
     source: env("MARKET_SOURCE", "fixture") as "live" | "fixture",
   },
   intel: {
-    news: env("NEWS_SOURCE", "fixture") as "live" | "fixture",
+    news: env("NEWS_SOURCE", "fixture") as "live" | "rss" | "fixture", // rss = news feeds + curated snapshot; live = GDELT
     odds: env("ODDS_SOURCE", "fixture") as "live" | "fixture",
   },
   elevenlabs: {

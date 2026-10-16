@@ -263,7 +263,7 @@ export function PortfolioCharts({ rows, totalThb }: { rows: ChartRow[]; totalThb
               </ol>
             )}
             <p className="note" style={{ margin: "8px 0 0" }}>
-              Today&apos;s holdings at each day&apos;s price (CoinGecko daily prices
+              Today&apos;s holdings at each day&apos;s closing price ({h.providers.join(" + ") || "no price history"}
               {h.flat.length ? `; ${h.flat.join(", ")} held at today's price` : ""}) · stablecoins at $1 · events from Tokenomist and the Fed calendar
             </p>
           </>

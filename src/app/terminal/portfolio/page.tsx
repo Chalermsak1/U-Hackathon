@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DriftCardView } from "@/components/Cards";
 import { CountUp, Spotlight } from "@/components/fx";
+import { PortfolioCharts } from "@/components/PortfolioCharts";
 import { LEVEL_LABEL, thb, unlockWhen } from "@/lib/format";
 import { openReport, type ReportResult } from "@/lib/report";
 import type { DriftReport, Holding, RiskCard } from "@/lib/types";
@@ -124,6 +125,7 @@ export default function PortfolioPage() {
           </small>
         </div>
       </div>
+      <PortfolioCharts rows={data.rows} totalThb={data.totalThb} />
       <div className="table-wrap">
         <table className="t-table">
           <thead>

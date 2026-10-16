@@ -132,11 +132,11 @@ export function Landing() {
             </a>
           ))}
         </nav>
-        <Link href="/en" className="lp-lang" title="Platform overview: signals, U-Bot/MCP, trust">
-          Platform
+        <Link href="/method" className="lp-lang" title="How the score is computed, the data and the agent">
+          Method
         </Link>
         <Link href="/terminal" className="lp-cta">
-          Enter the Terminal →
+          Open the app →
         </Link>
       </header>
 
@@ -161,7 +161,7 @@ export function Landing() {
           </p>
           <div className="lp-buttons">
             <Link href="/terminal" className="lp-btn lp-btn-primary">
-              Enter the Terminal →
+              Open the app →
             </Link>
             <Link href="/terminal/agent" className="lp-btn">
               Talk to U-Bot
@@ -345,7 +345,7 @@ export function Landing() {
           <p>Open the Terminal and ask about your first token</p>
           <div className="lp-buttons" style={{ justifyContent: "center" }}>
             <Link href="/terminal" className="lp-btn lp-btn-primary">
-              Enter the Terminal →
+              Open the app →
             </Link>
             <Link href="/terminal/agent" className="lp-btn">
               Talk to U-Bot
@@ -354,8 +354,8 @@ export function Landing() {
         </Reveal>
         <footer className="lp-footer">
           U-Guard · U-Hackathon 2026 · Decision support, not investment advice ·{" "}
-          <Link href="/en" style={{ color: "var(--teal-2)" }}>
-            Platform overview
+          <Link href="/method" style={{ color: "var(--teal-2)" }}>
+            Method &amp; data
           </Link>
         </footer>
       </section>
