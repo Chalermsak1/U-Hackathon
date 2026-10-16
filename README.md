@@ -26,32 +26,31 @@ U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 
 ## Pages
 
-Two front-ends share one backend (agent, tools, data, auth).
-
-**Main app** (the stage demo, English UI; the agent answers in Thai when asked in Thai). It signs the browser into the demo account automatically.
+One app, one menu that follows an investor's day. It signs the browser into the demo account automatically. The UI is English; ask U-Bot in Thai and it answers in Thai (with voice).
 
 | Path | Purpose |
 |---|---|
-| `/` | Landing: loader, pill nav, GuardWatch hero, problem numbers, features, demo cards, how it works, FAQ |
-| `/terminal` | Nansen-style web app in our own style: overview, U-Bot AI agent, token screener (25 tokens), token page with a 6-month supply forecast and a trade ticket, unlock calendar, portfolio, alerts with a U-Bot inbox |
-| `/terminal/trade` | Trade: the user picks token, side and amount; U-Bot drafts the plan (size, stop-loss, what-if rows), U-Guard checks it, the user approves a paper order |
+| `/` | Landing: GuardWatch hero (live scores), problem numbers, features, how it works, FAQ · "Open the app" |
+| `/terminal` | **Today**: ask U-Bot, the four steps (Check → Plan → Approve → Stay alerted), portfolio at risk, decisions waiting, "coming up for your money" |
+| `/terminal/agent` | **Ask U-Bot**: the agent with risk cards, drift card, proposals, voice and the Agent Trace |
+| `/terminal/tokens` | **Token screener** (Tokenomist-style table): top 40 tokens by market cap, live prices, float, next unlock (date, size, value, recipient), unlock risk grade, 7/30/60-day windows, sort, search |
+| `/terminal/tokens/[symbol]` | Token page: risk card, 6-month supply forecast, allocations, fundraising, trade ticket |
+| `/terminal/unlocks` | Unlock calendar: analysed tokens, market unlocks, Fed dates |
+| `/terminal/news` | **News**: live headlines (Cointelegraph, CoinDesk, Decrypt) tagged by token and topic, unlock watch, curated picks, "what does this mean for me?" |
+| `/terminal/portfolio` | Portfolio: weights vs your **target mix** (drift), unlock risk, dilution, charts, editable targets, PDF |
+| `/terminal/plan` | **My plan**: the next 30 days on one dated timeline (unlocks of your coins, daily releases, Fed dates, DCA buys, decisions, active rules, stop-losses), each with a next step · save as PDF |
+| `/terminal/trade` | Trade: U-Bot drafts the plan (size, stop-loss, what-if rows), U-Guard checks it, the user approves a paper order |
 | `/terminal/invest` | Invest: five-question risk profile → adjustable model portfolio (sample data) → U-Guard checks the crypto part and DCA dates → approve |
+| `/terminal/alerts` | Alert rules, decisions, U-Bot inbox (bell on every page) |
+| `/method` | Score formula, data sources, agent architecture, MCP usage, compliance |
 | `/app` | Stage demo only (not in the menus): U-topia phone screen with U-Bot chat |
 | `/report` | An A4 report to save as PDF |
 
-**English app** (linked from the landing's `EN` button and the terminal sidebar).
+Also: `/login` (demo account · email/password · Sign-In with Ethereum) and `/en` (platform overview). `/assistant` and `/dashboard` redirect into the app. The app installs to a phone's home screen (web app manifest).
 
-| Path | Purpose |
-|---|---|
-| `/en` | Platform: problem, three signals, how it works, U-Bot/MCP integration, unlock radar, trust |
-| `/login` | Demo account · email/password · wallet (Sign-In with Ethereum) |
-| `/assistant` | U-Bot chat with the U-Guard skill: risk cards, news with citations, odds, approvals, agent trace, voice (sign-in required) |
-| `/dashboard` | Holdings by unlock risk, supply forecast + dilution calculator, investor profit pressure, events, market intel (sign-in required) |
-| `/method` | Score formula, data sources, agent architecture, MCP usage, compliance |
+### Hosting (Vercel)
 
-The floating **U-Bot** bubble on `/en`, `/method` and 404 pages answers visitors without signing in.
-
-Not yet tested with real keys: Claude, ElevenLabs (TTS and STT), Fuji, Tokenomist. Alert rules and proposals live in memory.
+Each route is its own serverless function, so the in-memory store (U-Bot inbox, proposals, plans, alert rules) is shared through **Upstash Redis** when `KV_REST_API_URL`/`KV_REST_API_TOKEN` (Vercel's Upstash integration) or `UPSTASH_REDIS_REST_URL`/`_TOKEN` are set (`withStore()` in `src/lib/store.ts`). Without them, run it on one Node server (`npm run build && npm start`). Set `TOKENOMIST_API_KEY`, `MCP_API_KEY`, `AUTH_SECRET`, `MARKET_SOURCE=live`, `NEWS_SOURCE=rss`, and optionally `ELEVENLABS_API_KEY`, an LLM key and `DEMO_PRIVATE_KEY` (Fuji testnet).
 
 ## Run it
 
@@ -99,6 +98,8 @@ npm run responsive -- --webkit   # Safari engine (npx playwright install webkit 
 
 Offline data lives in `data/fixtures` and is labelled in the UI: **Snapshot** = real data captured on the date shown (ARB, WLD and AVAX unlocks, daily emission, allocations and funding from the Tokenomist API on 16 Oct; news, odds, pulse), **Sample** = illustrative (prices, demo wallet). `npm run snapshot -- ARB WLD AVAX` refreshes the Tokenomist fixtures (in a sandboxed shell, prefix `NODE_USE_ENV_PROXY=1` so Node's fetch uses the proxy).
 
+**Live** (with keys / `MARKET_SOURCE=live`, `NEWS_SOURCE=rss`): Tokenomist API v5 (token list of 650+ tokens, unlock events, daily emission, allocations, fundraising; ARB, WLD and AVAX scored in full, the screener's top 40 get their next cliff), prices and 24h change from Hyperliquid's public API, spot volume and market data from CoinGecko (cached 10 minutes), headlines from Cointelegraph, CoinDesk and Decrypt RSS. Calls are rate-limited and cached so a burst never trips the APIs; on failure the app falls back to the labelled snapshot.
+
 The v5 unlock-events endpoint lists cliffs only. Continuous releases (WLD ~2.9M a day, AVAX staking rewards, the ARB DAO treasury) come from daily emission, which `getUnlockEvents` folds into one linear event (cliff days are skipped, so nothing is counted twice).
 
-Stack: Next.js 15 · React 19 · TypeScript · plain CSS · zod · Claude (Anthropic SDK, default) or any OpenAI-compatible model · Tokenomist API · ElevenLabs · Avalanche (viem) · @modelcontextprotocol/sdk · Playwright (dev) · Supabase (post-hackathon).
+Stack: Next.js 15 · React 19 · TypeScript · plain CSS · zod · Claude (Anthropic SDK, default) or any OpenAI-compatible model · Tokenomist API · ElevenLabs · Avalanche (viem) · @modelcontextprotocol/sdk · Playwright (dev) · Hyperliquid + CoinGecko (prices) · RSS news · Upstash Redis (optional, hosting) · Supabase (post-hackathon).

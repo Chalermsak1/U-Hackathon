@@ -217,6 +217,18 @@ Built in a separate session without seeing `feat/app-ui`.
 - **Problem:** live allocations list "Arbitrum DAO Treasury" twice → duplicate React keys. **Fix:** index keys on the allocation table; the risk card merges recipients with the same name.
 - **Checks:** typecheck ✅ · eval 30/30 ✅ · stand-in over MCP: HIGH 67, "Tokenomist live", proposal in the inbox ✅ · every page checked for Thai text ✅ (only "฿").
 
+### Oct 16, ~09:10–11:45 · Submission day: one app for the investor's day
+- **Deadline found on the event slides:** submissions close **14:00**; judges open a public repo, a hosted demo website ("the real product, not just a landing page") and a pitch deck. Finalists present at 20:00, the minute ARB unlocks. A Tokenomist founder is on the jury. The deck is drafted in a parallel session.
+- **Why the site felt disjointed:** two apps (the terminal and the older `/assistant` `/dashboard` `/en`) with different styles and a menu grouped by implementation. **Now:** one menu by the investor's day (Start · Markets · My money · Help); `/assistant` and `/dashboard` redirect into the app; landing says "Open the app".
+- **Portfolio drift** ported from the v2 backup onto today's agent (tool `check_portfolio_drift`, 12 tools, card, editable targets).
+- **Token screener** rebuilt like Tokenomist's tables: top 40 by market cap from the live list, next cliff per token (one call each, spaced), full scores for tracked tokens, size grade for the rest.
+- **My plan** (30-day dated timeline + PDF) and **News** (live RSS from Cointelegraph, CoinDesk, Decrypt; tagged; "what does this mean for me?").
+- **Problem:** CoinGecko's free API answered 429 (shared IP), so prices fell back to sample and ARB jumped from 58 back to 67. **Fix:** prices and 24h change from Hyperliquid's public API (one call, 30 s cache); CoinGecko only for spot volume and market data, every 10 minutes, keeping the last good answer. Live ARB score today: HIGH 58 (volume ~$229M/day makes the unlock ~0.08 days of volume); the hero and the stage script now follow the live number.
+- **Problem:** GDELT news timed out (8 s). **Fix:** RSS feeds (~0.3 s each), `NEWS_SOURCE=rss`.
+- **Hosting:** on Vercel each route is its own function, so the inbox, proposals and plans would not be shared. `withStore()` syncs the store through Upstash Redis when its variables are set; a no-op otherwise. The Vercel connector can't create projects here (403), so the project is created in the dashboard.
+- **Landing:** the hero heading is sized to its column (it ran into the card at 92 px); technology logos 1.45× in 92 px tiles.
+- **Checks:** typecheck ✅ · eval **31/31** ✅ (new: drift question).
+
 ---
 
 ## Adding the next entry

@@ -1,7 +1,8 @@
 # Stage demo · 3 minutes
 
 **Story:** U-Bot is about to move your money. U-Guard checks first.
-**Today's real case:** 92.65M ARB unlocks **tonight at 20:00 Bangkok** (13:00 UTC), 61% to the team and 39% to investors. Data: Tokenomist API (live, with a saved snapshot as fallback).
+**Today's real case:** 92.65M ARB unlocks **at 20:00 Bangkok** (13:00 UTC), 61% to the team and 39% to investors. Data: Tokenomist API (live, with a saved snapshot as fallback). **Finalists present at 20:00: the unlock happens while we are on stage.**
+**Scores are live:** they move with live prices and trading volume (ARB was HIGH 58 this morning; 67 on the overnight snapshot). Say the number on screen, not a memorised one.
 **Language:** the app UI is English. Ask in Thai and the agent replies in Thai (voice too).
 
 Plan for the whole day (keys, tests, rehearsal): [DEMO-DAY-PLAN.md](DEMO-DAY-PLAN.md).
@@ -21,9 +22,10 @@ Open these, left to right, then don't touch the server again:
 |---|---|
 | 1 | `http://localhost:3000/` landing |
 | 2 | Terminal window in the repo folder with `npm run ubot` typed (not run yet) |
-| 3 | `http://localhost:3000/terminal` (the bell is top right) |
-| 4 | `http://localhost:3000/terminal/tokens/ARB` |
-| 5 | `http://localhost:3000/terminal/agent` |
+| 3 | `http://localhost:3000/terminal` (Today; the bell is top right) |
+| 4 | `http://localhost:3000/terminal/tokens` (Token screener) |
+| 5 | `http://localhost:3000/terminal/plan` (My plan) |
+| 6 | `http://localhost:3000/terminal/agent` |
 
 Checklist:
 - [ ] `DEMO_NOW` is **not** set (real clock)
@@ -47,21 +49,21 @@ Checklist:
 **Do:** run `npm run ubot`, press Enter four times.
 1. Connect → `u-guard 0.3.0`
 2. `tools/list` → 12 tools
-3. `assess_unlock_risk ARB ฿5,000` → **HIGH 67/100**, three reasons, "data: Tokenomist live"
+3. `assess_unlock_risk ARB ฿5,000` → **HIGH** (live score), three reasons, "data: Tokenomist live"
 4. `propose_protection` → proposal "Pause auto-buys of ARB through the unlock window", "Delivered to demo-user's U-Bot inbox"
 
-**Say (EN):** "The user asks U-Bot to buy five thousand baht of ARB. Before any money moves, U-Bot calls U-Guard over MCP, the open standard agents use for tools. U-Guard scores the unlock 67 out of 100, high, and proposes a rule. It doesn't act on its own."
-**พูด (TH):** "ผู้ใช้สั่ง U-Bot ซื้อ ARB ห้าพันบาท ก่อนเงินขยับ U-Bot ถาม U-Guard ผ่าน MCP ได้คะแนน 67 เสี่ยงสูง และเสนอกฎป้องกัน แต่ไม่ทำเองเด็ดขาด"
+**Say (EN):** "The user asks U-Bot to buy five thousand baht of ARB. Before any money moves, U-Bot calls U-Guard over MCP, the open standard agents use for tools. U-Guard scores the unlock high, from live Tokenomist data, and proposes a rule. It doesn't act on its own."
+**พูด (TH):** "ผู้ใช้สั่ง U-Bot ซื้อ ARB ห้าพันบาท ก่อนเงินขยับ U-Bot ถาม U-Guard ผ่าน MCP ได้ระดับเสี่ยงสูงจากข้อมูล Tokenomist สด และเสนอกฎป้องกัน แต่ไม่ทำเองเด็ดขาด"
 
 ### 3 · The user decides (1:05 – 1:35) · tab 3, terminal
 **Do:** click the bell → "U-BOT ALERT" with the ARB card → **Listen** (voice) → **Approve** → receipt link.
 **Say (EN):** "The user sees it in plain words, can listen to it, and approves. The approval is written to Avalanche, so it can't be changed later."
 **พูด (TH):** "ผู้ใช้เห็นเป็นภาษาง่ายๆ ฟังเป็นเสียงได้ แล้วกดอนุมัติเอง การอนุมัติถูกบันทึกบน Avalanche แก้ย้อนหลังไม่ได้"
 
-### 4 · Why it's high (1:35 – 2:10) · tab 4, ARB token page
-**Do:** point at the 6-month supply chart (team = coral, investors = amber), then the risk card.
-**Say (EN):** "It isn't a one-off. The same 92 million unlocks on the 16th of every month until March. Supply is the one market variable that's scheduled in advance, so we forecast supply, not price."
-**พูด (TH):** "ไม่ใช่ครั้งเดียว ทุกวันที่ 16 จนถึงมีนาคม เราพยากรณ์ supply ที่ประกาศล่วงหน้า ไม่ทายราคา"
+### 4 · The market and my month (1:35 – 2:10) · tabs 4 and 5
+**Do:** tab 4, Token screener → press **30 days**: the large unlocks light up (ARB, HYPE, CRO…) with dates, size and who receives them. Then tab 5, **My plan**: today's ARB unlock, WLD's daily release, the Fed on Oct 28, drift from the target mix → **Save plan as PDF**.
+**Say (EN):** "This is Tokenomist's live data for the top forty tokens, with dates and who gets the tokens. And this is the user's next thirty days: every date that can move their money, what U-Guard found, and what they can do. It saves as a PDF."
+**พูด (TH):** "นี่คือข้อมูลสดจาก Tokenomist ของ 40 เหรียญใหญ่ มีวันที่ ขนาด และใครได้รับ และนี่คือแผน 30 วันของผู้ใช้ ทุกวันที่กระทบเงินของเขา พร้อมสิ่งที่ทำได้ และบันทึกเป็น PDF ได้"
 
 ### 5 · Ask anything, see how it decided (2:10 – 2:40) · tab 5, agent
 **Do:** press the mic, ask **"Is AVAX worrying?"** (or **"AVAX น่ากังวลไหม"** to show the Thai reply and Thai voice). Point at the answer, then the **Agent Trace**.
@@ -82,10 +84,10 @@ Checklist:
 | 2 | `npm run ubot` errors (401/503) | `.env` must hold the same `MCP_API_KEY` the server started with. Skip to the backup video of beat 2, then continue at beat 3 by asking "Buy 5,000 THB of ARB" in tab 5 (it creates the same card and proposal) |
 | 3 | Bell is empty | Reload tab 3 (the bell refreshes every 20 s). Still empty: use the proposal in tab 5 instead |
 | 3 | No voice | The browser's own voice takes over; if muted, just read the three lines |
-| 2, 4 | Says "snapshot" instead of "live" | Tokenomist rate-limited a burst; the numbers are the same real data saved this morning. Say "saved real data, refreshed every minute" and continue |
+| 2, 4 | Says "snapshot" or "Sample" instead of "live" | Tokenomist rate-limited a burst; the numbers are the same real data saved this morning. Say "saved real data, refreshed every minute" and continue |
 | 3 | Receipt says "simulated" | Fuji key missing: say "on testnet this writes the receipt; here it's simulated" |
 | 5 | Answer is slow (> 8 s) | Talk over it about the trace; the rules engine answers automatically if the model fails |
-| Any | After 20:00 | The ARB card switches to "just unlocked": talk about the next unlock on 16 Nov |
+| Any | At/after 20:00 | The unlock happens during the finals: before 20:00 the card says "today", after it "just unlocked". Say "it's happening right now", then point at the next one on 16 Nov in My plan |
 
 ---
 
