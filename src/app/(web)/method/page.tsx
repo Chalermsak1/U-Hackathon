@@ -131,7 +131,7 @@ export default async function MethodPage() {
 
           <h2>Connecting U-Bot (MCP)</h2>
           <p>
-            U-Guard exposes its 11 tools as a Model Context Protocol server, so U-Bot or any MCP client can call them before acting:
+            U-Guard exposes its 12 tools as a Model Context Protocol server, so U-Bot or any MCP client can call them before acting:
           </p>
           <pre className="code">{`POST /api/mcp   (Streamable HTTP, JSON-RPC)
 Authorization: Bearer $MCP_API_KEY

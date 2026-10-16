@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { compact, LEVEL_LABEL, pct, shortDate, sourceLabel, usd } from "@/lib/format";
-import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
+import type { DriftReport, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
   team: { th: "Team", color: "#FB7151" },
@@ -172,6 +172,49 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
           {error && <span className="error">{error}</span>}
         </div>
       )}
+    </article>
+  );
+}
+
+const DRIFT_LABEL = { over: "Above target", under: "Below target", ok: "On target", no_target: "No target" } as const;
+
+/** Portfolio vs the user's own target mix: one bar per token with the target as a tick. */
+export function DriftCardView({ drift }: { drift: DriftReport }) {
+  const off = drift.rows.filter((r) => r.status === "over" || r.status === "under");
+  const scale = Math.max(40, ...drift.rows.map((r) => Math.max(r.weightPct, r.targetPct ?? 0))) * 1.08;
+  const level = !drift.hasTargets ? "lv-none" : off.length === 0 ? "lv-low" : drift.totalDriftPct > 10 ? "lv-high" : "lv-medium";
+  return (
+    <article className={`card drift ${level}`} aria-label="Portfolio vs your target mix">
+      <div className="card-head">
+        <h3>Portfolio vs your targets</h3>
+        <span className="name">{drift.hasTargets ? `${drift.totalDriftPct}% off target · band ±${drift.bandPp} pts` : "No target mix set"}</span>
+        <span className="score" title="Unlock risk of the whole portfolio, weighted by holding size">
+          Risk {drift.portfolioRiskScore}/100
+        </span>
+      </div>
+      <div className="drift-rows">
+        {drift.rows.map((r) => (
+          <div key={r.symbol} className={`drift-row drift-${r.status}`} title={DRIFT_LABEL[r.status]}>
+            <b>{r.symbol}</b>
+            <div className="drift-bar" aria-hidden="true">
+              <i style={{ width: `${(r.weightPct / scale) * 100}%` }} />
+              {r.targetPct !== null && <em style={{ left: `${(r.targetPct / scale) * 100}%` }} />}
+            </div>
+            <span className="drift-num">
+              {r.weightPct}%{r.targetPct !== null ? <small> / {r.targetPct}%</small> : null}
+            </span>
+            <span className="drift-pp">{r.driftPp === null ? "–" : `${r.driftPp > 0 ? "+" : ""}${r.driftPp}`}</span>
+          </div>
+        ))}
+      </div>
+      <ul className="reasons">
+        {drift.lines.map((l) => (
+          <li key={l}>{l}</li>
+        ))}
+      </ul>
+      <div className="card-foot">
+        <span>Bar = your weight · tick = your target · compared with targets you set, not advice</span>
+      </div>
     </article>
   );
 }

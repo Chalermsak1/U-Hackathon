@@ -183,7 +183,7 @@ export function Landing() {
         <div className="lp-marquee-track lp-logos">
           {[...BRANDS, ...BRANDS, ...BRANDS].map((b, i) => (
             <div key={i} className="lp-logo-tile" aria-hidden={i >= BRANDS.length}>
-              <BrandLogo brand={b} />
+              <BrandLogo brand={b} scale={1.45} />
             </div>
           ))}
         </div>

@@ -28,6 +28,12 @@ export interface AlertRule {
   channel: "ubot" | "telegram" | "line";
 }
 
+/** The user's own target mix: percent of portfolio value per token, and the drift band. */
+export interface Targets {
+  targets: Record<string, number>;
+  bandPp: number; // drift band in percentage points
+}
+
 export interface FeedbackRecord {
   requestId: string;
   userId: string;
@@ -49,6 +55,8 @@ interface Store {
   orders: Map<string, PaperOrder[]>;
   /** Invest plans drafted for a user (pending or decided). */
   investPlans: Map<string, { plan: InvestPlan; ownerId: string }>;
+  /** Target mix per user (portfolio drift). */
+  targets: Map<string, Targets>;
 }
 
 const g = globalThis as typeof globalThis & { __uguard?: Store };
@@ -61,6 +69,7 @@ export const store: Store = (g.__uguard ??= {
   tradePlans: new Map(),
   orders: new Map(),
   investPlans: new Map(),
+  targets: new Map(),
 });
 // A store created by an older build during hot reload may lack the newer fields.
 store.alerts ??= [];
@@ -69,3 +78,4 @@ store.feedback ??= [];
 store.tradePlans ??= new Map();
 store.orders ??= new Map();
 store.investPlans ??= new Map();
+store.targets ??= new Map();

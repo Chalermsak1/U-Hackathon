@@ -144,10 +144,38 @@ export interface Citation {
   source: string;
 }
 
+// ─── Portfolio drift (weights vs the user's own target mix) ───
+
+export interface DriftRow {
+  symbol: string;
+  valueThb: number;
+  weightPct: number;
+  targetPct: number | null;
+  driftPp: number | null; // weight − target, percentage points
+  status: "over" | "under" | "ok" | "no_target";
+  riskLevel: RiskLevel | null;
+  riskScore: number;
+  unlockDate: string | null;
+  dilutionPct: number; // 6-month dilution of this holding
+}
+
+export interface DriftReport {
+  hasTargets: boolean;
+  bandPp: number;
+  rows: DriftRow[];
+  totalThb: number;
+  totalDriftPct: number; // ½ Σ |weight − target|
+  portfolioRiskScore: number; // Σ weight × unlock risk score, 0..100
+  weightedDilutionPct: number;
+  concentration: { symbol: string; weightPct: number } | null;
+  lines: string[]; // up to 3 plain-language lines, deterministic
+}
+
 export interface AgentResult {
   requestId: string;
   reply: string;
   cards: RiskCard[];
+  drift?: DriftReport | null;
   news: Sourced<NewsItem[]> | null;
   odds: Sourced<OddsMarket[]> | null;
   pulse: Sourced<MarketPulse> | null;

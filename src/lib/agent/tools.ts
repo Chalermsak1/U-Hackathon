@@ -4,6 +4,7 @@
 
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
+import { checkDrift } from "../drift";
 import { compact, shortDate, thaiDate, usd } from "../format";
 import { getEventCalendar } from "../intel/calendar";
 import { searchNews } from "../intel/news";
@@ -18,6 +19,7 @@ import type {
   CalendarEvent,
   Citation,
   DataSource,
+  DriftReport,
   Holding,
   Locale,
   MarketPulse,
@@ -101,6 +103,12 @@ export const TOOL_SPECS: ToolSpec[] = [
     },
   },
   {
+    name: "check_portfolio_drift",
+    description:
+      "Compare the user's portfolio with the target mix they set: weight vs target per token, drift in percentage points, the portfolio's weighted unlock risk score, 6-month dilution and the largest holding. Use it when the user asks whether their portfolio is off plan, balanced or concentrated, or for a full portfolio review. The app shows the result as a drift card. It measures against the user's own targets and never says what to buy or sell.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
     name: "get_market_news",
     description:
       "Search recent news that can move a token or the market (ETF flows, macro/Fed, regulation, hacks, unlocks). Returns short summaries with source links and citation numbers; cite them as [n]. Returns an empty list when nothing relevant was found: say so instead of guessing.",
@@ -163,6 +171,7 @@ const INPUTS = {
   }),
   get_event_odds: z.object({ topic: z.string().trim().min(2).max(80) }),
   get_market_pulse: z.object({}),
+  check_portfolio_drift: z.object({}),
   get_event_calendar: z.object({ days: Days.default(45) }),
 } as const;
 
@@ -185,6 +194,7 @@ export interface RunContext {
   pulse: Sourced<MarketPulse> | null;
   calendar: CalendarEvent[] | null;
   holdings: Holding[] | null;
+  drift: DriftReport | null;
   citations: Citation[];
   trace: TraceStep[];
   evidence: string[]; // serialized tool results: the only numbers a reply may use
@@ -203,6 +213,7 @@ export function newContext(init: { userId: string; scope: "user" | "public"; req
     pulse: null,
     calendar: null,
     holdings: null,
+    drift: null,
     citations: [],
     trace: [],
     evidence: [],
@@ -286,7 +297,7 @@ function addNews(ctx: RunContext, res: Sourced<NewsItem[]>): { n: number; item: 
   return out;
 }
 
-const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection"]);
+const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift"]);
 
 async function run(name: ToolName, input: Record<string, unknown>, ctx: RunContext): Promise<ToolOutput> {
   if (ctx.scope === "public" && WALLET_TOOLS.has(name)) {
@@ -300,6 +311,34 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
       return {
         result: holdings.map((h) => ({ symbol: h.symbol, amount: h.amount, value_thb: Math.round(h.valueThb), data: h.source })),
         summary: holdings.map((h) => h.symbol).join(", "),
+      };
+    }
+    case "check_portfolio_drift": {
+      const report = await checkDrift(ctx.userId, { locale: ctx.locale, now: ctx.now });
+      ctx.drift = report;
+      ctx.sources.add("sample"); // the demo wallet's amounts are sample data
+      const off = report.rows.filter((r) => r.status === "over" || r.status === "under");
+      return {
+        result: {
+          has_targets: report.hasTargets,
+          band_pp: report.bandPp,
+          total_drift_pct: report.totalDriftPct,
+          portfolio_unlock_risk_score: report.portfolioRiskScore,
+          weighted_dilution_6m_pct: report.weightedDilutionPct,
+          largest_holding: report.concentration,
+          rows: report.rows.map((r) => ({
+            symbol: r.symbol,
+            weight_pct: r.weightPct,
+            target_pct: r.targetPct,
+            drift_pp: r.driftPp,
+            status: r.status,
+            unlock_risk: r.riskLevel,
+            unlock_date: r.unlockDate ? r.unlockDate.slice(0, 10) : null,
+          })),
+          summary_lines: report.lines,
+          data: "sample",
+        },
+        summary: report.hasTargets ? `${report.totalDriftPct}% off target · ${off.length} token(s) outside the band` : "no targets set",
       };
     }
     case "lookup_token": {

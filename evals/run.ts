@@ -143,6 +143,17 @@ async function main() {
       },
     },
     {
+      name: "Agent: drift question → check_portfolio_drift, ARB above target, AVAX below, compliant",
+      run: async () => {
+        const r = await agent("How far is my portfolio from my target mix?");
+        const arb = r.drift?.rows.find((x) => x.symbol === "ARB");
+        const avax = r.drift?.rows.find((x) => x.symbol === "AVAX");
+        return tools(r).includes("check_portfolio_drift") && arb?.status === "over" && avax?.status === "under" && r.compliance.status === "pass" && !/\brebalance\b/i.test(r.reply)
+          ? true
+          : JSON.stringify({ tools: tools(r), arb, avax, compliance: r.compliance, reply: r.reply });
+      },
+    },
+    {
       name: "Agent (signed out): scan asks to sign in, no wallet tools run",
       run: async () => {
         const r = await agent("Scan my portfolio", "public");
@@ -214,7 +225,7 @@ async function main() {
           await call({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "assess_unlock_risk", arguments: { symbol: "ARB", trade_amount_thb: null } } })
         ).json();
         const text = res?.result?.content?.[0]?.text ?? "";
-        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 11 && /"symbol":"ARB"/.test(text);
+        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 12 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
       },
     },
