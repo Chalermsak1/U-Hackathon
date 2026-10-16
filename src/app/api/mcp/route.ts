@@ -3,6 +3,7 @@ import { config } from "@/lib/config";
 import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { anonId, jsonError, tooMany } from "@/lib/http";
 import { handleMcp, mcpCaller } from "@/lib/mcp";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,6 +40,7 @@ async function handle(req: Request): Promise<Response> {
   return handleMcp(req, mcpCaller(req, auth.trusted, `mcp:${anonId(req)}`));
 }
 
-export const POST = handle;
-export const GET = handle;
-export const DELETE = handle;
+const shared = withStore(handle);
+export const POST = shared;
+export const GET = shared;
+export const DELETE = shared;

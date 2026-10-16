@@ -18,6 +18,13 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // One app: the older assistant and dashboard pages now live inside the terminal.
+  async redirects() {
+    return [
+      { source: "/assistant", destination: "/terminal/agent", permanent: false },
+      { source: "/dashboard", destination: "/terminal", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

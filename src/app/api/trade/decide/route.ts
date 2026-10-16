@@ -3,13 +3,14 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkPost, handleError, jsonError, readJson, tooMany } from "@/lib/http";
 import { logEvent, writeLog } from "@/lib/log";
 import { decideTradePlan } from "@/lib/trade";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Approve or decline a drafted trade plan. Approval places a paper order and records the decision
 // on Avalanche Fuji (simulated without DEMO_PRIVATE_KEY). Only the plan's owner can decide.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -29,3 +30,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

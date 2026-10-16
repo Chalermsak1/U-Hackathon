@@ -2,6 +2,7 @@ import { runAgent } from "@/lib/agent";
 import { getSession } from "@/lib/auth/session";
 import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { anonId, checkPost, handleError, readJson, tooMany } from "@/lib/http";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 // Signed-in users get the full agent; signed-out visitors (the U-Bot popup on public pages)
 // get the same agent without wallet tools, at a lower rate limit. The shared demo account is
 // limited per device, so several people trying the demo at once don't block each other.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -31,3 +32,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

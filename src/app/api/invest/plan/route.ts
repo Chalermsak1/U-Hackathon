@@ -5,6 +5,7 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkPost, handleError, jsonError, tooMany } from "@/lib/http";
 import { writeLog } from "@/lib/log";
 import { draftInvestPlan } from "@/lib/invest";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ const Input = z.object({
 
 // Draft an invest plan: profile from the five answers, the model portfolio (or the user's own
 // weights), U-Guard's checks on the crypto part and the DCA dates.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -38,3 +39,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

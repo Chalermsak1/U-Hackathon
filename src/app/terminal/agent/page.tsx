@@ -8,7 +8,7 @@ import { MicButton } from "@/components/MicButton";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
 
-const SUGGESTIONS = ["Buy 5,000 THB of ARB", "Is AVAX worrying?", "Does WLD have an unlock?", "Scan my portfolio", "Explain FDV simply"];
+const SUGGESTIONS = ["Should I buy 5,000 THB of ARB now?", "Scan my portfolio", "How risky is my portfolio?", "Is AVAX worrying?", "What's in the news for my coins?", "Explain FDV simply"];
 
 function AgentInner() {
   const params = useSearchParams();
@@ -33,12 +33,12 @@ function AgentInner() {
 
   return (
     <div className="agent-layout">
-      <section className="agent-chat" aria-label="Chat with U-Guard">
+      <section className="agent-chat" aria-label="Chat with U-Bot">
         <div className="chat-head">
           <Avatar size={32} thinking={busy} level={topLevel(Object.values(levels))} />
           <div>
-            <p>U-Guard AI Agent</p>
-            <span>{busy ? "Calling tools…" : "Decision support, not investment advice"}</span>
+            <p>U-Bot · with the U-Guard check</p>
+            <span>{busy ? "U-Guard is calling its tools…" : "U-Bot talks, U-Guard checks the risk, you decide · not investment advice"}</span>
           </div>
         </div>
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
@@ -57,7 +57,7 @@ function AgentInner() {
             send(input);
           }}
         >
-          <label htmlFor="agent-ask" className="sr-only">Ask U-Guard</label>
+          <label htmlFor="agent-ask" className="sr-only">Ask U-Bot</label>
           <input id="agent-ask" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask about a token, your portfolio or unlocks…" autoComplete="off" maxLength={500} />
           <MicButton onText={send} onError={setError} disabled={busy} />
           <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>Send</button>

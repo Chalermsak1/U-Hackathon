@@ -4,12 +4,13 @@ import { sanitize } from "@/lib/guard/input";
 import { anonId, checkPost, handleError, jsonError, readJson, tooMany } from "@/lib/http";
 import { logEvent } from "@/lib/log";
 import { store } from "@/lib/store";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // 👍/👎 on an answer, keyed by requestId so it lines up with the agent.reply log line.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -29,3 +30,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

@@ -4,6 +4,7 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { anonId, checkPost, handleError, jsonError, readJson, tooMany } from "@/lib/http";
 import { writeLog } from "@/lib/log";
 import { getUBot } from "@/lib/ubot";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ const PROMPT = {
 
 // Holding watch (Flow B): the same agent, asked to scan the wallet. When any holding has a
 // medium or high unlock risk coming, U-Bot pushes an alert (mock inbox or webhook).
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req, { allowEmptyBody: true });
   if (blocked) return blocked;
   try {
@@ -35,3 +36,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

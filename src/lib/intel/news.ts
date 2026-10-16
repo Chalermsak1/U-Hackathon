@@ -11,6 +11,7 @@
 import { config, now as clockNow } from "../config";
 import { readFixture } from "../fixtures";
 import type { DataSource, NewsItem, Sourced } from "../types";
+import { latestHeadlines } from "./feeds";
 
 const DAY_MS = 86_400_000;
 
@@ -134,6 +135,19 @@ export async function searchNews(q: NewsQuery): Promise<Sourced<NewsItem[]>> {
   const nowMs = q.now ?? clockNow();
 
   let warning: string | undefined;
+  // "rss": live headlines from Cointelegraph, CoinDesk and Decrypt plus the curated snapshot
+  // (which holds the unlock-specific reports), ranked together.
+  if (config.intel.news === "rss") {
+    const [live, fixture] = await Promise.all([latestHeadlines(), readFixture<NewsFixture>("news.json")]);
+    if (live.length) {
+      return {
+        data: rankNews([...live, ...(fixture?.items ?? [])], q.query ?? "", symbols, days, nowMs).slice(0, limit),
+        source: "live",
+        asOf: new Date(nowMs).toISOString(),
+      };
+    }
+    warning = "news feeds unreachable; using the offline snapshot";
+  }
   if (config.intel.news === "live") {
     try {
       const pool = await fetchGdelt(q.query ?? "", symbols, days);

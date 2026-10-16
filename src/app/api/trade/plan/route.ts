@@ -5,6 +5,7 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { anonId, checkPost, handleError, jsonError, tooMany } from "@/lib/http";
 import { writeLog } from "@/lib/log";
 import { draftTradePlan } from "@/lib/trade";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ const Input = z.object({
 });
 
 // Draft a trade plan around the user's own choice of token, side and amount, with U-Guard's checks.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -40,3 +41,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);
