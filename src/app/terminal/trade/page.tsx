@@ -141,6 +141,7 @@ export default function TradePage() {
                   <b>{qtyT(o.qty)} {o.symbol}</b> · {thb(o.amountThb)} at ${o.priceUsd.toLocaleString("en-US", { maximumFractionDigits: o.priceUsd < 1 ? 4 : 2 })}
                   <small className="note" style={{ display: "block" }}>
                     {new Date(o.at).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" })} · recorded on {o.receipt.chain}
+                    {o.broker && <> · {o.broker.note}</>}
                     {o.receipt.explorerUrl && (
                       <>
                         {" "}·{" "}

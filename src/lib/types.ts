@@ -293,6 +293,16 @@ export interface PaperOrder {
   stopPriceUsd: number;
   at: string;
   receipt: ProtectionReceipt;
+  /** Set when BROKER=alpaca-paper: what the paper broker did with the approved order. */
+  broker?: BrokerFill;
+}
+
+export interface BrokerFill {
+  venue: "alpaca-paper";
+  ok: boolean;
+  orderId?: string;
+  status?: string;
+  note: string;
 }
 
 // ─── Invest plans (model portfolios the user adjusts and approves) ───

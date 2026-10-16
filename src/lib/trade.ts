@@ -7,6 +7,7 @@
 import { randomUUID } from "node:crypto";
 import { runAgent } from "./agent";
 import { recordMemo } from "./avalanche";
+import { sendToBroker } from "./broker";
 import { engineLabel, LEVEL_LABEL, thb } from "./format";
 import { getMarketPulse } from "./intel/pulse";
 import { getQuote, usdToThb } from "./market";
@@ -245,6 +246,9 @@ export type DecideResult =
   | { ok: true; plan: TradePlan; order: PaperOrder | null }
   | { ok: false; status: number; error: string; plan?: TradePlan };
 
+// Plans being approved right now: a double tap can't record or send the order twice.
+const approving = new Set<string>();
+
 export async function decideTradePlan(planId: string, decision: "approve" | "decline", userId: string): Promise<DecideResult> {
   const rec = store.tradePlans.get(planId);
   if (!rec || rec.ownerId !== userId) return { ok: false, status: 404, error: "Plan not found. Ask the AI to draft a new one." };
@@ -259,6 +263,16 @@ export async function decideTradePlan(planId: string, decision: "approve" | "dec
     return { ok: true, plan, order: null };
   }
   if (plan.verdict === "blocked") return { ok: false, status: 409, error: "U-Guard's checks block this plan. Adjust it first.", plan };
+  if (approving.has(plan.id)) return { ok: false, status: 409, error: "This plan is already being approved", plan };
+  approving.add(plan.id);
+  try {
+    return await approve(plan, userId);
+  } finally {
+    approving.delete(plan.id);
+  }
+}
+
+async function approve(plan: TradePlan, userId: string): Promise<DecideResult> {
   const memo = JSON.stringify({
     app: "U-Guard",
     v: 1,
@@ -272,6 +286,11 @@ export async function decideTradePlan(planId: string, decision: "approve" | "dec
     approvedAt: new Date().toISOString(),
   });
   const receipt = await recordMemo(plan.id, memo);
+  // Only after the user's approval: optionally mirror the order to the Alpaca paper account.
+  const broker = await sendToBroker(
+    { planId: plan.id, symbol: plan.symbol, side: plan.side, qty: plan.qty, amountThb: plan.amountThb, feeThb: plan.feeThb },
+    plan.usdThb,
+  );
   const order: PaperOrder = {
     id: randomUUID(),
     planId: plan.id,
@@ -284,6 +303,7 @@ export async function decideTradePlan(planId: string, decision: "approve" | "dec
     stopPriceUsd: plan.stopPriceUsd,
     at: new Date().toISOString(),
     receipt,
+    ...(broker ? { broker } : {}),
   };
   plan.status = "approved";
   const list = store.orders.get(userId) ?? [];

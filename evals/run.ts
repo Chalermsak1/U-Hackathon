@@ -26,6 +26,7 @@ async function main() {
   const { draftInvestPlan, decideInvestPlan, myInvestPlans, pendingInvestPlans, profileFor } = require("../src/lib/invest") as typeof import("../src/lib/invest");
   const { runAlerts, inQuietHours, newsSeverity, isCorroborated } = require("../src/lib/alerts") as typeof import("../src/lib/alerts");
   const { addAlertRule } = require("../src/lib/alert-rules") as typeof import("../src/lib/alert-rules");
+  const { ALPACA_PAPER_URL } = require("../src/lib/broker") as typeof import("../src/lib/broker");
   const { AGENT_TOOL_SPECS, TOOL_ANNOTATIONS, executeTool, newContext } = require("../src/lib/agent/tools") as typeof import("../src/lib/agent/tools");
   type NewsItem = import("../src/lib/types").NewsItem;
 
@@ -44,6 +45,32 @@ async function main() {
   const rule = (ownerId: string, type: "unlock" | "drift" | "news", symbol: string, minLevel: "medium" | "high" = "medium", daysBefore = 7) =>
     addAlertRule(ownerId, { type, symbol, minLevel, daysBefore, channel: "ubot" }).rule;
   const bkk = (hhmm: string, day = "2026-10-16") => Date.parse(`${day}T${hhmm}:00+07:00`);
+  // Runs fn with BROKER settings and a stubbed Alpaca endpoint; every other request is refused.
+  const withBroker = async <T,>(
+    env: Record<string, string>,
+    reply: (body: Record<string, string>) => { status: number; json: unknown },
+    fn: (calls: { url: string; headers: Record<string, string>; body: Record<string, string> }[]) => Promise<T>,
+  ): Promise<T> => {
+    const saved = { ...process.env };
+    const realFetch = globalThis.fetch;
+    const calls: { url: string; headers: Record<string, string>; body: Record<string, string> }[] = [];
+    Object.assign(process.env, env);
+    globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (!url.startsWith("https://") || !url.includes("alpaca.markets")) throw new Error(`unexpected request in eval: ${url}`);
+      const body = JSON.parse(String(init?.body ?? "{}"));
+      calls.push({ url, headers: init?.headers as Record<string, string>, body });
+      const r = reply(body);
+      return new Response(JSON.stringify(r.json), { status: r.status, headers: { "content-type": "application/json" } });
+    }) as typeof fetch;
+    try {
+      return await fn(calls);
+    } finally {
+      globalThis.fetch = realFetch;
+      for (const k of Object.keys(env)) delete process.env[k];
+      Object.assign(process.env, saved);
+    }
+  };
   // One MCP tools/call, optionally as a trusted caller acting for a user.
   const mcp = async (name: string, args: Record<string, unknown>, caller: { userId?: string; locale?: "th" | "en" } = {}) => {
     const res = await (
@@ -523,6 +550,88 @@ async function main() {
         const hi = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market", stopLossPct: 80 });
         const lo = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market", stopLossPct: 0.5 });
         return hi.stopLossPct === 50 && lo.stopLossPct === 2 ? true : JSON.stringify({ hi: hi.stopLossPct, lo: lo.stopLossPct });
+      },
+    },
+    // ── Paper broker (Alpaca paper, opt-in) ──
+    {
+      name: "Broker: by default approving sends nothing outside the app",
+      run: () =>
+        withBroker({}, () => ({ status: 200, json: {} }), async (calls) => {
+          const user = "eval-broker-local";
+          const p = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market" }, user);
+          const d = await decideTradePlan(p.id, "approve", user);
+          return d.ok && d.order && !d.order.broker && calls.length === 0 ? true : JSON.stringify({ d: d.ok, broker: d.ok ? d.order?.broker : null, calls: calls.length });
+        }),
+    },
+    {
+      name: "Broker (Alpaca paper): an MCP draft sends nothing; the user's approval sends one paper order",
+      run: () =>
+        withBroker(
+          { BROKER: "alpaca-paper", ALPACA_API_KEY: "eval-key", ALPACA_SECRET_KEY: "eval-secret", ALPACA_BASE_URL: "https://api.alpaca.markets" },
+          () => ({ status: 200, json: { id: "alp-1", status: "accepted" } }),
+          async (calls) => {
+            const user = "eval-broker-alpaca";
+            const { out } = await mcp("draft_trade_plan", { symbol: "ARB", side: "buy", amount_thb: 5000, order_type: "market", limit_price_usd: null, stop_loss_pct: null, risk_budget_pct: null }, { userId: user });
+            const afterDraft = calls.length;
+            const a = await decideTradePlan(out.plan_id, "approve", user);
+            const b = await decideTradePlan(out.plan_id, "approve", user);
+            const c = calls[0];
+            const p = store.tradePlans.get(out.plan_id)?.plan;
+            const notional = p ? ((p.amountThb - p.feeThb) / p.usdThb).toFixed(2) : "";
+            const ok =
+              afterDraft === 0 &&
+              calls.length === 1 &&
+              c.url === "https://paper-api.alpaca.markets/v2/orders" &&
+              ALPACA_PAPER_URL === "https://paper-api.alpaca.markets" &&
+              c.body.symbol === "ARB/USD" &&
+              c.body.side === "buy" &&
+              c.body.type === "market" &&
+              c.body.time_in_force === "gtc" &&
+              c.body.notional === notional &&
+              c.body.client_order_id === out.plan_id &&
+              c.headers["APCA-API-KEY-ID"] === "eval-key" &&
+              a.ok &&
+              a.order?.broker?.ok === true &&
+              a.order.broker.orderId === "alp-1" &&
+              b.ok &&
+              b.order?.id === a.order.id;
+            return ok ? true : JSON.stringify({ afterDraft, calls, a: a.ok ? a.order?.broker : a }).slice(0, 600);
+          },
+        ),
+    },
+    {
+      name: "Broker: a coin Alpaca doesn't list, an Alpaca error or missing keys keep the local paper order with a note",
+      run: () =>
+        withBroker(
+          { BROKER: "alpaca-paper", ALPACA_API_KEY: "eval-key", ALPACA_SECRET_KEY: "eval-secret" },
+          () => ({ status: 403, json: { message: "forbidden" } }),
+          async (calls) => {
+            const user = "eval-broker-errors";
+            const wld = await plan({ symbol: "WLD", side: "buy", amountThb: 1000, orderType: "market" }, user);
+            const eth = await plan({ symbol: "ETH", side: "buy", amountThb: 1000, orderType: "market" }, user);
+            const w = await decideTradePlan(wld.id, "approve", user);
+            const e = await decideTradePlan(eth.id, "approve", user);
+            process.env.ALPACA_SECRET_KEY = "";
+            const avax = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market" }, user);
+            const k = await decideTradePlan(avax.id, "approve", user);
+            const ok =
+              w.ok && w.order?.broker?.ok === false && /isn't traded on Alpaca/.test(w.order.broker.note) &&
+              e.ok && e.order?.broker?.ok === false && /403: forbidden/.test(e.order.broker.note) &&
+              k.ok && k.order?.broker?.ok === false && /not set/.test(k.order.broker.note) &&
+              calls.length === 1 &&
+              (store.orders.get(user) ?? []).length === 3;
+            return ok ? true : JSON.stringify({ w: w.ok && w.order?.broker, e: e.ok && e.order?.broker, k: k.ok && k.order?.broker, calls: calls.length });
+          },
+        ),
+    },
+    {
+      name: "Trade: two approvals at the same moment record one order",
+      run: async () => {
+        const user = "eval-double-tap";
+        const p = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market" }, user);
+        const [a, b] = await Promise.all([decideTradePlan(p.id, "approve", user), decideTradePlan(p.id, "approve", user)]);
+        const oks = [a, b].filter((x) => x.ok).length;
+        return oks === 1 && (store.orders.get(user) ?? []).length === 1 ? true : JSON.stringify({ a: a.ok, b: b.ok, orders: (store.orders.get(user) ?? []).length });
       },
     },
     // ── Invest plans ──
