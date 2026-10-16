@@ -588,7 +588,7 @@ Type ทั้งหมดอยู่ใน `src/lib/types.ts`
 
 ### 17.7 Auth
 - Session: cookie HttpOnly ลงลายเซ็น HMAC (7 วัน) · `npm start` ต้องมี `AUTH_SECRET`
-- Email: scrypt · ล็อก 15 นาทีหลังผิด 5 ครั้ง · เก็บใน `data/runtime/users.json` (ใช้ได้บน localhost/server เดียว; ถ้า deploy serverless ให้ย้ายไป Postgres/Supabase)
+- Email: scrypt · ล็อก 15 นาทีหลังผิด 5 ครั้ง · เก็บใน `data/runtime/users.json` บน localhost/server เดียว · บน Vercel (มี Upstash) เก็บใน shared store แทน สมัครแล้ว login ได้ข้าม function · หลัง hackathon ย้ายไป Postgres/Supabase
 - Wallet: SIWE ด้วย `viem/siwe` · nonce ใช้ได้ครั้งเดียว · ตรวจ domain และเวลา (รองรับ EOA; smart account ต้องใช้ `publicClient.verifySiweMessage`)
 
 ### 17.8 MCP (`/api/mcp`)

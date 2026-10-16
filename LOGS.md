@@ -419,6 +419,10 @@ Built in a separate session without seeing `feat/app-ui`.
   - ElevenLabs Scribe listens, and stops itself ~1.4 s after you stop talking (or at 15 s).
   - U-Bot answers, the reply is read aloud (`eleven_v3`), then the mic reopens.
   - Falls back to the browser's recognition and voice without a key. Checked in Chromium: the reply triggers `/api/voice`, then it returns to listening.
+- **Email accounts on Vercel:**
+  - Accounts lived in `data/runtime/users.json`. Vercel's file system is read-only, so sign-up would have worked in one function and been gone in the next.
+  - With the shared store on (Upstash), accounts now live in it; the register and login routes are wrapped with `withStore`. Locally the JSON file is used as before.
+  - Checked against a stand-in KV: sign up, restart the server, log in with the same account; a wrong password and a second sign-up are refused; no file was written.
 - **Vercel:** creating the project through the connector was refused twice. The first attempt was blocked by the session's permission check; the second reached Vercel and returned 403 (no permission to create projects in the team). The project has to be created in the dashboard by a team member who can.
 
 ---

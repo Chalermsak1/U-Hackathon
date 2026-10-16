@@ -51,7 +51,7 @@ Also: `/login` (demo account · email/password · Sign-In with Ethereum) and `/e
 
 ### Hosting (Vercel)
 
-Each route is its own serverless function, so the in-memory store (U-Bot inbox, proposals, plans, alert rules) is shared through **Upstash Redis** when `KV_REST_API_URL`/`KV_REST_API_TOKEN` (Vercel's Upstash integration) or `UPSTASH_REDIS_REST_URL`/`_TOKEN` are set (`withStore()` in `src/lib/store.ts`). Without them, run it on one Node server (`npm run build && npm start`). Set `TOKENOMIST_API_KEY`, `MCP_API_KEY`, `AUTH_SECRET`, `MARKET_SOURCE=live`, `NEWS_SOURCE=rss`, and optionally `ELEVENLABS_API_KEY`, an LLM key and `DEMO_PRIVATE_KEY` (Fuji testnet).
+Each route is its own serverless function, so the in-memory store (U-Bot inbox, proposals, plans, alert rules, email accounts) is shared through **Upstash Redis** when `KV_REST_API_URL`/`KV_REST_API_TOKEN` (Vercel's Upstash integration) or `UPSTASH_REDIS_REST_URL`/`_TOKEN` are set (`withStore()` in `src/lib/store.ts`). Without them, run it on one Node server (`npm run build && npm start`). Set `TOKENOMIST_API_KEY`, `MCP_API_KEY`, `AUTH_SECRET`, `MARKET_SOURCE=live`, `NEWS_SOURCE=rss`, and optionally `ELEVENLABS_API_KEY`, an LLM key and `DEMO_PRIVATE_KEY` (Fuji testnet).
 
 ## Run it
 
