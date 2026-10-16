@@ -229,6 +229,16 @@ Built in a separate session without seeing `feat/app-ui`.
 - **Landing:** the hero heading is sized to its column (it ran into the card at 92 px); technology logos 1.45× in 92 px tiles.
 - **Checks:** typecheck ✅ · eval **31/31** ✅ (new: drift question).
 
+### Oct 16, ~09:40–09:55 · Finance-app flow, stress test, schedule
+- **Trades show in the portfolio:** holdings apply the user's approved paper orders (buy adds the token and spends USDC), so Portfolio, drift, charts, My plan and the agent see them at once. Buy/Sell on every portfolio row; `/terminal/trade?symbol=&side=`.
+- **Token page:** live price chart (Hyperliquid candles 7D/30D/90D, CoinGecko fallback) with the unlock dates drawn on it, next to the Buy/Sell ticket.
+- **Portfolio schedule:** every cliff and daily release of the coins you hold for 6 months, live from the Tokenomist API (amount, % of circulating, value, recipients, your holding).
+- **Agent weighs news, price and risk:** `get_token_market` and `stress_test_portfolio` (14 tools). Buy/sell questions add price, market mood and a "U-Guard trade check" (flags + options, "You decide"); "Scan my portfolio" adds news on held coins and the stress test. Stress card in chat and My plan (options-implied drop, risky unlocks like past team unlocks, −20%; baht impact; protection options).
+- **Today:** Tokenomist unlocks for the next 30 days (logos, size, value, grade) and news with images (RSS cover images).
+- **Roles in the chat:** U-Bot talks, U-Guard checks (tagged cards, proposals and trace), you decide: one chat, not two boxes.
+- Buyback and burn endpoints exist in v5 but don't cover ARB, WLD or AVAX ("token not supported"), so they aren't shown.
+- **Checks:** typecheck ✅ · production build ✅ · eval **33/33** ✅ · 375 px: no sideways scroll on Today, screener, My plan.
+
 ---
 
 ## Adding the next entry
