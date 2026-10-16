@@ -1,6 +1,6 @@
 # แผนงานที่เหลือ: สิ่งที่ยังไม่ได้ทำ · ยังขาด · ยังไม่ได้รับ
 
-> อัปเดต 16 ต.ค. 2026 ~07:00 น. (เวลาไทย) · **demo บ่ายวันนี้**
+> อัปเดต 16 ต.ค. 2026 ~07:30 น. (เวลาไทย) · **demo บ่ายวันนี้**
 > สิ่งที่ทำแล้วดู [STATUS.md](STATUS.md) · ประวัติการทำงานดู [LOGS.md](LOGS.md)
 > ระดับความด่วน: 🔴 ต้องทำก่อน demo · 🟠 ควรทำถ้ามีเวลา · ⚪ หลัง hackathon
 > ผู้รับผิดชอบ: **คุณ** (เจ้าของ repo/ทีม) · **Claude** · **mentor/sponsor**
@@ -10,7 +10,7 @@
 
 ## 0. สรุป 1 นาที
 
-1. ✅ **Done:** PR #1 and PR #2 are merged into `main`. The work ported from `wip/v2-freshness-drift-alerts` (drift, full alert engine, "ณ HH:MM", Vercel cron) is on `feat/merge-app-ui-agentic`, waiting for its PR to be merged.
+1. ✅ **Done:** PR #1, #2 and #3 are merged into `main`. The work ported from `wip/v2-freshness-drift-alerts` (drift, full alert engine, "as of HH:MM", Vercel cron) is on `feat/merge-app-ui-agentic`, already merged with the English `main` and translated, waiting for its PR to be merged ([compare](https://github.com/nathirad/U-Hackathon/compare/main...feat/merge-app-ui-agentic)). Don't merge `wip/v2-freshness-drift-alerts` itself: everything in it is now in this branch.
 2. **ยังไม่มี key จริงสักตัว:** Claude, ElevenLabs, Fuji wallet ยังเป็นตัวสำรอง/จำลอง · Tokenomist มี key แล้วแต่เครือข่ายของ session บล็อก
 3. **ยังไม่ได้ขึ้น host:** Vercel connector มีสิทธิ์แค่อ่าน
 4. **บท demo บนเวทีใน SPEC §13 ยังเป็นแบบเก่า** (ใช้ `/app` กรอบโทรศัพท์) ต้องเขียนใหม่ให้มีหน้าเทรด/ลงทุน/แจ้งเตือน
@@ -137,7 +137,7 @@
 |---|---|---|
 | Tokenomist จริง: ARB/WLD/AVAX | ARB snapshot 15 ต.ค. · WLD/AVAX ตัวอย่าง · หลัง snapshot ต้อง map ช่อง linear unlock ของ WLD และแก้วันที่ AVAX (SPEC §17.6) | 🔴 | ✅ real data; WLD/AVAX linear releases come from daily emission
 | ราคา/ข่าว/odds สด | โค้ดรองรับแล้ว (`MARKET_SOURCE`, `NEWS_SOURCE`, `ODDS_SOURCE=live`) แต่ยังไม่ได้ทดสอบ | 🟠 |
-| "ณ HH:MM" ทุกตัวเลข + ป้ายข้อมูลเก่า | ✅ การ์ด, หน้าเหรียญ, แผนเทรด, พอร์ต, ผล tool · ใช้ข้อมูลชุดล่าสุดที่ดึงสำเร็จเมื่อแหล่งล่ม (ติดป้าย "อาจไม่ล่าสุด") | – |
+| "as of HH:MM" ทุกตัวเลข + ป้ายข้อมูลเก่า | ✅ การ์ด, หน้าเหรียญ, แผนเทรด, พอร์ต, ผล tool · ใช้ข้อมูลชุดล่าสุดที่ดึงสำเร็จเมื่อแหล่งล่ม (ติดป้าย "(may be out of date)"; ตอบไทยใช้ "ณ HH:MM" / "อาจไม่ล่าสุด") | – |
 | คะแนนความเสี่ยง v0.2 ยังไม่ backtest | – | ⚪ |
 | กระเป๋าจริงของผู้ใช้ | ทุกคนใช้ demo wallet เดียวกัน (AVAX อ่านจริงได้ถ้าตั้ง `WALLET_ADDRESS`) | ⚪ |
 

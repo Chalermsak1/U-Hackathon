@@ -246,6 +246,22 @@ Built in a separate session without seeing `feat/app-ui`.
   - With a cap of 2: 2 sent, the rest deferred to tomorrow.
   - Cron: 401 without the secret.
 
+### Oct 16, ~07:30 · Merged the English `main` (PR #3) into the port branch
+- **Merged** `main` at `29abd31` into `feat/merge-app-ui-agentic`, so the PR is one click.
+- **Conflicts (7 files):** LOGS.md, the alerts page, the portfolio page, `Cards.tsx`, `TradePanel.tsx`, `alerts.ts`, `tokenomist.ts`.
+  - `tokenomist.ts`: kept main's in-flight limit, 429 retry and 1-minute fallback cache, plus this branch's last-good-copy fallback.
+  - UI files: kept main's English copy and added the drift card, target editor, alert history, held-back reasons and freshness labels.
+- **Translated the ported UI to English:**
+  - `asOfEn` / `asOfLabel` in `freshness.ts` give "as of 15 Oct 07:00" and "(may be out of date)".
+  - `sourceTag` now appends the age; `sourceTagTh` keeps the Thai label for Thai replies.
+  - Alert engine reasons, drift lines (locale "en" for the watcher), the alerts page and the drift card.
+  - The agent still answers Thai to Thai, with `as_of_th`.
+- **Checked:**
+  - typecheck ✅ · eval 32/32 ✅ · build ✅ · `next dev` all pages 200 ✅
+  - responsive 80/80 ✅ against `next start`. An earlier run failed only because an old server still held the port.
+  - Screenshots of the portfolio drift view, the alerts page after "Watch every token in my portfolio", and the chat drift card: no page errors ✅
+  - API: "U-Guard alert: 2 items", "ARB unlock coming up (High risk 67/100)", "ARB is 8.8 points over your target" ✅
+
 ---
 
 ## Adding the next entry

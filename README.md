@@ -77,7 +77,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 
 - **Model is pluggable**: Claude via the Anthropic SDK (the team's choice; optionally through the Vercel AI Gateway, `AI_GATEWAY=vercel`), any OpenAI-compatible model (`LLM_BASE_URL`), or the deterministic **rules engine** (the offline agent), which is also the automatic fallback. With `AGENT_PROVIDER=auto` the order is OpenAI-compatible (if `LLM_API_KEY` is set), then Claude, then rules; set `AGENT_PROVIDER=anthropic` to force Claude. `AGENT_MODE` (claude/offline/auto) still works as a legacy alias.
 - **Language**: replies follow the user's language. Thai input gets Thai replies, card reasons and proposal text; English input gets English.
-- **11 tools** (`src/lib/agent/tools.ts`), zod-validated, shared by every provider and by MCP.
+- **12 tools** (`src/lib/agent/tools.ts`, including `check_portfolio_drift`), zod-validated, shared by every provider and by MCP.
 - **RAG** for fresh facts (unlocks, news ranked by relevance + recency with citations, odds, pulse); **CAG** for static knowledge (`data/knowledge/faq.json`, preloaded into the cached system prompt).
 - **Guardrails**: input guard (seed phrases/private keys blocked, PII redacted, injection flagged), rate limits, Origin checks, output compliance check (no buy/sell/hold advice or price predictions in EN/TH; every number must come from a tool result; one rewrite, then a checked template).
 - **U-Bot reaches U-Guard three ways**, all through the same tools: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`). A caller with the key may act for a user (`X-UGuard-User`, optional `X-UGuard-Locale: th`): proposals it creates belong to that user and land in their U-Bot inbox (the bell), where they approve them. `npm run ubot` is a stand-in MCP client that plays U-Bot for the stage demo.
@@ -89,7 +89,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
   - High-severity news needs a second source.
   - Hits go to the U-Bot inbox (bell in the terminal header) as one message with cards and proposals. The alerts page shows the history and why anything was held back.
 - **Portfolio drift**: the user sets their own target mix on `/terminal/portfolio`. `check_portfolio_drift` (chat and MCP) reports what is over or under the band, together with unlock risk and dilution; it never says what to buy or sell.
-- **Freshness**: every unlock card, trade plan and portfolio shows "ณ HH:MM". If Tokenomist or CoinGecko fails after a live success, the last good copy is used and marked "อาจไม่ล่าสุด".
+- **Freshness**: every unlock card, token-page section, trade plan and the portfolio shows "as of HH:MM" (Bangkok time). If Tokenomist or CoinGecko fails after a live success, the last good copy is used and marked "(may be out of date)". Tool results carry `as_of` / `as_of_th` and `stale`; the agent quotes the age in the reply's language.
 - **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key).
 - **Run log**: every agent run is appended to `logs/YYYY-MM-DD.jsonl` (redacted text, tool trace, timings); `LOG_SILENT=true` turns it off.
 
@@ -97,7 +97,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 
 ```bash
 npm run typecheck
-npm run eval          # 30 golden cases (EN + TH), offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
+npm run eval          # 32 golden cases (EN + TH), offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
 npm run ubot          # U-Bot stand-in: MCP client acting for demo-user (needs the server's MCP_API_KEY in .env)
 npm run responsive    # 16 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
 npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)
