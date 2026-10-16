@@ -217,6 +217,87 @@ Built in a separate session without seeing `feat/app-ui`.
 - **Problem:** live allocations list "Arbitrum DAO Treasury" twice → duplicate React keys. **Fix:** index keys on the allocation table; the risk card merges recipients with the same name.
 - **Checks:** typecheck ✅ · eval 30/30 ✅ · stand-in over MCP: HIGH 67, "Tokenomist live", proposal in the inbox ✅ · every page checked for Thai text ✅ (only "฿").
 
+### Oct 16, ~07:00 · Ported the WIP branch into main's code (branch `feat/merge-app-ui-agentic`)
+- **Found:** `npm run dev` on main returned 500 on every page (`node:crypto` reached the edge bundle through `src/instrumentation.ts`).
+  - nathirad's fix arrived in PR #2 (merged).
+  - This branch restarts from that main.
+- **Ported from `wip/v2-freshness-drift-alerts`:** it was built on the pre-merge code, so its features were rewritten for main instead of merged.
+- **Freshness:**
+  - "ณ HH:MM" on unlock cards, token-page sections, trade plans and the portfolio.
+  - `as_of_th` and `stale` in tool results, plus a prompt rule to quote them.
+  - Last good live copy when Tokenomist or CoinGecko fails, labelled "อาจไม่ล่าสุด".
+- **Portfolio drift:**
+  - Per-user target mix (`data/fixtures/targets.json` as the default), editable on `/terminal/portfolio`.
+  - `/api/portfolio/targets` GET/PUT.
+  - `check_portfolio_drift` tool, so MCP now has 12 tools.
+  - Drift card in chat; "พอร์ตเบี้ยวจากเป้าไหม" is understood by the rules engine.
+- **Alert engine:**
+  - Rule types: unlock, drift, news (`*` = every holding).
+  - Dedupe: unlock and news alerts go out once; drift at most once a day.
+  - Quiet hours 22:00–07:00 Bangkok (high severity only) and a daily cap of 5.
+  - High-severity news needs a second source.
+  - One U-Bot message per run, with cards and proposals.
+  - Alert history and held-back reasons on `/terminal/alerts`.
+  - `GET /api/watch` with Bearer `CRON_SECRET` for Vercel Cron, plus `vercel.json`.
+- **Checked:**
+  - typecheck ✅ · eval 32/32 ✅ · build ✅ · responsive 80/80 ✅
+  - `next dev`: all 17 pages 200 ✅
+  - Alerts at 06:42 (quiet hours): only the 2 high ones went out; a second run sent nothing new.
+  - With a cap of 2: 2 sent, the rest deferred to tomorrow.
+  - Cron: 401 without the secret.
+
+### Oct 16, ~07:30 · Merged the English `main` (PR #3) into the port branch
+- **Merged** `main` at `29abd31` into `feat/merge-app-ui-agentic`, so the PR is one click.
+- **Conflicts (7 files):** LOGS.md, the alerts page, the portfolio page, `Cards.tsx`, `TradePanel.tsx`, `alerts.ts`, `tokenomist.ts`.
+  - `tokenomist.ts`: kept main's in-flight limit, 429 retry and 1-minute fallback cache, plus this branch's last-good-copy fallback.
+  - UI files: kept main's English copy and added the drift card, target editor, alert history, held-back reasons and freshness labels.
+- **Translated the ported UI to English:**
+  - `asOfEn` / `asOfLabel` in `freshness.ts` give "as of 15 Oct 07:00" and "(may be out of date)".
+  - `sourceTag` now appends the age; `sourceTagTh` keeps the Thai label for Thai replies.
+  - Alert engine reasons, drift lines (locale "en" for the watcher), the alerts page and the drift card.
+  - The agent still answers Thai to Thai, with `as_of_th`.
+- **Checked:**
+  - typecheck ✅ · eval 32/32 ✅ · build ✅ · `next dev` all pages 200 ✅
+  - responsive 80/80 ✅ against `next start`. An earlier run failed only because an old server still held the port.
+  - Screenshots of the portfolio drift view, the alerts page after "Watch every token in my portfolio", and the chat drift card: no page errors ✅
+  - API: "U-Guard alert: 2 items", "ARB unlock coming up (High risk 67/100)", "ARB is 8.8 points over your target" ✅
+
+### Oct 16, ~09:00 · MCP tools for trade, invest and alerts; evals for all three
+- **Looked at first:**
+  - Broker MCP servers (e.g. Alpaca's) give the model order tools that execute directly.
+  - Nansen's MCP server is read-only analytics.
+  - MCP tool annotations are hints a client may ignore.
+  - So U-Guard drafts over MCP and never approves. Approval stays in the app, behind the user's session, enforced on the server.
+- **6 MCP-only tools:**
+  - `draft_trade_plan` and `get_paper_trading`.
+  - `get_invest_options` (U-Bot asks the 5 questions itself) and `draft_invest_plan`.
+  - `list_alerts` and `create_alert_rule` (needs the user the caller acts for; deduplicated).
+  - `tools/list` now returns 18, each with annotations. Server version 0.4.0.
+- **Where drafts land:**
+  - A trusted caller acting for a user (`X-UGuard-User`) gets the plan into that user's U-Bot inbox: Thai or English line plus a link.
+  - Trade plans show under "Plans waiting for you", tagged "Drafted by U-Bot in chat (MCP)".
+  - Invest plans show under "Plans U-Bot drafted for you"; Review restores the answers so the user can recalculate.
+- **Kept out of the in-app chat:** `AGENT_TOOL_SPECS` filters them, and `executeTool` refuses them outside MCP.
+  - The pages already cover them.
+  - `draftTradePlan` runs the agent to explain the plan, so a model calling it from chat would recurse. Over MCP the explanation is skipped (`explain: false`), since U-Bot explains it itself.
+- **Refactors:**
+  - Alert-rule creation moved to `src/lib/alert-rules.ts`, shared by `/api/alerts` and MCP, to avoid an import cycle with the alert engine.
+  - Trade and invest modules are imported lazily inside the tools for the same reason.
+- **Bugs found:**
+  - The serious-news regex matched "second" and "sector" (as SEC) and "bank" (as ban); it now matches whole words.
+  - The trade plan table header rendered "P&amp;L".
+- **Evals:** 32 → 55 cases.
+  - Trade arithmetic and checks, blocked plans, approve/decline rules.
+  - Invest profile scoring, weights, DCA-near-unlock, warnings, approval.
+  - Alert cap, dedupe, quiet hours, thresholds, windows, news severity, rule dedupe.
+  - MCP annotations, no approve tool, drafts for a user (EN/TH), alert rules need a user, bad inputs.
+  - Mutation check: breaking the news regex, the MCP-only gate and the max-loss formula fails 3 cases; restoring passes 55/55.
+- **Checked:**
+  - typecheck ✅ · eval 55/55 ✅ · build ✅
+  - `npm run ubot -- --auto --trade` against `next start`: 18 tools, HIGH 67, proposal, CAUTION plan ✅
+  - Invest plan and alert rule over MCP in Thai ✅
+  - Screenshots of Trade, Invest and the bell: no page errors ✅
+
 ---
 
 ## Adding the next entry

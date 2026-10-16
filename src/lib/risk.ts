@@ -283,7 +283,7 @@ export async function assessUnlockRisk(
     name: token.name,
     tradeAmountThb: tradeAmountThb ?? undefined,
     nextUnlock,
-    source: { provider: "Tokenomist" as const, mode: events.source, asOf: events.asOf },
+    source: { provider: "Tokenomist" as const, mode: events.source, asOf: events.asOf, ...(events.stale ? { stale: true } : {}) },
   };
 
   if (candidates.length === 0) {

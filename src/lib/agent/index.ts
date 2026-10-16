@@ -79,6 +79,7 @@ export async function runAgent(req: AgentRequest): Promise<AgentResult> {
       odds: ctx.odds,
       pulse: ctx.pulse,
       calendar: ctx.calendar,
+      drift: ctx.drift,
       proposals: ctx.proposals,
       trace: ctx.trace,
       citations: ctx.citations,

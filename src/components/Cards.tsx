@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { compact, LEVEL_LABEL, pct, shortDate, sourceLabel, usd } from "@/lib/format";
-import type { Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
+import { compact, LEVEL_LABEL, pct, shortDate, sourceTag, usd } from "@/lib/format";
+import { asOfLabel } from "@/lib/freshness";
+import type { DriftReport, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
   team: { th: "Team", color: "#FB7151" },
@@ -98,7 +99,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
       )}
       <div className="card-foot">
         <span>
-          Tokenomist · {sourceLabel(card.source.mode)} · not investment advice
+          Tokenomist · {sourceTag(card.source)} · not investment advice
         </span>
         <button
           className="btn btn-sm"
@@ -172,6 +173,46 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
           {error && <span className="error">{error}</span>}
         </div>
       )}
+    </article>
+  );
+}
+
+const DRIFT_LABEL = { over: "Over target", under: "Under target", ok: "In band", no_target: "No target" } as const;
+
+/** Portfolio vs the user's own target mix: up to 3 lines and one row per holding. */
+export function DriftCardView({ drift }: { drift: DriftReport }) {
+  const rows = drift.rows.filter((r) => r.weightPct > 0 || (r.targetPct ?? 0) > 0);
+  const off = drift.rows.some((r) => r.status === "over" || r.status === "under");
+  return (
+    <article className={`card drift-card ${off ? "lv-medium" : "lv-low"}`} aria-label="Portfolio vs your targets">
+      <div className="card-head">
+        <h3>Portfolio vs targets</h3>
+        <span className="name">{drift.hasTargets ? `band ±${drift.bandPp} pts` : "no targets set"}</span>
+        <span className="score">{drift.portfolioRiskScore}/100</span>
+      </div>
+      <ul className="reasons">
+        {drift.lines.map((l) => (
+          <li key={l}>{l}</li>
+        ))}
+      </ul>
+      <div className="drift-rows">
+        {rows.map((r) => (
+          <div key={r.symbol} className={`drift-row ${r.status}`}>
+            <b>{r.symbol}</b>
+            <span className="drift-bar" aria-hidden="true">
+              <i style={{ width: `${Math.min(100, r.weightPct)}%` }} />
+              {r.targetPct !== null && <em style={{ left: `${Math.min(100, r.targetPct)}%` }} />}
+            </span>
+            <span className="num">
+              {r.weightPct}%{r.targetPct !== null ? ` / ${r.targetPct}%` : ""}
+            </span>
+            <span className="drift-tag">{DRIFT_LABEL[r.status]}</span>
+          </div>
+        ))}
+      </div>
+      <div className="card-foot">
+        <span>Against the targets you set · not investment advice{drift.pricesAsOf ? ` · prices ${asOfLabel(drift.pricesAsOf)}` : ""}</span>
+      </div>
     </article>
   );
 }

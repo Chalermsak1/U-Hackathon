@@ -58,7 +58,14 @@ export async function paperWallet(userId: string) {
   return { qty, price, fx, valueThb, totalThb };
 }
 
-export async function draftTradePlan(input: PlanInput, userId: string, now: number): Promise<TradePlan | { error: string }> {
+export interface DraftOptions {
+  /** Ask the in-app agent to explain the plan (an extra agent run). Off for MCP: U-Bot explains it itself. */
+  explain?: boolean;
+  /** Who drafted it: the app's own page, or U-Bot over MCP. */
+  origin?: "app" | "mcp";
+}
+
+export async function draftTradePlan(input: PlanInput, userId: string, now: number, opts: DraftOptions = {}): Promise<TradePlan | { error: string }> {
   const sym = input.symbol.trim().toUpperCase();
   const quote = await getQuote(sym);
   if (!quote) return { error: `No ${sym} price in this demo yet` };
@@ -187,12 +194,14 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
 
   // The agent explains in its own words (Claude when configured; rules engine otherwise).
   let agent: TradePlan["agent"] = null;
-  try {
-    const message = side === "buy" ? `Buy ${amountThb.toLocaleString("en-US")} THB of ${sym}` : `Check ${sym} for me`;
-    const res = await runAgent({ message, userId, scope: "user", now, route: "/api/trade/plan", locale: "en" });
-    agent = { reply: res.reply, engine: engineLabel(res), trace: res.trace };
-  } catch {
-    agent = null;
+  if (opts.explain !== false) {
+    try {
+      const message = side === "buy" ? `Buy ${amountThb.toLocaleString("en-US")} THB of ${sym}` : `Check ${sym} for me`;
+      const res = await runAgent({ message, userId, scope: "user", now, route: "/api/trade/plan", locale: "en" });
+      agent = { reply: res.reply, engine: engineLabel(res), trace: res.trace };
+    } catch {
+      agent = null;
+    }
   }
 
   const plan: TradePlan = {
@@ -221,8 +230,11 @@ export async function draftTradePlan(input: PlanInput, userId: string, now: numb
     card,
     agent,
     priceSource: quote.source,
+    priceAsOf: quote.asOf,
+    priceStale: quote.stale ?? false,
     createdAt: new Date(now).toISOString(),
     status: "pending",
+    origin: opts.origin ?? "app",
   };
   store.tradePlans.set(plan.id, { plan, ownerId: userId });
   if (store.tradePlans.size > 500) store.tradePlans.delete(store.tradePlans.keys().next().value!);

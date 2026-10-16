@@ -18,14 +18,40 @@ export interface ProposalRecord {
   receipt?: ProtectionReceipt;
 }
 
+export type AlertType = "unlock" | "drift" | "news";
+
 export interface AlertRule {
   id: string;
   createdAt: string;
   ownerId: string;
-  symbol: string;
-  minLevel: "medium" | "high";
-  daysBefore: number;
+  /** unlock = scheduled supply · drift = wallet off the user's target mix · news = market news */
+  type?: AlertType; // rules saved before types existed are unlock rules
+  symbol: string; // "*" = every non-stablecoin holding (unused for drift)
+  minLevel: "medium" | "high"; // unlock risk level, or news severity
+  daysBefore: number; // unlock only
   channel: "ubot" | "telegram" | "line";
+}
+
+/** One alert that went out (deduplicated by dedupeKey). */
+export interface AlertEvent {
+  id: string;
+  ownerId: string;
+  ruleId: string;
+  type: AlertType;
+  symbol: string;
+  severity: "high" | "medium";
+  dedupeKey: string;
+  firedAt: string;
+  title: string;
+  lines: string[];
+  url?: string;
+}
+
+export interface WatchSummary {
+  ranAt: string;
+  trigger: "timer" | "cron" | "manual";
+  fired: AlertEvent[];
+  skipped: { title: string; reason: string }[];
 }
 
 export interface FeedbackRecord {
@@ -40,8 +66,10 @@ interface Store {
   proposals: Map<string, ProposalRecord>;
   inbox: Map<string, InboxItem[]>;
   alerts: AlertRule[];
-  /** userId:ruleId:unlockDate → when that alert last fired (cooldown). */
-  alertsFired: Map<string, number>;
+  /** Alerts that went out, newest first (dedupe, daily cap, history). */
+  alertEvents: AlertEvent[];
+  /** Each user's last watch run, for the alerts page. */
+  lastWatch: Map<string, WatchSummary>;
   feedback: FeedbackRecord[];
   /** Trade plans drafted for a user, awaiting their decision. */
   tradePlans: Map<string, { plan: TradePlan; ownerId: string }>;
@@ -49,6 +77,13 @@ interface Store {
   orders: Map<string, PaperOrder[]>;
   /** Invest plans drafted for a user (pending or decided). */
   investPlans: Map<string, { plan: InvestPlan; ownerId: string }>;
+  /** Each user's own target mix for drift checks. */
+  targets: Map<string, Targets>;
+}
+
+export interface Targets {
+  targets: Record<string, number>; // percent of portfolio value
+  bandPp: number; // drift band, percentage points
 }
 
 const g = globalThis as typeof globalThis & { __uguard?: Store };
@@ -56,16 +91,20 @@ export const store: Store = (g.__uguard ??= {
   proposals: new Map(),
   inbox: new Map(),
   alerts: [],
-  alertsFired: new Map(),
+  alertEvents: [],
+  lastWatch: new Map(),
   feedback: [],
   tradePlans: new Map(),
   orders: new Map(),
   investPlans: new Map(),
+  targets: new Map(),
 });
 // A store created by an older build during hot reload may lack the newer fields.
 store.alerts ??= [];
-store.alertsFired ??= new Map();
+store.alertEvents ??= [];
+store.lastWatch ??= new Map();
 store.feedback ??= [];
 store.tradePlans ??= new Map();
 store.orders ??= new Map();
 store.investPlans ??= new Map();
+store.targets ??= new Map();

@@ -102,6 +102,9 @@ const TTL_MS = 10 * 60 * 1000;
 // After a failed live call the fallback is kept for a minute only, so live data comes back soon.
 const FALLBACK_TTL_MS = 60 * 1000;
 const cache = new Map<string, { at: number; ttl: number; value: Sourced<unknown> }>();
+// The last successful live response per key, kept past the TTL: if Tokenomist fails later,
+// answers use this copy marked stale rather than dropping to saved fixture data.
+const lastGood = new Map<string, Sourced<unknown>>();
 
 // The API rate-limits bursts (429 with retry-after), so at most a few calls run at once.
 const MAX_IN_FLIGHT = 4;
@@ -151,11 +154,18 @@ async function load<T>(
         asOf: body.metadata?.queryDate ?? new Date().toISOString(),
       };
       cache.set(cacheKey, { at: Date.now(), ttl: TTL_MS, value });
+      lastGood.set(cacheKey, value);
       return value;
     } catch (err) {
+      logEvent("tokenomist.fallback", { path: livePath.split("?")[0], error: (err as Error).message });
+      const good = lastGood.get(cacheKey);
+      if (good) {
+        const value = { ...(good as Sourced<T>), stale: true, warning: `${(err as Error).message}; showing the last good copy` };
+        cache.set(cacheKey, { at: Date.now(), ttl: FALLBACK_TTL_MS, value });
+        return value;
+      }
       // e.g. 429 after a burst, or 403 for datasets outside the plan
       warning = `${(err as Error).message}; using saved data`;
-      logEvent("tokenomist.fallback", { path: livePath.split("?")[0], error: (err as Error).message });
     }
   }
 

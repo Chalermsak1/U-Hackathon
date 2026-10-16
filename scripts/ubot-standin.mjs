@@ -4,6 +4,7 @@
 //   npm run ubot                                  # English, ARB, ฿5,000, Enter between steps
 //   npm run ubot -- --symbol AVAX --thb 2000      # another token
 //   npm run ubot -- --auto                        # no pauses (rehearsal, video)
+//   npm run ubot -- --trade                       # also draft a paper-trade plan for the user to approve
 //   npm run ubot -- --url https://<host>/api/mcp  # a deployed server
 //
 // Reads MCP_API_KEY from .env (the server must use the same key). With the key, U-Bot acts for
@@ -32,6 +33,7 @@ const symbol = opt("symbol", "ARB").toUpperCase();
 const thb = Number(opt("thb", "5000"));
 const lang = opt("lang", "en");
 const auto = args.includes("--auto");
+const trade = args.includes("--trade");
 const key = process.env.MCP_API_KEY;
 
 const c = { dim: "\x1b[2m", bold: "\x1b[1m", teal: "\x1b[36m", amber: "\x1b[33m", red: "\x1b[31m", green: "\x1b[32m", off: "\x1b[0m" };
@@ -108,6 +110,22 @@ try {
     }
   } else {
     console.log(`\n  ${c.green}Nothing to protect: U-Bot can go ahead.${c.off} (Calm when it's safe: no alert, no proposal.)`);
+  }
+
+  if (trade) {
+    await step(`5 · Draft the ${symbol} buy as a plan (the user approves it in the app)`);
+    const planArgs = { symbol, side: "buy", amount_thb: thb, order_type: "market", limit_price_usd: null, stop_loss_pct: null, risk_budget_pct: null };
+    sent("tools/call draft_trade_plan", planArgs);
+    const plan = parse(await client.callTool({ name: "draft_trade_plan", arguments: planArgs }));
+    if (plan.created) {
+      const color = plan.verdict === "blocked" ? c.red : plan.verdict === "caution" ? c.amber : c.green;
+      console.log(`  ← ${color}${c.bold}${String(plan.verdict).toUpperCase()}${c.off}  ${plan.summary?.[0] ?? ""}`);
+      for (const ch of (plan.checks ?? []).filter((x) => x.status !== "ok")) console.log(`     ! ${ch.label}`);
+      console.log(`     ${c.dim}plan ${plan.plan_id} · ${plan.status} · ${plan.note}${c.off}`);
+      console.log(key ? `\n  ${c.green}Waiting on ${user}'s Trade page.${c.off} Nothing is bought until they approve.` : "");
+    } else {
+      console.log(`  ← no plan: ${plan.note ?? "unknown reason"}`);
+    }
   }
   console.log(`\n${c.dim}Information only, not investment advice. Every action waits for the user's approval.${c.off}`);
 } catch (err) {
