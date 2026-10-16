@@ -24,10 +24,16 @@ export function MicButton({
   onText,
   onError,
   disabled,
+  listenWhen = 0,
+  handsFree = false,
 }: {
   onText: (text: string) => void;
   onError: (message: string | null) => void;
   disabled?: boolean;
+  /** Voice mode: each new value starts listening without a tap (after U-Bot finished speaking). */
+  listenWhen?: number;
+  /** Voice mode: stop recording by itself after a pause, instead of waiting for "Stop". */
+  handsFree?: boolean;
 }) {
   const [engine, setEngine] = useState<"elevenlabs" | "browser" | "none" | null>(null);
   const [state, setState] = useState<"idle" | "recording" | "processing">("idle");
@@ -46,6 +52,7 @@ export function MicButton({
     const chunks: Blob[] = [];
     const rec = new MediaRecorder(stream);
     rec.ondataavailable = (e) => e.data.size > 0 && chunks.push(e.data);
+    if (handsFree) stopOnSilence(stream, rec);
     rec.onstop = async () => {
       stream.getTracks().forEach((t) => t.stop());
       setState("processing");
@@ -67,6 +74,37 @@ export function MicButton({
     setState("recording");
   }
 
+  /** Ends the recording ~1.4 s after the speaker goes quiet (or after 15 s), for hands-free voice mode. */
+  function stopOnSilence(stream: MediaStream, rec: MediaRecorder) {
+    const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = new Ctx();
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 1024;
+    ctx.createMediaStreamSource(stream).connect(analyser);
+    const buf = new Uint8Array(analyser.fftSize);
+    const started = Date.now();
+    let heard = false;
+    let quietSince = 0;
+    const tick = () => {
+      if (rec.state !== "recording") return void ctx.close().catch(() => undefined);
+      analyser.getByteTimeDomainData(buf);
+      let sum = 0;
+      for (const v of buf) sum += ((v - 128) / 128) ** 2;
+      const loud = Math.sqrt(sum / buf.length) > 0.04;
+      if (loud) {
+        heard = true;
+        quietSince = 0;
+      } else if (heard && !quietSince) quietSince = Date.now();
+      if ((heard && quietSince && Date.now() - quietSince > 1400) || Date.now() - started > 15_000) {
+        rec.stop();
+        return void ctx.close().catch(() => undefined);
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
   function startBrowser() {
     const Ctor = browserRecognition();
     if (!Ctor) return;
@@ -80,6 +118,12 @@ export function MicButton({
     rec.start();
     setState("recording");
   }
+
+  // Voice mode: start listening when asked to (each new listenWhen value), if nothing else is going on.
+  const startRef = useRef<() => void>(() => undefined);
+  useEffect(() => {
+    if (listenWhen > 0) startRef.current();
+  }, [listenWhen]);
 
   async function toggle() {
     onError(null);
@@ -96,6 +140,10 @@ export function MicButton({
       setState("idle");
     }
   }
+
+  startRef.current = () => {
+    if (state === "idle" && !disabled && engine && engine !== "none") void toggle();
+  };
 
   const unavailable = engine === "none";
   return (
