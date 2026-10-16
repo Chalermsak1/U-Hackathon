@@ -376,6 +376,66 @@ Built in a separate session without seeing `feat/app-ui`.
   - In the browser: MCP draft → approve → order note "Alpaca paper didn't answer (network error) · kept as a local paper order" (sandbox has no route to Alpaca) ✅
   - Stand-in `--coingecko` against mocks: "the unlock (~$16.5M) is 10% of one day's volume" ✅
 
+### Oct 16, ~12:00 · Live unlock feed, the agent reads the whole app, Avalanche Data API (branch `feat/live-data-sync`)
+- **"Tokenomist doesn't update":**
+  - The Unlock calendar's "Elsewhere in the market" list and the News page's unlock list read `data/fixtures/unlock-calendar.json`, six hand-written events. A key changed nothing.
+  - Only the 3 snapshot tokens are scored in full.
+  - **Fix:** `src/lib/unlock-feed.ts` takes the next cliff of the 40 largest tokens from the live screener (Tokenomist, cached). It falls back to the file with a visible note when Tokenomist doesn't answer.
+  - `GET /api/status` shows the Tokenomist mode, its last problem, prices, news, store and broker (booleans and modes only).
+  - This session's network policy blocks `api.tokenomist.ai` and `data-api.avax.network` (proxy 403), so live calls couldn't be tested here.
+- **The agent reads the whole app:**
+  - The read-only MCP tools are now offered to the in-app chat too.
+  - New tools: `get_my_plan`, `get_invest_plans`, `get_upcoming_unlocks`, `get_wallet_activity`, `lookup_onchain` (25 tools; the 3 that write stay MCP-only).
+  - The rules engine has intents for orders, alerts, my plan, invest plans, market unlocks and on-chain questions (EN/TH). It answers from the tool results only, and asks signed-out users to sign in for personal data.
+  - Every tool result is kept in `ctx.data` for the replies.
+- **Avalanche Data API** (`src/lib/avalanche-data.ts`):
+  - Native and ERC-20 balances, the latest transactions with token transfers, one transaction by hash, contract metadata. Fuji or C-Chain.
+  - Optional `AVALANCHE_DATA_API_KEY`. Fields are read defensively (the API is in beta).
+  - The wallet is the SIWE session's address, else `WALLET_ADDRESS`, else the approvals signer.
+- **Evals 62 → 72:**
+  - App-data questions (EN/TH, signed in and out).
+  - The unlock feed (live mapping, offline label).
+  - The Data API: request URLs, parsing into the reply, an outage said plainly, tx and contract lookups.
+  - Mutation check: 3 deliberate breaks fail 3 cases.
+- **On VLMs:** not needed. The data is structured JSON, the scores are computed in code, and the Claude models read images if screenshot import is ever added. "Not enough data" is solved by more sources and these read tools, not a vision model.
+
+### Oct 16, ~11:30 · Account button, per-visitor demo accounts, SPEC brought up to date (branch `feat/account-and-spec`)
+- **Account button** in the terminal header:
+  - Shows who is signed in (demo, email or a wallet's short address).
+  - "Sign in another way" signs out and opens `/login`; "Sign out" goes back to the landing page.
+- **Per-visitor demo accounts:**
+  - On a hosted site every judge tapping "demo" was the same `demo-user`, so they would have seen each other's paper orders and U-Bot messages.
+  - On Vercel (`VERCEL` is set) each browser now gets `demo-xxxxxxxx`.
+  - The laptop keeps the shared `demo-user`, because the stage's U-Bot stand-in acts for it over MCP. `DEMO_SHARED=true|false` overrides.
+- **SPEC.md:** new §0.1 with the current state (pages, 25 tools, data sources, alerts, accounts, tests, what's missing). §14 and §17 are marked as the 15 Oct record.
+- **"Dashboard data isn't complete":**
+  - Even with a key, only the 3 snapshot tokens were scored in full (`trackedTokens()`), so Today, the ticker and the calendar showed 3 coins.
+  - With Tokenomist live, `TRACKED_TOKENS` is added (default 10 tokens with regular unlocks, at most 12), matched against the live list. Offline stays 3.
+- **`npm run check:live`** (`scripts/check-live.ts`):
+  - Calls Tokenomist (list, tracked, ARB score, screener), prices, RSS, the Avalanche Data API (WAVAX contract, your wallet), the Fuji RPC, ElevenLabs (voices) and the LLM key (models list, no cost) the way the app does.
+  - Prints PASS / WARN / FAIL with reasons; never a key.
+- **`/api/status`** also names the model that answers (rules engine when no key), the voice engines, the tokens scored in full and the Avalanche settings.
+- **Voice mode** on Ask U-Bot (hands-free):
+  - ElevenLabs Scribe listens, and stops itself ~1.4 s after you stop talking (or at 15 s).
+  - U-Bot answers, the reply is read aloud (`eleven_v3`), then the mic reopens.
+  - Falls back to the browser's recognition and voice without a key. Checked in Chromium: the reply triggers `/api/voice`, then it returns to listening.
+- **Email accounts on Vercel:**
+  - Accounts lived in `data/runtime/users.json`. Vercel's file system is read-only, so sign-up would have worked in one function and been gone in the next.
+  - With the shared store on (Upstash), accounts now live in it; the register and login routes are wrapped with `withStore`. Locally the JSON file is used as before.
+  - Checked against a stand-in KV: sign up, restart the server, log in with the same account; a wrong password and a second sign-up are refused; no file was written.
+- **Vercel:** creating the project through the connector was refused twice. The first attempt was blocked by the session's permission check; the second reached Vercel and returned 403 (no permission to create projects in the team). The project has to be created in the dashboard by a team member who can.
+
+### Oct 16, ~12:15 · Voice mode like ChatGPT's, Tokenomist logo (branch `feat/voice-mode-ui`)
+- **Voice mode is now a full-screen conversation** (`src/components/voice/VoiceMode.tsx`), opened from "Voice mode" on Ask U-Bot:
+  - An orb grows with your voice while it listens, breathes while U-Guard checks, and moves with U-Bot's voice while it answers. Then the mic opens again.
+  - Tap the orb to interrupt U-Bot. The mic button pauses; the red button (or Esc) ends it.
+  - Captions show what it heard and the answer. The answer also lands in the chat thread with its cards and trace.
+  - Same agent and tools as typing; voice changes how you ask, not what is checked.
+  - Ears: ElevenLabs Scribe; voice: ElevenLabs `eleven_v3` ("Voice by ElevenLabs" in the corner). Without a key: the browser's own recognition and voice, labelled.
+  - Listening moved to `src/components/voice/listen.ts` (mic level for the orb, stops ~1.4 s after you go quiet). `speakAloud` reports U-Bot's loudness. The Speak button is tap-to-talk again.
+  - Checked in Chromium with a fake mic, Scribe and the voice mocked (no ElevenLabs from this sandbox), the agent answering for real: listening → thinking → speaking → listening; the orb followed the mic and the voice; mute pauses; Esc closes. Desktop and phone width.
+- **Tokenomist logo:** the "Data and technology we use" strip now shows Tokenomist's mark (redrawn as SVG from the team's file) next to its name. ElevenLabs already had its wordmark.
+
 ---
 
 ## Adding the next entry

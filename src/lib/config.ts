@@ -77,6 +77,9 @@ export const config = {
   auth: {
     secret: env("AUTH_SECRET"),
     demoLogin: env("DEMO_LOGIN", "true") !== "false",
+    // Shared = everyone who taps "demo" is the same demo-user (the laptop stage demo: U-Bot over MCP
+    // acts for demo-user). On Vercel each visitor gets their own demo account unless DEMO_SHARED=true.
+    demoShared: env("DEMO_SHARED", process.env.VERCEL ? "false" : "true") !== "false",
     dataDir: env("DATA_DIR", "data/runtime"),
   },
   mcp: {

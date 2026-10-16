@@ -7,8 +7,10 @@ import { ChatThread } from "@/components/ChatThread";
 import { DataBadge } from "@/components/DataBadge";
 import { Icon } from "@/components/Icon";
 import { MicButton } from "@/components/MicButton";
+import { primeAudio } from "@/components/chat/speak";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
+import { VoiceMode } from "@/components/voice/VoiceMode";
 
 const SUGGESTIONS = [
   "Should I buy 5,000 THB of ARB now?",
@@ -25,6 +27,8 @@ function AgentInner() {
   const [input, setInput] = useState("");
   const asked = useRef(false);
   const fileInput = useRef<HTMLInputElement>(null);
+  // Voice mode: a full-screen spoken conversation (components/voice/VoiceMode.tsx).
+  const [voiceOpen, setVoiceOpen] = useState(false);
 
   // A question passed from the home page or the ⌘K search runs once on arrival.
   useEffect(() => {
@@ -73,11 +77,24 @@ function AgentInner() {
               <span>{busy ? "U-Guard is calling its tools…" : "U-Bot talks, U-Guard checks the risk, you decide · not investment advice"}</span>
             </div>
           </div>
-          <DataBadge
-            status="LIVE"
-            source={last?.engine ?? "U-Bot Agent"}
-            label="Inference"
-          />
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <DataBadge
+              status="LIVE"
+              source={last?.engine ?? "U-Bot Agent"}
+              label="Inference"
+            />
+            <button
+              type="button"
+              className="btn btn-sm voice-toggle"
+              onClick={() => {
+                primeAudio(); // inside the tap, so U-Bot's voice can play and be measured
+                setVoiceOpen(true);
+              }}
+              title="Talk with U-Bot hands-free: speak, hear the answer, speak again"
+            >
+              <Icon name="mic" size={16} /> Voice mode
+            </button>
+          </div>
         </div>
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
         {error && <p className="error" style={{ padding: "0 14px" }}>{error}</p>}
@@ -142,6 +159,7 @@ function AgentInner() {
       <aside style={{ display: "grid", gap: 16 }}>
         <TracePanel last={last} />
       </aside>
+      {voiceOpen ? <VoiceMode onClose={() => setVoiceOpen(false)} ask={send} messages={messages} busy={busy} error={error} /> : null}
     </div>
   );
 }
