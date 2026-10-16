@@ -376,6 +376,29 @@ Built in a separate session without seeing `feat/app-ui`.
   - In the browser: MCP draft → approve → order note "Alpaca paper didn't answer (network error) · kept as a local paper order" (sandbox has no route to Alpaca) ✅
   - Stand-in `--coingecko` against mocks: "the unlock (~$16.5M) is 10% of one day's volume" ✅
 
+### Oct 16, ~12:00 · Live unlock feed, the agent reads the whole app, Avalanche Data API (branch `feat/live-data-sync`)
+- **"Tokenomist doesn't update":**
+  - The Unlock calendar's "Elsewhere in the market" list and the News page's unlock list read `data/fixtures/unlock-calendar.json`, six hand-written events. A key changed nothing.
+  - Only the 3 snapshot tokens are scored in full.
+  - **Fix:** `src/lib/unlock-feed.ts` takes the next cliff of the 40 largest tokens from the live screener (Tokenomist, cached). It falls back to the file with a visible note when Tokenomist doesn't answer.
+  - `GET /api/status` shows the Tokenomist mode, its last problem, prices, news, store and broker (booleans and modes only).
+  - This session's network policy blocks `api.tokenomist.ai` and `data-api.avax.network` (proxy 403), so live calls couldn't be tested here.
+- **The agent reads the whole app:**
+  - The read-only MCP tools are now offered to the in-app chat too.
+  - New tools: `get_my_plan`, `get_invest_plans`, `get_upcoming_unlocks`, `get_wallet_activity`, `lookup_onchain` (25 tools; the 3 that write stay MCP-only).
+  - The rules engine has intents for orders, alerts, my plan, invest plans, market unlocks and on-chain questions (EN/TH). It answers from the tool results only, and asks signed-out users to sign in for personal data.
+  - Every tool result is kept in `ctx.data` for the replies.
+- **Avalanche Data API** (`src/lib/avalanche-data.ts`):
+  - Native and ERC-20 balances, the latest transactions with token transfers, one transaction by hash, contract metadata. Fuji or C-Chain.
+  - Optional `AVALANCHE_DATA_API_KEY`. Fields are read defensively (the API is in beta).
+  - The wallet is the SIWE session's address, else `WALLET_ADDRESS`, else the approvals signer.
+- **Evals 62 → 72:**
+  - App-data questions (EN/TH, signed in and out).
+  - The unlock feed (live mapping, offline label).
+  - The Data API: request URLs, parsing into the reply, an outage said plainly, tx and contract lookups.
+  - Mutation check: 3 deliberate breaks fail 3 cases.
+- **On VLMs:** not needed. The data is structured JSON, the scores are computed in code, and the Claude models read images if screenshot import is ever added. "Not enough data" is solved by more sources and these read tools, not a vision model.
+
 ---
 
 ## Adding the next entry
