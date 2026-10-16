@@ -25,10 +25,10 @@
 | 1 | **Merge PR เข้า `main`** ([ลิงก์](https://github.com/nathirad/U-Hackathon/pull/new/feat/merge-app-ui-agentic)) | ให้ทุกคนดึงโค้ดล่าสุดได้ | `main` ว่าง · ระบบสิทธิ์ของ Claude บล็อกการ push เข้า `main` | คุณ | 🔴 | ✅ merged 16 Oct
 | 2 | `ANTHROPIC_API_KEY` | ให้ U-Bot ตอบด้วย Claude จริง | ตอบด้วย rules engine (ตอบได้ แต่ภาษาแข็งและตอบนอกแบบไม่ได้) | คุณ | 🔴 |
 | 3 | Tokenomist snapshot | ข้อมูล unlock จริงของ ARB/WLD/AVAX | ARB = คัดลอกจากเว็บ 15 ต.ค. · WLD/AVAX = ข้อมูลตัวอย่าง · key มีแล้ว แต่ session นี้เรียก `api.tokenomist.ai` ไม่ได้ | คุณ: รัน `npm run snapshot -- ARB WLD AVAX` บนเครื่อง หรือเพิ่ม `api.tokenomist.ai` ใน Allowed domains ของ environment | 🔴 | ✅ done 16 Oct 02:45 via the API, incl. daily emission (WLD/AVAX continuous releases)
-| 4 | `ELEVENLABS_API_KEY` + `ELEVENLABS_VOICE_ID` (เสียงไทย) | เสียงอ่าน + พูดถาม (STT) | ใช้เสียงของเบราว์เซอร์แทน · ยังไม่เคยทดสอบไมค์จริง | คุณ | 🔴 |
+| 4 | `ELEVENLABS_API_KEY` + `ELEVENLABS_VOICE_ID` (เสียงไทย) | เสียงอ่าน + พูดถาม (STT) + Voice mode แบบ hands-free (ทำแล้ว รอ key) | ใช้เสียงของเบราว์เซอร์แทน · ยังไม่เคยทดสอบไมค์จริง | คุณ | 🔴 |
 | 5 | `DEMO_PRIVATE_KEY` (Fuji testnet เท่านั้น) + AVAX จาก faucet | หลักฐานการอนุมัติบน Avalanche จริง | หลักฐานเป็น "จำลอง" กรรมการกดดู tx ไม่ได้ | คุณ | 🔴 |
 | 6 | `AUTH_SECRET`, `MCP_API_KEY`, `UBOT_API_KEY`, `CRON_SECRET` | ค่าลับสำหรับ production | `npm start` ไม่ขึ้นถ้าไม่มี `AUTH_SECRET` · webhook/MCP ปิดใน production ถ้าไม่มี key | คุณ (สุ่มเองได้ด้วย `openssl rand -base64 32`) | 🔴 |
-| 7 | ตัดสินใจที่รัน demo + host | เปิดให้กรรมการ/ทีมดู | ยังไม่มี URL สาธารณะ · Vercel connector สร้าง project ไม่ได้ (403) | คุณ: เลือก "รันบน laptop" หรือ "import repo ที่ vercel.com" | 🔴 |
+| 7 | ตัดสินใจที่รัน demo + host (connector ของ Claude สร้าง project ไม่ได้ 403 · ต้องสร้างเองใน dashboard) | เปิดให้กรรมการ/ทีมดู | ยังไม่มี URL สาธารณะ · Vercel connector สร้าง project ไม่ได้ (403) | คุณ: เลือก "รันบน laptop" หรือ "import repo ที่ vercel.com" | 🔴 |
 | 8 | Spec / API ของ U-Bot ตัวจริง (`u.bot`) | เชื่อม U-Bot จริง (ส่งแจ้งเตือน, รับพอร์ตผู้ใช้, VIC approval) | ใช้ U-Bot จำลองในแอป + webhook adapter + MCP ที่รอเชื่อม | mentor (U-topia, Maya Nicks) | 🟠 |
 | 9 | ไฟล์โลโก้ Tokenomist (SVG/PNG) | แถบ "ข้อมูลและเทคโนโลยีที่ใช้" เป็นโลโก้ครบ | แสดงเป็นตัวอักษร "Tokenomist" | คุณ / บูธ Tokenomist | 🟠 |
 | 10 | คำตอบ mentor (SPEC §15) | ความถูกต้องของ pitch | ดูข้อ 10.1–10.5 ด้านล่าง | mentor | 🟠 |

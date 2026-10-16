@@ -399,6 +399,28 @@ Built in a separate session without seeing `feat/app-ui`.
   - Mutation check: 3 deliberate breaks fail 3 cases.
 - **On VLMs:** not needed. The data is structured JSON, the scores are computed in code, and the Claude models read images if screenshot import is ever added. "Not enough data" is solved by more sources and these read tools, not a vision model.
 
+### Oct 16, ~11:30 · Account button, per-visitor demo accounts, SPEC brought up to date (branch `feat/account-and-spec`)
+- **Account button** in the terminal header:
+  - Shows who is signed in (demo, email or a wallet's short address).
+  - "Sign in another way" signs out and opens `/login`; "Sign out" goes back to the landing page.
+- **Per-visitor demo accounts:**
+  - On a hosted site every judge tapping "demo" was the same `demo-user`, so they would have seen each other's paper orders and U-Bot messages.
+  - On Vercel (`VERCEL` is set) each browser now gets `demo-xxxxxxxx`.
+  - The laptop keeps the shared `demo-user`, because the stage's U-Bot stand-in acts for it over MCP. `DEMO_SHARED=true|false` overrides.
+- **SPEC.md:** new §0.1 with the current state (pages, 25 tools, data sources, alerts, accounts, tests, what's missing). §14 and §17 are marked as the 15 Oct record.
+- **"Dashboard data isn't complete":**
+  - Even with a key, only the 3 snapshot tokens were scored in full (`trackedTokens()`), so Today, the ticker and the calendar showed 3 coins.
+  - With Tokenomist live, `TRACKED_TOKENS` is added (default 10 tokens with regular unlocks, at most 12), matched against the live list. Offline stays 3.
+- **`npm run check:live`** (`scripts/check-live.ts`):
+  - Calls Tokenomist (list, tracked, ARB score, screener), prices, RSS, the Avalanche Data API (WAVAX contract, your wallet), the Fuji RPC, ElevenLabs (voices) and the LLM key (models list, no cost) the way the app does.
+  - Prints PASS / WARN / FAIL with reasons; never a key.
+- **`/api/status`** also names the model that answers (rules engine when no key), the voice engines, the tokens scored in full and the Avalanche settings.
+- **Voice mode** on Ask U-Bot (hands-free):
+  - ElevenLabs Scribe listens, and stops itself ~1.4 s after you stop talking (or at 15 s).
+  - U-Bot answers, the reply is read aloud (`eleven_v3`), then the mic reopens.
+  - Falls back to the browser's recognition and voice without a key. Checked in Chromium: the reply triggers `/api/voice`, then it returns to listening.
+- **Vercel:** creating the project through the connector was refused twice. The first attempt was blocked by the session's permission check; the second reached Vercel and returned 403 (no permission to create projects in the team). The project has to be created in the dashboard by a team member who can.
+
 ---
 
 ## Adding the next entry

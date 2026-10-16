@@ -194,11 +194,16 @@ export function listTokens(): Promise<Sourced<TokenListItem[]>> {
   return load<TokenListItem[]>("list", "/v5/token/list", ["tokenomist", "token-list.json"], []);
 }
 
+/** Tokens scored in full when Tokenomist is live, on top of the snapshot ones (TRACKED_TOKENS overrides). */
+const DEFAULT_TRACKED = "ARB,WLD,AVAX,OP,SUI,APT,TIA,STRK,ZRO,ENA";
+const MAX_TRACKED = 12;
+
 /**
- * Tokens U-Guard follows in full on the ticker, calendar and dashboard: the ones kept in the
- * dated snapshot, so live and offline modes show the same set. The live list has every token
- * Tokenomist covers (650+), and scoring all of them at once trips the API's rate limit.
- * Any other token can still be looked up one at a time (findToken).
+ * Tokens U-Guard follows in full on the ticker, calendar and Today page. Offline: the ones kept in
+ * the dated snapshot. Live: those plus TRACKED_TOKENS (default a list of tokens with regular
+ * unlocks), at most 12. The live list has every token Tokenomist covers (650+), and scoring all
+ * of them at once trips the API's rate limit. Any other token can still be looked up one at a
+ * time (findToken), and the screener shows the next cliff of the 40 largest.
  */
 export async function trackedTokens(): Promise<Sourced<TokenListItem[]>> {
   const [list, snapshot] = await Promise.all([
@@ -206,6 +211,18 @@ export async function trackedTokens(): Promise<Sourced<TokenListItem[]>> {
     readFixture<Envelope<TokenListItem[]>>("tokenomist", "token-list.json"),
   ]);
   const ids = new Set((snapshot?.data ?? []).map((t) => t.id));
+  if (list.source === "live") {
+    const wanted = (process.env.TRACKED_TOKENS?.trim() || DEFAULT_TRACKED)
+      .split(",")
+      .map((s) => s.trim().toUpperCase())
+      .filter(Boolean);
+    for (const sym of wanted) {
+      if (ids.size >= MAX_TRACKED) break;
+      // Several tokens can share a ticker; take the largest.
+      const t = list.data.filter((x) => x.symbol.toUpperCase() === sym).sort((a, b) => b.marketCap - a.marketCap)[0];
+      if (t) ids.add(t.id);
+    }
+  }
   return ids.size ? { ...list, data: list.data.filter((t) => ids.has(t.id)) } : list;
 }
 

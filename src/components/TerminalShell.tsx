@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { shortDate } from "@/lib/format";
 import { Icon, type IconName } from "./Icon";
+import { AccountMenu } from "./AccountMenu";
 import { UBotInbox } from "./UBotInbox";
 
 // One menu that follows an investor's day: what needs attention today, what is happening in the
@@ -191,6 +192,7 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
           <Link href="/terminal/agent" className="btn btn-sm">
             Ask U-Bot
           </Link>
+          <AccountMenu />
         </header>
         <main className="term-content">{children}</main>
       </div>
