@@ -4,13 +4,14 @@ import { now } from "@/lib/config";
 import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkPost, handleError, jsonError, tooMany } from "@/lib/http";
 import { writeLog } from "@/lib/log";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // "Check now": evaluate the signed-in user's alert rules and push the ones that fire into their
 // U-Bot inbox. The same function can run from a cron later.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req, { allowEmptyBody: true });
   if (blocked) return blocked;
   try {
@@ -25,3 +26,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

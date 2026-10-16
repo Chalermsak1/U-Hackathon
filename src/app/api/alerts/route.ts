@@ -4,6 +4,7 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkOrigin, checkPost, jsonError, tooMany } from "@/lib/http";
 import { thb } from "@/lib/format";
 import { store } from "@/lib/store";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ const Rule = z.object({
 
 // Smart alert rules (demo: kept in memory) and the protection decisions made so far, for the
 // signed-in user only.
-export async function GET() {
+async function handleGET() {
   const session = await getSession();
   if (!session) return jsonError(401, "Sign in to see your alerts.");
   return Response.json({
@@ -37,7 +38,7 @@ export async function GET() {
   });
 }
 
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   const session = await getSession();
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
   return Response.json(rule, { status: 201 });
 }
 
-export async function DELETE(req: Request) {
+async function handleDELETE(req: Request) {
   const blocked = checkOrigin(req);
   if (blocked) return blocked;
   const session = await getSession();
@@ -63,3 +64,7 @@ export async function DELETE(req: Request) {
   store.alerts.splice(i, 1);
   return new Response(null, { status: 204 });
 }
+
+export const GET = withStore(handleGET);
+export const POST = withStore(handlePOST);
+export const DELETE = withStore(handleDELETE);

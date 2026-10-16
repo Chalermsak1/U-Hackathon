@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getSession } from "@/lib/auth/session";
 import { getTargets, setTargets } from "@/lib/drift";
 import { checkPost, jsonError } from "@/lib/http";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,13 +18,13 @@ const Body = z
   }, "Targets must add up to 100% (or all 0 to clear them).");
 
 // The user's own target mix. Drift is measured against this, never against our opinion.
-export async function GET() {
+async function handleGET() {
   const session = await getSession();
   if (!session) return jsonError(401, "Sign in to see your targets.");
   return Response.json(await getTargets(session.sub));
 }
 
-export async function PUT(req: Request) {
+async function handlePUT(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   const session = await getSession();
@@ -34,3 +35,6 @@ export async function PUT(req: Request) {
   setTargets(session.sub, { targets, bandPp: parsed.data.bandPp });
   return Response.json(await getTargets(session.sub));
 }
+
+export const GET = withStore(handleGET);
+export const PUT = withStore(handlePUT);

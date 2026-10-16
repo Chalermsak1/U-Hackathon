@@ -3,12 +3,13 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkPost, handleError, jsonError, readJson, tooMany } from "@/lib/http";
 import { logEvent } from "@/lib/log";
 import { decideInvestPlan } from "@/lib/invest";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Approve or decline an invest plan; approval is recorded on Avalanche Fuji (simulated without a key).
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -27,3 +28,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

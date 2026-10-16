@@ -1,0 +1,31 @@
+.grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 12px; margin-bottom: 16px; }
+@media (max-width: 960px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+.valuePanel, .sidePanel { min-width: 0; }
+.change { margin-left: auto; font-family: var(--mono); font-size: 12.5px; font-weight: 600; }
+
+.svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+.axisLabel { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+.tipDate { fill: var(--muted); font-size: 11px; font-family: var(--mono); }
+.tipValue { fill: var(--text); font-size: 13px; font-weight: 600; }
+
+.events { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.events li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 13px; color: var(--text-2); }
+.eventDate { font-family: var(--mono); font-size: 12px; color: var(--text); min-width: 52px; }
+.eventTag { font-family: var(--mono); font-size: 11.5px; }
+
+.donutWrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.donut { width: 150px; height: 150px; flex: none; }
+.donutValue { fill: var(--text); font-size: 20px; font-weight: 600; }
+.legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; flex: 1; min-width: 150px; }
+.legend li { display: grid; grid-template-columns: 10px 48px 52px 1fr; align-items: center; gap: 8px; font-size: 13px; }
+.legend i, .riskLegend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend span { font-family: var(--mono); font-size: 12.5px; color: var(--text); text-align: right; }
+.legend em { font-style: normal; font-size: 12px; color: var(--muted); }
+
+.riskBar { display: flex; gap: 2px; height: 14px; border-radius: 999px; overflow: hidden; background: var(--surface-2); }
+.riskBar i { display: block; min-width: 4px; }
+.riskLegend { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.riskLegend li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); }
+.riskLegend b { color: var(--text); font-weight: 600; margin-left: auto; font-family: var(--mono); font-size: 12.5px; }
+.riskLegend span { font-family: var(--mono); font-size: 12px; color: var(--muted); min-width: 36px; text-align: right; }
