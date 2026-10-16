@@ -419,7 +419,22 @@ Built in a separate session without seeing `feat/app-ui`.
   - ElevenLabs Scribe listens, and stops itself ~1.4 s after you stop talking (or at 15 s).
   - U-Bot answers, the reply is read aloud (`eleven_v3`), then the mic reopens.
   - Falls back to the browser's recognition and voice without a key. Checked in Chromium: the reply triggers `/api/voice`, then it returns to listening.
+- **Email accounts on Vercel:**
+  - Accounts lived in `data/runtime/users.json`. Vercel's file system is read-only, so sign-up would have worked in one function and been gone in the next.
+  - With the shared store on (Upstash), accounts now live in it; the register and login routes are wrapped with `withStore`. Locally the JSON file is used as before.
+  - Checked against a stand-in KV: sign up, restart the server, log in with the same account; a wrong password and a second sign-up are refused; no file was written.
 - **Vercel:** creating the project through the connector was refused twice. The first attempt was blocked by the session's permission check; the second reached Vercel and returned 403 (no permission to create projects in the team). The project has to be created in the dashboard by a team member who can.
+
+### Oct 16, ~12:15 · Voice mode like ChatGPT's, Tokenomist logo (branch `feat/voice-mode-ui`)
+- **Voice mode is now a full-screen conversation** (`src/components/voice/VoiceMode.tsx`), opened from "Voice mode" on Ask U-Bot:
+  - An orb grows with your voice while it listens, breathes while U-Guard checks, and moves with U-Bot's voice while it answers. Then the mic opens again.
+  - Tap the orb to interrupt U-Bot. The mic button pauses; the red button (or Esc) ends it.
+  - Captions show what it heard and the answer. The answer also lands in the chat thread with its cards and trace.
+  - Same agent and tools as typing; voice changes how you ask, not what is checked.
+  - Ears: ElevenLabs Scribe; voice: ElevenLabs `eleven_v3` ("Voice by ElevenLabs" in the corner). Without a key: the browser's own recognition and voice, labelled.
+  - Listening moved to `src/components/voice/listen.ts` (mic level for the orb, stops ~1.4 s after you go quiet). `speakAloud` reports U-Bot's loudness. The Speak button is tap-to-talk again.
+  - Checked in Chromium with a fake mic, Scribe and the voice mocked (no ElevenLabs from this sandbox), the agent answering for real: listening → thinking → speaking → listening; the orb followed the mic and the voice; mute pauses; Esc closes. Desktop and phone width.
+- **Tokenomist logo:** the "Data and technology we use" strip now shows Tokenomist's mark (redrawn as SVG from the team's file) next to its name. ElevenLabs already had its wordmark.
 
 ---
 

@@ -2,6 +2,7 @@
 // rules, feedback). Kept on globalThis so every route bundle and hot reload sees the same
 // instance. Swap for Postgres/Supabase before this outlives the hackathon.
 
+import type { UserRecord } from "./auth/users";
 import type { AgentResult, InvestPlan, PaperOrder, Proposal, ProtectionReceipt, TradePlan } from "./types";
 
 export interface InboxItem {
@@ -85,6 +86,8 @@ interface Store {
   investPlans: Map<string, { plan: InvestPlan; ownerId: string }>;
   /** Target mix per user (portfolio drift). */
   targets: Map<string, Targets>;
+  /** Email + password accounts, kept here only when the shared store is on (see auth/users.ts). */
+  accounts: UserRecord[];
 }
 
 const g = globalThis as typeof globalThis & { __uguard?: Store };
@@ -99,6 +102,7 @@ export const store: Store = (g.__uguard ??= {
   orders: new Map(),
   investPlans: new Map(),
   targets: new Map(),
+  accounts: [],
 });
 // A store created by an older build during hot reload may lack the newer fields.
 store.alerts ??= [];
@@ -109,6 +113,7 @@ store.tradePlans ??= new Map();
 store.orders ??= new Map();
 store.investPlans ??= new Map();
 store.targets ??= new Map();
+store.accounts ??= [];
 
 // ─── Shared persistence for serverless hosting (optional) ───────────────────────────
 // On Vercel every route runs in its own function with its own memory, so a proposal U-Bot
@@ -136,6 +141,7 @@ function snapshot(): string {
     orders: [...store.orders],
     investPlans: [...store.investPlans],
     targets: [...store.targets],
+    accounts: store.accounts,
   });
 }
 
@@ -151,6 +157,7 @@ function restore(json: string): void {
   store.orders = new Map(s.orders ?? []);
   store.investPlans = new Map(s.investPlans ?? []);
   store.targets = new Map(s.targets ?? []);
+  store.accounts = s.accounts ?? [];
 }
 
 async function kv(path: string, body?: string): Promise<unknown> {
