@@ -162,6 +162,8 @@ export interface AgentResult {
   model: string | null;
   compliance: ComplianceReport;
   note?: string; // e.g. why we fell back to the rules engine
+  /** Where the user acts on this message, e.g. a plan U-Bot drafted over MCP. */
+  links?: { label: string; href: string }[];
   usage?: { inputTokens: number; outputTokens: number };
   ms: number;
   now: string; // the agent's clock (DEMO_NOW when set), ISO
@@ -244,6 +246,8 @@ export interface TradePlan {
   priceStale: boolean;
   createdAt: string;
   status: "pending" | "approved" | "declined";
+  /** Drafted on the app's own page, or by U-Bot over MCP (still approved only in the app). */
+  origin?: "app" | "mcp";
 }
 
 export interface PaperOrder {
@@ -286,6 +290,7 @@ export interface InvestPlan {
   profile: InvestProfile;
   profileName: string;
   score: number; // 5..20 from the five answers
+  answers?: number[]; // the five answers, so the page can recalculate a plan U-Bot drafted
   lumpSumThb: number;
   monthlyThb: number;
   dcaDay: number;
@@ -299,6 +304,7 @@ export interface InvestPlan {
   source: DataSource;
   createdAt: string;
   status: "pending" | "approved" | "declined";
+  origin?: "app" | "mcp";
   receipt?: ProtectionReceipt;
 }
 

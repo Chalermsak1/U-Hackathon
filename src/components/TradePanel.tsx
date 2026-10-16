@@ -51,7 +51,7 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
   return (
     <article className={`tp-plan ${v.lv}`} aria-label={`Plan to ${plan.side === "buy" ? "buy" : "sell"} ${plan.symbol}`}>
       <div className="tp-plan-head">
-        <b>Plan drafted by U-Bot</b>
+        <b>{plan.origin === "mcp" ? "Drafted by U-Bot in chat (MCP)" : "Plan drafted by U-Bot"}</b>
         <span className="tp-verdict">
           <span className="dot" />
           {v.th}
@@ -93,7 +93,7 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
       <div className="table-scroll">
         <table className="t-table tp-table">
           <thead>
-            <tr><th>Case</th><th className="num">Price</th><th className="num">{plan.side === "buy" ? "P&amp;L" : "Effect for you"}</th></tr>
+            <tr><th>Case</th><th className="num">Price</th><th className="num">{plan.side === "buy" ? "P&L" : "Effect for you"}</th></tr>
           </thead>
           <tbody>
             {plan.scenarios.map((s) => (

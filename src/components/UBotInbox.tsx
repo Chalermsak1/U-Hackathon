@@ -56,7 +56,7 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
               <span className="note">{hhmm(it.at)}</span>
             </div>
             {/* Alert messages list each alert on its own line; other replies show their first line. */}
-            {(cards.length === 0 || it.kind === "alert") &&
+            {(cards.length === 0 || it.kind === "alert" || Boolean(it.result.links?.length)) &&
               it.result.reply
                 .split("\n")
                 .slice(0, cards.length === 0 ? 5 : 1)
@@ -77,6 +77,12 @@ export function InboxList({ items, onPick }: { items: InboxItem[]; onPick?: () =
                   Ask U-Bot more →
                 </Link>
               </div>
+            ))}
+            {/* Plans U-Bot drafted over MCP are approved on their own page. */}
+            {it.result.links?.map((l) => (
+              <Link key={l.href} href={l.href} className="note inbox-link" onClick={onPick}>
+                {l.label} →
+              </Link>
             ))}
             {/* Proposals U-Bot made for this user (chat, scan, alerts or MCP): decide right here. */}
             {it.result.proposals.map((p) => (

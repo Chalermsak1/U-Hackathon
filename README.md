@@ -77,10 +77,13 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 
 - **Model is pluggable**: Claude via the Anthropic SDK (the team's choice; optionally through the Vercel AI Gateway, `AI_GATEWAY=vercel`), any OpenAI-compatible model (`LLM_BASE_URL`), or the deterministic **rules engine** (the offline agent), which is also the automatic fallback. With `AGENT_PROVIDER=auto` the order is OpenAI-compatible (if `LLM_API_KEY` is set), then Claude, then rules; set `AGENT_PROVIDER=anthropic` to force Claude. `AGENT_MODE` (claude/offline/auto) still works as a legacy alias.
 - **Language**: replies follow the user's language. Thai input gets Thai replies, card reasons and proposal text; English input gets English.
-- **12 tools** (`src/lib/agent/tools.ts`, including `check_portfolio_drift`), zod-validated, shared by every provider and by MCP.
+- **18 tools** (`src/lib/agent/tools.ts`), zod-validated. 12 are shared by every provider and by MCP (including `check_portfolio_drift`). 6 are for U-Bot over MCP only: `draft_trade_plan`, `get_paper_trading`, `get_invest_options`, `draft_invest_plan`, `list_alerts`, `create_alert_rule`.
+  - **No tool approves or executes anything.** Trade and invest tools only draft a plan; the user approves it in the app, behind their own session. This is a server rule, not just a hint.
+  - Every tool carries MCP annotations (read-only, or a write that is not destructive) so a client can decide when to ask the user.
+  - The in-app chat doesn't get the 6 MCP-only tools; the Trade, Invest and Alerts pages cover them.
 - **RAG** for fresh facts (unlocks, news ranked by relevance + recency with citations, odds, pulse); **CAG** for static knowledge (`data/knowledge/faq.json`, preloaded into the cached system prompt).
 - **Guardrails**: input guard (seed phrases/private keys blocked, PII redacted, injection flagged), rate limits, Origin checks, output compliance check (no buy/sell/hold advice or price predictions in EN/TH; every number must come from a tool result; one rewrite, then a checked template).
-- **U-Bot reaches U-Guard three ways**, all through the same tools: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`). A caller with the key may act for a user (`X-UGuard-User`, optional `X-UGuard-Locale: th`): proposals it creates belong to that user and land in their U-Bot inbox (the bell), where they approve them. `npm run ubot` is a stand-in MCP client that plays U-Bot for the stage demo.
+- **U-Bot reaches U-Guard three ways**, all through the same tools: the in-app chat, the webhook adapter (`/api/ubot/webhook` + `/api/ubot/inbox`, Bearer `UBOT_API_KEY`), and the **MCP server** at `/api/mcp` (Streamable HTTP, Bearer `MCP_API_KEY`). A caller with the key may act for a user (`X-UGuard-User`, optional `X-UGuard-Locale: th`): proposals it creates belong to that user and land in their U-Bot inbox (the bell), where they approve them. Trade and invest plans U-Bot drafts wait under "Plans waiting for you" on the Trade page and "Plans U-Bot drafted for you" on the Invest page, with a link in the inbox message. `npm run ubot` is a stand-in MCP client that plays U-Bot for the stage demo (`-- --trade` adds a fifth step that drafts the trade plan).
 - **Watcher** (alert engine): unlock, drift and news rules (`*` = every holding) are checked on a timer (`WATCH_INTERVAL_MIN`, default 10) in `npm start`. On Vercel, `vercel.json` schedules `GET /api/watch` with `Bearer $CRON_SECRET`.
   - No model decides whether to alert.
   - Each alert goes out once.
@@ -97,7 +100,7 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
 
 ```bash
 npm run typecheck
-npm run eval          # 32 golden cases (EN + TH), offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
+npm run eval          # 55 golden cases (EN + TH): risk, agent, compliance, guard, MCP, trade, invest, alerts · offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
 npm run ubot          # U-Bot stand-in: MCP client acting for demo-user (needs the server's MCP_API_KEY in .env)
 npm run responsive    # 16 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
 npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)

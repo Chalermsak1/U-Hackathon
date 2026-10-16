@@ -262,6 +262,42 @@ Built in a separate session without seeing `feat/app-ui`.
   - Screenshots of the portfolio drift view, the alerts page after "Watch every token in my portfolio", and the chat drift card: no page errors ✅
   - API: "U-Guard alert: 2 items", "ARB unlock coming up (High risk 67/100)", "ARB is 8.8 points over your target" ✅
 
+### Oct 16, ~09:00 · MCP tools for trade, invest and alerts; evals for all three
+- **Looked at first:**
+  - Broker MCP servers (e.g. Alpaca's) give the model order tools that execute directly.
+  - Nansen's MCP server is read-only analytics.
+  - MCP tool annotations are hints a client may ignore.
+  - So U-Guard drafts over MCP and never approves. Approval stays in the app, behind the user's session, enforced on the server.
+- **6 MCP-only tools:**
+  - `draft_trade_plan` and `get_paper_trading`.
+  - `get_invest_options` (U-Bot asks the 5 questions itself) and `draft_invest_plan`.
+  - `list_alerts` and `create_alert_rule` (needs the user the caller acts for; deduplicated).
+  - `tools/list` now returns 18, each with annotations. Server version 0.4.0.
+- **Where drafts land:**
+  - A trusted caller acting for a user (`X-UGuard-User`) gets the plan into that user's U-Bot inbox: Thai or English line plus a link.
+  - Trade plans show under "Plans waiting for you", tagged "Drafted by U-Bot in chat (MCP)".
+  - Invest plans show under "Plans U-Bot drafted for you"; Review restores the answers so the user can recalculate.
+- **Kept out of the in-app chat:** `AGENT_TOOL_SPECS` filters them, and `executeTool` refuses them outside MCP.
+  - The pages already cover them.
+  - `draftTradePlan` runs the agent to explain the plan, so a model calling it from chat would recurse. Over MCP the explanation is skipped (`explain: false`), since U-Bot explains it itself.
+- **Refactors:**
+  - Alert-rule creation moved to `src/lib/alert-rules.ts`, shared by `/api/alerts` and MCP, to avoid an import cycle with the alert engine.
+  - Trade and invest modules are imported lazily inside the tools for the same reason.
+- **Bugs found:**
+  - The serious-news regex matched "second" and "sector" (as SEC) and "bank" (as ban); it now matches whole words.
+  - The trade plan table header rendered "P&amp;L".
+- **Evals:** 32 → 55 cases.
+  - Trade arithmetic and checks, blocked plans, approve/decline rules.
+  - Invest profile scoring, weights, DCA-near-unlock, warnings, approval.
+  - Alert cap, dedupe, quiet hours, thresholds, windows, news severity, rule dedupe.
+  - MCP annotations, no approve tool, drafts for a user (EN/TH), alert rules need a user, bad inputs.
+  - Mutation check: breaking the news regex, the MCP-only gate and the max-loss formula fails 3 cases; restoring passes 55/55.
+- **Checked:**
+  - typecheck ✅ · eval 55/55 ✅ · build ✅
+  - `npm run ubot -- --auto --trade` against `next start`: 18 tools, HIGH 67, proposal, CAUTION plan ✅
+  - Invest plan and alert rule over MCP in Thai ✅
+  - Screenshots of Trade, Invest and the bell: no page errors ✅
+
 ---
 
 ## Adding the next entry

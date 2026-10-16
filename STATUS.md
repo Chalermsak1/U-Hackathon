@@ -20,7 +20,7 @@
   - ตั้งเป้าสัดส่วนเองได้ในหน้าพอร์ต
   - การ์ดแสดงเหรียญที่เกินหรือต่ำกว่าเป้า พร้อมความเสี่ยง unlock ของทั้งพอร์ต
   - ถามในแชตได้ เช่น "พอร์ตเบี้ยวจากเป้าไหม"
-  - U-Bot เรียกผ่าน MCP ได้ ตอนนี้มี 12 tools
+  - U-Bot เรียกผ่าน MCP ได้ (ตอนนั้น 12 tools · ตอนนี้ 18 ดู §0.3)
 - **ระบบแจ้งเตือนแบบเต็ม:**
   - กฎ 3 แบบ: unlock, พอร์ตเบี้ยว และข่าวลบ ใช้ `*` แทนทุกเหรียญในพอร์ตได้
   - ไม่แจ้งซ้ำเรื่องเดิม
@@ -38,6 +38,35 @@
 - **Tokenomist live จาก PR #3 อยู่ครบ:** จำกัดจำนวนคำขอพร้อมกัน, retry เมื่อเจอ 429, cache ตัวสำรอง 1 นาที · และเพิ่ม "ใช้ข้อมูลชุดล่าสุดที่ดึงสำเร็จ" เมื่อ API ล่ม
 - **conflict 7 ไฟล์** (LOGS.md, หน้า alerts, หน้า portfolio, Cards.tsx, TradePanel.tsx, alerts.ts, tokenomist.ts) แก้โดยเก็บของทั้งสองฝั่ง
 - **ตรวจแล้ว:** typecheck ✅ · eval 32/32 ✅ · build ✅ · `next dev` ทุกหน้า 200 ✅ · responsive 80/80 ✅ (production build) · ภาพหน้าจอ portfolio / alerts / แชต drift ไม่มี error ✅
+
+## 0.3 อัปเดต ~09:00 น.: MCP tools สำหรับเทรด/ลงทุน/แจ้งเตือน + eval ครบ
+- **MCP tools ใหม่ 6 ตัว (เฉพาะ U-Bot ผ่าน MCP):**
+  - `draft_trade_plan`: ร่างแผนเทรดจำลองจากเหรียญ/ฝั่ง/จำนวนเงินที่ผู้ใช้เลือกเอง พร้อมผลตรวจของ U-Guard
+  - `get_paper_trading`: ดูพอร์ตจำลอง คำสั่งที่ผ่านมา และแผนที่รออนุมัติ
+  - `get_invest_options`: ดึงคำถาม 5 ข้อและพอร์ตตัวอย่าง ให้ U-Bot ถามผู้ใช้เอง
+  - `draft_invest_plan`: ร่างแผนลงทุนจากคำตอบของผู้ใช้
+  - `list_alerts`: ดูกฎแจ้งเตือน ประวัติ และเรื่องที่ยังไม่ส่ง
+  - `create_alert_rule`: ตั้งกฎแจ้งเตือนตามที่ผู้ใช้ขอ (ต้องระบุผู้ใช้)
+- **ไม่มี tool อนุมัติหรือส่งคำสั่ง:**
+  - ทุกแผนรอผู้ใช้กดอนุมัติในแอปเท่านั้น และกฎนี้บังคับที่ server
+  - ระบบอื่น เช่น Alpaca MCP มี tool ส่งคำสั่งซื้อขายให้ AI ยิงเองได้ เราตั้งใจไม่ทำแบบนั้น
+  - ทุก tool มี MCP annotations บอกว่าอ่านอย่างเดียว หรือเขียนแต่ไม่ทำลายข้อมูล
+- **ผู้ใช้เห็นอะไร:**
+  - แผนเทรดที่ U-Bot ร่างจะขึ้นใน "Plans waiting for you" ของหน้า Trade พร้อมป้าย "Drafted by U-Bot in chat (MCP)"
+  - แผนลงทุนขึ้นใน "Plans U-Bot drafted for you" ของหน้า Invest กด Review แล้วเห็นคำตอบเดิมครบ
+  - กระดิ่ง U-Bot มีข้อความพร้อมลิงก์ไปหน้านั้น (ไทยหรืออังกฤษตาม `X-UGuard-Locale`)
+- **แชตในแอปไม่ได้ tool 6 ตัวนี้:** มีหน้า Trade/Invest/Alerts แยกอยู่แล้ว และป้องกันการเรียกซ้อน (แผนเทรดเรียก agent ซ้ำ)
+- **แก้บั๊ก:**
+  - ตัวจับข่าวร้ายแรงเคยนับ "second" / "sector" เป็น SEC และนับ "bank" เป็น ban แก้ให้จับทั้งคำแล้ว
+  - หัวตาราง "P&amp;L" ในแผนเทรด แก้เป็น "P&L"
+- **eval 55 เคส** (จาก 32):
+  - เทรด 5 เคส: ตัวเลขถูก, ยอดเงินไม่พอ, ขายเกินที่มี, อนุมัติซ้ำ, ไม่ใช่เจ้าของ, stop-loss 2–50%
+  - ลงทุน 5 เคส: ระดับความเสี่ยง, สัดส่วนรวม 100%, วัน DCA ชน unlock, คำเตือน, อนุมัติ
+  - แจ้งเตือน 7 เคส: เพดานวันละ 5, ไม่ส่งซ้ำ, ช่วงเงียบ, ต่ำกว่าเกณฑ์, นอกช่วงวัน, ข่าวต้องมี 2 แหล่ง, กฎซ้ำ
+  - MCP 6 เคส: annotations, ไม่มี tool อนุมัติ, ร่างแผนแทนผู้ใช้, ภาษาไทย, ต้องระบุผู้ใช้, input ผิด
+  - ทดสอบแล้วว่า eval จับบั๊กได้จริง: ลองทำ 3 จุดให้พังโดยตั้งใจ แล้ว eval ตกครบทั้ง 3
+- **`npm run ubot -- --trade`:** เพิ่มขั้นที่ 5 ร่างแผนเทรด (บทบนเวทีเดิมยังกด Enter 4 ครั้งเหมือนเดิม)
+- **ตรวจแล้ว:** typecheck ✅ · eval 55/55 ✅ · build ✅ · stand-in กับ production server ✅ · หน้า Trade/Invest/กระดิ่งแสดงแผนจาก MCP ✅
 
 ## หน้าแอปทั้งหมด
 
@@ -84,7 +113,7 @@
 
 ### 1.3 Backend (ใช้ร่วมกันทั้งสองแอป)
 - **Agent harness:** guard → plan + act → reflect → observe · โมเดลสลับได้ (Claude ผ่าน Anthropic SDK / Vercel AI Gateway, โมเดล OpenAI-compatible ใดก็ได้, rules engine ที่ไม่ใช้ LLM เป็นตัวสำรองอัตโนมัติ) · ตอบตามภาษาผู้ใช้ (ไทย/อังกฤษ)
-- **12 tools:** `get_portfolio` · `lookup_token` · `get_unlock_schedule` · `get_allocations` · `get_fundraising` · `assess_unlock_risk` · `propose_protection` · `get_market_news` · `get_event_odds` · `get_market_pulse` · `get_event_calendar` · `check_portfolio_drift`
+- **18 tools:** ใช้ร่วมกันทุก provider และ MCP 12 ตัว: `get_portfolio` · `lookup_token` · `get_unlock_schedule` · `get_allocations` · `get_fundraising` · `assess_unlock_risk` · `propose_protection` · `get_market_news` · `get_event_odds` · `get_market_pulse` · `get_event_calendar` · `check_portfolio_drift` · เฉพาะ U-Bot ผ่าน MCP 6 ตัว: `draft_trade_plan` · `get_paper_trading` · `get_invest_options` · `draft_invest_plan` · `list_alerts` · `create_alert_rule`
 - **Risk engine v0.2:** คะแนน 0–100 แบบ deterministic (ไม่ใช้ LLM ให้คะแนน) · สถานะ upcoming / recent / continuous · แยกผู้รับ (ทีม, นักลงทุน, ecosystem) · กำไรของนักลงทุน (เทียบราคารอบระดมทุน)
 - **RAG + CAG:** ดึงข้อมูลสดผ่าน tool (unlock, ข่าว GDELT, Polymarket, CoinGecko + Fear & Greed + Deribit) · ความรู้คงที่ (`data/knowledge/faq.json`) อยู่ใน system prompt ที่ cache ได้
 - **Guardrails:** บล็อก seed phrase / private key · ปิดบัง PII · flag prompt injection · rate limit · ตรวจ Origin · compliance check (ห้ามแนะนำซื้อ/ขาย/ถือ, ห้ามทายราคา, ตัวเลขทุกตัวต้องมาจาก tool) · security headers
@@ -111,7 +140,7 @@
 | เทรด: ร่างแผน → ตรวจ → อนุมัติ → คำสั่งจำลอง | ✅ (บันทึกบน Avalanche แบบจำลองจนกว่าจะมี key) |
 | ลงทุน: แบบประเมิน → แผน → อนุมัติ | ✅ ข้อมูลตัวอย่าง |
 | แอปอังกฤษ: login → แชต/ข่าว/odds → dashboard | ✅ |
-| MCP (initialize / list 12 tools / call) | ✅ |
+| MCP (initialize / list 18 tools / call) · ร่างแผนเทรด/ลงทุน + ตั้งแจ้งเตือนผ่าน MCP | ✅ |
 | เสียง TTS / STT | ✅ ตัวสำรองของเบราว์เซอร์ · ⬜ ElevenLabs จริงยังไม่ได้ทดสอบ (ไม่มี key) |
 | Claude จริง | ⬜ ไม่มี `ANTHROPIC_API_KEY` (ตอนนี้ rules engine ตอบแทน) |
 | Tokenomist สด | ✅ live mode ใช้ได้ (PR #3): ARB / WLD / AVAX ดึงสดได้ ~0.6 วินาที · ล่มเมื่อไรใช้ชุดล่าสุดที่ดึงสำเร็จ |

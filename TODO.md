@@ -106,8 +106,8 @@
 | แบ่งโมเดลตามงาน (Opus วิเคราะห์ · Sonnet แชต · Haiku คัดข่าว) | ใช้ provider เดียวทุกงาน | 🟠 |
 | ข่าวล่าสุดด้วย Claude web search | ใช้ GDELT / snapshot | ⚪ |
 | Pipeline รายงานประจำปี + เทรนด์โลก (Files API, Batches, Haiku ดึงตัวเลขพร้อมเลขหน้า) | ออกแบบไว้ใน STATUS.md §7 ยังไม่ได้สร้าง | ⚪ |
-| MCP tools สำหรับเทรด/ลงทุน/แจ้งเตือน | MCP มี 12 tools (เพิ่ม `check_portfolio_drift`) · ยังไม่มี tool เทรด/ลงทุน | 🟠 |
-| Eval สำหรับเทรด/ลงทุน/แจ้งเตือน | eval 32 เคส (มี drift แล้ว) · เทรด/ลงทุน/แจ้งเตือนยังไม่มีเคส | 🟠 |
+| MCP tools สำหรับเทรด/ลงทุน/แจ้งเตือน | ✅ 18 tools: `draft_trade_plan`, `get_paper_trading`, `get_invest_options`, `draft_invest_plan`, `list_alerts`, `create_alert_rule` · ร่างอย่างเดียว ผู้ใช้อนุมัติในแอป | – |
+| Eval สำหรับเทรด/ลงทุน/แจ้งเตือน | ✅ eval 55 เคส (เทรด 5 · ลงทุน 5 · แจ้งเตือน 7 · MCP ใหม่ 6) | – |
 | GraphRAG-lite (เหรียญที่มีนักลงทุนร่วมกัน) · morning brief | ยังไม่มี | ⚪ |
 
 ### 3.4 การเฝ้าดูและแจ้งเตือน

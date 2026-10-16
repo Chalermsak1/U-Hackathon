@@ -18,7 +18,8 @@ import { getUBot } from "./ubot";
 const STABLES = new Set(["USDC", "USDT", "DAI"]);
 const RANK: Record<RiskLevel, number> = { none: 0, low: 1, medium: 2, high: 3 };
 const SEV = { medium: 2, high: 3 } as const;
-const SERIOUS = /hack|exploit|breach|lawsuit|sued|sec|delist|regulat|ban|bankrupt|insolv|halt/i;
+// Whole words only: a bare /sec/ also matched "second" and "sector", /ban/ matched "bank".
+const SERIOUS = /\b(hack(ed|s|ers?)?|exploit(ed|s)?|breach(ed|es)?|lawsuits?|sued|sec|delist(ed|ing|s)?|regulat\w*|ban(s|ned)?|bankrupt\w*|insolven\w*|halt(ed|s)?)\b/i;
 
 export interface AlertOutcome {
   ruleId: string;
@@ -52,9 +53,14 @@ export function matches(rule: Pick<AlertRule, "minLevel" | "daysBefore">, card: 
 }
 
 /** Severity of a news item: negative news is medium; negative and serious (hack, lawsuit...) is high. */
-function newsSeverity(n: NewsItem): "high" | "medium" | null {
+export function newsSeverity(n: NewsItem): "high" | "medium" | null {
   if (n.sentiment !== "negative") return null;
   return SERIOUS.test(`${n.summary} ${n.topics.join(" ")}`) ? "high" : "medium";
+}
+
+/** A second, independent source (another outlet) with negative news on the same token. */
+export function isCorroborated(n: NewsItem, symbol: string, all: NewsItem[]): boolean {
+  return all.some((o) => o !== n && o.source !== n.source && o.symbols.includes(symbol) && newsSeverity(o) !== null);
 }
 
 function resultFrom(ctx: RunContext, reply: string): AgentResult {
@@ -185,8 +191,7 @@ export async function runAlerts(
       if (!symbol || !severity || SEV[severity] < SEV[r.minLevel]) continue;
       any = true;
       // A high alert needs a second, independent source on the same token.
-      const corroborated = news.some((o) => o !== n && o.source !== n.source && o.symbols.includes(symbol) && newsSeverity(o) !== null);
-      if (severity === "high" && !corroborated) {
+      if (severity === "high" && !isCorroborated(n, symbol, news)) {
         skipped.push({ title: `${symbol} news: ${n.summary}`, reason: `Serious news from one source only (${n.source}); waiting for a second source` });
         note(r, false, `${symbol}: single-source news, waiting for a second source`);
         continue;

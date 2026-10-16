@@ -45,10 +45,11 @@ Checklist:
 
 ### 2 · U-Bot asks U-Guard over MCP (0:25 – 1:05) · window 2
 **Do:** run `npm run ubot`, press Enter four times.
-1. Connect → `u-guard 0.3.0`
-2. `tools/list` → 12 tools
+1. Connect → `u-guard 0.4.0`
+2. `tools/list` → 18 tools
 3. `assess_unlock_risk ARB ฿5,000` → **HIGH 67/100**, three reasons, "data: Tokenomist live"
 4. `propose_protection` → proposal "Pause auto-buys of ARB through the unlock window", "Delivered to demo-user's U-Bot inbox"
+5. *(optional, only with `npm run ubot -- --trade`)* `draft_trade_plan ARB ฿5,000` → **CAUTION**, "Unlock coming up · High risk 67/100", "Portfolio would lean on ARB"; the plan waits on the Trade page. Skip it if time is short.
 
 **Say (EN):** "The user asks U-Bot to buy five thousand baht of ARB. Before any money moves, U-Bot calls U-Guard over MCP, the open standard agents use for tools. U-Guard scores the unlock 67 out of 100, high, and proposes a rule. It doesn't act on its own."
 **พูด (TH):** "ผู้ใช้สั่ง U-Bot ซื้อ ARB ห้าพันบาท ก่อนเงินขยับ U-Bot ถาม U-Guard ผ่าน MCP ได้คะแนน 67 เสี่ยงสูง และเสนอกฎป้องกัน แต่ไม่ทำเองเด็ดขาด"

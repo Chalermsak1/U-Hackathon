@@ -660,6 +660,7 @@ body:has(.report-page) { background: #fff; color: #10151f; color-scheme: light; 
 .inbox-card .inbox-text, .inbox-card a { grid-column: 1 / -1; }
 .inbox-lv { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--lv, var(--text-2)); }
 .inbox-text { margin: 0; font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+.inbox-link { display: inline-block; margin-top: 4px; }
 @media (max-width: 560px) { .inbox-pop { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; } }
 .alert-outcome { display: block; margin-top: 4px; }
 .alert-outcome.fired { color: var(--teal-2); }
