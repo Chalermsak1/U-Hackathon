@@ -8,7 +8,7 @@ import { MicButton } from "@/components/MicButton";
 import { TracePanel } from "@/components/TracePanel";
 import { useAgentChat } from "@/components/useAgentChat";
 
-const SUGGESTIONS = ["Buy 5,000 THB of ARB", "Is AVAX worrying?", "Does WLD have an unlock?", "Scan my portfolio", "Explain FDV simply"];
+const SUGGESTIONS = ["Should I buy 5,000 THB of ARB now?", "Scan my portfolio", "How risky is my portfolio?", "Is AVAX worrying?", "What's in the news for my coins?", "Explain FDV simply"];
 
 function AgentInner() {
   const params = useSearchParams();

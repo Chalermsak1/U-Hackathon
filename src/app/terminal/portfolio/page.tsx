@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DriftCardView } from "@/components/Cards";
+import { HoldingsSchedule } from "@/components/HoldingsSchedule";
 import { CountUp, Spotlight } from "@/components/fx";
 import { PortfolioCharts } from "@/components/PortfolioCharts";
 import { LEVEL_LABEL, thb, unlockWhen } from "@/lib/format";
@@ -185,6 +186,8 @@ export default function PortfolioPage() {
           </tbody>
         </table>
       </div>
+
+      <HoldingsSchedule />
 
       <div className="grid-2" style={{ marginTop: 16 }}>
         <DriftCardView drift={d} />

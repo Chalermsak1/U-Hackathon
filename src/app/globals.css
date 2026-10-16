@@ -916,3 +916,10 @@ td.drift-under { color: var(--amber); }
 .stress-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--coral); border-radius: 999px; }
 .stress-num { font-family: var(--mono); font-size: 12px; color: var(--coral); text-align: right; white-space: nowrap; }
 .stress-num small { color: var(--muted); }
+
+/* ─── Holdings unlock schedule ─── */
+.sched-month h3 { font-size: 14px; margin: 14px 0 8px; display: flex; gap: 10px; align-items: baseline; }
+.sched-month h3 small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.sched-recips { display: inline-flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-2); }
+.sched-recips span { display: inline-flex; align-items: center; gap: 4px; }
+.sched-recips i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
