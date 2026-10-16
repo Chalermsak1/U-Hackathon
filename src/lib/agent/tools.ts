@@ -2,13 +2,14 @@
 // and the MCP endpoint run tools through executeTool(), so validation, the Agent Trace and
 // citations behave the same everywhere.
 //
-// Trade, invest and alert-rule tools are for U-Bot over MCP only (MCP_ONLY): they draft plans
-// that wait for the user. No tool approves or executes anything; approval happens only in the
-// app, behind the user's own session.
+// The three tools that write (draft a trade plan, draft an invest plan, save an alert rule) are for
+// U-Bot over MCP only (MCP_ONLY); the in-app chat reads everything else. No tool approves or
+// executes anything; approval happens only in the app, behind the user's own session.
 
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { addAlertRule } from "../alert-rules";
+import { ADDRESS_RE, lookupOnchain, walletActivity, type AvaxNetwork } from "../avalanche-data";
 import { config } from "../config";
 import { compact, shortDate, thaiDate, thb, usd } from "../format";
 import { asOfEn, asOfTh } from "../freshness";
@@ -23,6 +24,7 @@ import { getHoldings } from "../portfolio";
 import { assessUnlockRisk } from "../risk";
 import { store } from "../store";
 import { findToken, getAllocations, getFundraising, getUnlockEvents } from "../tokenomist";
+import { marketUnlocks } from "../unlock-feed";
 import type {
   CalendarEvent,
   Citation,
@@ -263,6 +265,57 @@ export const TOOL_SPECS: ToolSpec[] = [
       additionalProperties: false,
     },
   },
+  // ─── The rest of the app, so the agent can answer about anything the user sees ───
+  {
+    name: "get_my_plan",
+    description:
+      "The user's 30-day plan, as on the My plan page: dated unlocks and daily releases of the coins they hold, Fed dates, their DCA buys, open decisions, alert rules and stop levels, with a short summary. Use it for 'what's coming up for me', 'my plan', 'this month'.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
+    name: "get_upcoming_unlocks",
+    description:
+      "Market-wide upcoming cliff unlocks (not just the user's coins): the next unlock of the largest tokens Tokenomist covers, with date, size, share of circulating supply and main recipient. Live from Tokenomist when available, otherwise saved public reports (the result says which).",
+    input_schema: {
+      type: "object",
+      properties: { days: { type: "integer", description: "Look-ahead window in days (1-90)" } },
+      required: ["days"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "get_invest_plans",
+    description: "The user's investment plans: approved ones and drafts still waiting for their decision (profile, weights, monthly DCA, U-Guard warnings).",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
+    name: "get_wallet_activity",
+    description:
+      "On-chain activity of an Avalanche wallet from the Avalanche Data API: AVAX balance, ERC-20 token balances and the latest transactions (with token transfers and explorer links). address null = the signed-in user's wallet (Sign-In with Ethereum) or the app's configured wallet. network fuji (testnet, where U-Guard records approvals) or mainnet (C-Chain).",
+    input_schema: {
+      type: "object",
+      properties: {
+        address: { anyOf: [{ type: "string" }, { type: "null" }], description: "0x address, or null for the user's own wallet" },
+        network: { type: "string", enum: ["fuji", "mainnet"] },
+      },
+      required: ["address", "network"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "lookup_onchain",
+    description:
+      "Look up one thing on Avalanche through the Avalanche Data API: a transaction by hash (status, time, from/to, method, transfers) or a smart contract by address (name, symbol, token standard, deployer).",
+    input_schema: {
+      type: "object",
+      properties: {
+        id: { type: "string", description: "Transaction hash (0x + 64 hex) or contract address (0x + 40 hex)" },
+        network: { type: "string", enum: ["fuji", "mainnet"] },
+      },
+      required: ["id", "network"],
+      additionalProperties: false,
+    },
+  },
 ];
 
 // ─── Input validation (tool inputs are untrusted model or MCP-client output) ──────────
@@ -320,13 +373,24 @@ const INPUTS = {
     min_level: z.enum(["medium", "high"]).default("medium"),
     days_before: z.number().int().min(1).max(30).default(7),
   }),
+  get_my_plan: z.object({}),
+  get_upcoming_unlocks: z.object({ days: Days.default(30) }),
+  get_invest_plans: z.object({}),
+  get_wallet_activity: z.object({
+    address: z.string().trim().regex(ADDRESS_RE).nullable().default(null),
+    network: z.enum(["fuji", "mainnet"]).default("fuji"),
+  }),
+  lookup_onchain: z.object({
+    id: z.string().trim().regex(/^0x[0-9a-fA-F]{40}([0-9a-fA-F]{24})?$/),
+    network: z.enum(["fuji", "mainnet"]).default("fuji"),
+  }),
 } as const;
 
 export type ToolName = keyof typeof INPUTS;
 export const TOOL_NAMES = Object.keys(INPUTS) as ToolName[];
 
-/** Tools only U-Bot gets over MCP. The in-app chat has the Trade, Invest and Alerts pages for these. */
-export const MCP_ONLY = new Set<ToolName>(["draft_trade_plan", "get_paper_trading", "get_invest_options", "draft_invest_plan", "list_alerts", "create_alert_rule"]);
+/** Tools that write: U-Bot gets them over MCP. In the app the user drafts on the Trade, Invest and Alerts pages. */
+export const MCP_ONLY = new Set<ToolName>(["draft_trade_plan", "draft_invest_plan", "create_alert_rule"]);
 /** The tools the in-app agent (Claude, OpenAI-compatible) is offered. */
 export const AGENT_TOOL_SPECS = TOOL_SPECS.filter((t) => !MCP_ONLY.has(t.name));
 
@@ -355,6 +419,11 @@ export const TOOL_ANNOTATIONS: Record<ToolName, ToolAnnotations> = {
   draft_invest_plan: DRAFT,
   list_alerts: READ,
   create_alert_rule: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  get_my_plan: READ,
+  get_upcoming_unlocks: READ_WEB,
+  get_invest_plans: READ,
+  get_wallet_activity: READ_WEB,
+  lookup_onchain: READ_WEB,
 };
 
 // ─── Per-request context ─────────────────────────────────────────────────────────────
@@ -388,6 +457,8 @@ export interface RunContext {
   holdings: Holding[] | null;
   drift: DriftReport | null;
   drafts: Draft[];
+  /** Each tool's last result, by tool name (the rules engine writes its replies from these). */
+  data: Map<string, unknown>;
   stress: StressReport | null;
   markets: Map<string, { symbol: string; priceUsd: number; change24hPct: number | null; volume24hUsd: number; source: DataSource }>;
   citations: Citation[];
@@ -420,6 +491,7 @@ export function newContext(init: {
     holdings: null,
     drift: null,
     drafts: [],
+    data: new Map(),
     stress: null,
     markets: new Map(),
     citations: [],
@@ -517,7 +589,34 @@ function ruleText(type: string, symbol: string, minLevel: string, days: number):
   return { en: `${what} reaches ${minLevel} unlock risk within ${days} days`, th: `${whatTh} มีความเสี่ยง unlock ระดับ ${minLevel} ขึ้นไป ภายใน ${days} วัน` };
 }
 
-const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift", "stress_test_portfolio", ...MCP_ONLY]);
+const WALLET_TOOLS = new Set<ToolName>([
+  "get_portfolio",
+  "propose_protection",
+  "check_portfolio_drift",
+  "stress_test_portfolio",
+  "get_paper_trading",
+  "list_alerts",
+  "get_my_plan",
+  "get_invest_plans",
+  "get_wallet_activity",
+  ...MCP_ONLY,
+]);
+
+/** The user's own wallet: a Sign-In with Ethereum session, else the app's configured wallet, else the approvals signer. */
+async function ownWallet(ctx: RunContext): Promise<string | null> {
+  const fromSession = ctx.userId.startsWith("wallet:") ? ctx.userId.slice("wallet:".length) : null;
+  if (fromSession && ADDRESS_RE.test(fromSession)) return fromSession;
+  if (config.avalanche.walletAddress && ADDRESS_RE.test(config.avalanche.walletAddress)) return config.avalanche.walletAddress;
+  if (config.avalanche.demoPrivateKey) {
+    const { privateKeyToAccount } = await import("viem/accounts");
+    try {
+      return privateKeyToAccount(config.avalanche.demoPrivateKey as `0x${string}`).address;
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 
 async function run(name: ToolName, input: Record<string, unknown>, ctx: RunContext): Promise<ToolOutput> {
   if (ctx.scope === "public" && WALLET_TOOLS.has(name)) {
@@ -1001,6 +1100,101 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
         summary: `${rules.length} rule(s) · ${events.length} recent alert(s)`,
       };
     }
+    case "get_my_plan": {
+      const { buildPlan } = await import("../plan");
+      const p = await buildPlan(ctx.userId, { now: ctx.now, locale: ctx.locale });
+      return {
+        result: {
+          horizon_days: p.horizonDays,
+          summary: p.summary,
+          items: p.items.slice(0, 15).map((i) => ({ date: i.date, kind: i.kind, symbol: i.symbol, title: i.title, detail: i.detail, level: i.level })),
+          open_decisions: p.decisions.length,
+          total_thb: Math.round(p.totalThb),
+        },
+        summary: `${p.items.length} item(s) in ${p.horizonDays}d · ${p.decisions.length} open decision(s)`,
+      };
+    }
+    case "get_upcoming_unlocks": {
+      const feed = await marketUnlocks(ctx.now, { days: input.days as number });
+      ctx.sources.add(feed.source);
+      return {
+        result: {
+          window_days: input.days,
+          unlocks: feed.upcoming.slice(0, 15).map((u) => ({
+            symbol: u.symbol,
+            date: u.date.slice(0, 10),
+            what: u.summary,
+            size: u.sizeNote,
+            grade: u.level ?? null,
+            link: u.url,
+          })),
+          data: feed.source,
+          as_of: asOfEn(feed.asOf, ctx.now),
+          note: feed.note,
+        },
+        summary: `${feed.upcoming.length} unlock(s) in ${input.days}d · ${feed.source}`,
+      };
+    }
+    case "get_invest_plans": {
+      const { myInvestPlans, pendingInvestPlans } = await import("../invest");
+      const shape = (p: import("../types").InvestPlan) => ({
+        plan_id: p.id,
+        status: p.status,
+        profile: p.profileName,
+        monthly_thb: p.monthlyThb,
+        lump_sum_thb: p.lumpSumThb,
+        dca_day: p.dcaDay,
+        weights: p.slices.filter((x) => x.pct > 0).map((x) => ({ name: x.name, pct: x.pct })),
+        warnings: p.checks.filter((c) => c.status === "warn").map((c) => c.label),
+        drafted_by: p.origin ?? "app",
+      });
+      const approved = myInvestPlans(ctx.userId).map(shape);
+      const pending = pendingInvestPlans(ctx.userId).map(shape);
+      return {
+        result: { approved, pending, data: "sample" },
+        summary: `${approved.length} approved · ${pending.length} waiting`,
+      };
+    }
+    case "get_wallet_activity": {
+      const address = (input.address as string | null) ?? (await ownWallet(ctx));
+      if (!address) {
+        return {
+          result: { available: false, note: "No wallet to read: sign in with a wallet, or set WALLET_ADDRESS for the demo." },
+          summary: "no wallet address",
+        };
+      }
+      const a = await walletActivity(address, input.network as AvaxNetwork);
+      return {
+        result: {
+          available: a.source === "live",
+          network: a.network,
+          address: a.address,
+          native: a.native,
+          tokens: a.tokens.slice(0, 10),
+          transactions: a.transactions.slice(0, 8).map((t) => ({
+            hash: t.hash,
+            time: t.time,
+            status: t.status,
+            method: t.method,
+            from: t.from,
+            to: t.to,
+            value_avax: t.valueAvax,
+            transfers: t.transfers,
+            explorer: t.explorerUrl,
+          })),
+          data: a.source === "live" ? "Avalanche Data API (live)" : "unavailable",
+          note: a.note,
+        },
+        summary: a.source === "live" ? `${a.network}: ${a.native?.balance ?? "?"} AVAX · ${a.tokens.length} token(s) · ${a.transactions.length} tx` : `${a.network}: ${a.note}`,
+      };
+    }
+    case "lookup_onchain": {
+      const r = await lookupOnchain(input.id as string, input.network as AvaxNetwork);
+      return {
+        result: { ...r, data: r.source === "live" ? "Avalanche Data API (live)" : "unavailable" },
+        summary: `${r.kind} ${String(input.id).slice(0, 10)}… · ${r.source}${r.note ? ` · ${r.note}` : ""}`,
+      };
+    }
     case "create_alert_rule": {
       if (!ctx.actingFor) {
         return {
@@ -1059,6 +1253,7 @@ export async function executeTool(
     const out = await run(name as ToolName, parsed.data as Record<string, unknown>, ctx);
     const content = JSON.stringify(out.result);
     ctx.evidence.push(content);
+    ctx.data.set(name, out.result);
     ctx.trace.push({ kind: "tool", name, input: parsed.data, summary: out.summary, ms: Date.now() - t0, ok: true });
     return { content, isError: false };
   } catch (err) {

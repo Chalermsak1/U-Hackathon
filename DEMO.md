@@ -48,7 +48,7 @@ Checklist:
 ### 2 · U-Bot asks U-Guard over MCP (0:25 – 1:05) · window 2
 **Do:** run `npm run ubot`, press Enter four times.
 1. Connect → `u-guard 0.4.0`
-2. `tools/list` → 20 tools
+2. `tools/list` → 25 tools
 3. `assess_unlock_risk ARB ฿5,000` → **HIGH** (live score), three reasons, "data: Tokenomist live"
 4. `propose_protection` → proposal "Pause auto-buys of ARB through the unlock window", "Delivered to demo-user's U-Bot inbox"
 5. *(optional, only with `npm run ubot -- --trade`)* `draft_trade_plan ARB ฿5,000` → **CAUTION**, "Unlock coming up · High risk 67/100", "Portfolio would lean on ARB"; the plan waits on the Trade page. Skip it if time is short.

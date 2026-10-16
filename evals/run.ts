@@ -27,6 +27,7 @@ async function main() {
   const { runAlerts, inQuietHours, newsSeverity, isCorroborated } = require("../src/lib/alerts") as typeof import("../src/lib/alerts");
   const { addAlertRule } = require("../src/lib/alert-rules") as typeof import("../src/lib/alert-rules");
   const { ALPACA_PAPER_URL } = require("../src/lib/broker") as typeof import("../src/lib/broker");
+  const { fromScreen, marketUnlocks } = require("../src/lib/unlock-feed") as typeof import("../src/lib/unlock-feed");
   const { AGENT_TOOL_SPECS, TOOL_ANNOTATIONS, executeTool, newContext } = require("../src/lib/agent/tools") as typeof import("../src/lib/agent/tools");
   type NewsItem = import("../src/lib/types").NewsItem;
 
@@ -45,6 +46,23 @@ async function main() {
   const rule = (ownerId: string, type: "unlock" | "drift" | "news", symbol: string, minLevel: "medium" | "high" = "medium", daysBefore = 7) =>
     addAlertRule(ownerId, { type, symbol, minLevel, daysBefore, channel: "ubot" }).rule;
   const bkk = (hhmm: string, day = "2026-10-16") => Date.parse(`${day}T${hhmm}:00+07:00`);
+  // Runs fn with fetch stubbed for one host; every other request is refused.
+  const withStubFetch = async <T,>(host: string, reply: (url: string) => { status: number; json: unknown }, fn: (urls: string[]) => Promise<T>): Promise<T> => {
+    const realFetch = globalThis.fetch;
+    const urls: string[] = [];
+    globalThis.fetch = (async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (!url.startsWith(`https://${host}/`)) throw new Error(`unexpected request in eval: ${url}`);
+      urls.push(url);
+      const r = reply(url);
+      return new Response(JSON.stringify(r.json), { status: r.status, headers: { "content-type": "application/json" } });
+    }) as typeof fetch;
+    try {
+      return await fn(urls);
+    } finally {
+      globalThis.fetch = realFetch;
+    }
+  };
   // Runs fn with BROKER settings and a stubbed Alpaca endpoint; every other request is refused.
   const withBroker = async <T,>(
     env: Record<string, string>,
@@ -324,7 +342,7 @@ async function main() {
           await call({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "assess_unlock_risk", arguments: { symbol: "ARB", trade_amount_thb: null } } })
         ).json();
         const text = res?.result?.content?.[0]?.text ?? "";
-        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 20 && /"symbol":"ARB"/.test(text);
+        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 25 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
       },
     },
@@ -465,18 +483,19 @@ async function main() {
       },
     },
     {
-      name: "Agent: trade/invest/alert tools are MCP only (not offered to the in-app model, refused in-app)",
+      name: "Agent: tools that write are MCP only; the in-app model reads orders, alerts, plans and the wallet",
       run: async () => {
         const offered = AGENT_TOOL_SPECS.map((t) => t.name);
         const ctx = newContext({ userId: "eval-app", scope: "user", requestId: "eval", now: DEMO });
         const res = await executeTool("draft_trade_plan", { symbol: "ARB", side: "buy", amount_thb: 5000 }, ctx);
         const ok =
           !offered.includes("draft_trade_plan") &&
+          !offered.includes("draft_invest_plan") &&
           !offered.includes("create_alert_rule") &&
-          offered.includes("assess_unlock_risk") &&
+          ["assess_unlock_risk", "get_paper_trading", "list_alerts", "get_my_plan", "get_invest_plans", "get_upcoming_unlocks", "get_wallet_activity", "lookup_onchain"].every((t) => (offered as string[]).includes(t)) &&
           res.isError &&
           [...store.tradePlans.values()].every((r) => r.ownerId !== "eval-app") &&
-          Object.keys(TOOL_ANNOTATIONS).length === 20;
+          Object.keys(TOOL_ANNOTATIONS).length === 25;
         return ok ? true : JSON.stringify({ offered, res });
       },
     },
@@ -550,6 +569,134 @@ async function main() {
         const hi = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market", stopLossPct: 80 });
         const lo = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market", stopLossPct: 0.5 });
         return hi.stopLossPct === 50 && lo.stopLossPct === 2 ? true : JSON.stringify({ hi: hi.stopLossPct, lo: lo.stopLossPct });
+      },
+    },
+    // ── The agent reads the whole app ──
+    {
+      name: "Agent: 'show my paper orders' reads the paper account (positions, orders, receipts)",
+      run: async () => {
+        const p = await plan({ symbol: "AVAX", side: "buy", amountThb: 1000, orderType: "market" }, "eval-user");
+        await decideTradePlan(p.id, "approve", "eval-user");
+        const r = await agent("Show my paper orders");
+        const ok = tools(r).includes("get_paper_trading") && /Paper positions: .*AVAX/.test(r.reply) && /Bought AVAX/.test(r.reply) && ["pass", "fixed"].includes(r.compliance.status);
+        return ok ? true : JSON.stringify({ tools: tools(r), reply: r.reply, compliance: r.compliance });
+      },
+    },
+    {
+      name: "Agent (TH): 'แจ้งเตือนของฉันมีอะไรบ้าง' reads the alert rules in Thai",
+      run: async () => {
+        rule("eval-user", "unlock", "*", "high", 3);
+        const r = await agent("การแจ้งเตือนของฉันมีอะไรบ้าง");
+        return tools(r).includes("list_alerts") && /กฎแจ้งเตือน \d+ ข้อ/.test(r.reply) ? true : JSON.stringify({ tools: tools(r), reply: r.reply });
+      },
+    },
+    {
+      name: "Agent: 'what's in my plan' and 'my investment plans' read those pages' data",
+      run: async () => {
+        await draftInvestPlan({ answers: [3, 3, 3, 3, 3], lumpSumThb: 10000, monthlyThb: 2000, dcaDay: 5 }, "eval-user", DEMO);
+        const a = await agent("What's in my plan for the next 30 days?");
+        const b = await agent("Show my investment plans");
+        const ok = tools(a).includes("get_my_plan") && a.reply.length > 20 && tools(b).includes("get_invest_plans") && /DCA ฿2,000\/month · waiting/.test(b.reply);
+        return ok ? true : JSON.stringify({ a: [tools(a), a.reply.slice(0, 160)], b: [tools(b), b.reply.slice(0, 160)] });
+      },
+    },
+    {
+      name: "Agent: 'which coins unlock this month?' → market-wide unlocks, saved reports labelled when Tokenomist is offline",
+      run: async () => {
+        const r = await agent("Which coins unlock this month?");
+        const ok = tools(r).includes("get_upcoming_unlocks") && /saved reports/.test(r.reply) && !tools(r).includes("assess_unlock_risk");
+        return ok ? true : JSON.stringify({ tools: tools(r), reply: r.reply });
+      },
+    },
+    {
+      name: "Unlock feed: live screener rows → next cliffs in the window, soonest first, tracked tokens skipped",
+      run: () => {
+        const row = (symbol: string, daysUntil: number, pctCirc: number) =>
+          ({ symbol, id: symbol.toLowerCase(), grade: { level: "medium", score: null, kind: "size" }, nextUnlock: { date: new Date(DEMO + daysUntil * 864e5).toISOString(), daysUntil, amount: 1e6, valueUsd: 2e6, pctCirc, topRecipient: "team" } }) as never;
+        const out = fromScreen([row("SUI", 20, 1.2), row("ARB", 0, 1.37), row("OP", 5, 0.8), row("FAR", 80, 3)], 45, new Set(["ARB"]));
+        const ok = out.map((x) => x.symbol).join(",") === "OP,SUI" && out[0].source === "Tokenomist (live)" && /mostly team/.test(out[0].summary) && out[1].sizeNote === "~1.20% of circulating supply";
+        return ok ? true : JSON.stringify(out);
+      },
+    },
+    {
+      name: "Unlock feed: without Tokenomist live, the calendar says it comes from saved reports",
+      run: async () => {
+        const f = await marketUnlocks(DEMO, { excludeTracked: true });
+        return f.source === "snapshot" && /isn't answering/.test(f.note ?? "") && f.upcoming.every((e) => !["ARB", "WLD", "AVAX"].includes(e.symbol)) ? true : JSON.stringify({ source: f.source, note: f.note, up: f.upcoming.map((e) => e.symbol) });
+      },
+    },
+    // ── Avalanche Data API (stubbed: the build sandbox can't reach it) ──
+    {
+      name: "Avalanche Data API: a wallet's AVAX, tokens and transactions, read into the agent's reply",
+      run: () => {
+        const wallet = "0x1111111111111111111111111111111111111111";
+        return withStubFetch(
+          "data-api.avax.network",
+          (url) =>
+            url.includes("balances:getNative")
+              ? { status: 200, json: { nativeTokenBalance: { symbol: "AVAX", decimals: 18, balance: "2500000000000000000", balanceValue: { currencyCode: "usd", value: 62.5 } } } }
+              : url.includes("balances:listErc20")
+                ? { status: 200, json: { erc20TokenBalances: [{ symbol: "USDC", name: "USD Coin", address: "0x5425890298aed601595a70ab815c96711a31bc65", decimals: 6, balance: "1500000", balanceValue: { value: 1.5 } }] } }
+                : {
+                    status: 200,
+                    json: {
+                      transactions: [
+                        {
+                          nativeTransaction: { txHash: `0x${"a".repeat(64)}`, blockTimestamp: 1760598000, txStatus: "1", from: { address: wallet }, to: { address: wallet }, method: { methodName: "transfer" }, value: "0" },
+                          erc20Transfers: [{ value: "1500000", erc20Token: { symbol: "USDC", decimals: 6 }, from: { address: wallet }, to: { address: wallet } }],
+                        },
+                      ],
+                    },
+                  },
+          async (urls) => {
+            const r = await runAgent({ message: "Show my wallet's on-chain transactions", userId: `wallet:${wallet}`, scope: "user", now: DEMO });
+            const w = r.trace.some((x) => x.name === "get_wallet_activity");
+            const ok =
+              w &&
+              urls.some((u) => u === `https://data-api.avax.network/v1/chains/43113/addresses/${wallet}/balances:getNative?currency=usd`) &&
+              urls.some((u) => u.endsWith(`/addresses/${wallet}/transactions?pageSize=10`)) &&
+              /2\.5 AVAX · 1 token/.test(r.reply) &&
+              /testnet\.snowtrace\.io\/tx\/0xaaaa/.test(r.reply);
+            return ok ? true : JSON.stringify({ urls, reply: r.reply }).slice(0, 600);
+          },
+        );
+      },
+    },
+    {
+      name: "Avalanche Data API down → the reply says so, with no made-up balances",
+      run: () =>
+        withStubFetch("data-api.avax.network", () => ({ status: 503, json: { message: "unavailable" } }), async () => {
+          const r = await runAgent({ message: "Show my wallet's on-chain transactions", userId: "wallet:0x2222222222222222222222222222222222222222", scope: "user", now: DEMO });
+          return /didn't answer \(HTTP 503\)/.test(r.reply) && !/AVAX ·/.test(r.reply) ? true : r.reply;
+        }),
+    },
+    {
+      name: "Avalanche Data API: lookup_onchain reads a transaction by hash and a contract by address",
+      run: () => {
+        const hash = `0x${"b".repeat(64)}`;
+        const contract = "0x5425890298aed601595a70ab815c96711a31bc65";
+        return withStubFetch(
+          "data-api.avax.network",
+          (url) =>
+            url.endsWith(`/transactions/${hash}`)
+              ? { status: 200, json: { nativeTransaction: { txHash: hash, blockTimestamp: 1760598000, txStatus: "1", from: { address: contract }, to: { address: contract }, method: { methodName: "approve" }, value: "0" }, erc20Transfers: [] } }
+              : { status: 200, json: { name: "USD Coin", symbol: "USDC", ercType: "ERC-20", deploymentDetails: { deployerAddress: contract } } },
+          async () => {
+            const ctx = newContext({ userId: "eval", scope: "public", requestId: "e", now: DEMO });
+            const t = JSON.parse((await executeTool("lookup_onchain", { id: hash, network: "fuji" }, ctx)).content);
+            const c = JSON.parse((await executeTool("lookup_onchain", { id: contract, network: "mainnet" }, ctx)).content);
+            const ok = t.kind === "transaction" && t.tx.method === "approve" && t.tx.status === "1" && c.kind === "contract" && c.contract.symbol === "USDC" && c.contract.explorerUrl === `https://snowtrace.io/address/${contract}`;
+            return ok ? true : JSON.stringify({ t, c }).slice(0, 500);
+          },
+        );
+      },
+    },
+    {
+      name: "Agent (signed out): personal app questions ask to sign in; market unlocks still answer",
+      run: async () => {
+        const a = await agent("Show my paper orders", "public");
+        const b = await agent("Which coins unlock this month?", "public");
+        return /sign in/i.test(a.reply) && !tools(a).includes("get_paper_trading") && tools(b).includes("get_upcoming_unlocks") ? true : JSON.stringify({ a: a.reply, b: tools(b) });
       },
     },
     // ── Paper broker (Alpaca paper, opt-in) ──

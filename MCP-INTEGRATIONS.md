@@ -1,6 +1,6 @@
 # Other MCP servers: what fits where
 
-U-Guard is an MCP **server** (`/api/mcp`, 20 tools). U-Bot is the orchestrator: it can talk to several MCP servers at once. This page covers four that came up (CoinGecko, EVM, Alpaca, Coinrule), where each fits, and what we left out on purpose.
+U-Guard is an MCP **server** (`/api/mcp`, 25 tools). U-Bot is the orchestrator: it can talk to several MCP servers at once. This page covers four that came up (CoinGecko, EVM, Alpaca, Coinrule), where each fits, and what we left out on purpose.
 
 **The rule behind every choice:** money only moves after the user approves in the U-Guard app. MCP tools may read and draft; none of them approves or places an order. MCP tool annotations (`readOnlyHint`, `destructiveHint`) are hints a client may ignore, so the rule is enforced on our server, not left to the model.
 
@@ -38,6 +38,14 @@ U-Guard is an MCP **server** (`/api/mcp`, 20 tools). U-Bot is the orchestrator: 
 - **Setup:** create a free paper account at alpaca.markets, then set `BROKER=alpaca-paper`, `ALPACA_API_KEY` and `ALPACA_SECRET_KEY`.
 - **Why not Alpaca's own MCP server:** it gives the model order tools that execute directly, which is exactly what U-Guard is built to prevent.
 - **Real money:** trading for Thai users has to go through a platform licensed by the Thai SEC (for example a U-topia swap through U-Bot). That is a partnership, not a setting.
+
+## Avalanche Data API (in the app)
+
+On-chain data comes from the Avalanche Data API (`src/lib/avalanche-data.ts`, base `https://data-api.avax.network`), not an MCP server:
+- `get_wallet_activity`: AVAX balance, ERC-20 balances and the latest transactions of the user's wallet. That is the Sign-In with Ethereum address, else `WALLET_ADDRESS`, else the approvals signer.
+- `lookup_onchain`: one transaction by hash, or a contract's name, symbol and standard.
+- It's read-only and works without a key. `AVALANCHE_DATA_API_KEY` raises the rate limit.
+- When it doesn't answer, the reply says so; nothing is filled in.
 
 ## EVM MCP server (dev only, read-only)
 
