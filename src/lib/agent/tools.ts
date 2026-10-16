@@ -305,7 +305,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
   }
   switch (name) {
     case "get_portfolio": {
-      const holdings = await getHoldings();
+      const holdings = await getHoldings(ctx.userId);
       ctx.holdings = holdings;
       holdings.forEach((h) => ctx.sources.add(h.source));
       return {

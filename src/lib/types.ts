@@ -96,6 +96,7 @@ export interface NewsItem {
   topics: string[];
   sentiment?: "positive" | "negative" | "neutral" | null;
   relevance?: number;
+  image?: string; // cover image from the publisher's feed
 }
 
 export interface OddsMarket {

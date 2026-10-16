@@ -91,7 +91,14 @@ export default function NewsPage() {
             ))}
           {data && feed.length === 0 && <p className="empty">No stories for this filter right now.</p>}
           {feed.map((n) => (
-            <article key={n.id} className="news-item">
+            <article key={n.id} className={`news-item ${n.image ? "news-has-img" : ""}`}>
+              {n.image && (
+                <a className="news-thumb" href={n.url} target="_blank" rel="noreferrer noopener" tabIndex={-1} aria-hidden="true">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                </a>
+              )}
+              <div className="news-body">
               <div className="news-meta">
                 <b>{n.source}</b>
                 <span>{n.dateLabel ? ago(n.dateLabel) : n.date ? shortDate(n.date) : ""}</span>
@@ -112,6 +119,7 @@ export default function NewsPage() {
               <Link className="plan-action" href={ask(n.summary)}>
                 What does this mean for me? →
               </Link>
+              </div>
             </article>
           ))}
         </section>

@@ -13,7 +13,7 @@ async function handleGET(req: Request) {
   const locale = langOf(req);
   const session = await getSession();
   if (!session) return jsonError(401, "Sign in to see your wallet.");
-  const [pre, fx] = await Promise.all([portfolioRisk({ locale }), usdToThb()]);
+  const [pre, fx] = await Promise.all([portfolioRisk({ locale, userId: session.sub }), usdToThb()]);
   const { rows, totalThb } = pre;
   const drift = await checkDrift(session.sub, { locale, pre });
   const atRiskThb = rows.filter((r) => r.card && (r.card.level === "high" || r.card.level === "medium")).reduce((s, r) => s + r.valueThb, 0);

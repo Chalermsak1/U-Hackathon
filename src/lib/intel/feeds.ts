@@ -53,6 +53,12 @@ function parse(xml: string, source: string): NewsItem[] {
     if (!title || !/^https?:\/\//.test(url)) return [];
     const pub = Date.parse(tag(raw, "pubDate") || tag(raw, "dc:date"));
     const text = `${title} ${tag(raw, "description").slice(0, 400)}`;
+    const image =
+      /<media:content[^>]*url="([^"]+)"[^>]*medium="image"/i.exec(raw)?.[1] ??
+      /<media:content[^>]*url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i.exec(raw)?.[1] ??
+      /<media:thumbnail[^>]*url="([^"]+)"/i.exec(raw)?.[1] ??
+      /<enclosure[^>]*url="([^"]+)"[^>]*type="image/i.exec(raw)?.[1] ??
+      /<img[^>]*src="(https:[^"]+)"/i.exec(raw)?.[1];
     return [
       {
         id: `${source.toLowerCase()}-${i}-${url.slice(-24)}`,
@@ -64,6 +70,7 @@ function parse(xml: string, source: string): NewsItem[] {
         symbols: Object.entries(SYMBOLS).flatMap(([s, re]) => (re.test(text) ? [s] : [])),
         topics: Object.entries(TOPICS).flatMap(([t, re]) => (re.test(text) ? [t] : [])),
         sentiment: null,
+        image: image && /^https:\/\//.test(image) ? image.replace(/&amp;/g, "&") : undefined,
       } satisfies NewsItem,
     ];
   });

@@ -147,8 +147,9 @@ export function TradePlanCard({ plan, onDone }: { plan: TradePlan; onDone?: (ord
 }
 
 /** Order ticket: the user picks side, amount and order type; U-Bot drafts the plan around it. */
-export function TradePanel({ symbol, defaultAmount = 5000 }: { symbol: string; defaultAmount?: number }) {
-  const [side, setSide] = useState<TradeSide>("buy");
+export function TradePanel({ symbol, defaultAmount = 5000, defaultSide = "buy" }: { symbol: string; defaultAmount?: number; defaultSide?: TradeSide }) {
+  const [side, setSide] = useState<TradeSide>(defaultSide);
+  useEffect(() => setSide(defaultSide), [defaultSide]);
   const [amount, setAmount] = useState(String(defaultAmount));
   const [orderType, setOrderType] = useState<"market" | "limit">("market");
   const [limitPrice, setLimitPrice] = useState("");

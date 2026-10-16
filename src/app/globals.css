@@ -872,3 +872,26 @@ td.drift-under { color: var(--amber); }
 .flow-steps b { font-size: 14px; }
 .flow-steps span { font-size: 12.5px; color: var(--muted); }
 @media (max-width: 900px) { .flow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.news-has-img { grid-template-columns: 148px minmax(0, 1fr); column-gap: 14px; align-items: start; }
+.news-body { display: grid; gap: 6px; min-width: 0; }
+.news-thumb { display: block; width: 148px; aspect-ratio: 16 / 10; border-radius: 10px; overflow: hidden; background: var(--surface-3); }
+.news-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .3s; }
+.news-item:hover .news-thumb img { transform: scale(1.04); }
+@media (max-width: 560px) { .news-has-img { grid-template-columns: 96px minmax(0, 1fr); } .news-thumb { width: 96px; } }
+
+.row-trade { display: inline-flex; gap: 6px; }
+.btn-buy { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 50%, transparent); }
+.btn-sell { color: var(--coral); border-color: color-mix(in srgb, var(--coral) 50%, transparent); }
+
+/* ─── Token price chart ─── */
+.price-chart { margin-bottom: 16px; }
+.pc-now { font-family: var(--mono); font-size: 15px; margin-left: 6px; }
+.pc-now em { font-style: normal; font-size: 12.5px; margin-left: 4px; }
+.pc-svg { width: 100%; height: auto; display: block; touch-action: none; cursor: crosshair; }
+.pc-grid { stroke: var(--border); stroke-dasharray: 2 4; }
+.pc-axis { fill: var(--muted); font-size: 10.5px; font-family: var(--mono); }
+.pc-mark line { stroke: var(--amber); stroke-dasharray: 4 4; }
+.pc-mark text { fill: var(--amber); font-size: 10.5px; font-weight: 600; }
+.pc-cross { stroke: var(--text-2); stroke-dasharray: 2 3; }
+.pc-skeleton { height: 220px; border-radius: 12px; background: linear-gradient(90deg, var(--surface-2), var(--surface-3), var(--surface-2)); background-size: 200% 100%; animation: skel 1.2s linear infinite; }

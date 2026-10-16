@@ -139,6 +139,7 @@ export default function PortfolioPage() {
               <th>Next unlock</th>
               <th>Risk</th>
               <th className="num">Diluted over 6 months</th>
+              <th aria-label="Trade" />
             </tr>
           </thead>
           <tbody>
@@ -166,6 +167,18 @@ export default function PortfolioPage() {
                     </span>
                   </td>
                   <td className="num">{r.dilutionPct ? `${r.dilutionPct.toFixed(1)}%` : "–"}</td>
+                  <td>
+                    {r.symbol !== "USDC" && (
+                      <span className="row-trade">
+                        <Link className="btn btn-sm btn-buy" href={`/terminal/trade?symbol=${r.symbol}&side=buy`}>
+                          Buy
+                        </Link>
+                        <Link className="btn btn-sm btn-sell" href={`/terminal/trade?symbol=${r.symbol}&side=sell`}>
+                          Sell
+                        </Link>
+                      </span>
+                    )}
+                  </td>
                 </tr>
               );
             })}

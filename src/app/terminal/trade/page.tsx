@@ -24,6 +24,18 @@ const qtyT = (q: number) => q.toLocaleString("en-US", { maximumFractionDigits: q
 // Trade: pick a token, let U-Bot draft the plan and check it, approve. Orders are paper orders.
 export default function TradePage() {
   const [symbol, setSymbol] = useState("ARB");
+  const [side, setSide] = useState<"buy" | "sell">("buy");
+  const [symbols, setSymbols] = useState(SYMBOLS);
+  // Deep links from the portfolio and token pages: /terminal/trade?symbol=WLD&side=sell
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const sym = q.get("symbol")?.toUpperCase();
+    if (sym && /^[A-Z0-9]{2,10}$/.test(sym)) {
+      setSymbol(sym);
+      setSymbols((list) => (list.includes(sym) ? list : [...list, sym]));
+    }
+    if (q.get("side") === "sell") setSide("sell");
+  }, []);
   const [levels, setLevels] = useState<Record<string, RiskLevel>>({});
   const [orders, setOrders] = useState<PaperOrder[]>([]);
   const [positions, setPositions] = useState<Position[]>([]);
@@ -59,7 +71,7 @@ export default function TradePage() {
       </div>
 
       <div className="trade-picker" role="tablist" aria-label="Pick a token">
-        {SYMBOLS.map((s) => (
+        {symbols.map((s) => (
           <button
             key={s}
             role="tab"
@@ -82,7 +94,7 @@ export default function TradePage() {
       </div>
 
       <div className="trade-grid">
-        <TradePanel symbol={symbol} />
+        <TradePanel symbol={symbol} defaultSide={side} />
         <div style={{ display: "grid", gap: 16, alignContent: "start" }}>
           {pending.length > 0 && (
             <Spotlight className="panel">

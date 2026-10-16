@@ -29,8 +29,8 @@ export function setTargets(userId: string, t: Targets): void {
 }
 
 /** Every holding with its weight, unlock risk card and 6-month dilution. */
-export async function portfolioRisk(opts: { locale?: Locale; now?: number } = {}): Promise<{ rows: HoldingRisk[]; totalThb: number }> {
-  const holdings = await getHoldings();
+export async function portfolioRisk(opts: { locale?: Locale; now?: number; userId?: string } = {}): Promise<{ rows: HoldingRisk[]; totalThb: number }> {
+  const holdings = await getHoldings(opts.userId);
   const totalThb = holdings.reduce((s, h) => s + h.valueThb, 0);
   const rows = await Promise.all(
     holdings.map(async (h): Promise<HoldingRisk> => {
@@ -55,7 +55,7 @@ export async function checkDrift(
   userId: string,
   opts: { locale?: Locale; now?: number; pre?: { rows: HoldingRisk[]; totalThb: number } } = {},
 ): Promise<DriftReport> {
-  const [{ rows, totalThb }, t] = await Promise.all([opts.pre ?? portfolioRisk(opts), getTargets(userId)]);
+  const [{ rows, totalThb }, t] = await Promise.all([opts.pre ?? portfolioRisk({ ...opts, userId }), getTargets(userId)]);
   const th = opts.locale === "th";
   const now = opts.now ?? Date.now();
   const hasTargets = Object.keys(t.targets).length > 0;

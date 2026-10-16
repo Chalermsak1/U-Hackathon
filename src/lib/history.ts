@@ -85,8 +85,8 @@ async function dailyPrices(symbol: string, now: number): Promise<Series | null> 
 
 const dayKey = (ms: number) => new Date(ms).toISOString().slice(0, 10);
 
-export async function portfolioHistory(now = Date.now()): Promise<PortfolioHistory> {
-  const [holdings, fx, calendar] = await Promise.all([getHoldings(), usdToThb(), getEventCalendar(30, { now }).catch(() => [])]);
+export async function portfolioHistory(now = Date.now(), userId?: string): Promise<PortfolioHistory> {
+  const [holdings, fx, calendar] = await Promise.all([getHoldings(userId), usdToThb(), getEventCalendar(30, { now }).catch(() => [])]);
 
   // One point per UTC day: that day's closing price (today: the latest price).
   const days = Array.from({ length: 31 }, (_, i) => dayKey(now - (30 - i) * DAY));

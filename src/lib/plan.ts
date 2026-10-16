@@ -47,7 +47,7 @@ export async function buildPlan(userId: string, opts: { now: number; locale?: Lo
   const end = day(new Date(now + PLAN_DAYS * DAY).toISOString());
   const inWindow = (d: string) => d >= today && d <= end;
 
-  const [pre, calendar] = await Promise.all([portfolioRisk({ locale: opts.locale, now }), getEventCalendar(PLAN_DAYS, { now })]);
+  const [pre, calendar] = await Promise.all([portfolioRisk({ locale: opts.locale, now, userId }), getEventCalendar(PLAN_DAYS, { now })]);
   const drift = await checkDrift(userId, { locale: opts.locale, now, pre });
   const items: PlanItem[] = [];
   const cards = pre.rows.flatMap((r) => (r.card ? [r.card] : []));
