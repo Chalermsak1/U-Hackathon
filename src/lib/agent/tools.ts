@@ -13,6 +13,7 @@ import { config } from "../config";
 import { compact, shortDate, thaiDate, thb, usd } from "../format";
 import { asOfEn, asOfTh } from "../freshness";
 import { checkDrift } from "../drift";
+import { stressTest, type StressReport } from "../stress";
 import { getEventCalendar } from "../intel/calendar";
 import { searchNews } from "../intel/news";
 import { getEventOdds } from "../intel/odds";
@@ -119,6 +120,24 @@ export const TOOL_SPECS: ToolSpec[] = [
     },
   },
   {
+    name: "check_portfolio_drift",
+    description:
+      "Compare the user's portfolio with the target mix they set: weight vs target per token, drift in percentage points, the portfolio's weighted unlock risk score, 6-month dilution and the largest holding. Use it when the user asks whether their portfolio is off plan, balanced or concentrated, or for a full portfolio review. The app shows the result as a drift card. It measures against the user's own targets and never says what to buy or sell.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
+    name: "get_token_market",
+    description:
+      "Current market data for one token: price in USD, 24h change and 24h trading volume (live from Hyperliquid and CoinGecko when available). Call it with assess_unlock_risk whenever the user is about to buy or sell, or asks whether now is a good time to trade.",
+    input_schema: { type: "object", properties: { symbol: symbolProp }, required: ["symbol"], additionalProperties: false },
+  },
+  {
+    name: "stress_test_portfolio",
+    description:
+      "Stress-test the user's portfolio: the baht impact of an options-implied market drop, of their risky unlocks going like past team unlocks (Keyrock average), and of a 20% crypto drawdown, plus protection options per holding. Use it when the user asks how risky their portfolio is, what could go wrong, or how to handle or protect it. These are scenarios, not forecasts.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
     name: "get_market_news",
     description:
       "Search recent news that can move a token or the market (ETF flows, macro/Fed, regulation, hacks, unlocks). Returns short summaries with source links and citation numbers; cite them as [n]. Returns an empty list when nothing relevant was found: say so instead of guessing.",
@@ -148,12 +167,6 @@ export const TOOL_SPECS: ToolSpec[] = [
     name: "get_market_pulse",
     description:
       "Current market readings: BTC price and 24h change, the Fear & Greed sentiment index, recent ETF flows, and the options-implied 7-day BTC range when available.",
-    input_schema: { ...noInput, required: [] },
-  },
-  {
-    name: "check_portfolio_drift",
-    description:
-      "Compare the user's wallet with the target mix they set themselves: each holding's weight vs target (percentage points), which are over or under the drift band, the value-weighted unlock risk of the whole portfolio, 6-month dilution and the largest holding. Measures against the user's own plan only; never suggests what to buy or sell. The app shows it as a drift card.",
     input_schema: { ...noInput, required: [] },
   },
   {
@@ -271,8 +284,10 @@ const INPUTS = {
   }),
   get_event_odds: z.object({ topic: z.string().trim().min(2).max(80) }),
   get_market_pulse: z.object({}),
-  get_event_calendar: z.object({ days: Days.default(45) }),
   check_portfolio_drift: z.object({}),
+  get_token_market: z.object({ symbol: Sym }),
+  stress_test_portfolio: z.object({}),
+  get_event_calendar: z.object({ days: Days.default(45) }),
   draft_trade_plan: z.object({
     symbol: Sym,
     side: z.enum(["buy", "sell"]),
@@ -332,6 +347,8 @@ export const TOOL_ANNOTATIONS: Record<ToolName, ToolAnnotations> = {
   get_market_pulse: READ_WEB,
   get_event_calendar: READ,
   check_portfolio_drift: READ,
+  get_token_market: READ_WEB,
+  stress_test_portfolio: READ,
   draft_trade_plan: DRAFT,
   get_paper_trading: READ,
   get_invest_options: READ,
@@ -371,6 +388,8 @@ export interface RunContext {
   holdings: Holding[] | null;
   drift: DriftReport | null;
   drafts: Draft[];
+  stress: StressReport | null;
+  markets: Map<string, { symbol: string; priceUsd: number; change24hPct: number | null; volume24hUsd: number; source: DataSource }>;
   citations: Citation[];
   trace: TraceStep[];
   evidence: string[]; // serialized tool results: the only numbers a reply may use
@@ -401,6 +420,8 @@ export function newContext(init: {
     holdings: null,
     drift: null,
     drafts: [],
+    stress: null,
+    markets: new Map(),
     citations: [],
     trace: [],
     evidence: [],
@@ -496,7 +517,7 @@ function ruleText(type: string, symbol: string, minLevel: string, days: number):
   return { en: `${what} reaches ${minLevel} unlock risk within ${days} days`, th: `${whatTh} มีความเสี่ยง unlock ระดับ ${minLevel} ขึ้นไป ภายใน ${days} วัน` };
 }
 
-const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift", ...MCP_ONLY]);
+const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift", "stress_test_portfolio", ...MCP_ONLY]);
 
 async function run(name: ToolName, input: Record<string, unknown>, ctx: RunContext): Promise<ToolOutput> {
   if (ctx.scope === "public" && WALLET_TOOLS.has(name)) {
@@ -504,7 +525,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
   }
   switch (name) {
     case "get_portfolio": {
-      const holdings = await getHoldings();
+      const holdings = await getHoldings(ctx.userId);
       ctx.holdings = holdings;
       holdings.forEach((h) => ctx.sources.add(h.source));
       return {
@@ -517,6 +538,71 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           price_as_of_th: asOfTh(h.asOf, ctx.now),
         })),
         summary: holdings.map((h) => h.symbol).join(", "),
+      };
+    }
+    case "check_portfolio_drift": {
+      const report = await checkDrift(ctx.userId, { locale: ctx.locale, now: ctx.now });
+      ctx.drift = report;
+      ctx.sources.add("sample"); // the demo wallet's amounts are sample data
+      const off = report.rows.filter((r) => r.status === "over" || r.status === "under");
+      return {
+        result: {
+          has_targets: report.hasTargets,
+          band_pp: report.bandPp,
+          total_drift_pct: report.totalDriftPct,
+          portfolio_unlock_risk_score: report.portfolioRiskScore,
+          weighted_dilution_6m_pct: report.weightedDilutionPct,
+          largest_holding: report.concentration,
+          rows: report.rows.map((r) => ({
+            symbol: r.symbol,
+            weight_pct: r.weightPct,
+            target_pct: r.targetPct,
+            drift_pp: r.driftPp,
+            status: r.status,
+            unlock_risk: r.riskLevel,
+            unlock_score: r.riskScore,
+            unlock_date: r.unlockDate ? r.unlockDate.slice(0, 10) : null,
+            dilution_6m_pct: r.dilutionPct,
+          })),
+          summary_lines: report.lines,
+          price_as_of: asOfEn(report.pricesAsOf, ctx.now),
+          price_as_of_th: asOfTh(report.pricesAsOf, ctx.now),
+          data: "sample",
+        },
+        summary: report.hasTargets ? `${report.totalDriftPct}% off target · ${off.length} token(s) outside the band` : "no targets set",
+      };
+    }
+    case "get_token_market": {
+      const sym = (input.symbol as string).toUpperCase();
+      const q = await getQuote(sym);
+      if (!q) return { result: { symbol: sym, found: false }, summary: `${sym}: no market data` };
+      ctx.markets.set(sym, { symbol: sym, priceUsd: q.priceUsd, change24hPct: q.change24hPct, volume24hUsd: q.volume24hUsd, source: q.source });
+      ctx.sources.add(q.source);
+      return {
+        result: {
+          symbol: sym,
+          price_usd: Number(q.priceUsd.toPrecision(5)),
+          change_24h_pct: q.change24hPct === null ? null : Number(q.change24hPct.toFixed(2)),
+          volume_24h_usd: Math.round(q.volume24hUsd),
+          data: q.source,
+        },
+        summary: `${sym} $${q.priceUsd.toPrecision(4)}${q.change24hPct === null ? "" : ` (${q.change24hPct >= 0 ? "+" : ""}${q.change24hPct.toFixed(1)}%)`}`,
+      };
+    }
+    case "stress_test_portfolio": {
+      const report = await stressTest(ctx.userId, { locale: ctx.locale, now: ctx.now });
+      ctx.stress = report;
+      ctx.sources.add("sample"); // demo wallet amounts
+      return {
+        result: {
+          total_thb: Math.round(report.totalThb),
+          stablecoins_thb: Math.round(report.stableThb),
+          scenarios: report.scenarios.map((x) => ({ scenario: x.label, basis: x.basis, impact_thb: x.impactThb, impact_pct_of_portfolio: Number(x.impactPct.toFixed(1)) })),
+          protection_options: report.handles.map((h) => h.text),
+          summary_lines: report.lines,
+          data: "sample",
+        },
+        summary: report.scenarios.map((x) => `${x.id} ${Math.round(x.impactPct)}%`).join(" · "),
       };
     }
     case "lookup_token": {
@@ -740,38 +826,6 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           data: res.source,
         },
         summary: p.btc ? `BTC ${usd(p.btc.priceUsd)}${p.sentiment ? ` · F&G ${p.sentiment.value}` : ""}` : "no data",
-      };
-    }
-    case "check_portfolio_drift": {
-      const d = await checkDrift(ctx.userId, { now: ctx.now, locale: ctx.locale });
-      ctx.drift = d;
-      ctx.sources.add("sample"); // demo wallet and target mix are sample data
-      return {
-        result: {
-          has_targets: d.hasTargets,
-          band_pp: d.bandPp,
-          rows: d.rows.map((r) => ({
-            symbol: r.symbol,
-            weight_pct: r.weightPct,
-            target_pct: r.targetPct,
-            drift_pp: r.driftPp,
-            status: r.status,
-            unlock_risk: r.riskLevel,
-            unlock_score: r.riskScore,
-            dilution_6m_pct: r.dilutionPct,
-          })),
-          off_target_pct: d.totalDriftPct,
-          portfolio_unlock_score: d.portfolioRiskScore,
-          weighted_dilution_6m_pct: d.weightedDilutionPct,
-          largest: d.concentration,
-          lines: d.lines,
-          price_as_of: asOfEn(d.pricesAsOf, ctx.now),
-          price_as_of_th: asOfTh(d.pricesAsOf, ctx.now),
-          data: "sample",
-        },
-        summary: d.hasTargets
-          ? `${d.rows.filter((r) => r.status === "over" || r.status === "under").length} off target · ${d.totalDriftPct}% drift · risk ${d.portfolioRiskScore}/100`
-          : `no targets · largest ${d.concentration?.symbol ?? "-"}`,
       };
     }
     case "get_event_calendar": {

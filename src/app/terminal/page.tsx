@@ -6,22 +6,32 @@ import { useEffect, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { CountUp, Spotlight, useTypewriter } from "@/components/fx";
 import { LEVEL_LABEL, thb, shortDate, unlockWhen, usd, compact } from "@/lib/format";
-import type { RiskCard } from "@/lib/types";
+import type { ScreenRow } from "@/lib/screener";
+import type { NewsItem, RiskCard } from "@/lib/types";
 
 const PROMPTS = [
   "Is buying 5,000 THB of ARB risky right now?",
-  "Which of my tokens unlock in the next 30 days?",
+  "Scan my portfolio",
+  "How far is my portfolio from my target mix?",
+  "What's in the news for my coins?",
   "Who receives AVAX's unlocks?",
-  "Explain FDV and float simply",
 ];
 
-interface ScreenerRow {
-  symbol: string;
-  marketCap: number;
-  fdv: number;
-  floatPct: number | null;
-  pctInvestorsUnlocked: number | null;
-  analysed: boolean;
+// The four steps of U-Guard, so a first-time user knows where to go next.
+const STEPS = [
+  { n: 1, title: "Check", text: "Screen tokens and see who unlocks what, when", href: "/terminal/tokens" },
+  { n: 2, title: "Plan", text: "Your next 30 days, with dates and risk", href: "/terminal/plan" },
+  { n: 3, title: "Approve", text: "U-Bot proposes; you decide, recorded on Avalanche", href: "/terminal/alerts" },
+  { n: 4, title: "Stay alerted", text: "Rules watch your coins and ping U-Bot", href: "/terminal/alerts" },
+];
+
+interface PlanItemLite {
+  date: string;
+  kind: string;
+  symbol: string | null;
+  title: string;
+  level: string | null;
+  action: { label: string; href: string } | null;
 }
 
 // Terminal home: ask U-Guard first, then the three things worth a glance.
@@ -30,14 +40,26 @@ export default function TerminalHome() {
   const [q, setQ] = useState("");
   const placeholder = useTypewriter(PROMPTS);
   const [calendar, setCalendar] = useState<RiskCard[]>([]);
-  const [lowFloat, setLowFloat] = useState<ScreenerRow[]>([]);
+  const [unlocks, setUnlocks] = useState<ScreenRow[] | null>(null);
+  const [news, setNews] = useState<NewsItem[] | null>(null);
+  const [plan, setPlan] = useState<{ generatedAt: string; items: PlanItemLite[]; decisions: unknown[]; summary: string[] } | null>(null);
   const [portfolio, setPortfolio] = useState<{ totalThb: number; atRiskThb: number; rows: { symbol: string; card: RiskCard | null }[] } | null>(null);
 
   useEffect(() => {
     fetch("/api/calendar").then((r) => r.json()).then((b) => setCalendar(b.analysed ?? [])).catch(() => undefined);
-    fetch("/api/screener")
-      .then((r) => r.json())
-      .then((b: { rows: ScreenerRow[] }) => setLowFloat([...b.rows].sort((a, z) => (a.floatPct ?? 100) - (z.floatPct ?? 100)).slice(0, 6)))
+    fetch("/api/markets")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { rows: ScreenRow[] } | null) =>
+        setUnlocks((b?.rows ?? []).filter((r) => r.nextUnlock && r.nextUnlock.daysUntil <= 30).sort((x, y) => x.nextUnlock!.daysUntil - y.nextUnlock!.daysUntil)),
+      )
+      .catch(() => setUnlocks([]));
+    fetch("/api/news")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { live: NewsItem[]; curated: NewsItem[] } | null) => setNews(b ? (b.live.length ? b.live : b.curated).slice(0, 4) : []))
+      .catch(() => setNews([]));
+    fetch("/api/plan")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPlan)
       .catch(() => undefined);
     fetch("/api/portfolio/risk").then((r) => r.json()).then(setPortfolio).catch(() => undefined);
   }, []);
@@ -79,6 +101,18 @@ export default function TerminalHome() {
         </div>
       </section>
 
+      <ol className="flow-steps" aria-label="How U-Guard works">
+        {STEPS.map((st) => (
+          <li key={st.n}>
+            <Link href={st.href}>
+              <i>{st.n}</i>
+              <b>{st.title}</b>
+              <span>{st.text}</span>
+            </Link>
+          </li>
+        ))}
+      </ol>
+
       {portfolio && (
         <div className="kpis">
           <div className="kpi">
@@ -96,16 +130,16 @@ export default function TerminalHome() {
           <div className="kpi">
             <span>Unlocks U-Guard tracks</span>
             <b>
-              <CountUp value={calendar.length} />
+              {calendar.length}
             </b>
             <small>tokens with full data</small>
           </div>
           <div className="kpi">
-            <span>Tokens in the screener</span>
-            <b>
-              <CountUp value={25} />
-            </b>
-            <small>Tokenomist fundraising</small>
+            <span>Decisions waiting</span>
+            <b style={{ color: plan && plan.decisions.length ? "var(--amber)" : undefined }}>{plan ? plan.decisions.length : "…"}</b>
+            <small>
+              <Link href="/terminal/plan">open my plan →</Link>
+            </small>
           </div>
         </div>
       )}
@@ -113,22 +147,37 @@ export default function TerminalHome() {
       <div className="grid-2">
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Upcoming unlocks</h2>
-            <Link href="/terminal/unlocks" className="total">
-              See all →
+            <h2>Unlocks in the next 30 days</h2>
+            <Link href="/terminal/tokens" className="total">
+              Tokenomist · screener →
             </Link>
           </div>
-          {calendar.map((c) => (
-            <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
+          {!unlocks && <p className="note">Loading the Tokenomist schedule…</p>}
+          {unlocks?.length === 0 && <p className="note">No large token unlocks in the next 30 days.</p>}
+          {unlocks?.slice(0, 7).map((r) => (
+            <Link key={r.id} href={`/terminal/tokens/${r.symbol}`} className="event-row today-unlock" style={{ textDecoration: "none", color: "inherit" }}>
               <span className="event-date">
-                <b>{c.unlockDate ? shortDate(c.unlockDate) : "–"}</b>
-                {unlockWhen(c)}
+                <b>{r.nextUnlock!.daysUntil <= 0 ? "Today" : shortDate(r.nextUnlock!.date)}</b>
+                {r.nextUnlock!.daysUntil <= 0 ? "today" : `in ${r.nextUnlock!.daysUntil} d`}
               </span>
-              <span>
-                <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% of circulating
+              <span className="tok">
+                {r.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={r.image} alt="" width={20} height={20} loading="lazy" />
+                ) : (
+                  <i>{r.symbol.slice(0, 3)}</i>
+                )}
+                <span>
+                  <b>{r.symbol}</b>
+                  <small>
+                    {r.nextUnlock!.pctCirc !== null ? `${r.nextUnlock!.pctCirc.toFixed(2)}% of circulating` : ""}
+                    {r.nextUnlock!.valueUsd ? ` · ${usd(r.nextUnlock!.valueUsd)}` : ""}
+                  </small>
+                </span>
               </span>
-              <span className={`pill lv-${c.level}`}>
-                {LEVEL_LABEL[c.level]} {c.score}
+              <span className={`pill lv-${r.grade.level}`}>
+                {LEVEL_LABEL[r.grade.level]}
+                {r.grade.score !== null ? ` ${r.grade.score}` : ""}
               </span>
             </Link>
           ))}
@@ -136,25 +185,54 @@ export default function TerminalHome() {
 
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Lowest float (supply still to come)</h2>
-            <Link href="/terminal/tokens" className="total">
-              screener →
+            <h2>Coming up for your money</h2>
+            <Link href="/terminal/plan" className="total">
+              My plan →
             </Link>
           </div>
-          {lowFloat.map((r) => (
-            <div key={r.symbol} className="event-row" style={{ gridTemplateColumns: "70px 1fr auto" }}>
-              <b>{r.symbol}</b>
-              <span className="floatbar">
-                <span>
-                  <i style={{ width: `${r.floatPct ?? 0}%`, background: (r.floatPct ?? 0) < 40 ? "var(--coral)" : (r.floatPct ?? 0) < 70 ? "var(--amber)" : "var(--teal)" }} />
+          {!plan && <p className="note">Building your plan from live data…</p>}
+          {plan?.items
+            .filter((i) => i.kind !== "rule" && i.kind !== "stop")
+            .slice(0, 5)
+            .map((i, n) => (
+              <Link key={`${i.date}-${n}`} href={i.action?.href.startsWith("/") ? i.action.href : "/terminal/plan"} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
+                <span className="event-date">
+                  <b>{i.date <= plan.generatedAt.slice(0, 10) ? "Today" : shortDate(i.date)}</b>
+                  {i.kind === "release" ? "daily" : i.kind}
                 </span>
-                float {r.floatPct?.toFixed(0)}% · FDV {usd(r.fdv)}
-              </span>
-              <span className="note">investors unlocked {r.pctInvestorsUnlocked ?? "–"}%</span>
-            </div>
-          ))}
+                <span>{i.title}</span>
+                {i.level ? <span className={`pill lv-${i.level}`}>{LEVEL_LABEL[i.level]}</span> : <span />}
+              </Link>
+            ))}
         </Spotlight>
       </div>
+
+      <Spotlight className="panel" style={{ marginTop: 16 }}>
+        <div className="panel-head">
+          <h2>Latest news</h2>
+          <Link href="/terminal/news" className="total">
+            All news →
+          </Link>
+        </div>
+        {!news && <p className="note">Loading headlines…</p>}
+        <div className="today-news">
+          {news?.map((n) => (
+            <a key={n.id} href={n.url} target="_blank" rel="noreferrer noopener" className="today-news-item">
+              {n.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" />
+              ) : (
+                <span className="today-news-ph">{n.source}</span>
+              )}
+              <small>
+                {n.source}
+                {n.symbols.length ? ` · ${n.symbols.join(", ")}` : ""}
+              </small>
+              <b>{n.summary}</b>
+            </a>
+          ))}
+        </div>
+      </Spotlight>
 
       {portfolio && (
         <Spotlight className="panel" style={{ marginTop: 16 }}>

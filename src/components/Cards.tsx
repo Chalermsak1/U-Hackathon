@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { compact, LEVEL_LABEL, pct, shortDate, sourceTag, usd } from "@/lib/format";
 import { asOfLabel } from "@/lib/freshness";
+import type { StressReport } from "@/lib/stress";
 import type { DriftReport, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
@@ -52,6 +53,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
         </span>
         {hasUnlock && <span className="score">{card.score}/100</span>}
       </div>
+      <span className="guard-tag">U-Guard check · Tokenomist data</span>
       {hasUnlock && (
         <>
           <div className="meter" aria-hidden="true">
@@ -143,6 +145,7 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
 
   return (
     <article className="proposal" aria-label="Protection proposal">
+      <span className="guard-tag">U-Guard proposal · waits for you</span>
       <h4>{proposal.title}</h4>
       <p>{proposal.detail}</p>
       {state === "approved" && receipt && (
@@ -177,41 +180,85 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
   );
 }
 
-const DRIFT_LABEL = { over: "Over target", under: "Under target", ok: "In band", no_target: "No target" } as const;
+const DRIFT_LABEL = { over: "Above target", under: "Below target", ok: "On target", no_target: "No target" } as const;
 
-/** Portfolio vs the user's own target mix: up to 3 lines and one row per holding. */
+/** Portfolio vs the user's own target mix: one bar per token with the target as a tick. */
 export function DriftCardView({ drift }: { drift: DriftReport }) {
-  const rows = drift.rows.filter((r) => r.weightPct > 0 || (r.targetPct ?? 0) > 0);
-  const off = drift.rows.some((r) => r.status === "over" || r.status === "under");
+  const off = drift.rows.filter((r) => r.status === "over" || r.status === "under");
+  const scale = Math.max(40, ...drift.rows.map((r) => Math.max(r.weightPct, r.targetPct ?? 0))) * 1.08;
+  const level = !drift.hasTargets ? "lv-none" : off.length === 0 ? "lv-low" : drift.totalDriftPct > 10 ? "lv-high" : "lv-medium";
   return (
-    <article className={`card drift-card ${off ? "lv-medium" : "lv-low"}`} aria-label="Portfolio vs your targets">
+    <article className={`card drift ${level}`} aria-label="Portfolio vs your target mix">
       <div className="card-head">
-        <h3>Portfolio vs targets</h3>
-        <span className="name">{drift.hasTargets ? `band ±${drift.bandPp} pts` : "no targets set"}</span>
-        <span className="score">{drift.portfolioRiskScore}/100</span>
+        <h3>Portfolio vs your targets</h3>
+        <span className="name">{drift.hasTargets ? `${drift.totalDriftPct}% off target · band ±${drift.bandPp} pts` : "No target mix set"}</span>
+        <span className="score" title="Unlock risk of the whole portfolio, weighted by holding size">
+          Risk {drift.portfolioRiskScore}/100
+        </span>
+      </div>
+      <div className="drift-rows">
+        {drift.rows.map((r) => (
+          <div key={r.symbol} className={`drift-row drift-${r.status}`} title={DRIFT_LABEL[r.status]}>
+            <b>{r.symbol}</b>
+            <div className="drift-bar" aria-hidden="true">
+              <i style={{ width: `${(r.weightPct / scale) * 100}%` }} />
+              {r.targetPct !== null && <em style={{ left: `${(r.targetPct / scale) * 100}%` }} />}
+            </div>
+            <span className="drift-num">
+              {r.weightPct}%{r.targetPct !== null ? <small> / {r.targetPct}%</small> : null}
+            </span>
+            <span className="drift-pp">{r.driftPp === null ? "–" : `${r.driftPp > 0 ? "+" : ""}${r.driftPp}`}</span>
+          </div>
+        ))}
       </div>
       <ul className="reasons">
         {drift.lines.map((l) => (
           <li key={l}>{l}</li>
         ))}
       </ul>
-      <div className="drift-rows">
-        {rows.map((r) => (
-          <div key={r.symbol} className={`drift-row ${r.status}`}>
-            <b>{r.symbol}</b>
-            <span className="drift-bar" aria-hidden="true">
-              <i style={{ width: `${Math.min(100, r.weightPct)}%` }} />
-              {r.targetPct !== null && <em style={{ left: `${Math.min(100, r.targetPct)}%` }} />}
+      <div className="card-foot">
+        <span>Bar = your weight · tick = your target · compared with targets you set, not advice{drift.pricesAsOf ? ` · prices ${asOfLabel(drift.pricesAsOf)}` : ""}</span>
+      </div>
+    </article>
+  );
+}
+
+/** Stress test: what each scenario would cost, in baht, and how the user can protect each holding. */
+export function StressCardView({ stress }: { stress: StressReport }) {
+  const worst = Math.max(1, ...stress.scenarios.map((x) => Math.abs(x.impactThb)));
+  return (
+    <article className="card stress lv-medium" aria-label="Portfolio stress test">
+      <div className="card-head">
+        <h3>Stress test</h3>
+        <span className="name">scenarios on today&apos;s holdings, not forecasts</span>
+      </div>
+      <div className="stress-rows">
+        {stress.scenarios.map((x) => (
+          <div key={x.id} className="stress-row" title={x.basis}>
+            <span className="stress-label">{x.label}</span>
+            <span className="stress-bar" aria-hidden="true">
+              <i style={{ width: `${(Math.abs(x.impactThb) / worst) * 100}%` }} />
             </span>
-            <span className="num">
-              {r.weightPct}%{r.targetPct !== null ? ` / ${r.targetPct}%` : ""}
+            <span className="stress-num">
+              −฿{compact(Math.abs(x.impactThb))} <small>({Math.abs(x.impactPct).toFixed(1)}%)</small>
             </span>
-            <span className="drift-tag">{DRIFT_LABEL[r.status]}</span>
           </div>
         ))}
       </div>
+      {stress.handles.length > 0 && (
+        <ul className="reasons">
+          {stress.handles.slice(0, 3).map((h) => (
+            <li key={h.symbol}>
+              {h.text}{" "}
+              <a href={h.action.href} className="plan-action">
+                {h.action.label} →
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
       <div className="card-foot">
-        <span>Against the targets you set · not investment advice{drift.pricesAsOf ? ` · prices ${asOfLabel(drift.pricesAsOf)}` : ""}</span>
+        <span>Stablecoins ฿{compact(stress.stableThb)} are not affected · hover a row for its basis · not advice</span>
       </div>
     </article>
   );

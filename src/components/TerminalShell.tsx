@@ -7,36 +7,37 @@ import { shortDate } from "@/lib/format";
 import { Icon, type IconName } from "./Icon";
 import { UBotInbox } from "./UBotInbox";
 
+// One menu that follows an investor's day: what needs attention today, what is happening in the
+// market, then my money (portfolio → plan → act → stay alerted). U-Bot is one tap away everywhere.
 const NAV: { label: string; items: { href: string; icon: IconName; th: string }[] }[] = [
   {
-    label: "Explore",
+    label: "Start",
     items: [
-      { href: "/terminal", icon: "home", th: "Overview" },
-      { href: "/terminal/agent", icon: "spark", th: "AI Agent" },
-      { href: "/terminal/tokens", icon: "coins", th: "Tokens" },
-      { href: "/terminal/unlocks", icon: "calendar", th: "Unlock calendar" },
+      { href: "/terminal", icon: "home", th: "Today" },
+      { href: "/terminal/agent", icon: "spark", th: "Ask U-Bot" },
     ],
   },
   {
-    label: "Mine",
+    label: "Markets",
     items: [
+      { href: "/terminal/tokens", icon: "coins", th: "Token screener" },
+      { href: "/terminal/unlocks", icon: "calendar", th: "Unlock calendar" },
+      { href: "/terminal/news", icon: "news", th: "News" },
+    ],
+  },
+  {
+    label: "My money",
+    items: [
+      { href: "/terminal/portfolio", icon: "wallet", th: "Portfolio" },
+      { href: "/terminal/plan", icon: "list", th: "My plan" },
       { href: "/terminal/trade", icon: "swap", th: "Trade" },
       { href: "/terminal/invest", icon: "target", th: "Invest" },
-      { href: "/terminal/portfolio", icon: "wallet", th: "Portfolio" },
       { href: "/terminal/alerts", icon: "bell", th: "Alerts" },
     ],
   },
   {
-    label: "More",
-    items: [{ href: "/#method", icon: "book", th: "How scores work" }],
-  },
-  {
-    label: "Assistant & data",
-    items: [
-      { href: "/assistant", icon: "chat", th: "U-Bot Assistant" },
-      { href: "/dashboard", icon: "chart", th: "Dashboard" },
-      { href: "/method", icon: "book", th: "Method & data" },
-    ],
+    label: "Help",
+    items: [{ href: "/method", icon: "book", th: "How U-Guard works" }],
   },
 ];
 

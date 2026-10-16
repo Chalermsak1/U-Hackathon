@@ -4,6 +4,7 @@ import { LIMITS, rateLimit } from "@/lib/guard/rate-limit";
 import { checkPost, handleError, jsonError, readJson, tooMany } from "@/lib/http";
 import { logEvent, writeLog } from "@/lib/log";
 import { store } from "@/lib/store";
+import { withStore } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 // Approve/decline a proposal. Only proposals created by the server for this user can be
 // approved; the client never supplies the rule itself. Every success returns
 // {status, proposal, receipt}.
-export async function POST(req: Request) {
+async function handlePOST(req: Request) {
   const blocked = checkPost(req);
   if (blocked) return blocked;
   try {
@@ -54,3 +55,5 @@ export async function POST(req: Request) {
     return handleError(err);
   }
 }
+
+export const POST = withStore(handlePOST);

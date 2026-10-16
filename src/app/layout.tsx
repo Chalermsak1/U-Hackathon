@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: { default: "U-Guard", template: "%s · U-Guard" },
   description: "Know before your money moves: an agent in U-Bot that checks token-unlock risk before you buy or hold.",
   applicationName: "U-Guard",
-  icons: { icon: "/brand/logo-mark.svg" },
+  icons: { icon: "/brand/logo-mark.svg", apple: "/icons/apple-touch-icon.png" },
+  // Installable app: the manifest is src/app/manifest.ts; this adds iPhone "Add to Home Screen".
+  appleWebApp: { capable: true, title: "U-Guard", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {

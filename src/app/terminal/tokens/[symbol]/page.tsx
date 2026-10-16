@@ -9,6 +9,7 @@ import { RECIPIENT_COLOR, RECIPIENT_LABEL, Spotlight, StackedBars } from "@/comp
 import { compact, sourceTag, usd } from "@/lib/format";
 import type { RecipientClass, RiskCard } from "@/lib/types";
 import { classifyRecipient } from "@/lib/recipient";
+import { PriceChart } from "@/components/PriceChart";
 
 interface TokenData {
   tracked: boolean;
@@ -134,6 +135,13 @@ export default function TokenPage() {
         <TradePanel symbol={t.symbol} />
       </aside>
       <div className="tgm-main">
+      <PriceChart
+        symbol={t.symbol}
+        markers={[
+          ...(data.card && data.card.timing !== "continuous" && data.card.unlockDate ? [{ date: data.card.unlockDate, label: `Unlock ${compact(data.card.amount)}` }] : []),
+          ...(data.card?.nextUnlock ? [{ date: data.card.nextUnlock.date, label: `Next ${compact(data.card.nextUnlock.amount)}` }] : []),
+        ]}
+      />
       <div className="grid-2">
         <div>{data.card && <RiskCardView card={data.card} />}</div>
         <Spotlight className="panel">

@@ -33,19 +33,20 @@ export const BRANDS: Brand[] = [
   { id: "nextjs", name: "Next.js", parts: [{ svg: "nextjs", h: 22 }, { word: "Next.js" }] },
 ];
 
-export function BrandLogo({ brand }: { brand: Brand }) {
+/** `scale` enlarges the whole logo (marks, images and wordmarks) for bigger tiles. */
+export function BrandLogo({ brand, scale = 1 }: { brand: Brand; scale?: number }) {
   return (
-    <span className="brand-logo" role="img" aria-label={brand.name} title={brand.name}>
+    <span className="brand-logo" role="img" aria-label={brand.name} title={brand.name} style={scale !== 1 ? { gap: 8 * scale } : undefined}>
       {brand.parts.map((p, i) =>
         "word" in p ? (
-          <b key={i} className={`brand-word brand-${brand.id}`} aria-hidden="true">
+          <b key={i} className={`brand-word brand-${brand.id}`} aria-hidden="true" style={scale !== 1 ? { fontSize: 19 * scale } : undefined}>
             {p.word}
           </b>
         ) : "img" in p ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={i} className="brand-img" src={p.img} alt="" height={p.h} width={p.h} aria-hidden="true" />
+          <img key={i} className="brand-img" src={p.img} alt="" height={p.h * scale} width={p.h * scale} aria-hidden="true" />
         ) : (
-          <span key={i} className="brand-svg" style={{ height: p.h }} aria-hidden="true" dangerouslySetInnerHTML={{ __html: SVG[p.svg] }} />
+          <span key={i} className="brand-svg" style={{ height: p.h * scale }} aria-hidden="true" dangerouslySetInnerHTML={{ __html: SVG[p.svg] }} />
         ),
       )}
     </span>

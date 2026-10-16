@@ -1,10 +1,13 @@
 // The user's U-topia wallet. Holdings come from the demo fixture (U-topia has no public
-// wallet API yet); AVAX is replaced by the live Fuji balance when WALLET_ADDRESS is set.
+// wallet API yet); AVAX is replaced by the live Fuji balance when WALLET_ADDRESS is set. With a
+// user id, the paper orders they approved are applied on top (buys add the token and spend
+// USDC, sells do the reverse), so a trade shows up in the portfolio right away.
 
 import { getAvaxBalance } from "./avalanche";
 import { config } from "./config";
 import { readFixture } from "./fixtures";
 import { getQuote, usdToThb } from "./market";
+import { store } from "./store";
 import { listTokens } from "./tokenomist";
 import type { Holding } from "./types";
 
@@ -14,13 +17,20 @@ interface PortfolioFixture {
 
 const NAMES: Record<string, string> = { USDC: "USD Coin", USDT: "Tether", BTC: "Bitcoin", ETH: "Ethereum" };
 
-export async function getHoldings(): Promise<Holding[]> {
+export async function getHoldings(userId?: string): Promise<Holding[]> {
   const [fixture, fx, tokens] = await Promise.all([
     readFixture<PortfolioFixture>("portfolio.json"),
     usdToThb(),
     listTokens(),
   ]);
-  const rows = fixture?.holdings ?? [];
+  const rows = (fixture?.holdings ?? []).map((r) => ({ ...r }));
+  for (const o of userId ? (store.orders.get(userId) ?? []) : []) {
+    const sign = o.side === "buy" ? 1 : -1;
+    const row = rows.find((r) => r.symbol === o.symbol) ?? rows[rows.push({ symbol: o.symbol, amount: 0 }) - 1];
+    row.amount = Math.max(0, row.amount + sign * o.qty);
+    const usdc = rows.find((r) => r.symbol === "USDC") ?? rows[rows.push({ symbol: "USDC", amount: 0 }) - 1];
+    usdc.amount = Math.max(0, usdc.amount + (o.side === "buy" ? -(o.amountThb + o.feeThb) : o.amountThb - o.feeThb) / fx);
+  }
   const liveAvax = config.avalanche.walletAddress ? await getAvaxBalance(config.avalanche.walletAddress) : null;
 
   return Promise.all(

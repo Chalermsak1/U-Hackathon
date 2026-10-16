@@ -131,7 +131,7 @@ export default async function MethodPage() {
 
           <h2>Connecting U-Bot (MCP)</h2>
           <p>
-            U-Guard exposes its 18 tools as a Model Context Protocol server, so U-Bot or any MCP client can call them before acting. Six of them let
+            U-Guard exposes its 20 tools as a Model Context Protocol server, so U-Bot or any MCP client can call them before acting. Six of them let
             U-Bot draft a paper-trade plan, an investment plan or an alert rule for the user. None of them approves or executes anything: plans wait for
             the user in the app, and every tool is annotated as read-only or as a write that is not destructive.
           </p>

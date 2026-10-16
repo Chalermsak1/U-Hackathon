@@ -298,6 +298,52 @@ Built in a separate session without seeing `feat/app-ui`.
   - Invest plan and alert rule over MCP in Thai ✅
   - Screenshots of Trade, Invest and the bell: no page errors ✅
 
+### Oct 16, ~09:10–11:45 · Submission day: one app for the investor's day
+- **Deadline found on the event slides:** submissions close **14:00**; judges open a public repo, a hosted demo website ("the real product, not just a landing page") and a pitch deck. Finalists present at 20:00, the minute ARB unlocks. A Tokenomist founder is on the jury. The deck is drafted in a parallel session.
+- **Why the site felt disjointed:** two apps (the terminal and the older `/assistant` `/dashboard` `/en`) with different styles and a menu grouped by implementation. **Now:** one menu by the investor's day (Start · Markets · My money · Help); `/assistant` and `/dashboard` redirect into the app; landing says "Open the app".
+- **Portfolio drift** ported from the v2 backup onto today's agent (tool `check_portfolio_drift`, 12 tools, card, editable targets).
+- **Token screener** rebuilt like Tokenomist's tables: top 40 by market cap from the live list, next cliff per token (one call each, spaced), full scores for tracked tokens, size grade for the rest.
+- **My plan** (30-day dated timeline + PDF) and **News** (live RSS from Cointelegraph, CoinDesk, Decrypt; tagged; "what does this mean for me?").
+- **Problem:** CoinGecko's free API answered 429 (shared IP), so prices fell back to sample and ARB jumped from 58 back to 67. **Fix:** prices and 24h change from Hyperliquid's public API (one call, 30 s cache); CoinGecko only for spot volume and market data, every 10 minutes, keeping the last good answer. Live ARB score today: HIGH 58 (volume ~$229M/day makes the unlock ~0.08 days of volume); the hero and the stage script now follow the live number.
+- **Problem:** GDELT news timed out (8 s). **Fix:** RSS feeds (~0.3 s each), `NEWS_SOURCE=rss`.
+- **Hosting:** on Vercel each route is its own function, so the inbox, proposals and plans would not be shared. `withStore()` syncs the store through Upstash Redis when its variables are set; a no-op otherwise. The Vercel connector can't create projects here (403), so the project is created in the dashboard.
+- **Landing:** the hero heading is sized to its column (it ran into the card at 92 px); technology logos 1.45× in 92 px tiles.
+- **Checks:** typecheck ✅ · eval **31/31** ✅ (new: drift question).
+
+### Oct 16, ~09:40–09:55 · Finance-app flow, stress test, schedule
+- **Trades show in the portfolio:** holdings apply the user's approved paper orders (buy adds the token and spends USDC), so Portfolio, drift, charts, My plan and the agent see them at once. Buy/Sell on every portfolio row; `/terminal/trade?symbol=&side=`.
+- **Token page:** live price chart (Hyperliquid candles 7D/30D/90D, CoinGecko fallback) with the unlock dates drawn on it, next to the Buy/Sell ticket.
+- **Portfolio schedule:** every cliff and daily release of the coins you hold for 6 months, live from the Tokenomist API (amount, % of circulating, value, recipients, your holding).
+- **Agent weighs news, price and risk:** `get_token_market` and `stress_test_portfolio` (14 tools). Buy/sell questions add price, market mood and a "U-Guard trade check" (flags + options, "You decide"); "Scan my portfolio" adds news on held coins and the stress test. Stress card in chat and My plan (options-implied drop, risky unlocks like past team unlocks, −20%; baht impact; protection options).
+- **Today:** Tokenomist unlocks for the next 30 days (logos, size, value, grade) and news with images (RSS cover images).
+- **Roles in the chat:** U-Bot talks, U-Guard checks (tagged cards, proposals and trace), you decide: one chat, not two boxes.
+- Buyback and burn endpoints exist in v5 but don't cover ARB, WLD or AVAX ("token not supported"), so they aren't shown.
+- **Checks:** typecheck ✅ · production build ✅ · eval **33/33** ✅ · 375 px: no sideways scroll on Today, screener, My plan.
+
+### Oct 16, ~12:30 · Merged PR #4 (finance-app flow) with main
+- **Why:** PR #4 (`feat/demo-script-mcp-standin`) and `main` both grew from the same commit. Both added portfolio drift, so 21 files conflicted.
+- **Kept from PR #4:**
+  - Today page, My plan, News, live prices (Hyperliquid + cached CoinGecko), screener, stress test, price charts, unlock schedule, Upstash store sync, installable app.
+  - Its drift card, portfolio page, target fixture (ETH 20, ARB 20, WLD 15) and rules-engine flow (a portfolio question runs the scan with drift and the stress test).
+- **Kept from main:**
+  - The 6 MCP-only tools and their annotations.
+  - The alert engine (unlock/drift/news rules, dedupe, quiet hours, daily cap, cron).
+  - Freshness labels, the invest "Plans U-Bot drafted for you" panel, and the 55 evals.
+- **Joined by hand:**
+  - `drift.ts` and `market.ts`: PR #4's versions plus `pricesAsOf`, `asOf` and `stale`. A Hyperliquid answer older than 3 minutes, or a CoinGecko answer older than 20, counts as stale.
+  - `store.ts`: the Redis snapshot now carries `alertEvents` and `lastWatch` instead of the removed `alertsFired`.
+  - `/api/watch` and `/api/portfolio/targets`: main's logic wrapped in `withStore`.
+- **Duplicates the auto-merge left behind, removed:**
+  - `check_portfolio_drift` spec, input and handler.
+  - `DriftRow`/`DriftReport` types and `AgentResult.drift`.
+  - The drift intent regex (Thai words merged into one) and a second drift path in the rules engine.
+- **Tools:** 20 in total (14 shared + 6 MCP only).
+- **Responsive audit:** `/assistant` and `/dashboard` now redirect into the terminal, so the audit covers `/terminal/news`, `/terminal/plan` and `/terminal/tokens` instead (17 pages).
+- **Checked:**
+  - typecheck ✅ · eval 58/58 ✅ · build ✅
+  - Every page 200 ✅ · responsive 17 pages × 5 devices ✅
+  - `npm run ubot -- --auto --trade`: 20 tools, HIGH 67, proposal, CAUTION plan ✅
+
 ---
 
 ## Adding the next entry

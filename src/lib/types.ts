@@ -98,6 +98,7 @@ export interface NewsItem {
   topics: string[];
   sentiment?: "positive" | "negative" | "neutral" | null;
   relevance?: number;
+  image?: string; // cover image from the publisher's feed
 }
 
 export interface OddsMarket {
@@ -146,15 +147,45 @@ export interface Citation {
   source: string;
 }
 
+// ─── Portfolio drift (weights vs the user's own target mix) ───
+
+export interface DriftRow {
+  symbol: string;
+  valueThb: number;
+  weightPct: number;
+  targetPct: number | null;
+  driftPp: number | null; // weight − target, percentage points
+  status: "over" | "under" | "ok" | "no_target";
+  riskLevel: RiskLevel | null;
+  riskScore: number;
+  unlockDate: string | null;
+  dilutionPct: number; // 6-month dilution of this holding
+}
+
+export interface DriftReport {
+  hasTargets: boolean;
+  bandPp: number;
+  rows: DriftRow[];
+  totalThb: number;
+  totalDriftPct: number; // ½ Σ |weight − target|
+  portfolioRiskScore: number; // Σ weight × unlock risk score, 0..100
+  weightedDilutionPct: number;
+  concentration: { symbol: string; weightPct: number } | null;
+  lines: string[]; // up to 3 plain-language lines, deterministic
+  pricesAsOf: string | null; // oldest price behind the weights, for "prices as of …"
+}
+
 export interface AgentResult {
   requestId: string;
   reply: string;
   cards: RiskCard[];
+  drift?: DriftReport | null;
+  stress?: import("./stress").StressReport | null;
+  markets?: { symbol: string; priceUsd: number; change24hPct: number | null; volume24hUsd: number; source: DataSource }[];
   news: Sourced<NewsItem[]> | null;
   odds: Sourced<OddsMarket[]> | null;
   pulse: Sourced<MarketPulse> | null;
   calendar: CalendarEvent[] | null;
-  drift?: DriftReport | null;
   proposals: Proposal[];
   trace: TraceStep[];
   citations: Citation[];
@@ -308,30 +339,3 @@ export interface InvestPlan {
   receipt?: ProtectionReceipt;
 }
 
-// ─── Portfolio drift (against the user's own target mix) ───
-
-export interface DriftRow {
-  symbol: string;
-  valueThb: number;
-  weightPct: number;
-  targetPct: number | null;
-  driftPp: number | null; // weight minus target, percentage points
-  status: "ok" | "over" | "under" | "no_target";
-  riskLevel: RiskLevel | null;
-  riskScore: number;
-  unlockDate: string | null;
-  dilutionPct: number;
-}
-
-export interface DriftReport {
-  hasTargets: boolean;
-  bandPp: number;
-  rows: DriftRow[];
-  totalThb: number;
-  totalDriftPct: number; // half the sum of |drift|: how much of the portfolio sits off-target
-  portfolioRiskScore: number; // value-weighted unlock risk score
-  weightedDilutionPct: number;
-  concentration: { symbol: string; weightPct: number } | null;
-  lines: string[]; // up to 3 plain lines in the user's language
-  pricesAsOf: string | null;
-}

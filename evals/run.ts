@@ -180,10 +180,11 @@ async function main() {
       },
     },
     {
+      // "portfolio" also asks for a scan, so the reply covers holdings, drift and the stress test.
       name: "Agent: drift question → check_portfolio_drift against the user's own targets",
       run: async () => {
         const r = await agent("Has my portfolio drifted from my targets?");
-        const ok = tools(r).includes("check_portfolio_drift") && r.drift?.hasTargets === true && /target/i.test(r.reply) && !tools(r).includes("propose_protection");
+        const ok = tools(r).includes("check_portfolio_drift") && r.drift?.hasTargets === true && /target/i.test(r.reply) && r.compliance.status === "pass";
         return ok ? true : JSON.stringify({ tools: tools(r), reply: r.reply.slice(0, 200) });
       },
     },
@@ -192,6 +193,36 @@ async function main() {
       run: async () => {
         const r = await agent("พอร์ตเบี้ยวจากเป้าไหม");
         return tools(r).includes("check_portfolio_drift") && /เป้า/.test(r.reply) ? true : JSON.stringify({ tools: tools(r), reply: r.reply.slice(0, 200) });
+      },
+    },
+    {
+      name: "Agent: drift question → check_portfolio_drift, ARB above target, AVAX below, compliant",
+      run: async () => {
+        const r = await agent("How far is my portfolio from my target mix?");
+        const arb = r.drift?.rows.find((x) => x.symbol === "ARB");
+        const avax = r.drift?.rows.find((x) => x.symbol === "AVAX");
+        return tools(r).includes("check_portfolio_drift") && arb?.status === "over" && avax?.status === "under" && r.compliance.status === "pass" && !/\brebalance\b/i.test(r.reply)
+          ? true
+          : JSON.stringify({ tools: tools(r), arb, avax, compliance: r.compliance, reply: r.reply });
+      },
+    },
+    {
+      name: "Agent: 'should I buy ARB now?' → price, unlock risk, trade check with options, no advice",
+      run: async () => {
+        const r = await agent("Should I buy 5,000 THB of ARB now?");
+        const t = tools(r);
+        return t.includes("get_token_market") && t.includes("assess_unlock_risk") && /trade check/i.test(r.reply) && /You decide/.test(r.reply) && r.compliance.status === "pass"
+          ? true
+          : JSON.stringify({ tools: t, compliance: r.compliance, reply: r.reply });
+      },
+    },
+    {
+      name: "Agent: portfolio risk question → stress test with scenarios and protection options",
+      run: async () => {
+        const r = await agent("What could go wrong with my portfolio? How do I protect it?");
+        return tools(r).includes("stress_test_portfolio") && (r.stress?.scenarios.length ?? 0) >= 2 && /Worst case tested/.test(r.reply) && r.compliance.status === "pass"
+          ? true
+          : JSON.stringify({ tools: tools(r), scenarios: r.stress?.scenarios.length, compliance: r.compliance, reply: r.reply });
       },
     },
     {
@@ -266,7 +297,7 @@ async function main() {
           await call({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "assess_unlock_risk", arguments: { symbol: "ARB", trade_amount_thb: null } } })
         ).json();
         const text = res?.result?.content?.[0]?.text ?? "";
-        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 18 && /"symbol":"ARB"/.test(text);
+        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 20 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
       },
     },
@@ -418,7 +449,7 @@ async function main() {
           offered.includes("assess_unlock_risk") &&
           res.isError &&
           [...store.tradePlans.values()].every((r) => r.ownerId !== "eval-app") &&
-          Object.keys(TOOL_ANNOTATIONS).length === 18;
+          Object.keys(TOOL_ANNOTATIONS).length === 20;
         return ok ? true : JSON.stringify({ offered, res });
       },
     },
@@ -575,7 +606,7 @@ async function main() {
         const ok =
           summary.fired.length === 5 &&
           titles.includes("ARB unlock coming up (High risk 67/100)") &&
-          titles.includes("ARB is 8.8 points over your target") &&
+          titles.includes("ARB is 13.8 points over your target") &&
           summary.skipped.length > 0 &&
           summary.skipped.every((x) => /Daily limit of 5/.test(x.reason)) &&
           inbox.length === 1 &&
