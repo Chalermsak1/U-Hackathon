@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Avatar, topLevel } from "@/components/Avatar";
 import { ChatThread } from "@/components/ChatThread";
+import { DataBadge } from "@/components/DataBadge";
 import { Icon } from "@/components/Icon";
 import { MicButton } from "@/components/MicButton";
 import { TracePanel } from "@/components/TracePanel";
@@ -64,12 +65,19 @@ function AgentInner() {
   return (
     <div className="agent-layout">
       <section className="agent-chat" aria-label="Chat with U-Bot">
-        <div className="chat-head">
-          <Avatar size={32} thinking={busy} level={topLevel(Object.values(levels))} />
-          <div>
-            <p>U-Bot · with the U-Guard check</p>
-            <span>{busy ? "U-Guard is calling its tools…" : "U-Bot talks, U-Guard checks the risk, you decide · not investment advice"}</span>
+        <div className="chat-head" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Avatar size={32} thinking={busy} level={topLevel(Object.values(levels))} />
+            <div>
+              <p>U-Bot · with the U-Guard check</p>
+              <span>{busy ? "U-Guard is calling its tools…" : "U-Bot talks, U-Guard checks the risk, you decide · not investment advice"}</span>
+            </div>
           </div>
+          <DataBadge
+            status="LIVE"
+            source={last?.engine ?? "U-Bot Agent"}
+            label="Inference"
+          />
         </div>
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
         {error && <p className="error" style={{ padding: "0 14px" }}>{error}</p>}

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { shortDate } from "@/lib/format";
 import { Icon, type IconName } from "./Icon";
 import { UBotInbox } from "./UBotInbox";
+import { DataBadge } from "./DataBadge";
 
 // One menu that follows an investor's day: what needs attention today, what is happening in the
 // market, then my money (portfolio → plan → act → stay alerted). U-Bot is one tap away everywhere.
@@ -187,12 +188,16 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
             />
             <kbd>⌘K</kbd>
           </form>
-          <span
-            className={`pill ${dataLabel.sample ? "lv-medium" : "lv-low"}`}
-            title="Real data = Tokenomist snapshot on the date shown · sample = demo data · live when TOKENOMIST_API_KEY is set"
-          >
-            {dataLabel.text}
-          </span>
+          <div className="term-data-status" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <DataBadge
+              status={dataLabel.sample ? "DEMO" : "CACHED"}
+              tooltip="Tokenomist supply data: verified offline snapshot for U-Hackathon 2026 demo"
+              showTime={false}
+            />
+            <span style={{ fontSize: 12, color: "var(--muted)", whiteSpace: "nowrap" }} className="term-data-label">
+              {dataLabel.text}
+            </span>
+          </div>
           <UBotInbox />
           <Link href="/terminal/agent" className="btn btn-sm">
             Ask U-Bot

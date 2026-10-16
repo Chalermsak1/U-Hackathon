@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { DataBadge } from "@/components/DataBadge";
 import { compact, engineLabel, LEVEL_LABEL, pct, shortDate, usd } from "@/lib/format";
 import { readReport, type ReportData } from "@/lib/report";
 import type { RecipientClass } from "@/lib/types";
@@ -61,10 +62,18 @@ export default function ReportPage() {
         />
         <div>
           <h1>Token unlock risk check: summary</h1>
-          <p>
-            U-Guard in U-Bot · {new Date(at).toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" })} ·{" "}
-            {engineLabel(result)}
-          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, marginTop: 4 }}>
+            <p style={{ margin: 0 }}>
+              U-Guard in U-Bot · {new Date(at).toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short" })} ·{" "}
+              {engineLabel(result)}
+            </p>
+            <DataBadge
+              status={sample ? "DEMO" : "CACHED"}
+              source="U-Guard Engine"
+              date={at}
+              label="Provenance"
+            />
+          </div>
         </div>
       </header>
 
