@@ -68,6 +68,25 @@
 - **`npm run ubot -- --trade`:** เพิ่มขั้นที่ 5 ร่างแผนเทรด (บทบนเวทีเดิมยังกด Enter 4 ครั้งเหมือนเดิม)
 - **ตรวจแล้ว:** typecheck ✅ · eval 55/55 ✅ · build ✅ · stand-in กับ production server ✅ · หน้า Trade/Invest/กระดิ่งแสดงแผนจาก MCP ✅
 
+## 0.4 อัปเดต ~13:00 น.: รวม PR #4 + ต่อ MCP ภายนอกแบบปลอดภัย
+- **PR #4 ของ nathirad (Today, My plan, News, ราคาสด, stress test ฯลฯ)** ชนกับ `main` 21 ไฟล์ รวมให้แล้วบน `feat/merge-pr4-with-main`
+  - เก็บของทั้งสองฝั่ง และลบของที่ซ้ำกันออก
+  - ตอนนี้มี 20 tools · eval 58/58 · responsive 17 หน้าผ่าน
+- **ส่งคำสั่งไป Alpaca paper หลังผู้ใช้กดอนุมัติเท่านั้น** (`BROKER=alpaca-paper`, ค่าเริ่มต้นปิด)
+  - URL ล็อกไว้ที่บัญชี paper ไม่มีโหมดเงินจริง
+  - AI และ MCP เรียกส่วนนี้ไม่ได้
+  - ส่งไม่สำเร็จก็เก็บเป็นคำสั่งจำลองในแอป พร้อมบอกเหตุผลในหน้า Trade
+  - กดอนุมัติซ้ำพร้อมกันได้คำสั่งเดียว
+- **U-Bot stand-in ถาม CoinGecko MCP ได้** (`npm run ubot -- --coingecko`, ค่าเริ่มต้นปิด)
+  - เอา volume 24 ชม. มาเทียบกับขนาด unlock ที่ U-Guard ให้มา
+  - ถ้า CoinGecko ไม่ตอบ จะใช้ตัวเลขของ U-Guard แทน
+  - ทดสอบกับ mock server แล้วทั้งโหมด tool ตรงและโหมด dynamic (session นี้ต่อ CoinGecko จริงไม่ได้ เพราะเครือข่ายบล็อก)
+- **[MCP-INTEGRATIONS.md](MCP-INTEGRATIONS.md):** อธิบายว่า CoinGecko, Alpaca, EVM, Coinrule ใช้ตรงไหน ใช้ไม่ได้ตรงไหน และทำไม
+  - EVM MCP ให้ทีมใช้ตอน dev แบบอ่านอย่างเดียว ห้ามใส่ key
+  - Coinrule ไม่ใช้ เพราะเทรดเงินจริงเอง
+- **ตรวจแล้ว:** typecheck ✅ · eval 62/62 ✅ · build ✅ · ทดสอบในเบราว์เซอร์: ร่างผ่าน MCP → กดอนุมัติ → มีโน้ตจาก broker ✅
+  - ลองทำโค้ดพังโดยตั้งใจ 2 จุด (URL เงินจริง, อนุมัติซ้ำ) eval จับได้ทั้งคู่
+
 ## หน้าแอปทั้งหมด
 
 | กลุ่ม | หน้า | ใช้ทำอะไร |

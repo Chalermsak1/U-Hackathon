@@ -344,6 +344,38 @@ Built in a separate session without seeing `feat/app-ui`.
   - Every page 200 ✅ · responsive 17 pages × 5 devices ✅
   - `npm run ubot -- --auto --trade`: 20 tools, HIGH 67, proposal, CAUTION plan ✅
 
+### Oct 16, ~13:00 · Outside MCP servers, the safe way (branch `feat/mcp-integrations`)
+- **Context:** the team proposed three MCP servers: CoinGecko, `@mcpdotdirect/evm-mcp-server`, and Coinrule or Alpaca. Checked against their docs:
+  - CoinGecko's keyless server is a public beta with a shared rate limit. The 76+ tools need a key.
+  - The EVM server signs with a private key or mnemonic from the environment.
+  - Alpaca needs API keys, and its MCP server hands the model order tools.
+  - Coinrule trades real exchange accounts on its own.
+- **Alpaca paper broker** (`src/lib/broker.ts`, `BROKER=alpaca-paper`, off by default):
+  - Only `decideTradePlan()` calls it, after the user's approval.
+  - Paper URL hard-coded; market order, `gtc`, USD notional for buys, qty for sells, plan id as `client_order_id`.
+  - Coins outside Alpaca's list, errors, missing keys or no answer keep the local paper order with a note on the Trade page.
+  - `get_paper_trading` reports it.
+  - Also new: approving the same plan twice at once records one order.
+- **CoinGecko in the U-Bot stand-in** (`--coingecko`, off by default):
+  - A second MCP client asks CoinGecko for 24h volume and compares it with U-Guard's unlock value.
+  - Tool names are looked up at runtime: a direct price tool, or `invoke_api_endpoint` in dynamic mode.
+  - Tested against a local mock MCP server in both modes, and with the server down. This session can't reach the real endpoint (proxy).
+- **Not added to the app:**
+  - EVM MCP: dev-only and read-only, no key; `viem` already covers Fuji.
+  - Coinrule: trades real money on its own.
+  - The scorer keeps the cached REST/Hyperliquid feed instead of an MCP hop.
+  - All written up in `MCP-INTEGRATIONS.md`.
+- **Evals 58 → 62:**
+  - Default broker sends nothing.
+  - An MCP draft sends nothing, and the approval sends one paper order (literal paper URL, body, headers, idempotent).
+  - Unlisted coin, Alpaca error and missing keys fall back.
+  - A double approval records one order.
+  - Mutation check: a live URL and a removed double-approve guard both fail.
+- **Checked:**
+  - typecheck ✅ · eval 62/62 ✅ · build ✅
+  - In the browser: MCP draft → approve → order note "Alpaca paper didn't answer (network error) · kept as a local paper order" (sandbox has no route to Alpaca) ✅
+  - Stand-in `--coingecko` against mocks: "the unlock (~$16.5M) is 10% of one day's volume" ✅
+
 ---
 
 ## Adding the next entry

@@ -22,6 +22,7 @@ U-Hackathon 2026 · AI Track · FLOW Summit Bangkok
 | [UI-PLAN.md](UI-PLAN.md) | Pages, navigation, AI gateway, auth and DB, loading page, UI resources (Thai) |
 | [ANALYSIS.md](ANALYSIS.md) | Models and VLMs, Nansen comparison, user segments, regulation, U-topia gaps, roadmap (Thai) |
 | [UI-REVIEW.md](UI-REVIEW.md) | UI test results, fixes, what to show to whom, logo slots |
+| [MCP-INTEGRATIONS.md](MCP-INTEGRATIONS.md) | Other MCP servers (CoinGecko, Alpaca, EVM, Coinrule): what fits where, what we left out and why |
 | [LOGS.md](LOGS.md) | Development log. The agent's runtime log is written to `logs/YYYY-MM-DD.jsonl` (not served as a page) |
 
 ## Pages
@@ -92,15 +93,16 @@ Rehearse demo day today: `DEMO_NOW=2026-10-16T07:00:00Z npm run dev`. The ARB un
   - Hits go to the U-Bot inbox (bell in the terminal header) as one message with cards and proposals. The alerts page shows the history and why anything was held back.
 - **Portfolio drift**: the user sets their own target mix on `/terminal/portfolio`. `check_portfolio_drift` (chat and MCP) reports what is over or under the band, together with unlock risk and dilution; it never says what to buy or sell.
 - **Freshness**: every unlock card, token-page section, trade plan and the portfolio shows "as of HH:MM" (Bangkok time). If Tokenomist or CoinGecko fails after a live success, the last good copy is used and marked "(may be out of date)". Tool results carry `as_of` / `as_of_th` and `stale`; the agent quotes the age in the reply's language.
-- **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key).
+- **Trade and Invest plans**: every number is arithmetic on the user's own choices, the quote and the wallet, or a cited historical average; no model picks assets or predicts prices. Orders are paper orders; approvals are recorded on Avalanche Fuji (simulated without a key). With `BROKER=alpaca-paper` an approved order is also sent to an Alpaca **paper** account (hard-coded paper URL, only after the user's approval, never from an AI or MCP tool; see [MCP-INTEGRATIONS.md](MCP-INTEGRATIONS.md)).
 - **Run log**: every agent run is appended to `logs/YYYY-MM-DD.jsonl` (redacted text, tool trace, timings); `LOG_SILENT=true` turns it off.
 
 ## Checks
 
 ```bash
 npm run typecheck
-npm run eval          # 55 golden cases (EN + TH): risk, agent, compliance, guard, MCP, trade, invest, alerts · offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
+npm run eval          # 62 golden cases (EN + TH): risk, agent, compliance, guard, MCP, trade, invest, alerts, paper broker · offline and deterministic (sandboxed shells: node --import tsx evals/run.ts)
 npm run ubot          # U-Bot stand-in: MCP client acting for demo-user (needs the server's MCP_API_KEY in .env)
+npm run ubot -- --trade --coingecko   # + draft the trade plan, + cross-check volume with CoinGecko's MCP server
 npm run responsive    # 17 pages × iPhone SE/15 Pro/15 Pro Max/iPad/desktop: screenshots + layout audit
 npm run responsive -- --webkit   # Safari engine (npx playwright install webkit once)
 ```

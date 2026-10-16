@@ -914,6 +914,7 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
             stop_price_usd: Number(o.stopPriceUsd.toPrecision(6)),
             at: o.at,
             receipt: { chain: o.receipt.chain, mode: o.receipt.mode, tx: o.receipt.txHash },
+            broker: o.broker ? { venue: o.broker.venue, ok: o.broker.ok, status: o.broker.status ?? null, note: o.broker.note } : null,
           })),
           pending_plans: s.pending.map((p) => ({ plan_id: p.id, symbol: p.symbol, side: p.side, amount_thb: p.amountThb, verdict: p.verdict, drafted_by: p.origin ?? "app", created_at: p.createdAt })),
           note: "Paper trading only: no real orders.",
