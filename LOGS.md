@@ -425,7 +425,7 @@ Built in a separate session without seeing `feat/app-ui`.
   - Checked against a stand-in KV: sign up, restart the server, log in with the same account; a wrong password and a second sign-up are refused; no file was written.
 - **Vercel:** creating the project through the connector was refused twice. The first attempt was blocked by the session's permission check; the second reached Vercel and returned 403 (no permission to create projects in the team). The project has to be created in the dashboard by a team member who can.
 
-### Oct 16, ~12:45 · Voice mode like ChatGPT's, Tokenomist logo (branch `feat/voice-mode-ui`)
+### Oct 16, ~12:15 · Voice mode like ChatGPT's, Tokenomist logo (branch `feat/voice-mode-ui`)
 - **Voice mode is now a full-screen conversation** (`src/components/voice/VoiceMode.tsx`), opened from "Voice mode" on Ask U-Bot:
   - An orb grows with your voice while it listens, breathes while U-Guard checks, and moves with U-Bot's voice while it answers. Then the mic opens again.
   - Tap the orb to interrupt U-Bot. The mic button pauses; the red button (or Esc) ends it.
