@@ -52,7 +52,13 @@ export default function ReportPage() {
 
       <header className="report-head">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/logo-mark.svg" width={44} height={44} alt="" />
+        <img
+          src="/brand/icon.png"
+          width={44}
+          height={44}
+          alt="U-Guard"
+          style={{ borderRadius: 10, objectFit: "cover", boxShadow: "0 0 14px rgba(45,212,191,0.3)" }}
+        />
         <div>
           <h1>Token unlock risk check: summary</h1>
           <p>

@@ -134,7 +134,13 @@ export function TerminalShell({ children }: { children: React.ReactNode }) {
       <aside className="term-side" aria-label="Menu">
         <Link href="/" className="term-brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/logo-mark.svg" width={30} height={30} alt="" />
+          <img
+            src="/brand/icon.png"
+            width={32}
+            height={32}
+            alt="U-Guard"
+            style={{ borderRadius: 8, objectFit: "cover", boxShadow: "0 0 12px rgba(45,212,191,0.25)" }}
+          />
           <span>
             U-Guard <small>Terminal</small>
           </span>
