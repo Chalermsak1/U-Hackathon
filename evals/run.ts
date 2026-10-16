@@ -154,6 +154,25 @@ async function main() {
       },
     },
     {
+      name: "Agent: 'should I buy ARB now?' → price, unlock risk, trade check with options, no advice",
+      run: async () => {
+        const r = await agent("Should I buy 5,000 THB of ARB now?");
+        const t = tools(r);
+        return t.includes("get_token_market") && t.includes("assess_unlock_risk") && /trade check/i.test(r.reply) && /You decide/.test(r.reply) && r.compliance.status === "pass"
+          ? true
+          : JSON.stringify({ tools: t, compliance: r.compliance, reply: r.reply });
+      },
+    },
+    {
+      name: "Agent: portfolio risk question → stress test with scenarios and protection options",
+      run: async () => {
+        const r = await agent("What could go wrong with my portfolio? How do I protect it?");
+        return tools(r).includes("stress_test_portfolio") && (r.stress?.scenarios.length ?? 0) >= 2 && /Worst case tested/.test(r.reply) && r.compliance.status === "pass"
+          ? true
+          : JSON.stringify({ tools: tools(r), scenarios: r.stress?.scenarios.length, compliance: r.compliance, reply: r.reply });
+      },
+    },
+    {
       name: "Agent (signed out): scan asks to sign in, no wallet tools run",
       run: async () => {
         const r = await agent("Scan my portfolio", "public");
@@ -225,7 +244,7 @@ async function main() {
           await call({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "assess_unlock_risk", arguments: { symbol: "ARB", trade_amount_thb: null } } })
         ).json();
         const text = res?.result?.content?.[0]?.text ?? "";
-        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 12 && /"symbol":"ARB"/.test(text);
+        const ok = init?.result?.serverInfo?.name === "u-guard" && list?.result?.tools?.length === 14 && /"symbol":"ARB"/.test(text);
         return ok ? true : JSON.stringify({ init, tools: list?.result?.tools?.length, res }).slice(0, 400);
       },
     },

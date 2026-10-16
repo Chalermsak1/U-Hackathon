@@ -33,12 +33,12 @@ function AgentInner() {
 
   return (
     <div className="agent-layout">
-      <section className="agent-chat" aria-label="Chat with U-Guard">
+      <section className="agent-chat" aria-label="Chat with U-Bot">
         <div className="chat-head">
           <Avatar size={32} thinking={busy} level={topLevel(Object.values(levels))} />
           <div>
-            <p>U-Guard AI Agent</p>
-            <span>{busy ? "Calling tools…" : "Decision support, not investment advice"}</span>
+            <p>U-Bot · with the U-Guard check</p>
+            <span>{busy ? "U-Guard is calling its tools…" : "U-Bot talks, U-Guard checks the risk, you decide · not investment advice"}</span>
           </div>
         </div>
         <ChatThread messages={messages} busy={busy} questionFor={questionFor} />
@@ -57,7 +57,7 @@ function AgentInner() {
             send(input);
           }}
         >
-          <label htmlFor="agent-ask" className="sr-only">Ask U-Guard</label>
+          <label htmlFor="agent-ask" className="sr-only">Ask U-Bot</label>
           <input id="agent-ask" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask about a token, your portfolio or unlocks…" autoComplete="off" maxLength={500} />
           <MicButton onText={send} onError={setError} disabled={busy} />
           <button className="btn btn-primary" type="submit" disabled={busy || !input.trim()}>Send</button>

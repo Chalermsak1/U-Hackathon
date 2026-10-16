@@ -5,6 +5,7 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { checkDrift } from "../drift";
+import { stressTest, type StressReport } from "../stress";
 import { compact, shortDate, thaiDate, usd } from "../format";
 import { getEventCalendar } from "../intel/calendar";
 import { searchNews } from "../intel/news";
@@ -109,6 +110,18 @@ export const TOOL_SPECS: ToolSpec[] = [
     input_schema: { ...noInput, required: [] },
   },
   {
+    name: "get_token_market",
+    description:
+      "Current market data for one token: price in USD, 24h change and 24h trading volume (live from Hyperliquid and CoinGecko when available). Call it with assess_unlock_risk whenever the user is about to buy or sell, or asks whether now is a good time to trade.",
+    input_schema: { type: "object", properties: { symbol: symbolProp }, required: ["symbol"], additionalProperties: false },
+  },
+  {
+    name: "stress_test_portfolio",
+    description:
+      "Stress-test the user's portfolio: the baht impact of an options-implied market drop, of their risky unlocks going like past team unlocks (Keyrock average), and of a 20% crypto drawdown, plus protection options per holding. Use it when the user asks how risky their portfolio is, what could go wrong, or how to handle or protect it. These are scenarios, not forecasts.",
+    input_schema: { ...noInput, required: [] },
+  },
+  {
     name: "get_market_news",
     description:
       "Search recent news that can move a token or the market (ETF flows, macro/Fed, regulation, hacks, unlocks). Returns short summaries with source links and citation numbers; cite them as [n]. Returns an empty list when nothing relevant was found: say so instead of guessing.",
@@ -172,6 +185,8 @@ const INPUTS = {
   get_event_odds: z.object({ topic: z.string().trim().min(2).max(80) }),
   get_market_pulse: z.object({}),
   check_portfolio_drift: z.object({}),
+  get_token_market: z.object({ symbol: Sym }),
+  stress_test_portfolio: z.object({}),
   get_event_calendar: z.object({ days: Days.default(45) }),
 } as const;
 
@@ -195,6 +210,8 @@ export interface RunContext {
   calendar: CalendarEvent[] | null;
   holdings: Holding[] | null;
   drift: DriftReport | null;
+  stress: StressReport | null;
+  markets: Map<string, { symbol: string; priceUsd: number; change24hPct: number | null; volume24hUsd: number; source: DataSource }>;
   citations: Citation[];
   trace: TraceStep[];
   evidence: string[]; // serialized tool results: the only numbers a reply may use
@@ -214,6 +231,8 @@ export function newContext(init: { userId: string; scope: "user" | "public"; req
     calendar: null,
     holdings: null,
     drift: null,
+    stress: null,
+    markets: new Map(),
     citations: [],
     trace: [],
     evidence: [],
@@ -297,7 +316,7 @@ function addNews(ctx: RunContext, res: Sourced<NewsItem[]>): { n: number; item: 
   return out;
 }
 
-const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift"]);
+const WALLET_TOOLS = new Set<ToolName>(["get_portfolio", "propose_protection", "check_portfolio_drift", "stress_test_portfolio"]);
 
 async function run(name: ToolName, input: Record<string, unknown>, ctx: RunContext): Promise<ToolOutput> {
   if (ctx.scope === "public" && WALLET_TOOLS.has(name)) {
@@ -339,6 +358,39 @@ async function run(name: ToolName, input: Record<string, unknown>, ctx: RunConte
           data: "sample",
         },
         summary: report.hasTargets ? `${report.totalDriftPct}% off target · ${off.length} token(s) outside the band` : "no targets set",
+      };
+    }
+    case "get_token_market": {
+      const sym = (input.symbol as string).toUpperCase();
+      const q = await getQuote(sym);
+      if (!q) return { result: { symbol: sym, found: false }, summary: `${sym}: no market data` };
+      ctx.markets.set(sym, { symbol: sym, priceUsd: q.priceUsd, change24hPct: q.change24hPct, volume24hUsd: q.volume24hUsd, source: q.source });
+      ctx.sources.add(q.source);
+      return {
+        result: {
+          symbol: sym,
+          price_usd: Number(q.priceUsd.toPrecision(5)),
+          change_24h_pct: q.change24hPct === null ? null : Number(q.change24hPct.toFixed(2)),
+          volume_24h_usd: Math.round(q.volume24hUsd),
+          data: q.source,
+        },
+        summary: `${sym} $${q.priceUsd.toPrecision(4)}${q.change24hPct === null ? "" : ` (${q.change24hPct >= 0 ? "+" : ""}${q.change24hPct.toFixed(1)}%)`}`,
+      };
+    }
+    case "stress_test_portfolio": {
+      const report = await stressTest(ctx.userId, { locale: ctx.locale, now: ctx.now });
+      ctx.stress = report;
+      ctx.sources.add("sample"); // demo wallet amounts
+      return {
+        result: {
+          total_thb: Math.round(report.totalThb),
+          stablecoins_thb: Math.round(report.stableThb),
+          scenarios: report.scenarios.map((x) => ({ scenario: x.label, basis: x.basis, impact_thb: x.impactThb, impact_pct_of_portfolio: Number(x.impactPct.toFixed(1)) })),
+          protection_options: report.handles.map((h) => h.text),
+          summary_lines: report.lines,
+          data: "sample",
+        },
+        summary: report.scenarios.map((x) => `${x.id} ${Math.round(x.impactPct)}%`).join(" · "),
       };
     }
     case "lookup_token": {

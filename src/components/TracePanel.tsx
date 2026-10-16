@@ -3,9 +3,9 @@ import type { LastRun } from "./useAgentChat";
 /** Every tool the agent called for the last answer, with timings — the "is it really agentic?" proof. */
 export function TracePanel({ last }: { last: LastRun | null }) {
   return (
-    <section className="panel" aria-label="Agent Trace">
+    <section className="panel" aria-label="U-Guard agent trace">
       <div className="panel-head">
-        <h2>Agent Trace</h2>
+        <h2>U-Guard agent trace</h2>
         {last && <span className="pill">{last.engine}</span>}
         {last && <span className="total">{last.ms} ms</span>}
       </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { compact, LEVEL_LABEL, pct, shortDate, sourceLabel, usd } from "@/lib/format";
+import type { StressReport } from "@/lib/stress";
 import type { DriftReport, Proposal, ProtectionReceipt, RecipientClass, RiskCard } from "@/lib/types";
 
 const RECIPIENT: Record<RecipientClass, { th: string; color: string }> = {
@@ -51,6 +52,7 @@ export function RiskCardView({ card }: { card: RiskCard }) {
         </span>
         {hasUnlock && <span className="score">{card.score}/100</span>}
       </div>
+      <span className="guard-tag">U-Guard check · Tokenomist data</span>
       {hasUnlock && (
         <>
           <div className="meter" aria-hidden="true">
@@ -142,6 +144,7 @@ export function ProposalCardView({ proposal }: { proposal: Proposal }) {
 
   return (
     <article className="proposal" aria-label="Protection proposal">
+      <span className="guard-tag">U-Guard proposal · waits for you</span>
       <h4>{proposal.title}</h4>
       <p>{proposal.detail}</p>
       {state === "approved" && receipt && (
@@ -214,6 +217,47 @@ export function DriftCardView({ drift }: { drift: DriftReport }) {
       </ul>
       <div className="card-foot">
         <span>Bar = your weight · tick = your target · compared with targets you set, not advice</span>
+      </div>
+    </article>
+  );
+}
+
+/** Stress test: what each scenario would cost, in baht, and how the user can protect each holding. */
+export function StressCardView({ stress }: { stress: StressReport }) {
+  const worst = Math.max(1, ...stress.scenarios.map((x) => Math.abs(x.impactThb)));
+  return (
+    <article className="card stress lv-medium" aria-label="Portfolio stress test">
+      <div className="card-head">
+        <h3>Stress test</h3>
+        <span className="name">scenarios on today&apos;s holdings, not forecasts</span>
+      </div>
+      <div className="stress-rows">
+        {stress.scenarios.map((x) => (
+          <div key={x.id} className="stress-row" title={x.basis}>
+            <span className="stress-label">{x.label}</span>
+            <span className="stress-bar" aria-hidden="true">
+              <i style={{ width: `${(Math.abs(x.impactThb) / worst) * 100}%` }} />
+            </span>
+            <span className="stress-num">
+              −฿{compact(Math.abs(x.impactThb))} <small>({Math.abs(x.impactPct).toFixed(1)}%)</small>
+            </span>
+          </div>
+        ))}
+      </div>
+      {stress.handles.length > 0 && (
+        <ul className="reasons">
+          {stress.handles.slice(0, 3).map((h) => (
+            <li key={h.symbol}>
+              {h.text}{" "}
+              <a href={h.action.href} className="plan-action">
+                {h.action.label} →
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="card-foot">
+        <span>Stablecoins ฿{compact(stress.stableThb)} are not affected · hover a row for its basis · not advice</span>
       </div>
     </article>
   );

@@ -76,6 +76,8 @@ export async function runAgent(req: AgentRequest): Promise<AgentResult> {
       reply: partial.reply,
       cards: [...ctx.cards.values()],
       drift: ctx.drift,
+      stress: ctx.stress,
+      markets: [...ctx.markets.values()],
       news: ctx.news,
       odds: ctx.odds,
       pulse: ctx.pulse,

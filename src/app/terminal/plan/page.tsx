@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { DriftCardView, ProposalCardView } from "@/components/Cards";
+import { DriftCardView, ProposalCardView, StressCardView } from "@/components/Cards";
 import { Spotlight } from "@/components/fx";
 import { LEVEL_LABEL, shortDate } from "@/lib/format";
 import type { MyPlan, PlanItem } from "@/lib/plan";
@@ -67,6 +67,11 @@ export default function PlanPage() {
   const savePdf = () => {
     const lines = [
       ...plan.summary,
+      "",
+      "",
+      "Stress test (scenarios, not forecasts):",
+      ...plan.stress.scenarios.map((x) => `   ${x.label}: −${Math.abs(x.impactThb).toLocaleString("en-US")} THB (${Math.abs(x.impactPct).toFixed(1)}% of the portfolio)`),
+      ...plan.stress.handles.map((h) => `   ${h.text}`),
       "",
       ...plan.items.map((i) => `${i.date === today ? "Today" : shortDate(i.date)} · ${KIND_LABEL[i.kind]} · ${i.title}${i.level ? ` (${LEVEL_LABEL[i.level]})` : ""}\n   ${i.detail}`),
     ];
@@ -173,6 +178,7 @@ export default function PlanPage() {
           )}
         </section>
         <aside className="plan-side">
+          <StressCardView stress={plan.stress} />
           <DriftCardView drift={plan.drift} />
           <p className="note">
             Built from the Tokenomist unlock schedule, live prices, the Fed calendar and your own approvals, plans and alert rules. Information, not investment advice: you decide every step.

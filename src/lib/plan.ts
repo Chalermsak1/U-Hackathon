@@ -7,6 +7,7 @@ import { checkDrift, portfolioRisk } from "./drift";
 import { compact, LEVEL_LABEL, shortDate, usd } from "./format";
 import { getEventCalendar } from "./intel/calendar";
 import { store } from "./store";
+import { stressTest, type StressReport } from "./stress";
 import type { DriftReport, Locale, Proposal, RiskCard, RiskLevel } from "./types";
 
 export const PLAN_DAYS = 30;
@@ -28,6 +29,7 @@ export interface MyPlan {
   decisions: Proposal[];
   cards: RiskCard[];
   drift: DriftReport;
+  stress: StressReport;
   totalThb: number;
   summary: string[];
 }
@@ -48,7 +50,7 @@ export async function buildPlan(userId: string, opts: { now: number; locale?: Lo
   const inWindow = (d: string) => d >= today && d <= end;
 
   const [pre, calendar] = await Promise.all([portfolioRisk({ locale: opts.locale, now, userId }), getEventCalendar(PLAN_DAYS, { now })]);
-  const drift = await checkDrift(userId, { locale: opts.locale, now, pre });
+  const [drift, stress] = await Promise.all([checkDrift(userId, { locale: opts.locale, now, pre }), stressTest(userId, { locale: opts.locale, now })]);
   const items: PlanItem[] = [];
   const cards = pre.rows.flatMap((r) => (r.card ? [r.card] : []));
   const held = new Set(pre.rows.map((r) => r.symbol));
@@ -185,7 +187,8 @@ export async function buildPlan(userId: string, opts: { now: number; locale?: Lo
     risky.length ? `${risky.length} unlock${risky.length === 1 ? "" : "s"} with medium or high risk touch coins you hold in the next ${PLAN_DAYS} days.` : `No risky unlock touches your coins in the next ${PLAN_DAYS} days.`,
     nextDated ? `Next date: ${nextDated.date === today ? "today" : shortDate(nextDated.date)}, ${nextDated.title}.` : "",
     drift.lines[0] ?? "",
+    stress.lines[0] ?? "",
   ].filter(Boolean);
 
-  return { generatedAt: new Date(now).toISOString(), horizonDays: PLAN_DAYS, items, decisions, cards, drift, totalThb: pre.totalThb, summary };
+  return { generatedAt: new Date(now).toISOString(), horizonDays: PLAN_DAYS, items, decisions, cards, drift, stress, totalThb: pre.totalThb, summary };
 }

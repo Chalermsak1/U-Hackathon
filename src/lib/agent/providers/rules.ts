@@ -10,7 +10,7 @@ import type { AnswerMode, ChatTurn, RiskCard } from "../../types";
 import { matchFaq, type FaqEntry } from "../../knowledge";
 import { executeTool, type RunContext } from "../tools";
 
-export type Intent = "buy" | "sell" | "scan" | "drift" | "news" | "odds" | "calendar" | "risk" | "learn" | "help";
+export type Intent = "buy" | "sell" | "scan" | "drift" | "stress" | "news" | "odds" | "calendar" | "risk" | "learn" | "help";
 
 export interface Plan {
   intents: Intent[];
@@ -68,6 +68,7 @@ const INTENTS: [Intent, RegExp][] = [
   ["sell", /\b(sell|selling|take profit|cash out)\b|ขาย/i],
   ["scan", /\b(scan|portfolio|my (holdings|wallet|bag|coins|assets)|what do i (own|hold))\b|พอร์ต|สแกน|ถืออะไร|ถืออยู่/i],
   ["drift", /\b(drift(ed|ing)?|off (plan|target)|from my (plan|target)|rebalanc\w*|target mix|my targets?|balanced|concentrat\w*|diversif\w*)\b|สัดส่วนพอร์ต|ปรับพอร์ต|ห่างจากเป้า|กระจุก|เป้าพอร์ต|ตามแผน/i],
+  ["stress", /\b(stress|what if|worst case|what could go wrong|how (bad|much) could|protect my (portfolio|money)|risk(s|y)? (to|for|in) my (portfolio|money)|how (risky|safe) is my portfolio|handle (it|this|the risk))\b|ความเสี่ยงพอร์ต|พอร์ตเสี่ยง|รับมือ|ป้องกันพอร์ต|ถ้าตลาดลง|แย่ที่สุด/i],
   ["news", /\b(news|headlines?|what'?s (moving|happening|going on)|why (is|did|are|has)|happening|events?)\b|ข่าว|เหตุการณ์|ทำไม/i],
   ["odds", /\b(odds|probabilit(y|ies)|chances?|likely|prediction market|polymarket|fed|fomc|rate (cut|hike)|interest rates?)\b|โอกาส|ความน่าจะเป็น|ดอกเบี้ย|เฟด/i],
   ["calendar", /\b(calendar|upcoming|coming up|next (week|month)|schedule|this week)\b|ปฏิทิน|เร็วๆ\s?นี้|สัปดาห์นี้/i],
@@ -110,7 +111,7 @@ export async function makePlan(message: string): Promise<Plan> {
   const symbols = await extractSymbols(message);
   const amountThb = intents.includes("buy") ? await extractAmountThb(message) : null;
   const tradeOrRisk = intents.some((i) => i === "buy" || i === "sell" || i === "risk");
-  const acting = intents.some((i) => i === "buy" || i === "sell" || i === "scan" || i === "drift");
+  const acting = intents.some((i) => i === "buy" || i === "sell" || i === "scan" || i === "drift" || i === "stress");
   const faq = !acting && (symbols.length === 0 || intents.includes("learn")) ? matchFaq(message) : null;
   if (intents.length === 0) intents.push(symbols.length ? "risk" : "help");
   return { intents, symbols, amountThb, faq, needsSymbol: tradeOrRisk && symbols.length === 0 && !intents.includes("scan") };
@@ -131,13 +132,20 @@ export async function runPlan(plan: Plan, message: string, ctx: RunContext): Pro
         await executeTool("propose_protection", { symbol: card.symbol, action: "price_alert" }, ctx);
       }
     }
-    await executeTool("check_portfolio_drift", {}, ctx);
+    await Promise.all([
+      executeTool("check_portfolio_drift", {}, ctx),
+      executeTool("stress_test_portfolio", {}, ctx),
+      rateable.length ? executeTool("get_market_news", { query: "", symbols: rateable, days: 14 }, ctx) : Promise.resolve(),
+    ]);
     return;
   }
 
-  if (has("drift")) {
+  if (has("drift") || has("stress")) {
     if (ctx.scope === "public") return;
-    await executeTool("check_portfolio_drift", {}, ctx);
+    await Promise.all([
+      has("drift") ? executeTool("check_portfolio_drift", {}, ctx) : Promise.resolve(),
+      has("stress") ? executeTool("stress_test_portfolio", {}, ctx) : Promise.resolve(),
+    ]);
     return;
   }
 
@@ -146,7 +154,9 @@ export async function runPlan(plan: Plan, message: string, ctx: RunContext): Pro
   if (plan.symbols.length && (has("buy") || has("sell") || has("risk"))) {
     for (const symbol of plan.symbols) {
       jobs.push(executeTool("assess_unlock_risk", { symbol, trade_amount_thb: has("buy") ? plan.amountThb : null }, ctx));
+      jobs.push(executeTool("get_token_market", { symbol }, ctx));
     }
+    if (has("buy") || has("sell")) jobs.push(executeTool("get_market_pulse", {}, ctx));
   }
   if (has("news") || has("buy") || has("sell") || has("risk") || plan.symbols.length || macroAsked) {
     jobs.push(executeTool("get_market_news", { query: message, symbols: plan.symbols, days: 14 }, ctx));
@@ -165,6 +175,50 @@ export async function runPlan(plan: Plan, message: string, ctx: RunContext): Pro
       await executeTool("propose_protection", { symbol, action: has("buy") ? "pause_buying" : "price_alert" }, ctx);
     }
   }
+}
+
+/** Price line and a trade check (facts plus the user's options) for buy/sell questions. */
+function tradeLines(ctx: RunContext, plan: Plan, th: boolean): string[] {
+  const out: string[] = [];
+  const mood = ctx.pulse?.data.sentiment;
+  for (const symbol of plan.symbols) {
+    const m = ctx.markets.get(symbol);
+    const card = ctx.cards.get(symbol);
+    if (m) {
+      const ch = m.change24hPct === null ? "" : ` (${signedPct(m.change24hPct)} ${th ? "ใน 24 ชม." : "in 24h"})`;
+      out.push(th ? `ราคา ${symbol} ตอนนี้ ${usdFull(m.priceUsd)}${ch}` : `${symbol} trades at ${usdFull(m.priceUsd)}${ch}.`);
+    }
+    const flags: string[] = [];
+    if (card && (card.level === "high" || card.level === "medium")) {
+      const when = card.timing === "continuous" ? (th ? "ทยอยปลดล็อกทุกวัน" : "releasing daily") : card.unlockDate ? (th ? `unlock ${thaiDate(card.unlockDate)}` : `unlock ${shortDate(card.unlockDate)}`) : "";
+      flags.push(th ? `ความเสี่ยง unlock ${LEVEL_TH[card.level]} (${when})` : `${LEVEL_LABEL[card.level].toLowerCase()} unlock risk (${when})`);
+    }
+    if (m?.change24hPct !== null && m?.change24hPct !== undefined && Math.abs(m.change24hPct) >= 8) {
+      flags.push(th ? `ราคาเคลื่อน ${signedPct(m.change24hPct)} ใน 24 ชม.` : `price moved ${signedPct(m.change24hPct)} in 24h${m.change24hPct > 0 ? " (careful chasing it)" : ""}`);
+    }
+    const headlines = (ctx.news?.data ?? []).filter((n) => n.symbols.includes(symbol)).length;
+    if (headlines) flags.push(th ? `ข่าวล่าสุด ${headlines} ข่าว` : `${headlines} recent headline${headlines === 1 ? "" : "s"}`);
+    if (mood && (mood.value >= 75 || mood.value <= 25)) flags.push(`Fear & Greed ${mood.value} (${mood.label})`);
+    if (plan.intents.includes("buy") || plan.intents.includes("sell")) {
+      if (th) {
+        out.push(`U-Guard ตรวจ ${symbol}: ${flags.length ? flags.join(" · ") : "ไม่พบสัญญาณเตือน"}. ทางเลือก: รอหลังวัน unlock, ลดขนาด, ตั้งจุดตัดขาดทุน หรือให้ร่างแผนในหน้า Trade · คุณเป็นคนตัดสินใจ`);
+      } else {
+        out.push(
+          `U-Guard trade check for ${symbol}: ${flags.length ? flags.join(" · ") : "no warning signs"}. Your options: wait until after the unlock, a smaller amount, a stop-loss, or a checked plan on the Trade page. You decide.`,
+        );
+      }
+    }
+  }
+  return out;
+}
+
+function stressLines(ctx: RunContext, th: boolean): string[] {
+  const st = ctx.stress;
+  if (!st) return [];
+  const worst = [...st.scenarios].sort((a, b) => a.impactThb - b.impactThb)[0];
+  if (!worst) return [];
+  if (th) return [`ทดสอบสถานการณ์: ถ้า${worst.label} พอร์ตจะลดลงราว ${compact(-worst.impactThb)} บาท (${Math.abs(worst.impactPct).toFixed(1)}% ของพอร์ต)`, ...st.handles.slice(0, 1).map((h) => h.text)];
+  return [st.lines[0], ...st.handles.slice(0, 1).map((h) => h.text)];
 }
 
 function cardLine(card: RiskCard, mode: AnswerMode): string {
@@ -189,7 +243,7 @@ function composeReplyTh(ctx: RunContext, plan: Plan, mode: AnswerMode): string {
   const has = (i: Intent) => plan.intents.includes(i);
 
   if (plan.faq) return plan.faq.a;
-  if ((has("scan") || has("drift")) && ctx.scope === "public") {
+  if ((has("scan") || has("drift") || has("stress")) && ctx.scope === "public") {
     return "เข้าสู่ระบบเพื่อสแกนกระเป๋าของคุณ ระหว่างนี้ถามเรื่องเหรียญไหนก็ได้ เช่น “ARB ตอนนี้เสี่ยงไหม”";
   }
   if (plan.needsSymbol || (plan.intents.includes("help") && ctx.trace.every((s) => s.kind !== "tool"))) {
@@ -205,14 +259,17 @@ function composeReplyTh(ctx: RunContext, plan: Plan, mode: AnswerMode): string {
     const noVesting = [...ctx.notes.keys(), ...(ctx.holdings ?? []).map((h) => h.symbol).filter((sym) => STABLES.has(sym))];
     if (noVesting.length) lines.push(`${[...new Set(noVesting)].join(", ")}: ไม่มีตาราง vesting unlock`);
     if (ctx.drift) lines.push(...new Set([ctx.drift.lines[0], ctx.drift.lines[ctx.drift.lines.length - 1]]));
-  } else if (has("drift") && ctx.drift) {
-    lines.push(...ctx.drift.lines);
+    lines.push(...stressLines(ctx, true));
+  } else if ((has("drift") && ctx.drift) || (has("stress") && ctx.stress)) {
+    if (ctx.drift) lines.push(...ctx.drift.lines);
+    lines.push(...stressLines(ctx, true));
   } else {
     for (const symbol of plan.symbols) {
       const card = ctx.cards.get(symbol);
       if (card) lines.push(cardLineTh(card, mode));
       else if (ctx.notes.has(symbol)) lines.push(`${symbol}: ${ctx.notes.get(symbol)}`);
     }
+    lines.push(...tradeLines(ctx, plan, true));
   }
 
   if (ctx.proposals.length) lines.push("มีข้อเสนอให้ตั้งการป้องกันในการ์ดด้านล่าง คุณเป็นคนตัดสินใจเอง");
@@ -262,7 +319,7 @@ export function composeReply(ctx: RunContext, plan: Plan, mode: AnswerMode): str
   const has = (i: Intent) => plan.intents.includes(i);
 
   if (plan.faq) return plan.faq.a;
-  if ((has("scan") || has("drift")) && ctx.scope === "public") {
+  if ((has("scan") || has("drift") || has("stress")) && ctx.scope === "public") {
     return "Sign in to scan your own wallet. Meanwhile, ask me about any token, for example “Is ARB risky right now?”";
   }
   if (plan.needsSymbol) {
@@ -287,14 +344,17 @@ export function composeReply(ctx: RunContext, plan: Plan, mode: AnswerMode): str
     if (calm.length) lines.push(`${calm.join(", ")}: low or no unlock pressure.`);
     if (noVesting.length) lines.push(`${noVesting.join(", ")}: no vesting unlocks apply.`);
     if (ctx.drift) lines.push(...new Set([ctx.drift.lines[0], ctx.drift.lines[ctx.drift.lines.length - 1]]));
-  } else if (has("drift") && ctx.drift) {
-    lines.push(...ctx.drift.lines);
+    lines.push(...stressLines(ctx, false));
+  } else if ((has("drift") && ctx.drift) || (has("stress") && ctx.stress)) {
+    if (ctx.drift) lines.push(...ctx.drift.lines);
+    if (ctx.stress) lines.push(...ctx.stress.lines, ...ctx.stress.handles.slice(0, 2).map((h) => h.text));
   } else {
     for (const symbol of plan.symbols) {
       const card = ctx.cards.get(symbol);
       if (card) lines.push(cardLine(card, mode));
       else if (ctx.notes.has(symbol)) lines.push(`${symbol}: ${ctx.notes.get(symbol)}`);
     }
+    lines.push(...tradeLines(ctx, plan, false));
   }
 
   if (ctx.proposals.length) {

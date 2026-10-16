@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Avatar, topLevel } from "@/components/Avatar";
-import { DriftCardView, ProposalCardView, RiskCardView } from "@/components/Cards";
+import { DriftCardView, ProposalCardView, RiskCardView, StressCardView } from "@/components/Cards";
 import { openReport } from "@/lib/report";
 import type { ChatMessage } from "./useAgentChat";
 
@@ -38,6 +38,7 @@ export function ChatThread({
               <div className="bubble">{m.text}</div>
               {m.result?.cards.map((c) => <RiskCardView key={c.symbol} card={c} />)}
               {m.result?.drift && <DriftCardView drift={m.result.drift} />}
+              {m.result?.stress && <StressCardView stress={m.result.stress} />}
               {m.result?.proposals.map((p) => <ProposalCardView key={p.id} proposal={p} />)}
               {m.result && m.result.cards.length > 0 && (
                 <button className="btn btn-sm" style={{ alignSelf: "flex-start" }} onClick={() => openReport(questionFor(i), m.result!)}>

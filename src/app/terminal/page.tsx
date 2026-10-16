@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { CountUp, Spotlight, useTypewriter } from "@/components/fx";
 import { LEVEL_LABEL, thb, shortDate, unlockWhen, usd, compact } from "@/lib/format";
-import type { RiskCard } from "@/lib/types";
+import type { ScreenRow } from "@/lib/screener";
+import type { NewsItem, RiskCard } from "@/lib/types";
 
 const PROMPTS = [
   "Is buying 5,000 THB of ARB risky right now?",
@@ -39,11 +40,23 @@ export default function TerminalHome() {
   const [q, setQ] = useState("");
   const placeholder = useTypewriter(PROMPTS);
   const [calendar, setCalendar] = useState<RiskCard[]>([]);
+  const [unlocks, setUnlocks] = useState<ScreenRow[] | null>(null);
+  const [news, setNews] = useState<NewsItem[] | null>(null);
   const [plan, setPlan] = useState<{ generatedAt: string; items: PlanItemLite[]; decisions: unknown[]; summary: string[] } | null>(null);
   const [portfolio, setPortfolio] = useState<{ totalThb: number; atRiskThb: number; rows: { symbol: string; card: RiskCard | null }[] } | null>(null);
 
   useEffect(() => {
     fetch("/api/calendar").then((r) => r.json()).then((b) => setCalendar(b.analysed ?? [])).catch(() => undefined);
+    fetch("/api/markets")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { rows: ScreenRow[] } | null) =>
+        setUnlocks((b?.rows ?? []).filter((r) => r.nextUnlock && r.nextUnlock.daysUntil <= 30).sort((x, y) => x.nextUnlock!.daysUntil - y.nextUnlock!.daysUntil)),
+      )
+      .catch(() => setUnlocks([]));
+    fetch("/api/news")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { live: NewsItem[]; curated: NewsItem[] } | null) => setNews(b ? (b.live.length ? b.live : b.curated).slice(0, 4) : []))
+      .catch(() => setNews([]));
     fetch("/api/plan")
       .then((r) => (r.ok ? r.json() : null))
       .then(setPlan)
@@ -134,22 +147,37 @@ export default function TerminalHome() {
       <div className="grid-2">
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Upcoming unlocks</h2>
-            <Link href="/terminal/unlocks" className="total">
-              See all →
+            <h2>Unlocks in the next 30 days</h2>
+            <Link href="/terminal/tokens" className="total">
+              Tokenomist · screener →
             </Link>
           </div>
-          {calendar.map((c) => (
-            <Link key={c.symbol} href={`/terminal/tokens/${c.symbol}`} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
+          {!unlocks && <p className="note">Loading the Tokenomist schedule…</p>}
+          {unlocks?.length === 0 && <p className="note">No large token unlocks in the next 30 days.</p>}
+          {unlocks?.slice(0, 7).map((r) => (
+            <Link key={r.id} href={`/terminal/tokens/${r.symbol}`} className="event-row today-unlock" style={{ textDecoration: "none", color: "inherit" }}>
               <span className="event-date">
-                <b>{c.unlockDate ? shortDate(c.unlockDate) : "–"}</b>
-                {unlockWhen(c)}
+                <b>{r.nextUnlock!.daysUntil <= 0 ? "Today" : shortDate(r.nextUnlock!.date)}</b>
+                {r.nextUnlock!.daysUntil <= 0 ? "today" : `in ${r.nextUnlock!.daysUntil} d`}
               </span>
-              <span>
-                <b>{c.symbol}</b> · {compact(c.amount)} ({usd(c.valueUsd)}) · {c.pctOfCirculating.toFixed(2)}% of circulating
+              <span className="tok">
+                {r.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={r.image} alt="" width={20} height={20} loading="lazy" />
+                ) : (
+                  <i>{r.symbol.slice(0, 3)}</i>
+                )}
+                <span>
+                  <b>{r.symbol}</b>
+                  <small>
+                    {r.nextUnlock!.pctCirc !== null ? `${r.nextUnlock!.pctCirc.toFixed(2)}% of circulating` : ""}
+                    {r.nextUnlock!.valueUsd ? ` · ${usd(r.nextUnlock!.valueUsd)}` : ""}
+                  </small>
+                </span>
               </span>
-              <span className={`pill lv-${c.level}`}>
-                {LEVEL_LABEL[c.level]} {c.score}
+              <span className={`pill lv-${r.grade.level}`}>
+                {LEVEL_LABEL[r.grade.level]}
+                {r.grade.score !== null ? ` ${r.grade.score}` : ""}
               </span>
             </Link>
           ))}
@@ -178,6 +206,33 @@ export default function TerminalHome() {
             ))}
         </Spotlight>
       </div>
+
+      <Spotlight className="panel" style={{ marginTop: 16 }}>
+        <div className="panel-head">
+          <h2>Latest news</h2>
+          <Link href="/terminal/news" className="total">
+            All news →
+          </Link>
+        </div>
+        {!news && <p className="note">Loading headlines…</p>}
+        <div className="today-news">
+          {news?.map((n) => (
+            <a key={n.id} href={n.url} target="_blank" rel="noreferrer noopener" className="today-news-item">
+              {n.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" />
+              ) : (
+                <span className="today-news-ph">{n.source}</span>
+              )}
+              <small>
+                {n.source}
+                {n.symbols.length ? ` · ${n.symbols.join(", ")}` : ""}
+              </small>
+              <b>{n.summary}</b>
+            </a>
+          ))}
+        </div>
+      </Spotlight>
 
       {portfolio && (
         <Spotlight className="panel" style={{ marginTop: 16 }}>

@@ -177,6 +177,8 @@ export interface AgentResult {
   reply: string;
   cards: RiskCard[];
   drift?: DriftReport | null;
+  stress?: import("./stress").StressReport | null;
+  markets?: { symbol: string; priceUsd: number; change24hPct: number | null; volume24hUsd: number; source: DataSource }[];
   news: Sourced<NewsItem[]> | null;
   odds: Sourced<OddsMarket[]> | null;
   pulse: Sourced<MarketPulse> | null;
