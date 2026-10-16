@@ -103,14 +103,20 @@ const TTL_MS = 10 * 60 * 1000;
 const FALLBACK_TTL_MS = 60 * 1000;
 const cache = new Map<string, { at: number; ttl: number; value: Sourced<unknown> }>();
 
-// The API rate-limits bursts (429 with retry-after), so at most a few calls run at once.
+// The API rate-limits bursts (429 with retry-after), so at most a few calls run at once and
+// call starts are spaced out (~8 a second).
 const MAX_IN_FLIGHT = 4;
+const SPACING_MS = 120;
 let inFlight = 0;
+let nextStart = 0;
 const waiting: (() => void)[] = [];
 
 async function fetchLive<T>(pathAndQuery: string, retry = true): Promise<Envelope<T>> {
   if (inFlight >= MAX_IN_FLIGHT) await new Promise<void>((go) => waiting.push(go));
   inFlight++;
+  const wait = nextStart - Date.now();
+  nextStart = Math.max(Date.now(), nextStart) + SPACING_MS;
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
   let res: Response;
   try {
     res = await fetch(`${config.tokenomist.baseUrl}${pathAndQuery}`, {
@@ -202,6 +208,19 @@ export async function findToken(query: string): Promise<{ token: TokenListItem |
     .filter((t) => t.symbol.toLowerCase() === q || t.id.toLowerCase() === q || t.name.toLowerCase() === q)
     .sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0));
   return { token: matches[0] ?? null, meta: list };
+}
+
+/** Cliff unlocks only: one call, no daily-emission fold-in (the screener's next-unlock column). */
+export async function getCliffEvents(tokenId: string, start: string, end: string): Promise<Sourced<UnlockEvent[]>> {
+  const qs = new URLSearchParams({ start, end, pageSize: "50" });
+  const res = await load<UnlockEvent[]>(
+    `unlocks:${tokenId}:${start}:${end}`,
+    `/v5/unlock/events/${encodeURIComponent(tokenId)}?${qs}`,
+    ["tokenomist", "unlock-events", `${tokenId}.json`],
+    [],
+  );
+  const day = (iso: string) => iso.slice(0, 10);
+  return { ...res, data: res.data.filter((e) => (e.cliffUnlocks?.cliffAmount ?? 0) > 0 && day(e.unlockDate) >= start && day(e.unlockDate) <= end) };
 }
 
 export async function getUnlockEvents(tokenId: string, start: string, end: string): Promise<Sourced<UnlockEvent[]>> {
