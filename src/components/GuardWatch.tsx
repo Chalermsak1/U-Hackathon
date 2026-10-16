@@ -88,6 +88,7 @@ const dateLabel = (day: number) =>
   new Date(AS_OF + day * 86_400_000).toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC" });
 
 export function GuardWatch() {
+  const [live, setLive] = useState<Record<string, { level: RiskLevel; score: number }>>({});
   const [focus, setFocus] = useState(0); // event the track is sliding to
   const [hit, setHit] = useState(0); // event U-Guard has checked
   const [react, setReact] = useState(0);
@@ -96,6 +97,16 @@ export function GuardWatch() {
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
   const [running, setRunning] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // The scores move with live prices and volume: show today's, not the morning snapshot.
+  useEffect(() => {
+    fetch("/api/ticker")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((b: { items?: { symbol: string; level: RiskLevel; score: number }[] } | null) => {
+        if (b?.items) setLive(Object.fromEntries(b.items.map((i) => [i.symbol, { level: i.level, score: i.score }])));
+      })
+      .catch(() => undefined);
+  }, []);
 
   // Only animate while on screen, and never under reduced motion.
   useEffect(() => {
@@ -147,7 +158,7 @@ export function GuardWatch() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running]);
 
-  const ev = EVENTS[hit];
+  const ev = live[EVENTS[hit].sym] ? { ...EVENTS[hit], ...live[EVENTS[hit].sym] } : EVENTS[hit];
   const look = pointer ?? (scanning ? { x: 4, y: 0 } : { x: 1, y: 3 });
 
   return (

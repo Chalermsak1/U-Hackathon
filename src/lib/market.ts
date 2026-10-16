@@ -1,5 +1,5 @@
 // Price and 24h volume. Tokenomist has no trading volume, which the risk score needs
-// (unlock value ÷ daily volume), so this comes from CoinGecko or the market fixture.
+// (unlock value ÷ daily volume): prices from Hyperliquid, volume from CoinGecko, or the fixture.
 
 import { config } from "./config";
 import { readFixture } from "./fixtures";
@@ -40,45 +40,106 @@ export async function usdToThb(): Promise<number> {
   return (await fixture()).usdThb;
 }
 
-// Live quotes: one CoinGecko call per minute for every known symbol (the free API rate-limits
-// per call, so symbols are batched), shared by concurrent callers.
-let liveBatch: { at: number; quotes: Map<string, MarketQuote> } | null = null;
-let liveInFlight: Promise<Map<string, MarketQuote> | null> | null = null;
+// ─── Live prices ──────────────────────────────────────────────────────────────────
+// Price and 24h change come from Hyperliquid's public market data (free, no key, one call for
+// every listed token, generous limits). CoinGecko's free API adds aggregated spot volume, but it
+// rate-limits shared IPs (venue Wi-Fi, serverless hosts), so it is called at most every 10
+// minutes and its last good answer is kept. Volume falls back to the market fixture.
 
-async function liveQuotes(): Promise<Map<string, MarketQuote> | null> {
-  if (liveBatch && Date.now() - liveBatch.at < 60_000) return liveBatch.quotes;
-  liveInFlight ??= (async () => {
+interface PerpCtx {
+  priceUsd: number;
+  change24hPct: number | null;
+}
+
+let perps: { at: number; ctx: Map<string, PerpCtx> } | null = null;
+let perpsInFlight: Promise<Map<string, PerpCtx> | null> | null = null;
+
+/** Hyperliquid mark price and 24h change for every perp, keyed by ticker. Cached 30 s. */
+export async function perpPrices(): Promise<Map<string, PerpCtx> | null> {
+  if (perps && Date.now() - perps.at < 30_000) return perps.ctx;
+  perpsInFlight ??= (async () => {
     try {
-      const ids = [...new Set(Object.values(COINGECKO_IDS))].join(",");
-      const res = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true`,
-        { cache: "no-store", signal: AbortSignal.timeout(5000) },
-      );
-      if (!res.ok) return liveBatch?.quotes ?? null;
-      const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number; usd_24h_change?: number }>;
-      const quotes = new Map<string, MarketQuote>();
-      for (const [sym, id] of Object.entries(COINGECKO_IDS)) {
-        const q = body[id];
-        if (q) quotes.set(sym, { symbol: sym, priceUsd: q.usd, volume24hUsd: q.usd_24h_vol, change24hPct: q.usd_24h_change ?? null, source: "live" });
-      }
-      liveBatch = { at: Date.now(), quotes };
-      return quotes;
+      const res = await fetch("https://api.hyperliquid.xyz/info", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ type: "metaAndAssetCtxs" }),
+        cache: "no-store",
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) return perps?.ctx ?? null;
+      const [meta, ctxs] = (await res.json()) as [{ universe: { name: string }[] }, { markPx: string; prevDayPx: string }[]];
+      const ctx = new Map<string, PerpCtx>();
+      meta.universe.forEach((u, i) => {
+        const mark = Number(ctxs[i]?.markPx);
+        const prev = Number(ctxs[i]?.prevDayPx);
+        if (mark > 0) ctx.set(u.name.toUpperCase(), { priceUsd: mark, change24hPct: prev > 0 ? ((mark - prev) / prev) * 100 : null });
+      });
+      perps = { at: Date.now(), ctx };
+      return ctx;
     } catch {
-      return liveBatch?.quotes ?? null; // a stale live quote beats sample data
+      return perps?.ctx ?? null;
     } finally {
-      liveInFlight = null;
+      perpsInFlight = null;
     }
   })();
-  return liveInFlight;
+  return perpsInFlight;
+}
+
+const GECKO_TTL_MS = 10 * 60_000;
+let gecko: { at: number; quotes: Map<string, { priceUsd: number; volume24hUsd: number; change24hPct: number | null }> } | null = null;
+let geckoInFlight: Promise<void> | null = null;
+
+/** CoinGecko spot volume (and a backup price) for the known symbols, refreshed every 10 minutes. */
+async function geckoQuotes() {
+  if (!(gecko && Date.now() - gecko.at < GECKO_TTL_MS)) {
+    geckoInFlight ??= (async () => {
+      try {
+        const ids = [...new Set(Object.values(COINGECKO_IDS))].join(",");
+        const res = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true`,
+          { cache: "no-store", signal: AbortSignal.timeout(5000) },
+        );
+        if (!res.ok) {
+          if (gecko) gecko.at = Date.now() - GECKO_TTL_MS + 60_000; // retry in a minute, keep the old data
+          return;
+        }
+        const body = (await res.json()) as Record<string, { usd: number; usd_24h_vol: number; usd_24h_change?: number }>;
+        const quotes = new Map<string, { priceUsd: number; volume24hUsd: number; change24hPct: number | null }>();
+        for (const [sym, id] of Object.entries(COINGECKO_IDS)) {
+          const q = body[id];
+          if (q) quotes.set(sym, { priceUsd: q.usd, volume24hUsd: q.usd_24h_vol, change24hPct: q.usd_24h_change ?? null });
+        }
+        gecko = { at: Date.now(), quotes };
+      } catch {
+        // keep whatever we had
+      } finally {
+        geckoInFlight = null;
+      }
+    })();
+    // Don't make callers wait on CoinGecko when we already have an answer.
+    if (!gecko) await geckoInFlight;
+  }
+  return gecko?.quotes ?? null;
 }
 
 export async function getQuote(symbol: string): Promise<MarketQuote | null> {
   const sym = symbol.toUpperCase();
-  if (config.market.source === "live" && COINGECKO_IDS[sym]) {
-    const quote = (await liveQuotes())?.get(sym);
-    if (quote) return quote;
-  }
   const row = (await fixture()).tokens[sym];
+  if (config.market.source === "live") {
+    const [perp, cg] = await Promise.all([perpPrices(), COINGECKO_IDS[sym] ? geckoQuotes() : Promise.resolve(null)]);
+    const p = perp?.get(sym);
+    const g = cg?.get(sym);
+    const priceUsd = p?.priceUsd ?? g?.priceUsd;
+    if (priceUsd) {
+      return {
+        symbol: sym,
+        priceUsd,
+        volume24hUsd: g?.volume24hUsd ?? row?.volume24hUsd ?? 0,
+        change24hPct: p?.change24hPct ?? g?.change24hPct ?? null,
+        source: "live",
+      };
+    }
+  }
   return row
     ? { symbol: sym, priceUsd: row.priceUsd, volume24hUsd: row.volume24hUsd, change24hPct: row.change24hPct ?? null, source: "sample" }
     : null;
@@ -105,7 +166,7 @@ let marketsCache: { at: number; key: string; rows: Map<string, MarketRow> } | nu
 export async function getMarkets(ids: string[]): Promise<Map<string, MarketRow> | null> {
   if (config.market.source !== "live" || ids.length === 0) return null;
   const key = [...ids].sort().join(",");
-  if (marketsCache && marketsCache.key === key && Date.now() - marketsCache.at < 60_000) return marketsCache.rows;
+  if (marketsCache && marketsCache.key === key && Date.now() - marketsCache.at < GECKO_TTL_MS) return marketsCache.rows;
   try {
     const qs = new URLSearchParams({ vs_currency: "usd", ids: ids.join(","), per_page: "100", price_change_percentage: "24h,7d" });
     const res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?${qs}`, { cache: "no-store", signal: AbortSignal.timeout(6000) });

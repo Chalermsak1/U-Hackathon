@@ -25,6 +25,7 @@ export async function GET() {
       amount: c.amount,
       valueUsd: c.valueUsd,
       level: c.level,
+      score: c.score,
       topRecipient: c.breakdown[0]?.recipient ?? null,
       source: c.source.mode,
       asOf: c.source.asOf,

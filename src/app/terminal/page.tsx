@@ -10,18 +10,27 @@ import type { RiskCard } from "@/lib/types";
 
 const PROMPTS = [
   "Is buying 5,000 THB of ARB risky right now?",
-  "Which of my tokens unlock in the next 30 days?",
+  "Scan my portfolio",
+  "How far is my portfolio from my target mix?",
+  "What's in the news for my coins?",
   "Who receives AVAX's unlocks?",
-  "Explain FDV and float simply",
 ];
 
-interface ScreenerRow {
-  symbol: string;
-  marketCap: number;
-  fdv: number;
-  floatPct: number | null;
-  pctInvestorsUnlocked: number | null;
-  analysed: boolean;
+// The four steps of U-Guard, so a first-time user knows where to go next.
+const STEPS = [
+  { n: 1, title: "Check", text: "Screen tokens and see who unlocks what, when", href: "/terminal/tokens" },
+  { n: 2, title: "Plan", text: "Your next 30 days, with dates and risk", href: "/terminal/plan" },
+  { n: 3, title: "Approve", text: "U-Bot proposes; you decide, recorded on Avalanche", href: "/terminal/alerts" },
+  { n: 4, title: "Stay alerted", text: "Rules watch your coins and ping U-Bot", href: "/terminal/alerts" },
+];
+
+interface PlanItemLite {
+  date: string;
+  kind: string;
+  symbol: string | null;
+  title: string;
+  level: string | null;
+  action: { label: string; href: string } | null;
 }
 
 // Terminal home: ask U-Guard first, then the three things worth a glance.
@@ -30,14 +39,14 @@ export default function TerminalHome() {
   const [q, setQ] = useState("");
   const placeholder = useTypewriter(PROMPTS);
   const [calendar, setCalendar] = useState<RiskCard[]>([]);
-  const [lowFloat, setLowFloat] = useState<ScreenerRow[]>([]);
+  const [plan, setPlan] = useState<{ generatedAt: string; items: PlanItemLite[]; decisions: unknown[]; summary: string[] } | null>(null);
   const [portfolio, setPortfolio] = useState<{ totalThb: number; atRiskThb: number; rows: { symbol: string; card: RiskCard | null }[] } | null>(null);
 
   useEffect(() => {
     fetch("/api/calendar").then((r) => r.json()).then((b) => setCalendar(b.analysed ?? [])).catch(() => undefined);
-    fetch("/api/screener")
-      .then((r) => r.json())
-      .then((b: { rows: ScreenerRow[] }) => setLowFloat([...b.rows].sort((a, z) => (a.floatPct ?? 100) - (z.floatPct ?? 100)).slice(0, 6)))
+    fetch("/api/plan")
+      .then((r) => (r.ok ? r.json() : null))
+      .then(setPlan)
       .catch(() => undefined);
     fetch("/api/portfolio/risk").then((r) => r.json()).then(setPortfolio).catch(() => undefined);
   }, []);
@@ -79,6 +88,18 @@ export default function TerminalHome() {
         </div>
       </section>
 
+      <ol className="flow-steps" aria-label="How U-Guard works">
+        {STEPS.map((st) => (
+          <li key={st.n}>
+            <Link href={st.href}>
+              <i>{st.n}</i>
+              <b>{st.title}</b>
+              <span>{st.text}</span>
+            </Link>
+          </li>
+        ))}
+      </ol>
+
       {portfolio && (
         <div className="kpis">
           <div className="kpi">
@@ -96,16 +117,16 @@ export default function TerminalHome() {
           <div className="kpi">
             <span>Unlocks U-Guard tracks</span>
             <b>
-              <CountUp value={calendar.length} />
+              {calendar.length}
             </b>
             <small>tokens with full data</small>
           </div>
           <div className="kpi">
-            <span>Tokens in the screener</span>
-            <b>
-              <CountUp value={25} />
-            </b>
-            <small>Tokenomist fundraising</small>
+            <span>Decisions waiting</span>
+            <b style={{ color: plan && plan.decisions.length ? "var(--amber)" : undefined }}>{plan ? plan.decisions.length : "…"}</b>
+            <small>
+              <Link href="/terminal/plan">open my plan →</Link>
+            </small>
           </div>
         </div>
       )}
@@ -136,23 +157,25 @@ export default function TerminalHome() {
 
         <Spotlight className="panel">
           <div className="panel-head">
-            <h2>Lowest float (supply still to come)</h2>
-            <Link href="/terminal/tokens" className="total">
-              screener →
+            <h2>Coming up for your money</h2>
+            <Link href="/terminal/plan" className="total">
+              My plan →
             </Link>
           </div>
-          {lowFloat.map((r) => (
-            <div key={r.symbol} className="event-row" style={{ gridTemplateColumns: "70px 1fr auto" }}>
-              <b>{r.symbol}</b>
-              <span className="floatbar">
-                <span>
-                  <i style={{ width: `${r.floatPct ?? 0}%`, background: (r.floatPct ?? 0) < 40 ? "var(--coral)" : (r.floatPct ?? 0) < 70 ? "var(--amber)" : "var(--teal)" }} />
+          {!plan && <p className="note">Building your plan from live data…</p>}
+          {plan?.items
+            .filter((i) => i.kind !== "rule" && i.kind !== "stop")
+            .slice(0, 5)
+            .map((i, n) => (
+              <Link key={`${i.date}-${n}`} href={i.action?.href.startsWith("/") ? i.action.href : "/terminal/plan"} className="event-row" style={{ textDecoration: "none", color: "inherit" }}>
+                <span className="event-date">
+                  <b>{i.date <= plan.generatedAt.slice(0, 10) ? "Today" : shortDate(i.date)}</b>
+                  {i.kind === "release" ? "daily" : i.kind}
                 </span>
-                float {r.floatPct?.toFixed(0)}% · FDV {usd(r.fdv)}
-              </span>
-              <span className="note">investors unlocked {r.pctInvestorsUnlocked ?? "–"}%</span>
-            </div>
-          ))}
+                <span>{i.title}</span>
+                {i.level ? <span className={`pill lv-${i.level}`}>{LEVEL_LABEL[i.level]}</span> : <span />}
+              </Link>
+            ))}
         </Spotlight>
       </div>
 

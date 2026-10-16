@@ -4,7 +4,7 @@
 // the full score is computed when the user opens the token.
 
 import { readFixture } from "./fixtures";
-import { getMarkets } from "./market";
+import { getMarkets, perpPrices } from "./market";
 import { classifyRecipient } from "./recipient";
 import { assessUnlockRisk } from "./risk";
 import { getCliffEvents, listTokens, trackedTokens } from "./tokenomist";
@@ -71,15 +71,20 @@ export async function marketScreen(now: number): Promise<ScreenResult> {
   const trackedIds = new Set(tracked.data.map((t) => t.id));
   const funds = new Map((fundraising?.rows ?? []).map((r) => [r.symbol.toUpperCase(), r]));
 
-  const [markets, events, cards] = await Promise.all([
+  const [markets, perp, events, cards] = await Promise.all([
     getMarkets(top.map((t) => t.id)),
+    perpPrices(),
     Promise.all(top.map((t) => getCliffEvents(t.id, start, end).catch(() => null))),
     Promise.all(top.map((t) => (trackedIds.has(t.id) ? assessUnlockRisk(t.symbol, null, { now, locale: "en" }) : Promise.resolve(null)))),
   ]);
 
   const rows: ScreenRow[] = top.map((t, i) => {
     const m = markets?.get(t.id) ?? null;
-    const price = m?.priceUsd ?? (t.circulatingSupply > 0 ? t.marketCap / t.circulatingSupply : null);
+    // Hyperliquid's price is fresher (CoinGecko is cached for minutes); use it when the ticker
+    // clearly is the same asset (within ±50% of CoinGecko's price, or CoinGecko has none).
+    const hl = perp?.get(t.symbol.toUpperCase()) ?? null;
+    const hlOk = hl && (!m?.priceUsd || Math.abs(hl.priceUsd / m.priceUsd - 1) < 0.5) ? hl : null;
+    const price = hlOk?.priceUsd ?? m?.priceUsd ?? (t.circulatingSupply > 0 ? t.marketCap / t.circulatingSupply : null);
     const next = events[i]?.data.slice().sort((a, b) => a.unlockDate.localeCompare(b.unlockDate))[0] ?? null;
     let nextUnlock: ScreenRow["nextUnlock"] = null;
     if (next?.cliffUnlocks) {
@@ -112,9 +117,9 @@ export async function marketScreen(now: number): Promise<ScreenResult> {
       name: t.name,
       image: m?.image ?? null,
       priceUsd: price,
-      change24hPct: m?.change24hPct ?? null,
+      change24hPct: hlOk?.change24hPct ?? m?.change24hPct ?? null,
       change7dPct: m?.change7dPct ?? null,
-      marketCapUsd: m?.marketCapUsd ?? t.marketCap,
+      marketCapUsd: m?.marketCapUsd ?? (price !== null && t.circulatingSupply > 0 ? price * t.circulatingSupply : t.marketCap),
       fdvUsd: m?.fdvUsd ?? (price !== null && t.maxSupply > 0 ? price * t.maxSupply : null),
       volume24hUsd: m?.volume24hUsd ?? null,
       floatPct: t.maxSupply > 0 ? Math.min(100, (t.circulatingSupply / t.maxSupply) * 100) : null,
@@ -130,7 +135,7 @@ export async function marketScreen(now: number): Promise<ScreenResult> {
   const value: ScreenResult = {
     rows,
     windowDays: WINDOW_DAYS,
-    sources: { tokens: list.source, market: markets ? "live" : "tokenomist", asOf: list.asOf },
+    sources: { tokens: list.source, market: markets || perp ? "live" : "tokenomist", asOf: list.asOf },
   };
   cache = { at: Date.now(), day: start, value };
   return value;

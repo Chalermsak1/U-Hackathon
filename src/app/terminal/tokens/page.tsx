@@ -111,7 +111,7 @@ export default function TokensPage() {
       <div className="page-title">
         <h1>Token screener</h1>
         <p>
-          Top tokens by market cap · prices {data?.sources.market === "live" ? "live from CoinGecko" : "from Tokenomist"} · unlocks from the Tokenomist API
+          Top tokens by market cap · prices {data?.sources.market === "live" ? "live (Hyperliquid, CoinGecko)" : "from Tokenomist"} · unlocks from the Tokenomist API
           {data ? ` (${data.sources.tokens === "live" ? "live" : "saved"}, ${shortDate(data.sources.asOf)})` : ""}
         </p>
       </div>
